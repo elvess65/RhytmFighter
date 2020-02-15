@@ -6,12 +6,12 @@ namespace RhytmFighter.Data
     /// Holder for data related objects
     /// </summary>
     [System.Serializable]
-    public class DataHolders
+    public class DataHolder
     {
         public DBProxy DBProxy;
 
         public InfoData InfoData;
         public PlayerData PlayerData;
-        
+        public LevelsData LevelsData;
     }
 }

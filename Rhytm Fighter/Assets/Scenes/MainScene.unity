@@ -166,6 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerData: {fileID: 11400000, guid: 43f862930635dc84daebbd8bf3a7ce41, type: 2}
   InfoData: {fileID: 11400000, guid: 61dc0e1edac33424f950f39cb2fbea80, type: 2}
+  LevelsData: {fileID: 11400000, guid: 4d66c12bfec60f64dba45c7561e9e614, type: 2}
 --- !u!1 &1022019876
 GameObject:
   m_ObjectHideFlags: 0

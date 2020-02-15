@@ -16,6 +16,7 @@ namespace RhytmFighter.Data.DataBase
         void Connect();
         string GetPlayerData();
         string GetInfoData();
+        string GetLevelsData();
     }
 
     /// <summary>
@@ -53,6 +54,8 @@ namespace RhytmFighter.Data.DataBase
         public string GetPlayerData() => JsonUtility.ToJson(m_DataObject.PlayerData);
 
         public string GetInfoData() => JsonUtility.ToJson(m_DataObject.InfoData);
+
+        public string GetLevelsData() => JsonUtility.ToJson(m_DataObject.LevelsData);
 
 
         IEnumerator SimulateSuccessConnectionDelay()

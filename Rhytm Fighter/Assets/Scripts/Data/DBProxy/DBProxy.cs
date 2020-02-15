@@ -6,7 +6,7 @@
     [System.Serializable]
     public class DBProxy
     {
-        public System.Action<string, string> OnConnectionSuccess;
+        public System.Action<string, string, string> OnConnectionSuccess;
         public System.Action<int> OnConnectionError;
 
         public bool UseSimulation = true;
@@ -26,7 +26,9 @@
         }
 
 
-        private void ConnectionSuccessHandler() => OnConnectionSuccess?.Invoke(m_DataProvider.GetInfoData(), m_DataProvider.GetPlayerData());
+        private void ConnectionSuccessHandler() => OnConnectionSuccess?.Invoke(m_DataProvider.GetInfoData(), 
+                                                                               m_DataProvider.GetPlayerData(),
+                                                                               m_DataProvider.GetLevelsData());
 
         private void OnConnectionErrorHandler(int errorCode) => OnConnectionError?.Invoke(errorCode);
     }

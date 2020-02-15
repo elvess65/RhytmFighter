@@ -10,5 +10,6 @@ namespace RhytmFighter.Data.DataBase.Simulation
     {
         public DBSimulation_PlayerData PlayerData;
         public DBSimulation_InfoData InfoData;
+        public DBSimulation_LevelsData LevelsData;
     }
 }

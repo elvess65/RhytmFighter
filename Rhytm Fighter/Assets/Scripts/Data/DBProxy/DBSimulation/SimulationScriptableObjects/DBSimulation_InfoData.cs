@@ -2,7 +2,7 @@
 
 namespace RhytmFighter.Data.DataBase.Simulation
 {
-    [CreateAssetMenu(fileName = "New InfoData", menuName = "DBSimulation/InfoData", order = 101)]
+    [CreateAssetMenu(fileName = "New Simulation_InfoData", menuName = "DBSimulation/InfoData", order = 101)]
     public class DBSimulation_InfoData : ScriptableObject
     {
         public int DataExample;
