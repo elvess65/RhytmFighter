@@ -44,6 +44,13 @@ namespace RhytmFighter.Level
                 curDepthLevel++;
             }
 
+            for (int i = 0; i < 5; i++)
+            {
+                LevelNode node = CreateNode(nodeIDCounter, nodeIDCounter * 120);
+                if (startNode.AddAdditionalNode(node))
+                    nodeIDCounter++;
+            }
+
             //Вывести в лог созданные ноды
             startNode.PrintNodeDataRecursively();
         }

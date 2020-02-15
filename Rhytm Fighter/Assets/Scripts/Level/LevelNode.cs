@@ -22,21 +22,25 @@ namespace RhytmFighter.Level
 
         public bool AddAdditionalNode(LevelNode node)
         {
+            node.ParentNode = this;
+
             if (LeftNode == null)
             {
+                LeftNode = node;
                 return true;
             }
 
             if (RightNode == null)
             {
+                RightNode = node;
                 return true;
             }
 
             if (LeftNode != null)
-                LeftNode.AddAdditionalNode(node);
+                return LeftNode.AddAdditionalNode(node);
 
             if (RightNode != null)
-                RightNode.AddAdditionalNode(node);
+                return RightNode.AddAdditionalNode(node);
 
             return false;
         }
