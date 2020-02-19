@@ -12,7 +12,7 @@ namespace RhytmFighter.Main
         [Header("Links")]
         public DataHolder DataHolders;
 
-        private LevelCreator m_LevelCreator;
+        private LevelDataBuilder m_LevelCreator;
 
 
         private void Awake()
@@ -31,7 +31,7 @@ namespace RhytmFighter.Main
         private void Initialize()
         {
             //Initialize objects
-            m_LevelCreator = new LevelCreator();
+            m_LevelCreator = new LevelDataBuilder();
 
             //Initialize connection
             DataHolders.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
@@ -48,8 +48,8 @@ namespace RhytmFighter.Main
 
             Debug.Log("Connection success");
 
-            m_LevelCreator = new LevelCreator();
-            m_LevelCreator.CreateLevel(DataHolders.LevelsData.LevelDepth);
+            m_LevelCreator = new LevelDataBuilder();
+            m_LevelCreator.Build(DataHolders.LevelsData.LevelDepth);
         }
 
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");
