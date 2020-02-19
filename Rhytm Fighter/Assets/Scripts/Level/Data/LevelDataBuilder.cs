@@ -1,30 +1,30 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace RhytmFighter.Level
+namespace RhytmFighter.Level.Data
 {
     public class LevelDataBuilder 
     {
         //TEMP
-        private Dictionary<int, LevelNode> m_Nodes = new Dictionary<int, LevelNode>();
+        private Dictionary<int, LevelNodeData> m_Nodes = new Dictionary<int, LevelNodeData>();
 
         public void Build(int levelDepth)
         {
-            Debug.Log("Create level with depth " + levelDepth);
+            Debug.Log("LevelDataBuilder : Build level data. Level Depth: " + levelDepth);
 
             Random.InitState(10);
 
             int curDepthLevel = 0;
             int nodeIDCounter = 1;
-            LevelNode startNode = null;
-            LevelNode lastCreatedNode = null;
-            LevelNode finishNode = null;
+            LevelNodeData startNode = null;
+            LevelNodeData lastCreatedNode = null;
+            LevelNodeData finishNode = null;
 
             //Создать базовую часть уровня
             while (curDepthLevel != levelDepth)
             {
                 //Создать нод
-                LevelNode node = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                LevelNodeData node = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
 
                 //Запомнить начальный нод
                 if (startNode == null)
@@ -49,7 +49,7 @@ namespace RhytmFighter.Level
             }
 
             //TEMP Добавить дополнительные ноды
-            LevelNode additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+            LevelNodeData additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
             m_Nodes[1].AddAdditionalNode(additionalNode);
             m_Nodes.Add(additionalNode.ID, additionalNode);
 
@@ -83,9 +83,9 @@ namespace RhytmFighter.Level
             startNode.PrintNodeDataRecursively();
         }
 
-        LevelNode CreateNode(int id, int nodeSeed)
+        LevelNodeData CreateNode(int id, int nodeSeed)
         {
-            LevelNode node = new LevelNode(id, nodeSeed);
+            LevelNodeData node = new LevelNodeData(id, nodeSeed);
             return node;
         }
     }

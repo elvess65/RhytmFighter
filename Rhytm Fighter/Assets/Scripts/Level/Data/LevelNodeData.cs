@@ -1,21 +1,24 @@
 ﻿using System.Text;
 using UnityEngine;
 
-namespace RhytmFighter.Level
+namespace RhytmFighter.Level.Data
 {
-    public class LevelNode
+    public class LevelNodeData
     {
         public enum AddNoteResult { None, AddedToLeft, AddedToRight }
 
         public int ID { get; private set; }
-        public LevelNode LeftNode;
-        public LevelNode RightNode;
-        public LevelNode ParentNode;
+        //TODO:
+        //Input node
+        //Output nodes
+        public LevelNodeData LeftNode;
+        public LevelNodeData RightNode;
+        public LevelNodeData ParentNode;
 
         private int m_NodeSeed;
 
 
-        public LevelNode(int iD, int nodeSeed)
+        public LevelNodeData(int iD, int nodeSeed)
         {
             ID = iD;
             m_NodeSeed = nodeSeed;
@@ -23,7 +26,7 @@ namespace RhytmFighter.Level
         }
 
 
-        public AddNoteResult TryAddNodeRandomly(LevelNode node, bool debug = false)
+        public AddNoteResult TryAddNodeRandomly(LevelNodeData node, bool debug = false)
         {
             AddNoteResult result = AddNoteResult.None;
 
@@ -70,7 +73,7 @@ namespace RhytmFighter.Level
             return result;
         }
 
-        public void AddAdditionalNode(LevelNode node)
+        public void AddAdditionalNode(LevelNodeData node)
         {
             //Add node
             AddNoteResult result = TryAddNodeRandomly(node);
@@ -89,44 +92,6 @@ namespace RhytmFighter.Level
                 CheckRightInput_AddToRightNode(node);
                 CheckRightOutput_AddToRightNode(node);
             }
-
-            /*
-            bool tryAddToThisNode = UnityEngine.Random.Range(0, 100) > 50;
-            if (!tryAddToThisNode)
-            {
-                //TODO: Go to random full child
-                return false;
-            }
-
-            //TODO: Find random free child
-            //If free child exists 
-            //   add node
-            //else
-            //  get random full child
-            //  if full child exists
-            //      go to full child
-
-            node.ParentNode = this;
-
-            if (LeftNode == null)
-            {
-                LeftNode = node;
-                return true;
-            }
-
-            if (RightNode == null)
-            {
-                RightNode = node;
-                return true;
-            }
-
-            if (LeftNode != null)
-                return LeftNode.AddAdditionalNode(node);
-
-            if (RightNode != null)
-                return RightNode.AddAdditionalNode(node);
-
-            return false;*/
         }
 
         public void MergeNodeRecursively()
@@ -153,7 +118,7 @@ namespace RhytmFighter.Level
 
 
         //AddToRightNode
-        void CheckLeftOutput_AddToRightNode(LevelNode node)
+        void CheckLeftOutput_AddToRightNode(LevelNodeData node)
         {
             if (LeftNode != null && LeftNode.RightNode != null)
             {
@@ -163,7 +128,7 @@ namespace RhytmFighter.Level
             }
         }
 
-        void CheckRightInput_AddToRightNode(LevelNode node)
+        void CheckRightInput_AddToRightNode(LevelNodeData node)
         {
             if (ParentNode != null && ParentNode.RightNode != null && ID != ParentNode.RightNode.ID)
             {
@@ -173,7 +138,7 @@ namespace RhytmFighter.Level
             }
         }
 
-        void CheckRightOutput_AddToRightNode(LevelNode node)
+        void CheckRightOutput_AddToRightNode(LevelNodeData node)
         {
             if (ParentNode != null && ParentNode.RightNode != null && ParentNode.RightNode.RightNode != null &&
                 ParentNode.RightNode.RightNode.LeftNode != null &&
@@ -187,7 +152,7 @@ namespace RhytmFighter.Level
 
 
         //AddToLeftNode
-        void CheckLeftOutput_AddToLeftNode(LevelNode node)
+        void CheckLeftOutput_AddToLeftNode(LevelNodeData node)
         {
             if (ParentNode != null && ParentNode.LeftNode != null && ParentNode.LeftNode.LeftNode != null && ParentNode.LeftNode.LeftNode.RightNode != null)
             {
@@ -197,7 +162,7 @@ namespace RhytmFighter.Level
             }
         }
 
-        void CheckLeftInput_AddToLeftNode(LevelNode node)
+        void CheckLeftInput_AddToLeftNode(LevelNodeData node)
         {
             if (ParentNode != null && ParentNode.LeftNode != null && ID != ParentNode.LeftNode.ID)
             {
@@ -207,7 +172,7 @@ namespace RhytmFighter.Level
             }
         }
 
-        void CheckRightOutput_AddToLeftNode(LevelNode node)
+        void CheckRightOutput_AddToLeftNode(LevelNodeData node)
         {
             if (RightNode != null && RightNode.LeftNode != null)
             {
