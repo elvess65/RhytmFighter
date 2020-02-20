@@ -36,7 +36,7 @@ namespace RhytmFighter.Data.DataBase
 
         public SimulationDataProvider(bool simulateSuccessConnection)
         {
-            m_DataObject = GameObject.FindObjectOfType<DBSimulation>();
+            m_DataObject = UnityEngine.Object.FindObjectOfType<DBSimulation>();
             m_WaitConnectionDelay = new WaitForSeconds(m_CONNECTION_TIME);
             m_SimulateSuccessConnection = simulateSuccessConnection;
         }

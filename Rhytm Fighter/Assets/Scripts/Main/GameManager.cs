@@ -1,5 +1,4 @@
 ﻿using RhytmFighter.Data;
-using RhytmFighter.Level;
 using UnityEngine;
 
 namespace RhytmFighter.Main
@@ -10,9 +9,10 @@ namespace RhytmFighter.Main
         public static GameManager Instance => m_Instance;
 
         [Header("Links")]
-        public DataHolder DataHolders;
+        public ManagersHolder ManagerHolder;
 
-        private LevelController m_LevelController;
+        private DataHolder m_DataHolder;
+        private ControllersHolder m_ControllersHolder;
 
 
         private void Awake()
@@ -31,24 +31,26 @@ namespace RhytmFighter.Main
         private void Initialize()
         {
             //Initialize objects
-            m_LevelController = new LevelController();
+            m_DataHolder = new DataHolder();
+            m_ControllersHolder = new ControllersHolder();
 
             //Initialize connection
-            DataHolders.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
-            DataHolders.DBProxy.OnConnectionError += ConnectionResultError;
-            DataHolders.DBProxy.Initialize();
+            m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
+            m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
+            m_DataHolder.DBProxy.Initialize();
         }
 
         private void ConnectionResultSuccess(string serializedInfoData, string serializedPlayerData, string levelsData)
         {
             //Set data
-            DataHolders.InfoData = InfoData.DeserializeData(serializedInfoData);
-            DataHolders.PlayerData = PlayerData.DeserializeData(serializedPlayerData);
-            DataHolders.LevelsData = LevelsData.DeserializeData(levelsData);
+            m_DataHolder.InfoData = InfoData.DeserializeData(serializedInfoData);
+            m_DataHolder.PlayerData = PlayerData.DeserializeData(serializedPlayerData);
+            m_DataHolder.LevelsData = LevelsData.DeserializeData(levelsData);
 
             Debug.Log("Connection success");
 
-            m_LevelController.GenerateLevel(DataHolders.LevelsData.LevelDepth);
+            //Build level
+            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.LevelsData.LevelDepth);
         }
 
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");

@@ -13,5 +13,10 @@ namespace RhytmFighter.Data
         public InfoData InfoData;
         public PlayerData PlayerData;
         public LevelsData LevelsData;
+
+        public DataHolder()
+        {
+            DBProxy = new DBProxy();
+        }
     }
 }

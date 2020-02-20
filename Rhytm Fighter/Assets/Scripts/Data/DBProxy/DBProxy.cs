@@ -1,24 +1,22 @@
-﻿namespace RhytmFighter.Data.DataBase
+﻿using RhytmFighter.Main;
+
+namespace RhytmFighter.Data.DataBase
 {
     /// <summary>
     /// Data base connection proxy
     /// </summary>
-    [System.Serializable]
     public class DBProxy
     {
         public System.Action<string, string, string> OnConnectionSuccess;
         public System.Action<int> OnConnectionError;
-
-        public bool UseSimulation = true;
-        public bool SimulateSuccess = true;
 
         private iDataProvider m_DataProvider;
 
 
         public void Initialize()
         {
-            if (UseSimulation)
-                m_DataProvider = new SimulationDataProvider(SimulateSuccess);
+            if (GameManager.Instance.ManagerHolder.SettingsManager.SimulationSettings.UseSimulation)
+                m_DataProvider = new SimulationDataProvider(GameManager.Instance.ManagerHolder.SettingsManager.SimulationSettings.SimulateSuccess);
 
             m_DataProvider.OnConnectionSuccess += ConnectionSuccessHandler;
             m_DataProvider.OnConnectionError += OnConnectionErrorHandler;
