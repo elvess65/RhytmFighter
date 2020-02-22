@@ -116,6 +116,17 @@ namespace RhytmFighter.Level.Data
                 RightNode.PrintNodeDataRecursively();
         }
 
+        public void ForEachNodeRecursively(System.Action<LevelNodeData> action)
+        {
+            action?.Invoke(this);
+
+            if (LeftNode != null)
+                LeftNode.ForEachNodeRecursively(action);
+
+            if (RightNode != null)
+                RightNode.ForEachNodeRecursively(action);
+        }
+
 
         //AddToRightNode
         void CheckLeftOutput_AddToRightNode(LevelNodeData node)

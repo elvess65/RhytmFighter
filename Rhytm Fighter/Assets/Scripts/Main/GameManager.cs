@@ -28,6 +28,7 @@ namespace RhytmFighter.Main
             Initialize();
         }
 
+
         private void Initialize()
         {
             //Initialize objects
@@ -45,11 +46,17 @@ namespace RhytmFighter.Main
             //Set data
             m_DataHolder.PlayerData = PlayerData.DeserializeData(serializedPlayerData);
             m_DataHolder.InfoData = new InfoData(serializedLevelsData);
-            
+
             //Build level
-            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.LevelDepth);
+            BuildLevel();
         }
 
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");
+
+
+        private void BuildLevel()
+        {
+            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.LevelDepth, m_DataHolder.InfoData.LevelsData.LevelSeed);
+        }
     }
 }

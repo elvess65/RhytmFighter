@@ -7,5 +7,6 @@ namespace RhytmFighter.Data.DataBase.Simulation
     public class DBSimulation_LevelsData : ScriptableObject
     {
         public int LevelDepth;
+        public int LevelSeed = 0;
     }
 }

@@ -6,5 +6,6 @@
     public class LevelsData : AbstractData<LevelsData>
     {
         public int LevelDepth;
+        public int LevelSeed;
     }
 }

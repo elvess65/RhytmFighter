@@ -6,19 +6,23 @@ namespace RhytmFighter.Level.Data
     public class LevelDataBuilder 
     {
         //TEMP
-        private Dictionary<int, LevelNodeData> m_Nodes = new Dictionary<int, LevelNodeData>();
+        private Dictionary<int, LevelNodeData> m_Nodes;
 
-        public void Build(int levelDepth)
+
+        public LevelNodeData Build(int levelDepth, int levelSeed)
         {
-            Debug.Log("LevelDataBuilder : Build level data. Level Depth: " + levelDepth);
+            Debug.Log("LevelDataBuilder : Build level data. Level Depth: " + levelDepth + " Level seed: " + levelSeed);
 
-            Random.InitState(10);
+            Random.InitState(levelSeed);
 
             int curDepthLevel = 0;
             int nodeIDCounter = 1;
             LevelNodeData startNode = null;
             LevelNodeData lastCreatedNode = null;
             LevelNodeData finishNode = null;
+
+            //TEMP
+            m_Nodes = new Dictionary<int, LevelNodeData>();
 
             //Создать базовую часть уровня
             while (curDepthLevel != levelDepth)
@@ -81,7 +85,10 @@ namespace RhytmFighter.Level.Data
 
             //Вывести в лог созданные ноды
             startNode.PrintNodeDataRecursively();
+
+            return startNode;
         }
+
 
         LevelNodeData CreateNode(int id, int nodeSeed)
         {

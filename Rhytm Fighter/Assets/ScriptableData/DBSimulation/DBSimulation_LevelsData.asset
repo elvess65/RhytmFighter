@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: DBSimulation_LevelsData
   m_EditorClassIdentifier: 
   LevelDepth: 4
+  LevelSeed: 10
