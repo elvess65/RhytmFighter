@@ -6,8 +6,9 @@ namespace RhytmFighter.Level
     public class LevelController 
     {
         private LevelDataBuilder m_LevelDataBuilder;
-         //Current state
-         //VisualController
+        //room builder
+        //room visual builder
+        //stateModel
 
         public LevelController()
         {

@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bc185674da583f40a0f4bd0812766e5, type: 3}
-  m_Name: Simulation_PlayerData
+  m_Script: {fileID: 11500000, guid: bcb1e150496776e4bb4c3fa2860360c5, type: 3}
+  m_Name: DBSimulation_LevelsData
   m_EditorClassIdentifier: 
-  Experiance: 25
+  LevelDepth: 4

@@ -9,7 +9,6 @@ namespace RhytmFighter.Data.DataBase.Simulation
     public class DBSimulation : MonoBehaviour
     {
         public DBSimulation_PlayerData PlayerData;
-        public DBSimulation_InfoData InfoData;
         public DBSimulation_LevelsData LevelsData;
     }
 }

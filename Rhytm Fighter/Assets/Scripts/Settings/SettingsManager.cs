@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RhytmFighter.Settings.Proxy;
+using UnityEngine;
 
 namespace RhytmFighter.Settings
 {
@@ -8,6 +9,6 @@ namespace RhytmFighter.Settings
     public class SettingsManager : MonoBehaviour
     {
         [Header("Simulation")]
-        public SimulationSettings SimulationSettings;
+        public ProxySettings ProxySettings;
     }
 }

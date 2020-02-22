@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Main;
+﻿using RhytmFighter.Settings.Proxy;
 
 namespace RhytmFighter.Data.DataBase
 {
@@ -7,16 +7,25 @@ namespace RhytmFighter.Data.DataBase
     /// </summary>
     public class DBProxy
     {
-        public System.Action<string, string, string> OnConnectionSuccess;
+        public System.Action<string, string> OnConnectionSuccess;
         public System.Action<int> OnConnectionError;
 
         private iDataProvider m_DataProvider;
 
-
-        public void Initialize()
+        
+        public void Initialize(ProxySettings settings)
         {
-            if (GameManager.Instance.ManagerHolder.SettingsManager.SimulationSettings.UseSimulation)
-                m_DataProvider = new SimulationDataProvider(GameManager.Instance.ManagerHolder.SettingsManager.SimulationSettings.SimulateSuccess);
+            if (settings.UseSimulation)
+            {
+                ProxySettings_Simulation simulationSettings = settings as ProxySettings_Simulation;
+                m_DataProvider = new SimulationDataProvider(simulationSettings.SimulateSuccess);
+            }
+            else
+            {
+                ProxySettings_RemoteExample remoteSettings = settings as ProxySettings_RemoteExample;
+                UnityEngine.Debug.Log("Connecting to remote IP: " + remoteSettings.IP);
+                OnConnectionErrorHandler(1);
+            }
 
             m_DataProvider.OnConnectionSuccess += ConnectionSuccessHandler;
             m_DataProvider.OnConnectionError += OnConnectionErrorHandler;
@@ -24,9 +33,7 @@ namespace RhytmFighter.Data.DataBase
         }
 
 
-        private void ConnectionSuccessHandler() => OnConnectionSuccess?.Invoke(m_DataProvider.GetInfoData(), 
-                                                                               m_DataProvider.GetPlayerData(),
-                                                                               m_DataProvider.GetLevelsData());
+        private void ConnectionSuccessHandler(string serializedPlayerData, string serializedLevelsData) => OnConnectionSuccess?.Invoke(serializedPlayerData, serializedLevelsData);
 
         private void OnConnectionErrorHandler(int errorCode) => OnConnectionError?.Invoke(errorCode);
     }

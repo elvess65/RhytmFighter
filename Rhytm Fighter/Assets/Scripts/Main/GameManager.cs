@@ -9,7 +9,7 @@ namespace RhytmFighter.Main
         public static GameManager Instance => m_Instance;
 
         [Header("Links")]
-        public ManagersHolder ManagerHolder;
+        public ManagersHolder ManagersHolder;
 
         private DataHolder m_DataHolder;
         private ControllersHolder m_ControllersHolder;
@@ -37,20 +37,17 @@ namespace RhytmFighter.Main
             //Initialize connection
             m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
             m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
-            m_DataHolder.DBProxy.Initialize();
+            m_DataHolder.DBProxy.Initialize(ManagersHolder.SettingsManager.ProxySettings);
         }
 
-        private void ConnectionResultSuccess(string serializedInfoData, string serializedPlayerData, string levelsData)
+        private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)
         {
             //Set data
-            m_DataHolder.InfoData = InfoData.DeserializeData(serializedInfoData);
             m_DataHolder.PlayerData = PlayerData.DeserializeData(serializedPlayerData);
-            m_DataHolder.LevelsData = LevelsData.DeserializeData(levelsData);
-
-            Debug.Log("Connection success");
-
+            m_DataHolder.InfoData = new InfoData(serializedLevelsData);
+            
             //Build level
-            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.LevelsData.LevelDepth);
+            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.LevelDepth);
         }
 
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");

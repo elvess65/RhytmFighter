@@ -10,13 +10,10 @@ namespace RhytmFighter.Data.DataBase
     /// </summary>
     interface iDataProvider
     {
-        event Action OnConnectionSuccess;
+        event Action<string, string> OnConnectionSuccess;
         event Action<int> OnConnectionError;
 
         void Connect();
-        string GetPlayerData();
-        string GetInfoData();
-        string GetLevelsData();
     }
 
     /// <summary>
@@ -24,7 +21,7 @@ namespace RhytmFighter.Data.DataBase
     /// </summary>
     class SimulationDataProvider : iDataProvider
     {
-        public event Action OnConnectionSuccess;
+        public event Action<string, string> OnConnectionSuccess;
         public event Action<int> OnConnectionError;
 
         private bool m_SimulateSuccessConnection;
@@ -51,18 +48,13 @@ namespace RhytmFighter.Data.DataBase
                 Main.GameManager.Instance.StartCoroutine(SimulateErrorConnectionDelay(100));
         }
 
-        public string GetPlayerData() => JsonUtility.ToJson(m_DataObject.PlayerData);
-
-        public string GetInfoData() => JsonUtility.ToJson(m_DataObject.InfoData);
-
-        public string GetLevelsData() => JsonUtility.ToJson(m_DataObject.LevelsData);
-
 
         IEnumerator SimulateSuccessConnectionDelay()
         {
             yield return m_WaitConnectionDelay;
 
-            OnConnectionSuccess?.Invoke();
+            OnConnectionSuccess?.Invoke(JsonUtility.ToJson(m_DataObject.PlayerData),
+                                        JsonUtility.ToJson(m_DataObject.LevelsData));
         }
 
         IEnumerator SimulateErrorConnectionDelay(int errorCode)

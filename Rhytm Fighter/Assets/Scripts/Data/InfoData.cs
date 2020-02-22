@@ -3,8 +3,13 @@
     /// <summary>
     /// Info data
     /// </summary>
-    public class InfoData : AbstractData<InfoData>
+    public class InfoData 
     {
-        public int DataExample;
+        public LevelsData LevelsData { get; private set; }
+
+        public InfoData(string serializedLevelsData)
+        {
+            LevelsData = LevelsData.DeserializeData(serializedLevelsData);
+        }
     }
 }

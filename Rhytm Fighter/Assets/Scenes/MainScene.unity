@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef575af0b6be6453b8e0fb868a08d610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SimulationSettings: {fileID: 11400000, guid: 37b5cc4c92b554f148364faa3e8e838b, type: 2}
+  ProxySettings: {fileID: 11400000, guid: 4e02e5c671289c347a878e926f460199, type: 2}
 --- !u!1 &327966457
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +254,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerData: {fileID: 11400000, guid: 43f862930635dc84daebbd8bf3a7ce41, type: 2}
-  InfoData: {fileID: 11400000, guid: 61dc0e1edac33424f950f39cb2fbea80, type: 2}
   LevelsData: {fileID: 11400000, guid: 4d66c12bfec60f64dba45c7561e9e614, type: 2}
 --- !u!1 &1022019876
 GameObject:
@@ -377,7 +376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7177d9dce3d0c948861c367cb32dfc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ManagerHolder: {fileID: 88609300}
+  ManagersHolder: {fileID: 88609300}
 --- !u!4 &1655152185
 Transform:
   m_ObjectHideFlags: 0

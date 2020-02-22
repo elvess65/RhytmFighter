@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcb1e150496776e4bb4c3fa2860360c5, type: 3}
-  m_Name: Simulation_LevelsData
-  m_EditorClassIdentifier: 
-  LevelDepth: 4
+  m_Script: {fileID: 0}
+  m_Name: ProxySettings_Simulation
+  m_EditorClassIdentifier: Assembly-CSharp:RhytmFighter.Settings.Proxy:ProxySettings_Simulation
+  SimulateSuccess: 1
