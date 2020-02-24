@@ -56,7 +56,7 @@ namespace RhytmFighter.Main
 
         private void BuildLevel()
         {
-            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.LevelDepth, m_DataHolder.InfoData.LevelsData.LevelSeed);
+            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.LevelDepth, m_DataHolder.InfoData.LevelsData.LevelSeed, true);
         }
     }
 }

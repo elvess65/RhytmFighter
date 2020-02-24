@@ -11,9 +11,13 @@ namespace RhytmFighter.Level.Scheme
     {
         private Dictionary<int, SchemeNodeView> m_RoomSchemes;
 
-        private Vector3 m_INIT_POSITION = new Vector3(100, 100, 100);
         private Vector3 m_LEFT_NODE_OFFSET = new Vector3(-1, 0, 1);
         private Vector3 m_RIGHT_NODE_OFFSET = new Vector3(1, 0, 1);
+        private Vector3 m_INIT_POSITION = new Vector3(100, 100, 100);
+        private Vector3 m_INPUT_NODE_OFFSET = new Vector3(0, 0.2f, 0);
+        private Color m_NODE_CONNECTION_COLOR = Color.green;
+        private Color m_INPUT_NODE_CONNECTION_COLOR = Color.yellow;
+        private const float m_SCHEME_SCALE_MULTIPLAYER = 0.5f;
 
 
         public SchemeNodeView this[int id] => m_RoomSchemes[id];
@@ -30,19 +34,37 @@ namespace RhytmFighter.Level.Scheme
         public void Build(LevelNodeData startNodeData)
         {
             startNodeData.ForEachNodeRecursively(CreateSchemeForNode);
+
+            DrawConnections();
         }
 
-        public void Dispose()
+        public void ShowAllNodesAsNormal()
         {
             if (!HasRooms)
                 return;
 
-            foreach(SchemeNodeView nodeScheme in m_RoomSchemes.Values)
+            foreach (SchemeNodeView nodeScheme in m_RoomSchemes.Values)
             {
                 if (nodeScheme != null)
-                    Object.DestroyImmediate(nodeScheme.gameObject);
+                    nodeScheme.ShowAsNormalNode();
+            }
+        }
+
+        public void Dispose()
+        {
+            //Clear rooms
+            if (HasRooms)
+            {
+                foreach (SchemeNodeView nodeScheme in m_RoomSchemes.Values)
+                {
+                    if (nodeScheme != null)
+                        Object.DestroyImmediate(nodeScheme.gameObject);
+                }
+
+                m_RoomSchemes.Clear();
             }
 
+            //Clear other schemeNodeViews
             SchemeNodeView[] nodesInScene = Object.FindObjectsOfType<SchemeNodeView>();
             if (nodesInScene.Length > 0)
             {
@@ -52,8 +74,6 @@ namespace RhytmFighter.Level.Scheme
                         Object.DestroyImmediate(nodeScheme.gameObject);
                 }
             }
-
-            m_RoomSchemes.Clear();
         }
 
 
@@ -88,14 +108,26 @@ namespace RhytmFighter.Level.Scheme
                 SchemeNodeView schemeNode = CreateRoomScheme(schemePos);
                 schemeNode.Initialize(nodeData);
 
-                //Создать отображение связей если есть соответсвующие ноды
-                if (nodeData.LeftNode != null)
-                    schemeNode.AddConnectionRenderer(schemeNode.transform.position + m_LEFT_NODE_OFFSET);
-
-                if (nodeData.RightNode != null)
-                    schemeNode.AddConnectionRenderer(schemeNode.transform.position + m_RIGHT_NODE_OFFSET);
-
                 m_RoomSchemes.Add(nodeData.ID, schemeNode);
+            }
+        }
+
+        void DrawConnections()
+        {
+            foreach (SchemeNodeView schemeNode in m_RoomSchemes.Values)
+            {
+                //Создать отображение связей если есть соответсвующие ноды
+                if (schemeNode.NodeData.LeftNode != null)
+                    schemeNode.AddConnectionRenderer(m_RoomSchemes[schemeNode.NodeData.LeftNode.ID].transform.position, m_NODE_CONNECTION_COLOR, Vector3.zero);
+
+                if (schemeNode.NodeData.RightNode != null)
+                    schemeNode.AddConnectionRenderer(m_RoomSchemes[schemeNode.NodeData.RightNode.ID].transform.position, m_NODE_CONNECTION_COLOR, Vector3.zero);
+
+                if (schemeNode.NodeData.LeftInputNode != null)
+                    schemeNode.AddConnectionRenderer(m_RoomSchemes[schemeNode.NodeData.LeftInputNode.ID].transform.position, m_INPUT_NODE_CONNECTION_COLOR, m_INPUT_NODE_OFFSET);
+
+                if (schemeNode.NodeData.RightInputNode != null)
+                    schemeNode.AddConnectionRenderer(m_RoomSchemes[schemeNode.NodeData.RightInputNode.ID].transform.position, m_INPUT_NODE_CONNECTION_COLOR, m_INPUT_NODE_OFFSET);
             }
         }
 
@@ -103,6 +135,7 @@ namespace RhytmFighter.Level.Scheme
         {
             GameObject ob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             ob.transform.position = pos;
+            ob.transform.localScale *= m_SCHEME_SCALE_MULTIPLAYER;
 
             SchemeNodeView schemeNode = ob.AddComponent<SchemeNodeView>();
             return schemeNode;

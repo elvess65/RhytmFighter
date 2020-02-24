@@ -9,7 +9,7 @@ namespace RhytmFighter.Level.Data
         private Dictionary<int, LevelNodeData> m_Nodes;
 
 
-        public LevelNodeData Build(int levelDepth, int levelSeed)
+        public LevelNodeData Build(int levelDepth, int levelSeed, bool generateOnlyMainPath)
         {
             Debug.Log("LevelDataBuilder : Build level data. Level Depth: " + levelDepth + " Level seed: " + levelSeed);
 
@@ -52,36 +52,39 @@ namespace RhytmFighter.Level.Data
                 curDepthLevel++;
             }
 
-            //TEMP Добавить дополнительные ноды
-            LevelNodeData additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
-            m_Nodes[1].AddAdditionalNode(additionalNode);
-            m_Nodes.Add(additionalNode.ID, additionalNode);
+            if (!generateOnlyMainPath)
+            {
+                //TEMP Добавить дополнительные ноды
+                LevelNodeData additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                m_Nodes[1].AddAdditionalNode(additionalNode);
+                m_Nodes.Add(additionalNode.ID, additionalNode);
 
-            additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
-            m_Nodes[3].AddAdditionalNode(additionalNode);
-            m_Nodes.Add(additionalNode.ID, additionalNode);
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                m_Nodes[3].AddAdditionalNode(additionalNode);
+                m_Nodes.Add(additionalNode.ID, additionalNode);
 
-            additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
-            m_Nodes[5].AddAdditionalNode(additionalNode);
-            m_Nodes.Add(additionalNode.ID, additionalNode);
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                m_Nodes[5].AddAdditionalNode(additionalNode);
+                m_Nodes.Add(additionalNode.ID, additionalNode);
 
-            additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
-            m_Nodes[7].AddAdditionalNode(additionalNode);
-            m_Nodes.Add(additionalNode.ID, additionalNode);
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                m_Nodes[7].AddAdditionalNode(additionalNode);
+                m_Nodes.Add(additionalNode.ID, additionalNode);
 
-            additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
-            m_Nodes[4].AddAdditionalNode(additionalNode);
-            m_Nodes.Add(additionalNode.ID, additionalNode);
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                m_Nodes[4].AddAdditionalNode(additionalNode);
+                m_Nodes.Add(additionalNode.ID, additionalNode);
 
-            //CHECK
-            additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
-            m_Nodes[4].AddAdditionalNode(additionalNode);
-            m_Nodes.Add(additionalNode.ID, additionalNode);
+                //CHECK
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                m_Nodes[4].AddAdditionalNode(additionalNode);
+                m_Nodes.Add(additionalNode.ID, additionalNode);
 
-            additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
-            m_Nodes[5].AddAdditionalNode(additionalNode);
-            m_Nodes.Add(additionalNode.ID, additionalNode);
-            ///END TEMP
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                m_Nodes[5].AddAdditionalNode(additionalNode);
+                m_Nodes.Add(additionalNode.ID, additionalNode);
+                ///END TEMP
+            }
 
             //Вывести в лог созданные ноды
             startNode.PrintNodeDataRecursively();

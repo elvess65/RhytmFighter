@@ -8,23 +8,33 @@ namespace RhytmFighter.Level.Data
         public enum AddNoteResult { None, AddedToLeft, AddedToRight }
 
         public int ID { get; private set; }
-        //TODO:
-        //Input node
-        //Output nodes
+        public int NodeSeed { get; private set; }
+
         public LevelNodeData LeftNode;
         public LevelNodeData RightNode;
         public LevelNodeData ParentNode;
-
-        private int m_NodeSeed;
+        public LevelNodeData LeftInputNode;
+        public LevelNodeData RightInputNode;
 
 
         public LevelNodeData(int iD, int nodeSeed)
         {
             ID = iD;
-            m_NodeSeed = nodeSeed;
-            LeftNode = RightNode = ParentNode = null;
+            NodeSeed = nodeSeed;
+            LeftNode = RightNode = ParentNode = LeftInputNode = RightInputNode = null;
         }
 
+        void SetRightNode(LevelNodeData node)
+        {
+            RightNode = node;
+            node.LeftInputNode = this;
+        }
+
+        void SetLeftNode(LevelNodeData node)
+        {
+            LeftNode = node;
+            node.RightInputNode = node;
+        }
 
         public AddNoteResult TryAddNodeRandomly(LevelNodeData node, bool debug = false)
         {
@@ -41,13 +51,13 @@ namespace RhytmFighter.Level.Data
                 //Правый нод свободен
                 if (RightNode == null)
                 {
-                    RightNode = node;
+                    SetRightNode(node);
                     result = AddNoteResult.AddedToRight;
                 }
                 //Правый нод занят - взять левый если он свободен
                 else if (LeftNode == null)
                 {
-                    LeftNode = node;
+                    SetLeftNode(node);
                     result = AddNoteResult.AddedToLeft;
                 }
             }
@@ -56,13 +66,13 @@ namespace RhytmFighter.Level.Data
                 //Левый нод свободен
                 if (LeftNode == null)
                 {
-                    LeftNode = node;
+                    SetLeftNode(node);
                     result = AddNoteResult.AddedToLeft;
                 }
                 //Левый нод занят - взять правый если он свободен
                 else if (RightNode == null)
                 {
-                    RightNode = node;
+                    SetRightNode(node);
                     result = AddNoteResult.AddedToRight;
                 }
             }
@@ -218,7 +228,7 @@ namespace RhytmFighter.Level.Data
         void PrintNodeData()
         {
             StringBuilder b = new StringBuilder();
-            b.Append($"ID: {ID}. Seed: {m_NodeSeed}. ");
+            b.Append($"ID: {ID}. Seed: {NodeSeed}. ");
 
             if (ParentNode != null)
                 b.Append($"Parent ID {ParentNode.ID}. ");

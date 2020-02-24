@@ -30,11 +30,11 @@ namespace RhytmFighter.Level
             m_LevelDataBuilder = new LevelDataBuilder();
         }
 
-        public void GenerateLevel(int levelDepth, int levelSeed)
+        public void GenerateLevel(int levelDepth, int levelSeed, bool generateOnlyMainPath)
         {
             Debug.Log("LevelController: Build level data");
 
-            StartNode = m_LevelDataBuilder.Build(levelDepth, levelSeed);
+            StartNode = m_LevelDataBuilder.Build(levelDepth, levelSeed, generateOnlyMainPath);
 
             //TODO:
             //Generate room
