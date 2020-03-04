@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using Frameworks.Grid.Data;
+using UnityEngine;
 
-namespace RhytmFighter.Level.Grid
+namespace Frameworks.Grid.View
 {
     public class GridGizmoDrawer : MonoBehaviour
     {
-        private GridController m_Grid;
+        private SquareGrid m_Grid;
 
-        public void SetGrid(GridController grid) => m_Grid = grid;
+        public void SetGrid(SquareGrid grid) => m_Grid = grid;
 
         private void OnDrawGizmos()
         {
@@ -14,24 +15,18 @@ namespace RhytmFighter.Level.Grid
                 m_Grid.ForEachCell(DrawGizmoForCell);
         }
 
-        void DrawGizmoForCell(GridCell cell)
+        void DrawGizmoForCell(GridCellData cell)
         {
             Vector3 pos = m_Grid.GetCellWorldPosByCoord(cell.X, cell.Y);
 
             Color color = Color.white;
             switch (cell.CellType)
             {
-                case GridCell.CellTypes.Normal:
+                case CellTypes.Normal:
                     color = Color.white;
                     break;
-                case GridCell.CellTypes.LowObstacle:
+                case CellTypes.Obstacle:
                     color = Color.blue;
-                    break;
-                case GridCell.CellTypes.HighObstacle:
-                    color = Color.red;
-                    break;
-                case GridCell.CellTypes.FinishPathCell:
-                    color = Color.yellow;
                     break;
             }
 

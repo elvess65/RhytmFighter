@@ -1,0 +1,74 @@
+﻿using Frameworks.Grid.Data;
+using UnityEngine;
+
+namespace RhytmFighter.Level.Data
+{
+    public class RoomDataBuilder 
+    {
+        public LevelRoomData Build(LevelNodeData node)
+        {
+            Random.InitState(node.NodeSeed);
+
+            SquareGrid roomGrid = new SquareGrid(3, 5, 1, Vector2.zero);
+            ApplyDataToGrid(roomGrid, node);
+
+            return new LevelRoomData(roomGrid, node);
+        }
+
+
+        void ApplyDataToGrid(SquareGrid grid, LevelNodeData node)
+        {
+            //Properties
+            //GateToParentNode
+            int parentGateCellX = grid.WidthInCells / 2;
+            int parentGateCellY = 0;
+
+            //GateToNextNode
+            int leftGateCellX = 0;
+            int leftGateCellY = grid.HeightInCells - 1;
+
+            int rightGateCellX = grid.WidthInCells - 1;
+            int rightGateCellY = grid.HeightInCells - 1;
+
+            for (int i = 0; i < grid.WidthInCells; i++)
+            {
+                for (int j = 0; j < grid.HeightInCells; j++)
+                {
+                    GridCellData cell = grid.GetCellByCoord(i, j);
+                    CellTypes cellType = Random.Range(0, 100) < 75 ? CellTypes.Normal : CellTypes.Obstacle;
+
+                    //Add property GateToParentNode
+                    if (node.ParentNode != null && i == parentGateCellX && j == parentGateCellY)
+                    {
+                        if (cellType != CellTypes.Normal)
+                            cellType = CellTypes.Normal;
+
+                        cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.ParentNode.ID, GridCellProperty_GateToNode.GateTypes.ToParentNode));
+                        grid.ParentNodeGate = cell;
+                    }
+                    //Add property GateToLeftNode
+                    else if (node.LeftNode != null && i == leftGateCellX && j == leftGateCellY)
+                    {
+                        if (cellType != CellTypes.Normal)
+                            cellType = CellTypes.Normal;
+
+                        cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.LeftNode.ID, GridCellProperty_GateToNode.GateTypes.ToNextNode));
+                        grid.LeftNodeGate = cell;
+                    }
+                    //Add property GateToRightNode
+                    else if (node.RightNode != null && i == rightGateCellX && j == rightGateCellY)
+                    {
+                        if (cellType != CellTypes.Normal)
+                            cellType = CellTypes.Normal;
+
+                        cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.RightNode.ID, GridCellProperty_GateToNode.GateTypes.ToNextNode));
+                        grid.RightNodeGate = cell;
+                    }
+
+                    cell.SetCellType(cellType);
+                    cell.SetRoomID(node.ID);
+                }
+            }
+        }
+    }
+}

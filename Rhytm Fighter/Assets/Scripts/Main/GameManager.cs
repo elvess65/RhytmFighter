@@ -1,4 +1,7 @@
-﻿using RhytmFighter.Data;
+﻿using Frameworks.Grid.Data;
+using RhytmFighter.Data;
+using RhytmFighter.Interfaces;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RhytmFighter.Main
@@ -10,9 +13,12 @@ namespace RhytmFighter.Main
 
         [Header("Links")]
         public ManagersHolder ManagersHolder;
+        public GameObject Player; //temp
 
         private DataHolder m_DataHolder;
         private ControllersHolder m_ControllersHolder;
+
+        private List<iUpdateable> m_Updateables;
 
 
         private void Awake()
@@ -28,12 +34,25 @@ namespace RhytmFighter.Main
             Initialize();
         }
 
+        private void Update()
+        {
+            for (int i = 0; i < m_Updateables.Count; i++)
+                m_Updateables[i].Update(Time.deltaTime);
+        }
 
         private void Initialize()
         {
             //Initialize objects
             m_DataHolder = new DataHolder();
             m_ControllersHolder = new ControllersHolder();
+
+            //Initialize updatables
+            m_Updateables = new List<iUpdateable>();
+            m_Updateables.Add(m_ControllersHolder.InputController);
+
+            //Subscribe for events
+            m_ControllersHolder.InputController.OnTouch += m_ControllersHolder.GridInputProxy.TryGetCellFromInput;
+            m_ControllersHolder.GridInputProxy.OnCellInput += CellInputHandler;
 
             //Initialize connection
             m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
@@ -49,6 +68,9 @@ namespace RhytmFighter.Main
 
             //Build level
             BuildLevel();
+
+            //Create player
+            CreatePlayer();
         }
 
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");
@@ -56,7 +78,22 @@ namespace RhytmFighter.Main
 
         private void BuildLevel()
         {
-            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.LevelDepth, m_DataHolder.InfoData.LevelsData.LevelSeed, true);
+            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.LevelDepth, m_DataHolder.InfoData.LevelsData.LevelSeed, false, true);
+        }
+
+        private void CreatePlayer()
+        {
+            //Move player temp
+            Player.transform.position = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().NodeData.ID, 0, 0).transform.position;
+        }
+
+
+        private void CellInputHandler(Frameworks.Grid.View.CellView cellView)
+        {
+            //Move player temp
+            Player.transform.position = cellView.transform.position;
+
+            m_ControllersHolder.GridPositionTrackingController.Refresh(cellView.CorrespondingCellData);
         }
     }
 }

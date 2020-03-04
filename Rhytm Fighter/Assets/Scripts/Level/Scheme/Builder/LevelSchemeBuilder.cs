@@ -1,19 +1,20 @@
 ﻿using RhytmFighter.Level.Data;
+using RhytmFighter.Level.Scheme.View;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RhytmFighter.Level.Scheme
+namespace RhytmFighter.Level.Scheme.Builder
 {
     /// <summary>
     /// Build scheme of the level
     /// </summary>
-    public class LevelSchemeBuilder
+    public class LevelSchemeBuilder : AbstractSchemeBuilder
     {
         private Dictionary<int, SchemeNodeView> m_RoomSchemes;
 
+        new private Vector3 m_INIT_POSITION = new Vector3(100, 100, 100);
         private Vector3 m_LEFT_NODE_OFFSET = new Vector3(-1, 0, 1);
         private Vector3 m_RIGHT_NODE_OFFSET = new Vector3(1, 0, 1);
-        private Vector3 m_INIT_POSITION = new Vector3(100, 100, 100);
         private Vector3 m_INPUT_NODE_OFFSET = new Vector3(0, 0.2f, 0);
         private Color m_NODE_CONNECTION_COLOR = Color.green;
         private Color m_INPUT_NODE_CONNECTION_COLOR = Color.yellow;
@@ -22,12 +23,11 @@ namespace RhytmFighter.Level.Scheme
 
         public SchemeNodeView this[int id] => m_RoomSchemes[id];
 
-        public bool HasRooms => m_RoomSchemes != null && m_RoomSchemes.Count > 0;
+        public override bool HasData => m_RoomSchemes != null && m_RoomSchemes.Count > 0;
 
 
-        public LevelSchemeBuilder()
+        public LevelSchemeBuilder() : base()
         {
-            Dispose();
             m_RoomSchemes = new Dictionary<int, SchemeNodeView>();
         }
 
@@ -38,22 +38,22 @@ namespace RhytmFighter.Level.Scheme
             DrawConnections();
         }
 
-        public void ShowAllNodesAsNormal()
+        public override void ShowAllAsNormal()
         {
-            if (!HasRooms)
+            if (!HasData)
                 return;
 
             foreach (SchemeNodeView nodeScheme in m_RoomSchemes.Values)
             {
                 if (nodeScheme != null)
-                    nodeScheme.ShowAsNormalNode();
+                    nodeScheme.ShowAsNormal();
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             //Clear rooms
-            if (HasRooms)
+            if (HasData)
             {
                 foreach (SchemeNodeView nodeScheme in m_RoomSchemes.Values)
                 {
@@ -105,7 +105,7 @@ namespace RhytmFighter.Level.Scheme
                 }
 
                 //Создать схему
-                SchemeNodeView schemeNode = CreateRoomScheme(schemePos);
+                SchemeNodeView schemeNode = CreateRoomSchemeView(schemePos);
                 schemeNode.Initialize(nodeData);
 
                 m_RoomSchemes.Add(nodeData.ID, schemeNode);
@@ -131,7 +131,7 @@ namespace RhytmFighter.Level.Scheme
             }
         }
 
-        SchemeNodeView CreateRoomScheme(Vector3 pos)
+        SchemeNodeView CreateRoomSchemeView(Vector3 pos)
         {
             GameObject ob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             ob.transform.position = pos;

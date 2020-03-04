@@ -1,74 +1,46 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace RhytmFighter.Level.Grid
+namespace Frameworks.Grid.Data
 {
-    public class GridController
+    public class SquareGrid
     {
-        public int GridWidth { get; private set; }
-        public int GridHeight { get; private set; }
+        public int WidthInCells { get; private set; }
+        public int HeightInCells { get; private set; }
+
+        public GridCellData ParentNodeGate;
+        public GridCellData LeftNodeGate;
+        public GridCellData RightNodeGate;
 
         private float m_CellSize;
         private Vector3 m_Offset;
-        private GridCell[,] m_Grid;
+        private GridCellData[,] m_Grid;
         private GridPathFindController m_GridPathFindController;
 
-        private List<GridCell> m_NormalCells;
 
-
-        public GridController(int widthInCells, int heightInCells, float cellSize, Vector2 _offset, int percentOfLowObstacles, int mercentOfHighObstacles)
+        public SquareGrid(int widthInCells, int heightInCells, float cellSize, Vector2 _offset)
         {
-            GridWidth = widthInCells;
-            GridHeight = heightInCells;
+            WidthInCells = widthInCells;
+            HeightInCells = heightInCells;
             m_CellSize = cellSize;
             m_Offset = new Vector3(_offset.x, 0, _offset.y);
 
-            m_Grid = new GridCell[GridWidth, GridHeight];
-            m_NormalCells = new List<GridCell>();
+            m_Grid = new GridCellData[WidthInCells, HeightInCells];
             m_GridPathFindController = new GridPathFindController(this);
 
-            for (int i = 0; i < GridWidth; i++)
+            for (int i = 0; i < WidthInCells; i++)
             {
-                for (int j = 0; j < GridHeight; j++)
+                for (int j = 0; j < HeightInCells; j++)
                 {
-                    GridCell gridCell = new GridCell(i, j, m_CellSize, GridCell.CellTypes.Normal);
+                    GridCellData gridCell = new GridCellData(i, j, m_CellSize, CellTypes.Normal);
                     m_Grid[i, j] = gridCell;
-                    m_NormalCells.Add(gridCell);
                 }
             }
-
-            int amountOfLowObstacles = m_NormalCells.Count * percentOfLowObstacles / 100;
-            int amountOfHighObstacles = m_NormalCells.Count * mercentOfHighObstacles / 100;
-
-           /* while (amountOfLowObstacles > 0)
-            {
-                int randomIndex = Random.Range(0, m_NormalCells.Count);
-
-                GridCell cell = m_NormalCells[randomIndex];
-                m_NormalCells.RemoveAt(randomIndex);
-                amountOfLowObstacles--;
-
-                cell.SetCellType(GridCell.CellTypes.LowObstacle);
-                CreateDummyObstacle(PrimitiveType.Sphere, GetCellWorldPosByCoord(cell.X, cell.Y));
-
-            }
-
-            while (amountOfHighObstacles > 0)
-            {
-                int randomIndex = Random.Range(0, m_NormalCells.Count);
-
-                GridCell cell = m_NormalCells[randomIndex];
-                m_NormalCells.RemoveAt(randomIndex);
-                amountOfHighObstacles--;
-
-                cell.SetCellType(GridCell.CellTypes.HighObstacle);
-                CreateDummyObstacle(PrimitiveType.Cylinder, GetCellWorldPosByCoord(cell.X, cell.Y));
-            }*/
         }
 
         public Vector3[] FindPath(Vector3 from, Vector3 to)
         {
-            List<GridCell> gridPath = m_GridPathFindController.FindPath(GetCellByWorldPos(from), GetCellByWorldPos(to));
+            List<GridCellData> gridPath = m_GridPathFindController.FindPath(GetCellByWorldPos(from), GetCellByWorldPos(to));
 
             if (gridPath != null)
             {
@@ -93,7 +65,7 @@ namespace RhytmFighter.Level.Grid
         /// <summary>
         /// Получить ячейку по координатам сетки
         /// </summary>
-        public GridCell GetCellByCoord(int x, int y)
+        public GridCellData GetCellByCoord(int x, int y)
         {
             if (CoordIsOnGrid(x, y))
                 return m_Grid[x, y];
@@ -104,7 +76,7 @@ namespace RhytmFighter.Level.Grid
         /// <summary>
         /// Получить ячейку по расположению
         /// </summary>
-        public GridCell GetCellByWorldPos(Vector3 pos)
+        public GridCellData GetCellByWorldPos(Vector3 pos)
         {
             (int x, int y) coord = GetCellCoordByWorldPos(pos);
             return GetCellByCoord(coord.x, coord.y);
@@ -189,6 +161,9 @@ namespace RhytmFighter.Level.Grid
             return cellNeighbours.ToArray();
         }
 
+        /// <summary>
+        /// Список доступных для перемещения соседей указанной ячейки
+        /// </summary>
         public (int x, int y)[] GetWalkableCellNeighboursCoordInRange(int x, int y, int r)
         {
             List<(int x, int y)> cellNeighbours = new List<(int x, int y)>(GetCellNeighboursCoordInRange(x, y, r));
@@ -205,14 +180,14 @@ namespace RhytmFighter.Level.Grid
         /// <summary>
         /// Ближайшая доступная для перемещения ячейка
         /// </summary>
-        public GridCell GetClosestWalkableCell(GridCell fromCell, GridCell targetCell, float rangeToFindClosest)
+        public GridCellData GetClosestWalkableCell(GridCellData fromCell, GridCellData targetCell, float rangeToFindClosest)
         {
             //If cells are neighbours - do nothing
             float distBetweenCells = GetDistanceBetweenCells(fromCell, targetCell);
             if (distBetweenCells <= rangeToFindClosest)
                 return null;
 
-            GridCell closestCell = null;
+            GridCellData closestCell = null;
             float distToClosestCell = float.MaxValue;
 
             //Get list of cell neighbours
@@ -221,7 +196,7 @@ namespace RhytmFighter.Level.Grid
             //Loop through cell neighbours
             foreach ((int x, int y) curNeighbourCellCoord in targetCellNeighboursCoords)
             {
-                GridCell curNeighbourCell = GetCellByCoord(curNeighbourCellCoord.x, curNeighbourCellCoord.y);
+                GridCellData curNeighbourCell = GetCellByCoord(curNeighbourCellCoord.x, curNeighbourCellCoord.y);
 
                 //If neighbour is walkable
                 if (!CellIsNotWalkable(curNeighbourCell))
@@ -243,11 +218,11 @@ namespace RhytmFighter.Level.Grid
         /// Выполнить событие для каждой ячейки
         /// </summary>
         /// <param name="forEachEvent">Событие, которое должно выполняться для каждой ячеки</param>
-        public void ForEachCell(System.Action<GridCell> forEachEvent)
+        public void ForEachCell(System.Action<GridCellData> forEachEvent)
         {
-            for (int i = 0; i < GridWidth; i++)
+            for (int i = 0; i < WidthInCells; i++)
             {
-                for (int j = 0; j < GridHeight; j++)
+                for (int j = 0; j < HeightInCells; j++)
                     forEachEvent(m_Grid[i, j]);
             }
         }
@@ -255,17 +230,17 @@ namespace RhytmFighter.Level.Grid
         /// <summary>
         /// Расстояние между двумя ячейками
         /// </summary>
-        public float GetDistanceBetweenCells(GridCell a, GridCell b) => Vector2Int.Distance(a.CoordAsVec2Int, b.CoordAsVec2Int);
+        public float GetDistanceBetweenCells(GridCellData a, GridCellData b) => Vector2Int.Distance(a.CoordAsVec2Int, b.CoordAsVec2Int);
 
         /// <summary>
         /// Находится ли указанная координата в пределах сетки
         /// </summary>
-        public bool CoordIsOnGrid(int x, int y) => (x >= 0 && x < GridWidth) && (y >= 0 && y < GridHeight);
+        public bool CoordIsOnGrid(int x, int y) => (x >= 0 && x < WidthInCells) && (y >= 0 && y < HeightInCells);
 
         /// <summary>
         /// Является ли ячейка доступной для перемещения
         /// </summary>
-        public bool CellIsNotWalkable(GridCell cell) => cell.CellType != GridCell.CellTypes.Normal; //|| cell.HasObject;
+        public bool CellIsNotWalkable(GridCellData cell) => cell.CellType != CellTypes.Normal; //|| cell.HasObject;
 
 
         void CreateDummyObstacle(PrimitiveType type, Vector3 pos)

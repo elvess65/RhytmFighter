@@ -1,28 +1,28 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace RhytmFighter.Level.Grid
+namespace Frameworks.Grid.Data
 {
     public class GridPathFindController 
     {
-        private GridController m_GridController;
+        private SquareGrid m_GridController;
 
 
-        public GridPathFindController(GridController gridController) => m_GridController = gridController;
+        public GridPathFindController(SquareGrid gridController) => m_GridController = gridController;
     
 
-        public List<GridCell> FindPath(GridCell startNode, GridCell targetNode)
+        public List<GridCellData> FindPath(GridCellData startNode, GridCellData targetNode)
         {
             //Create open and close sets
-            List<GridCell> openSet = new List<GridCell>();
-            HashSet<GridCell> closedSet = new HashSet<GridCell>();
+            List<GridCellData> openSet = new List<GridCellData>();
+            HashSet<GridCellData> closedSet = new HashSet<GridCellData>();
 
             //Add start node to open set
             openSet.Add(startNode);
             while (openSet.Count > 0)
             {
                 //Cur node is the node with the lowest FCost
-                GridCell curNode = openSet[0];
+                GridCellData curNode = openSet[0];
                 for (int i = 1; i < openSet.Count; i++)
                 {
                     if (openSet[i].FCost < curNode.FCost || openSet[i].FCost == curNode.FCost && openSet[i].HCost < curNode.HCost)
@@ -43,7 +43,7 @@ namespace RhytmFighter.Level.Grid
                 (int x, int y)[] neighbours = m_GridController.GetCell4NeighboursCoord(curNode.X, curNode.Y);
                 for (int i = 0; i < neighbours.Length; i++)
                 {
-                    GridCell neighbourNode = m_GridController.GetCellByCoord(neighbours[i].x, neighbours[i].y);
+                    GridCellData neighbourNode = m_GridController.GetCellByCoord(neighbours[i].x, neighbours[i].y);
 
                     bool cellTypeIsIgnorable = m_GridController.CellIsNotWalkable(neighbourNode);
 
@@ -57,7 +57,7 @@ namespace RhytmFighter.Level.Grid
                         neighbourNode.GCost = newGCostToNeighbour;
                         neighbourNode.HCost = GetDistanceBetweenCells(neighbourNode, targetNode);
 
-                        neighbourNode.ParentNode = curNode;
+                        neighbourNode.ParentNodeData = curNode;
 
                         if (!openSet.Contains(neighbourNode))
                             openSet.Add(neighbourNode);
@@ -69,15 +69,15 @@ namespace RhytmFighter.Level.Grid
         }
 
 
-        List<GridCell> RetracePath(GridCell startNode, GridCell targetNode)
+        List<GridCellData> RetracePath(GridCellData startNode, GridCellData targetNode)
         {
-            List<GridCell> path = new List<GridCell>();
+            List<GridCellData> path = new List<GridCellData>();
 
-            GridCell curNode = targetNode;
+            GridCellData curNode = targetNode;
             while (curNode != startNode)
             {
                 path.Add(curNode);
-                curNode = curNode.ParentNode;
+                curNode = curNode.ParentNodeData;
             }
 
             path.Add(startNode);
@@ -86,7 +86,7 @@ namespace RhytmFighter.Level.Grid
             return path;
         }
 
-        int GetDistanceBetweenCells(GridCell a, GridCell b)
+        int GetDistanceBetweenCells(GridCellData a, GridCellData b)
         {
             Vector2Int aCoord = a.CoordAsVec2Int;
             Vector2Int bCoord = b.CoordAsVec2Int;

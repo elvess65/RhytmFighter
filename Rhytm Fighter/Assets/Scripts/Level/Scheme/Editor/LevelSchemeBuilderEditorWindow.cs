@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using RhytmFighter.Level.Scheme.View;
+using UnityEditor;
 using UnityEngine;
 
 namespace RhytmFighter.Level.Scheme.Editor
@@ -17,9 +18,10 @@ namespace RhytmFighter.Level.Scheme.Editor
         private bool m_UseManualData = true;
         private int m_LevelDepth = 4;
         private int m_LevelSeed = 10;
-        private bool m_OnlyMainPath = true;
+        private bool m_OnlyMainPath = false;
 
         private SchemeNodeView m_SelectedNode;
+        private SchemeCellView m_SelectedCell;
         private LevelController m_LevelController;
 
         [MenuItem("Level/Scheme")]
@@ -31,8 +33,6 @@ namespace RhytmFighter.Level.Scheme.Editor
             Dispose();
 
             m_LevelController = new LevelController();
-
-            Selection.selectionChanged += NodeSelectionChanged;
         }
 
 
@@ -57,22 +57,7 @@ namespace RhytmFighter.Level.Scheme.Editor
             EditorGUILayout.Space();
 
             if (GUILayout.Button("Create level"))
-            {
-                int levelDepth = m_LevelDepth;
-                int levelSeed = m_LevelSeed;
-
-                m_LevelController.GenerateLevel(levelDepth, levelSeed, m_OnlyMainPath);
-                m_LevelController.LevelSchemeBuilder.Build(m_LevelController.StartNode);
-
-                if (m_LevelController.LevelSchemeBuilder.HasRooms)
-                {
-                    m_State = WindowStates.OberveLevel;
-                    SelectNode(m_LevelController.LevelSchemeBuilder[m_LevelController.StartNode.ID]);
-
-                    Selection.activeGameObject = m_SelectedNode.gameObject;
-                    SceneView.FrameLastActiveSceneView();
-                }
-            }
+                ButtonCreateLevel();
             #endregion
         }
 
@@ -81,8 +66,7 @@ namespace RhytmFighter.Level.Scheme.Editor
             #region Button Back
             if (GUILayout.Button("Back"))
             {
-                Dispose();
-                m_State = WindowStates.Default;
+                ButtonBack_FromObserveLevel();
                 return;
             }
             #endregion
@@ -93,7 +77,7 @@ namespace RhytmFighter.Level.Scheme.Editor
             if (m_SelectedNode != null)
             {
                 //Title
-                GUILayout.Label($"Node Data:", EditorStyles.boldLabel);
+                GUILayout.Label($"Node Data: {(m_SelectedNode.NodeData.IsFinishNode ? "Is finish node" : string.Empty)}", EditorStyles.boldLabel);
 
                 //ID
                 GUILayout.BeginHorizontal();
@@ -110,13 +94,11 @@ namespace RhytmFighter.Level.Scheme.Editor
                 EditorGUILayout.Space();
 
                 //Left Node
-                GUI.contentColor = SchemeNodeView.LEFT_NODE_COLOR;
                 GUILayout.BeginHorizontal();
                     GUILayout.Label("LeftNodeID:", GUILayout.MinWidth(m_MIN_LABEL_WIDTH));
                     GUILayout.Label(m_SelectedNode.NodeData.LeftNode != null ? m_SelectedNode.NodeData.LeftNode.ID.ToString() : "None");
                 GUILayout.EndHorizontal();
 
-                GUI.contentColor = SchemeNodeView.LEFT_NODE_COLOR;
                 GUILayout.BeginHorizontal();
                     GUILayout.Label("LeftInputNodeID:", GUILayout.MinWidth(m_MIN_LABEL_WIDTH));
                     GUILayout.Label(m_SelectedNode.NodeData.LeftInputNode != null ? m_SelectedNode.NodeData.LeftInputNode.ID.ToString() : "None");
@@ -125,13 +107,11 @@ namespace RhytmFighter.Level.Scheme.Editor
                 EditorGUILayout.Space();
 
                 //Right Node
-                GUI.contentColor = SchemeNodeView.RIGHT_NODE_COLOR;
                 GUILayout.BeginHorizontal();
                     GUILayout.Label("RightNodeID:", GUILayout.MinWidth(m_MIN_LABEL_WIDTH));
                     GUILayout.Label(m_SelectedNode.NodeData.RightNode != null ? m_SelectedNode.NodeData.RightNode.ID.ToString() : "None");
                 GUILayout.EndHorizontal();
 
-                GUI.contentColor = SchemeNodeView.RIGHT_NODE_COLOR;
                 GUILayout.BeginHorizontal();
                     GUILayout.Label("RightInputNodeID:", GUILayout.MinWidth(m_MIN_LABEL_WIDTH));
                     GUILayout.Label(m_SelectedNode.NodeData.RightInputNode != null ? m_SelectedNode.NodeData.RightInputNode.ID.ToString() : "None");
@@ -140,21 +120,10 @@ namespace RhytmFighter.Level.Scheme.Editor
                 EditorGUILayout.Space();
 
                 //Parent Node
-                GUI.contentColor = SchemeNodeView.PARENT_NODE_COLOR;
                 GUILayout.BeginHorizontal();
                     GUILayout.Label("ParentNodeID:", GUILayout.MinWidth(m_MIN_LABEL_WIDTH));
                     GUILayout.Label(m_SelectedNode.NodeData.ParentNode != null ? m_SelectedNode.NodeData.ParentNode.ID.ToString() : "None");
                 GUILayout.EndHorizontal();
-
-                GUI.contentColor = Color.white;
-
-                EditorGUILayout.Space();
-
-                //Is Start Node
-                GUILayout.Label("Is start node", EditorStyles.boldLabel);
-
-                //Is Finish Node
-                GUILayout.Label("Is finish node", EditorStyles.boldLabel);
 
                 EditorGUILayout.Space();
             }
@@ -162,16 +131,46 @@ namespace RhytmFighter.Level.Scheme.Editor
 
             #region Button Observe node
             if (GUILayout.Button("Observe node"))
-                m_State = WindowStates.ObserveNode;
+                ButtonObserveNode();
             #endregion
         }
 
         void HandleObserveNodeState()
         {
+            #region Button Back
             if (GUILayout.Button("Back"))
-                m_State = WindowStates.OberveLevel;
+            {
+                ButtonBack_FromObserveNode();
+                return;
+            }
+            #endregion
 
-            GUILayout.Label("Observe node with ID: " + m_SelectedNode.NodeData.ID, EditorStyles.boldLabel);
+            #region Cell Data
+            if (m_SelectedNode != null && m_SelectedCell != null)
+            {
+                //Node
+                GUILayout.Label("Node:", EditorStyles.boldLabel);
+                GUILayout.Label($"ID: {m_SelectedNode.NodeData.ID}");
+                GUILayout.Label($"Seed: {m_SelectedNode.NodeData.NodeSeed}");
+
+
+                //Cell
+                GUILayout.Label("Cell:", EditorStyles.boldLabel);
+
+                // - Coord
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("Coord:", GUILayout.MinWidth(m_MIN_LABEL_WIDTH));
+                    GUILayout.Label($"{m_SelectedCell.Cell.X} : {m_SelectedCell.Cell.Y}");
+                GUILayout.EndHorizontal();
+
+                // - Type
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("Type:", GUILayout.MinWidth(m_MIN_LABEL_WIDTH));
+                    GUILayout.Label(m_SelectedCell.Cell.CellType.ToString());
+                GUILayout.EndHorizontal();
+            }
+            #endregion
+
         }
 
         void HandleAnyway()
@@ -186,12 +185,77 @@ namespace RhytmFighter.Level.Scheme.Editor
         }
 
 
+        void ButtonCreateLevel()
+        {
+            int levelDepth = m_LevelDepth;
+            int levelSeed = m_LevelSeed;
+
+            m_LevelController.GenerateLevel(levelDepth, levelSeed, m_OnlyMainPath, false);
+            m_LevelController.LevelSchemeBuilder.Build(m_LevelController.Model.StartNodeData);
+
+            if (m_LevelController.LevelSchemeBuilder.HasData)
+            {
+                SelectNode(m_LevelController.LevelSchemeBuilder[m_LevelController.Model.StartNodeData.ID]);
+                FocusAt(m_SelectedNode.gameObject);
+
+                Selection.selectionChanged += NodeSelectionChanged;
+
+                m_State = WindowStates.OberveLevel;
+            }
+        }
+
+        void ButtonObserveNode()
+        {
+            m_LevelController.BuildRoomData(m_SelectedNode.NodeData, true, true);
+            m_LevelController.RoomSchemeBuilder.Build(m_LevelController.Model.GetCurrenRoomData());
+
+            if (m_LevelController.RoomSchemeBuilder.HasData)
+            {
+                Selection.selectionChanged -= NodeSelectionChanged;
+
+                SelectCell(m_LevelController.RoomSchemeBuilder[0, 0]);
+                FocusAt(m_SelectedCell.gameObject);
+
+                Selection.selectionChanged += CellSelectionCHanged;
+
+                m_State = WindowStates.ObserveNode;
+            }
+        }
+
+        void ButtonBack_FromObserveLevel()
+        {
+            Dispose();
+            m_State = WindowStates.Default;
+        }
+
+        void ButtonBack_FromObserveNode()
+        {
+            DisposeRoom();
+            SelectNode(m_SelectedNode);
+            FocusAt(m_SelectedNode.gameObject);
+
+            Selection.selectionChanged += NodeSelectionChanged;
+
+            m_State = WindowStates.OberveLevel;
+        }
+
+
+        void NodeSelectionChanged()
+        {
+            if (Selection.activeObject != null)
+            {
+                SchemeNodeView roomScheme = (Selection.activeObject as GameObject).GetComponent<SchemeNodeView>();
+                if (roomScheme != null)
+                    SelectNode(roomScheme);
+            }
+        }
+
         void SelectNode(SchemeNodeView node)
         {
             m_SelectedNode = node;
 
-            m_LevelController.LevelSchemeBuilder.ShowAllNodesAsNormal();
-            m_SelectedNode.ShowAsCurrentNode();
+            m_LevelController.LevelSchemeBuilder.ShowAllAsNormal();
+            m_SelectedNode.ShowAsCurrent();
 
             if (m_SelectedNode.NodeData.LeftNode != null)
                 m_LevelController.LevelSchemeBuilder[m_SelectedNode.NodeData.LeftNode.ID].ShowAsLinkedNode(true);
@@ -204,33 +268,63 @@ namespace RhytmFighter.Level.Scheme.Editor
 
             Repaint();
         }
+        
 
-        void UnselectNode()
-        {
-            m_SelectedNode = null;
-        }
-
-
-        void NodeSelectionChanged()
+        void CellSelectionCHanged()
         {
             if (Selection.activeObject != null)
             {
-                SchemeNodeView roomScheme = (Selection.activeObject as GameObject).GetComponent<SchemeNodeView>();
-                if (roomScheme != null)
-                    SelectNode(roomScheme);
-                else
-                    UnselectNode();
+                SchemeCellView cellScheme = (Selection.activeObject as GameObject).GetComponent<SchemeCellView>();
+                if (cellScheme != null)
+                    SelectCell(cellScheme);
             }
-            else
-                UnselectNode();
         }
+
+        void SelectCell(SchemeCellView cell)
+        {
+            m_LevelController.RoomSchemeBuilder.ShowAllAsNormal();
+
+            m_SelectedCell = cell;
+            m_SelectedCell.ShowAsCurrent();
+
+            Repaint();
+        }
+
+
+        void FocusAt(GameObject ob)
+        {
+            Selection.activeGameObject = ob.gameObject;
+            SceneView.FrameLastActiveSceneView();
+        }
+
 
         void Dispose()
         {
+            DisposeLevel();
+            DisposeRoom();
+        }
+
+        void DisposeLevel()
+        {
             Selection.selectionChanged -= NodeSelectionChanged;
+
+            m_SelectedNode = null;
 
             if (m_LevelController != null)
                 m_LevelController.LevelSchemeBuilder.Dispose();
+        }
+
+        void DisposeRoom()
+        {
+            Selection.selectionChanged -= CellSelectionCHanged;
+
+            m_SelectedCell = null;
+
+            if (m_LevelController != null)
+            {
+                m_LevelController.RoomSchemeBuilder.Dispose();
+                m_LevelController.Model.RemoveRoom(m_LevelController.Model.CurrentRoomID);
+            }
         }
 
 
