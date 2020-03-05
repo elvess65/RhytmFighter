@@ -190,7 +190,7 @@ namespace RhytmFighter.Level.Scheme.Editor
             int levelDepth = m_LevelDepth;
             int levelSeed = m_LevelSeed;
 
-            m_LevelController.GenerateLevel(levelDepth, levelSeed, m_OnlyMainPath, false);
+            //m_LevelController.GenerateLevel(levelDepth, levelSeed, m_OnlyMainPath, false);
             m_LevelController.LevelSchemeBuilder.Build(m_LevelController.Model.StartNodeData);
 
             if (m_LevelController.LevelSchemeBuilder.HasData)

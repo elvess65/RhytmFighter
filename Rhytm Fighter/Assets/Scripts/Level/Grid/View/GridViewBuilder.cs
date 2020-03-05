@@ -11,7 +11,7 @@ namespace Frameworks.Grid.View
         public System.Action OnGridVisualAppearAnimationFinished;
 
         private float m_CellOffset => 1.1f;
-        private Dictionary<int, GridViewData> m_GridViews;
+        private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
 
         public GridViewBuilder()
         {
@@ -26,7 +26,7 @@ namespace Frameworks.Grid.View
         {
             //Create parent
             Transform gridParent = new GameObject().transform;
-            gridParent.gameObject.name = "Grid Parent " + roomData.NodeData.ID;
+            gridParent.gameObject.name = "Grid Parent " + roomData.ID;
             gridParent.transform.position = startPos;
 
             //Create grid
@@ -37,6 +37,7 @@ namespace Frameworks.Grid.View
             {
                 for (int j = 0; j < roomData.GridData.HeightInCells; j++)
                 {
+                    //CellData
                     GridCellData cellData = roomData.GridData.GetCellByCoord(i, j);
 
                     //Create view
@@ -48,8 +49,8 @@ namespace Frameworks.Grid.View
             }
 
             //Add created data to views
-            if (!m_GridViews.ContainsKey(roomData.NodeData.ID))
-                m_GridViews.Add(roomData.NodeData.ID, new GridViewData(roomData.NodeData.ID, gridParent, cellViews));
+            if (!m_GridViews.ContainsKey(roomData.ID))
+                m_GridViews.Add(roomData.ID, new GridViewData(gridParent, cellViews));
         }
 
         /// <summary>
@@ -60,7 +61,10 @@ namespace Frameworks.Grid.View
         {
             if (m_GridViews.ContainsKey(roomID))
             {
-                MonoBehaviour.Destroy(m_GridViews[roomID].GetCellVisual(0, 0).transform.parent.gameObject);
+                //Remove parent - remove all grids
+                MonoBehaviour.Destroy(m_GridViews[roomID].GridParent.gameObject);
+
+                //Remove data
                 m_GridViews.Remove(roomID);
             }
         }
@@ -69,12 +73,42 @@ namespace Frameworks.Grid.View
         /// Get cell graphics
         /// </summary>
         /// <returns></returns>
-        public CellView GetCellVisual(int id, int x, int y)
+        public CellView GetCellVisual(int roomID, int x, int y)
         {
-            if (m_GridViews.ContainsKey(id))
-                return m_GridViews[id].GetCellVisual(x, y);
+            if (m_GridViews.ContainsKey(roomID))
+                return m_GridViews[roomID].GetCellVisual(x, y);
 
             return null;
+        }
+
+        /// <summary>
+        /// Hide all cells of the room with exception
+        /// </summary>
+        public void HideAllCellsExept(LevelRoomData roomData, GridCellData exceptionalCell)
+        {
+            for (int i = 0; i < roomData.GridData.WidthInCells; i++)
+            {
+                for (int j = 0; j < roomData.GridData.HeightInCells; j++)
+                {
+                    //Get cell view
+                    CellView cellView = GetCellVisual(roomData.ID, i, j);
+
+                    //If cell view is not exceptional - hide
+                    if (!cellView.CorrespondingCellData.IsEqualCoord(exceptionalCell))
+                        cellView.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Show cells (Field of view)
+        /// </summary>
+        public void ExtendView(LevelRoomData roomData, GridCellData anchorCellData)
+        {
+            ExtendViewVertical(roomData, anchorCellData, 1);
+            ExtendViewVertical(roomData, anchorCellData, -1);
+            ExtendViewHorizontal(roomData, anchorCellData, 1);
+            ExtendViewHorizontal(roomData, anchorCellData, -1);
         }
 
 
@@ -98,6 +132,49 @@ namespace Frameworks.Grid.View
         {
             CellView gateCellView = GetCellVisual(parentCellData.CorrespondingRoomID, parentCellData.X, parentCellData.Y);
             return new Vector3(gateCellView.transform.position.x + gateCellData.X * m_CellOffset * nodeDirectionOffset - m_CellOffset / 2, 0, gateCellView.transform.position.z - gateCellData.Y * m_CellOffset - m_CellOffset - m_CellOffset / 2);
+        }
+
+
+        void ExtendViewVertical(LevelRoomData roomData, GridCellData anchorCellData, int verticalOffset)
+        {
+            //Move vertical by step until reach obstacle or end of the grid
+
+            CellView cellView = GetCellVisual(roomData.ID, anchorCellData.X, anchorCellData.Y + verticalOffset);
+            while (cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
+            {
+                //Enable cellView
+                cellView.gameObject.SetActive(true);
+
+                //Get next cellView
+                cellView = GetCellVisual(roomData.ID, cellView.CorrespondingCellData.X, cellView.CorrespondingCellData.Y + verticalOffset);
+            }
+
+            //If obstacle was reached - enable also it
+            if (cellView != null)
+                cellView.gameObject.SetActive(true);
+        }
+
+        void ExtendViewHorizontal(LevelRoomData roomData, GridCellData anchorCellData, int horizontalOffset)
+        {
+            //Move horizontal by step until reach obstacle or end of the grid
+
+            CellView cellView = GetCellVisual(roomData.ID, anchorCellData.X + horizontalOffset, anchorCellData.Y);
+            while (cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
+            {
+                //Moving step horizontal move all possible steps vertical
+                ExtendViewVertical(roomData, cellView.CorrespondingCellData, 1);
+                ExtendViewVertical(roomData, cellView.CorrespondingCellData, -1);
+
+                //Enable cellView
+                cellView.gameObject.SetActive(true);
+
+                //Get next cellView
+                cellView = GetCellVisual(roomData.ID, cellView.CorrespondingCellData.X + horizontalOffset, cellView.CorrespondingCellData.Y);
+            }
+
+            //If obstacle was reached - enable also it
+            if (cellView != null)
+                cellView.gameObject.SetActive(true);
         }
 
 
@@ -155,14 +232,13 @@ namespace Frameworks.Grid.View
     /// </summary>
     public class GridViewData
     {
-        private int m_ID;
-        private Transform m_GridParent;
         private CellView[,] m_CellViews;
 
-        public GridViewData(int id, Transform gridParent, CellView[,] cellViews)
+        public Transform GridParent { get; private set; }
+
+        public GridViewData(Transform gridParent, CellView[,] cellViews)
         {
-            m_ID = id;
-            m_GridParent = gridParent;
+            GridParent = gridParent;
             m_CellViews = cellViews;
         }
 

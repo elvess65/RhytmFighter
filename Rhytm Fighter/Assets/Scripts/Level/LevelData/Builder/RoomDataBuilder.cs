@@ -5,18 +5,21 @@ namespace RhytmFighter.Level.Data
 {
     public class RoomDataBuilder 
     {
-        public LevelRoomData Build(LevelNodeData node)
+        public LevelRoomData Build(LevelNodeData node, int minWidth, int maxWidth, int minHeight, int maxheight, float cellSize, int fillPercent)
         {
             Random.InitState(node.NodeSeed);
 
-            SquareGrid roomGrid = new SquareGrid(3, 5, 1, Vector2.zero);
-            ApplyDataToGrid(roomGrid, node);
+            int width = Random.Range(minWidth, maxWidth);
+            int height = Random.Range(minHeight, maxheight);
+
+            SquareGrid roomGrid = new SquareGrid(width, height, cellSize, Vector2.zero);
+            ApplyDataToGrid(roomGrid, node, fillPercent);
 
             return new LevelRoomData(roomGrid, node);
         }
 
 
-        void ApplyDataToGrid(SquareGrid grid, LevelNodeData node)
+        void ApplyDataToGrid(SquareGrid grid, LevelNodeData node, int fillPercent)
         {
             //Properties
             //GateToParentNode
@@ -35,7 +38,7 @@ namespace RhytmFighter.Level.Data
                 for (int j = 0; j < grid.HeightInCells; j++)
                 {
                     GridCellData cell = grid.GetCellByCoord(i, j);
-                    CellTypes cellType = Random.Range(0, 100) < 75 ? CellTypes.Normal : CellTypes.Obstacle;
+                    CellTypes cellType = Random.Range(0, 100) < fillPercent ? CellTypes.Normal : CellTypes.Obstacle;
 
                     //Add property GateToParentNode
                     if (node.ParentNode != null && i == parentGateCellX && j == parentGateCellY)

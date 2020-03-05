@@ -3,6 +3,7 @@ using RhytmFighter.Level.Data;
 using RhytmFighter.Level.Scheme.Builder;
 using Frameworks.Grid.View;
 using Frameworks.Grid.Data;
+using RhytmFighter.Data;
 
 namespace RhytmFighter.Level
 {
@@ -36,6 +37,8 @@ namespace RhytmFighter.Level
         }
         public GridViewBuilder RoomViewBuilder { get; private set; }
 
+        private LevelsData.LevelParams m_LevelParamsData;
+
 
         public LevelController()
         {
@@ -46,12 +49,15 @@ namespace RhytmFighter.Level
             Model = new LevelDataModel();
         }
 
-        public void GenerateLevel(int levelDepth, int levelSeed, bool generateOnlyMainPath, bool buildRoomView)
+        public void GenerateLevel(LevelsData.LevelParams levelParamsData, bool generateOnlyMainPath, bool buildRoomView)
         {
-            Debug.Log("LevelController: Build level data");
+            Debug.Log($"LevelController: Generate level {levelParamsData.ID}");
+
+            //Cache level params
+            m_LevelParamsData = levelParamsData;
 
             //Build level data and store start node to model
-            BuildLevelData(levelDepth, levelSeed, generateOnlyMainPath);
+            BuildLevelData(generateOnlyMainPath);
 
             //Build room for start node and store it to model
             BuildRoomData(Model.StartNodeData, true, true);
@@ -61,16 +67,18 @@ namespace RhytmFighter.Level
                 RoomViewBuilder.Build(Model.GetCurrenRoomData(), Vector3.zero);
         }
 
-        public void BuildLevelData(int levelDepth, int levelSeed, bool generateOnlyMainPath)
+        public void BuildLevelData(bool generateOnlyMainPath)
         {
-            LevelNodeData nodeData = m_LevelDataBuilder.Build(levelDepth, levelSeed, generateOnlyMainPath);
+            LevelNodeData nodeData = m_LevelDataBuilder.Build(m_LevelParamsData.LevelDepth, m_LevelParamsData.LevelSeed, generateOnlyMainPath);
             Model.StartNodeData = nodeData;
         }
 
         public LevelRoomData BuildRoomData(LevelNodeData node, bool storeToModel, bool isCurrent)
         {
             //Build room data anyway
-            LevelRoomData roomData = m_RoomDataBuilder.Build(node);
+            LevelRoomData roomData = m_RoomDataBuilder.Build(node, m_LevelParamsData.MinWidth, m_LevelParamsData.MaxWidth, 
+                                                                   m_LevelParamsData.MinHeight, m_LevelParamsData.MaxWidth, 
+                                                                   m_LevelParamsData.CellSize, m_LevelParamsData.FillPercent);
 
             //Option - store to model
             if (storeToModel)
@@ -80,7 +88,7 @@ namespace RhytmFighter.Level
 
                 //Option - set as current
                 if (isCurrent)
-                    Model.SetRoomAsCurrent(roomData.NodeData.ID);
+                    Model.SetRoomAsCurrent(roomData.ID);
             }
 
             return roomData;
@@ -99,8 +107,11 @@ namespace RhytmFighter.Level
                 RoomViewBuilder.Build(levelRoomData, RoomViewBuilder.GetStartPositionForNextView(gateCellData, levelRoomData.GridData.ParentNodeGate.X));
         }
 
-        public void AddParentRoom(LevelNodeData nodeData)
+        public void AddParentRoom(LevelNodeData nodeData, out bool isRightRoom)
         {
+            //Left room by default
+            isRightRoom = false;
+
             //Build room data
             LevelRoomData levelRoomData = BuildRoomData(nodeData, true, false);
 
@@ -108,11 +119,14 @@ namespace RhytmFighter.Level
             int nodeDirectionOffset = 1;
             GridCellData gateCellData = null;
 
+            //Check right room
             if (nodeData.RightNode != null && Model.CurrentRoomID == nodeData.RightNode.ID)
             {
                 gateCellData = levelRoomData.GridData.RightNodeGate;
                 nodeDirectionOffset = -1;
+                isRightRoom = true;
             }
+            //Check left room
             else if (nodeData.LeftNode != null && Model.CurrentRoomID == nodeData.LeftNode.ID)
                 gateCellData = levelRoomData.GridData.LeftNodeGate;
 

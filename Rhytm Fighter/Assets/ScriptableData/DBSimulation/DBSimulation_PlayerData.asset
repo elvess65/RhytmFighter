@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc185674da583f40a0f4bd0812766e5, type: 3}
   m_Name: DBSimulation_PlayerData
   m_EditorClassIdentifier: 
+  CurrentLevelID: 1
   Experiance: 25

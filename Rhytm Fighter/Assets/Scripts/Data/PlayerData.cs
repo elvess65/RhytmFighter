@@ -9,6 +9,7 @@
         //Inventory
         //Skills
 
+        public int CurrentLevelID;
         public int Experiance;
     }
 }

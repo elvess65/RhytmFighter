@@ -34,8 +34,8 @@ namespace RhytmFighter.Level
         /// <param name="isCurrent">Weether this room should be current</param>
         public void AddRoom(LevelRoomData roomData)
         {
-            if (!m_ActiveRooms.ContainsKey(roomData.NodeData.ID))
-                m_ActiveRooms.Add(roomData.NodeData.ID, roomData);
+            if (!m_ActiveRooms.ContainsKey(roomData.ID))
+                m_ActiveRooms.Add(roomData.ID, roomData);
         }
 
         /// <summary>

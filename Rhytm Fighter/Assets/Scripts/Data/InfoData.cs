@@ -10,6 +10,7 @@
         public InfoData(string serializedLevelsData)
         {
             LevelsData = LevelsData.DeserializeData(serializedLevelsData);
+            LevelsData.ReorginizeData();
         }
     }
 }

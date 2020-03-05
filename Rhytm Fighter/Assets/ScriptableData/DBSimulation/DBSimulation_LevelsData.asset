@@ -12,5 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcb1e150496776e4bb4c3fa2860360c5, type: 3}
   m_Name: DBSimulation_LevelsData
   m_EditorClassIdentifier: 
-  LevelDepth: 4
-  LevelSeed: 10
+  LevelParamsData:
+  - ID: 1
+    LevelDepth: 4
+    LevelSeed: 10
+    MinWidth: 3
+    MaxWidth: 5
+    MinHeight: 4
+    Maxheight: 5
+    CellSize: 1
+    FillPercent: 90
+  - ID: 2
+    LevelDepth: 5
+    LevelSeed: 15
+    MinWidth: 4
+    MaxWidth: 6
+    MinHeight: 5
+    Maxheight: 6
+    CellSize: 1
+    FillPercent: 80
+  - ID: 3
+    LevelDepth: 6
+    LevelSeed: 20
+    MinWidth: 5
+    MaxWidth: 7
+    MinHeight: 6
+    Maxheight: 7
+    CellSize: 1
+    FillPercent: 70

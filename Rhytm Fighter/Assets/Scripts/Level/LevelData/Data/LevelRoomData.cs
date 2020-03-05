@@ -17,6 +17,11 @@ namespace RhytmFighter.Level.Data
         /// </summary>
         public LevelNodeData NodeData { get; private set; }
 
+        /// <summary>
+        /// Room id
+        /// </summary>
+        public int ID => NodeData.ID;
+
         public LevelRoomData(SquareGrid gridData, LevelNodeData nodeData)
         {
             GridData = gridData;

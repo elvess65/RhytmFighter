@@ -6,7 +6,20 @@ namespace RhytmFighter.Data.DataBase.Simulation
     [CreateAssetMenu(fileName = "New Simulation_LevelsData", menuName = "DBSimulation/LevelsData", order = 101)]
     public class DBSimulation_LevelsData : ScriptableObject
     {
-        public int LevelDepth;
-        public int LevelSeed = 0;
+        public LevelParams[] LevelParamsData;
+
+        [System.Serializable]
+        public class LevelParams
+        {
+            public int ID = 1;
+            public int LevelDepth = 4;
+            public int LevelSeed = 10;
+            public int MinWidth = 3;
+            public int MaxWidth = 5;
+            public int MinHeight = 4;
+            public int Maxheight = 7;
+            public float CellSize = 1;
+            public int FillPercent = 90;
+        }
     }
 }

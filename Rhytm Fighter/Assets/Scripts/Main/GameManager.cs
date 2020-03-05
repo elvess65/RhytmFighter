@@ -1,4 +1,5 @@
 ﻿using Frameworks.Grid.Data;
+using Frameworks.Grid.View;
 using RhytmFighter.Data;
 using RhytmFighter.Interfaces;
 using System.Collections.Generic;
@@ -63,7 +64,7 @@ namespace RhytmFighter.Main
         private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)
         {
             //Set data
-            m_DataHolder.PlayerData = PlayerData.DeserializeData(serializedPlayerData);
+            m_DataHolder.PlayerDataModel = PlayerData.DeserializeData(serializedPlayerData);
             m_DataHolder.InfoData = new InfoData(serializedLevelsData);
 
             //Build level
@@ -78,21 +79,31 @@ namespace RhytmFighter.Main
 
         private void BuildLevel()
         {
-            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.LevelDepth, m_DataHolder.InfoData.LevelsData.LevelSeed, false, true);
+            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.GetLevelParams(m_DataHolder.PlayerDataModel.CurrentLevelID), false, true);
         }
 
         private void CreatePlayer()
         {
-            //Move player temp
-            Player.transform.position = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().NodeData.ID, 0, 0).transform.position;
+            //Temp
+
+            //Move player 
+            CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
+            Player.transform.position = startCellView.transform.position;
+
+            //Hide all cells except start cell
+            m_ControllersHolder.LevelController.RoomViewBuilder.HideAllCellsExept(m_ControllersHolder.LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
+
+            //Extend view
+            m_ControllersHolder.LevelController.RoomViewBuilder.ExtendView(m_ControllersHolder.LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
         }
 
 
-        private void CellInputHandler(Frameworks.Grid.View.CellView cellView)
+        private void CellInputHandler(CellView cellView)
         {
             //Move player temp
             Player.transform.position = cellView.transform.position;
 
+            //Refresh grid
             m_ControllersHolder.GridPositionTrackingController.Refresh(cellView.CorrespondingCellData);
         }
     }
