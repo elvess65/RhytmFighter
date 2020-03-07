@@ -26,5 +26,30 @@ namespace Frameworks.Grid.View
             //Cell appearance
             m_CellAppearanceStrategy = new ScaleUp_CellAppearanceStrategy(transform);
         }
+
+        public void ShowCell()
+        {
+            if (IsShowed)
+                return;
+
+            //Show cell
+            m_CellAppearanceStrategy.Show();
+
+            //Make cell visited
+            if (!CorrespondingCellData.IsVisited)
+                CorrespondingCellData.IsVisited = true;
+
+            gameObject.name = $"Cell_(X - {CorrespondingCellData.X}. Y - {CorrespondingCellData.Y}) {CorrespondingCellData.IsVisited}";
+        }
+
+        public void HideCell()
+        {
+            if (!IsShowed)
+                return;
+
+            m_CellAppearanceStrategy.Hide();
+
+            gameObject.name = $"Cell_(X - {CorrespondingCellData.X}. Y - {CorrespondingCellData.Y}) {CorrespondingCellData.IsVisited}";
+        }
     }
 }

@@ -81,10 +81,11 @@ namespace Frameworks.Grid.View
             return null;
         }
 
+
         /// <summary>
         /// Hide all cells of the room with exception
         /// </summary>
-        public void HideAllCellsExept(LevelRoomData roomData, GridCellData exceptionalCell)
+        public void HideAllUnvisitedCells(LevelRoomData roomData, GridCellData exceptionalCell)
         {
             for (int i = 0; i < roomData.GridData.WidthInCells; i++)
             {
@@ -93,9 +94,9 @@ namespace Frameworks.Grid.View
                     //Get cell view
                     CellView cellView = GetCellVisual(roomData.ID, i, j);
 
-                    //If cell view is not exceptional - hide
-                    if (!cellView.CorrespondingCellData.IsEqualCoord(exceptionalCell))
-                        cellView.gameObject.SetActive(false);
+                    //If cell view is not exceptional - try hide if is not visited
+                    if (!cellView.CorrespondingCellData.IsEqualCoord(exceptionalCell) && !cellView.CorrespondingCellData.IsVisited)
+                        cellView.HideCell();
                 }
             }
         }
@@ -142,16 +143,16 @@ namespace Frameworks.Grid.View
             CellView cellView = GetCellVisual(roomData.ID, anchorCellData.X, anchorCellData.Y + verticalOffset);
             while (cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
             {
-                //Enable cellView
-                cellView.gameObject.SetActive(true);
+                //Show cellView
+                cellView.ShowCell();
 
                 //Get next cellView
                 cellView = GetCellVisual(roomData.ID, cellView.CorrespondingCellData.X, cellView.CorrespondingCellData.Y + verticalOffset);
             }
 
-            //If obstacle was reached - enable also it
+            //If obstacle was reached - show it also
             if (cellView != null)
-                cellView.gameObject.SetActive(true);
+                cellView.ShowCell();
         }
 
         void ExtendViewHorizontal(LevelRoomData roomData, GridCellData anchorCellData, int horizontalOffset)
@@ -165,16 +166,16 @@ namespace Frameworks.Grid.View
                 ExtendViewVertical(roomData, cellView.CorrespondingCellData, 1);
                 ExtendViewVertical(roomData, cellView.CorrespondingCellData, -1);
 
-                //Enable cellView
-                cellView.gameObject.SetActive(true);
+                //Show cellView
+                cellView.ShowCell();
 
                 //Get next cellView
                 cellView = GetCellVisual(roomData.ID, cellView.CorrespondingCellData.X + horizontalOffset, cellView.CorrespondingCellData.Y);
             }
 
-            //If obstacle was reached - enable also it
+            //If obstacle was reached - show it also
             if (cellView != null)
-                cellView.gameObject.SetActive(true);
+                cellView.ShowCell();
         }
 
 
@@ -228,7 +229,7 @@ namespace Frameworks.Grid.View
 
 
     /// <summary>
-    /// Grid visual data (can exists multiple grid visuals at a time)
+    /// Grid visual data. Represents room grid graphics. (can exists multiple grid visuals at a time)
     /// </summary>
     public class GridViewData
     {

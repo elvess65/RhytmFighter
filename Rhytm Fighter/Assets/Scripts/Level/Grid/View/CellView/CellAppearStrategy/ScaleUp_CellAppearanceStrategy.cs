@@ -8,27 +8,27 @@ namespace Frameworks.Grid.View.Cell
         public event Action<CellView> OnShowed;
         public event Action<CellView> OnHided;
 
-        public bool IsShowed => m_IsShowed;
+        public bool IsShowed { get; private set; }
 
-        private bool m_IsShowed = false;
         private Transform m_ControlledObject;
         
 
         public ScaleUp_CellAppearanceStrategy(Transform controlledObject)
         {
             m_ControlledObject = controlledObject;
+            IsShowed = true;
         }
 
         public void Show()
         {
             m_ControlledObject.gameObject.SetActive(true);
-            m_IsShowed = true;
+            IsShowed = true;
         }
 
         public void Hide()
         {
             m_ControlledObject.gameObject.SetActive(false);
-            m_IsShowed = false;
+            IsShowed = false;
         }
     }
 }

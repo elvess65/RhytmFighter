@@ -92,18 +92,20 @@ namespace RhytmFighter.Main
         {
             //Temp
 
-            //Move player 
+            //Place player at start cell
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
+            startCellView.CorrespondingCellData.IsVisited = true;
             Player.transform.position = startCellView.transform.position;
-
-            //Hide all cells except start cell
-            m_ControllersHolder.LevelController.RoomViewBuilder.HideAllCellsExept(m_ControllersHolder.LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
-
-            //Extend view
-            m_ControllersHolder.LevelController.RoomViewBuilder.ExtendView(m_ControllersHolder.LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
+            targetPos = Player.transform.position;
 
             //Focus camera on player
             m_ControllersHolder.CameraController.InitializeCamera(CameraRoot, Player.transform, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
+
+            //Hide all cells except start cell
+            m_ControllersHolder.LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_ControllersHolder.LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
+
+            //Extend view
+            m_ControllersHolder.LevelController.RoomViewBuilder.ExtendView(m_ControllersHolder.LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
         }
 
         

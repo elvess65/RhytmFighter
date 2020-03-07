@@ -56,10 +56,10 @@ namespace RhytmFighter.Input
 
                         //Hide all cells of created room exept gate cell
                         if (isRightRoom)
-                            m_LevelController.RoomViewBuilder.HideAllCellsExept(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
+                            m_LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
                                                                                 m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.RightNodeGate);
                         else
-                            m_LevelController.RoomViewBuilder.HideAllCellsExept(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
+                            m_LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
                                                                                 m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.LeftNodeGate);
                     }
                     //Visit right node check
@@ -73,7 +73,7 @@ namespace RhytmFighter.Input
                         m_CreatedOtherRoomID = cellRoomData.NodeData.RightNode.ID;
 
                         //Hide all cells of created room exept parent gate cell
-                        m_LevelController.RoomViewBuilder.HideAllCellsExept(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
+                        m_LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
                                                                             m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.ParentNodeGate);
                     }
                     //Visit left node check
@@ -87,7 +87,7 @@ namespace RhytmFighter.Input
                         m_CreatedOtherRoomID = cellRoomData.NodeData.LeftNode.ID;
 
                         //Hide all cells of created room exept parent gate cell
-                        m_LevelController.RoomViewBuilder.HideAllCellsExept(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
+                        m_LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
                                                                             m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.ParentNodeGate);
                     }
                 }

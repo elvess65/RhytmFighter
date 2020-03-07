@@ -5,17 +5,24 @@ namespace Frameworks.Grid.Data
 {
     public class SquareGrid
     {
+        //Base 
         public int WidthInCells { get; private set; }
         public int HeightInCells { get; private set; }
 
-        public GridCellData ParentNodeGate;
-        public GridCellData LeftNodeGate;
-        public GridCellData RightNodeGate;
+        //Gates
+        public GridCellData ParentNodeGate  { get => m_ParentNodeGate;  set { m_ParentNodeGate = value; } }
+        public GridCellData LeftNodeGate    { get => m_LeftNodeGate;    set { m_LeftNodeGate = value;   } }
+        public GridCellData RightNodeGate   { get => m_RightNodeGate;   set { m_RightNodeGate = value;  } }
 
+        //Base
         private float m_CellSize;
         private Vector3 m_Offset;
         private GridCellData[,] m_Grid;
         private GridPathFindController m_GridPathFindController;
+        //Gates
+        private GridCellData m_ParentNodeGate   { get; set; }
+        private GridCellData m_LeftNodeGate     { get; set; }
+        private GridCellData m_RightNodeGate    { get; set; }
 
 
         public SquareGrid(int widthInCells, int heightInCells, float cellSize, Vector2 _offset)

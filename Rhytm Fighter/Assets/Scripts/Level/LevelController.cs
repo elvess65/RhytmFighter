@@ -75,21 +75,27 @@ namespace RhytmFighter.Level
 
         public LevelRoomData BuildRoomData(LevelNodeData node, bool storeToModel, bool isCurrent)
         {
-            //Build room data anyway
-            LevelRoomData roomData = m_RoomDataBuilder.Build(node, m_LevelParamsData.MinWidth, m_LevelParamsData.MaxWidth, 
-                                                                   m_LevelParamsData.MinHeight, m_LevelParamsData.MaxWidth, 
-                                                                   m_LevelParamsData.CellSize, m_LevelParamsData.FillPercent);
+            LevelRoomData roomData = null;
 
             //Option - store to model
             if (storeToModel)
             {
-                //Add room to model active rooms
-                Model.AddRoom(roomData);
+                //If room was stored - get data from model
+                if (Model.HasRoom(node.ID))
+                    roomData = Model.GetRoomDataByID(node.ID);
+                //If room was not stored - create room and store to model
+                else
+                { 
+                    roomData = CreateRoomData(node);
+                    Model.AddRoom(roomData);
+                }
 
                 //Option - set as current
                 if (isCurrent)
-                    Model.SetRoomAsCurrent(roomData.ID);
+                    Model.SetRoomAsCurrent(node.ID);
             }
+            else
+                roomData = CreateRoomData(node);
 
             return roomData;
         }
@@ -137,8 +143,16 @@ namespace RhytmFighter.Level
 
         public void RemoveRoom(int roomID)
         {
-            Model.RemoveRoom(roomID);
+            //Model.RemoveRoom(roomID);
             RoomViewBuilder.RemoveRoom(roomID);
+        }
+
+
+        LevelRoomData CreateRoomData(LevelNodeData node)
+        {
+            return m_RoomDataBuilder.Build(node, m_LevelParamsData.MinWidth, m_LevelParamsData.MaxWidth,
+                                                 m_LevelParamsData.MinHeight, m_LevelParamsData.MaxWidth,
+                                                 m_LevelParamsData.CellSize, m_LevelParamsData.FillPercent);
         }
     }
 }
