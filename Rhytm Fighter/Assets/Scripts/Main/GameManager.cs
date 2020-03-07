@@ -14,12 +14,15 @@ namespace RhytmFighter.Main
 
         [Header("Links")]
         public ManagersHolder ManagersHolder;
-        public GameObject Player; //temp
+        public Transform CameraRoot;
+        public GameObject Player;//temp
 
         private DataHolder m_DataHolder;
         private ControllersHolder m_ControllersHolder;
 
         private List<iUpdateable> m_Updateables;
+
+        private Vector3 targetPos; //temp
 
 
         private void Awake()
@@ -39,6 +42,8 @@ namespace RhytmFighter.Main
         {
             for (int i = 0; i < m_Updateables.Count; i++)
                 m_Updateables[i].Update(Time.deltaTime);
+
+            Player.transform.position = Vector3.MoveTowards(Player.transform.position, targetPos, Time.deltaTime * 5);
         }
 
         private void Initialize()
@@ -50,6 +55,7 @@ namespace RhytmFighter.Main
             //Initialize updatables
             m_Updateables = new List<iUpdateable>();
             m_Updateables.Add(m_ControllersHolder.InputController);
+            m_Updateables.Add(m_ControllersHolder.CameraController);
 
             //Subscribe for events
             m_ControllersHolder.InputController.OnTouch += m_ControllersHolder.GridInputProxy.TryGetCellFromInput;
@@ -95,13 +101,16 @@ namespace RhytmFighter.Main
 
             //Extend view
             m_ControllersHolder.LevelController.RoomViewBuilder.ExtendView(m_ControllersHolder.LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
+
+            //Focus camera on player
+            m_ControllersHolder.CameraController.InitializeCamera(CameraRoot, Player.transform, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
         }
 
-
+        
         private void CellInputHandler(CellView cellView)
         {
             //Move player temp
-            Player.transform.position = cellView.transform.position;
+            targetPos = cellView.transform.position;
 
             //Refresh grid
             m_ControllersHolder.GridPositionTrackingController.Refresh(cellView.CorrespondingCellData);

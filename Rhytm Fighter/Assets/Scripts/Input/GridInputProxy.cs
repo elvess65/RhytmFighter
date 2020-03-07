@@ -16,7 +16,7 @@ namespace RhytmFighter.Input
         /// <param name="mousePos">Mouse screen position</param>
         public void TryGetCellFromInput(Vector3 mousePos)
         {
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(mousePos), out RaycastHit hit))
+            if (Physics.Raycast(UnityEngine.Camera.main.ScreenPointToRay(mousePos), out RaycastHit hit))
             {
                 CellView cellView = hit.collider.transform.parent.gameObject.GetComponent<CellView>();
                 if (cellView != null)

@@ -10,5 +10,8 @@ namespace RhytmFighter.Settings
     {
         [Header("Simulation")]
         public ProxySettings ProxySettings;
+
+        [Header("Other settings")]
+        public CameraSettings CameraSettings;
     }
 }

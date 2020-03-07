@@ -1,4 +1,5 @@
-﻿using RhytmFighter.Input;
+﻿using RhytmFighter.Camera;
+using RhytmFighter.Input;
 using RhytmFighter.Level;
 
 namespace RhytmFighter.Main
@@ -12,6 +13,7 @@ namespace RhytmFighter.Main
 
         public LevelController LevelController { get; private set; }
         public InputController InputController { get; private set; }
+        public CameraController CameraController { get; private set; }
         public GridPositionTrackingController GridPositionTrackingController { get; private set; }
 
         public ControllersHolder()
@@ -19,6 +21,7 @@ namespace RhytmFighter.Main
             GridInputProxy = new GridInputProxy();
             LevelController = new LevelController();
             InputController = new InputController();
+            CameraController = new CameraController();
             GridPositionTrackingController = new GridPositionTrackingController(LevelController);
         }
     }
