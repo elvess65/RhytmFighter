@@ -33,7 +33,7 @@ namespace Frameworks.Grid.Data
             m_Offset = new Vector3(_offset.x, 0, _offset.y);
 
             m_Grid = new GridCellData[WidthInCells, HeightInCells];
-            m_GridPathFindController = new GridPathFindController(this);
+            m_GridPathFindController = new GridPathFindController(this, true);
 
             for (int i = 0; i < WidthInCells; i++)
             {
@@ -45,9 +45,19 @@ namespace Frameworks.Grid.Data
             }
         }
 
-        public Vector3[] FindPath(Vector3 from, Vector3 to)
+        public GridCellData[] FindPathCells(GridCellData from, GridCellData to)
         {
-            List<GridCellData> gridPath = m_GridPathFindController.FindPath(GetCellByWorldPos(from), GetCellByWorldPos(to));
+            //Find path in the same room
+            if (from.CorrespondingRoomID == to.CorrespondingRoomID)
+                return m_GridPathFindController.FindPath(from, to).ToArray();
+
+            //Find path for room transition
+            return new GridCellData[] { from, to };
+        }
+
+        public Vector3[] FindPath(GridCellData from, GridCellData to)
+        {
+            List<GridCellData> gridPath = m_GridPathFindController.FindPath(from, to);
 
             if (gridPath != null)
             {
@@ -79,16 +89,6 @@ namespace Frameworks.Grid.Data
 
             return null;
         }
-
-        /// <summary>
-        /// Получить ячейку по расположению
-        /// </summary>
-        public GridCellData GetCellByWorldPos(Vector3 pos)
-        {
-            (int x, int y) coord = GetCellCoordByWorldPos(pos);
-            return GetCellByCoord(coord.x, coord.y);
-        }
-
 
 
         /// <summary>

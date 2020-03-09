@@ -5,6 +5,6 @@
     /// </summary>
     public interface iUpdateable
     {
-        void Update(float deltaTime);
+        void PerformUpdate(float deltaTime);
     }
 }

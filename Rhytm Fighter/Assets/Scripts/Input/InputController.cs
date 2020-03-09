@@ -11,7 +11,7 @@ namespace RhytmFighter.Input
     {
         public event System.Action<Vector3> OnTouch;
 
-        public void Update(float deltaTime)
+        public void PerformUpdate(float deltaTime)
         {
             if (UnityEngine.Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                 OnTouch?.Invoke(UnityEngine.Input.mousePosition);

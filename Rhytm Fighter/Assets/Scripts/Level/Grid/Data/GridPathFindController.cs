@@ -7,8 +7,21 @@ namespace Frameworks.Grid.Data
     {
         private SquareGrid m_GridController;
 
+        private const int m_MOVE_STRAIGHT_COST = 10;
+        private const int m_MOVE_DIAGONAL_COST = 14;
 
-        public GridPathFindController(SquareGrid gridController) => m_GridController = gridController;
+        private bool m_AllowDiagonalPathfinding = false;
+        private int m_MoveStraightCost;
+        private int m_MoveDiagonalCost;
+
+        public GridPathFindController(SquareGrid gridController, bool allowDiagonalPathfinding)
+        {
+            m_GridController = gridController;
+
+            m_AllowDiagonalPathfinding = allowDiagonalPathfinding;
+            m_MoveStraightCost = m_MOVE_STRAIGHT_COST;
+            m_MoveDiagonalCost = m_AllowDiagonalPathfinding ? m_MOVE_DIAGONAL_COST : m_MOVE_STRAIGHT_COST;
+        }
     
 
         public List<GridCellData> FindPath(GridCellData startNode, GridCellData targetNode)
@@ -40,7 +53,7 @@ namespace Frameworks.Grid.Data
                     return RetracePath(startNode, targetNode);
 
                 //Get neighbours
-                (int x, int y)[] neighbours = m_GridController.GetCell4NeighboursCoord(curNode.X, curNode.Y);
+                (int x, int y)[] neighbours = m_AllowDiagonalPathfinding ? m_GridController.GetCellNeighboursCoordInRange(curNode.X, curNode.Y, 1) : m_GridController.GetCell4NeighboursCoord(curNode.X, curNode.Y);
                 for (int i = 0; i < neighbours.Length; i++)
                 {
                     GridCellData neighbourNode = m_GridController.GetCellByCoord(neighbours[i].x, neighbours[i].y);
@@ -95,9 +108,9 @@ namespace Frameworks.Grid.Data
             int distY = Mathf.Abs(aCoord.y - bCoord.y);
 
             if (distX > distY)
-                return 10 * distY + 10 * (distX - distY);
+                return m_MoveDiagonalCost * distY + m_MoveStraightCost * (distX - distY);
 
-            return 10 * distX + 10 * (distY - distX);
+            return m_MoveDiagonalCost * distX + m_MoveStraightCost * (distY - distX);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace RhytmFighter.Camera
 
         public void SetSpeed(float speed) => m_Speed = speed;
 
-        public void Update(float deltaTime)
+        public void PerformUpdate(float deltaTime)
         {
             if (m_Target != null && m_Root != null)
                 m_Root.transform.position = Vector3.Lerp(m_Root.transform.position, m_Target.position, Time.deltaTime * m_Speed);

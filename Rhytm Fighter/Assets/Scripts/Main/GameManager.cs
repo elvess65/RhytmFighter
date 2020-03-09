@@ -1,5 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
+using RhytmFighter.Characters;
 using RhytmFighter.Data;
 using RhytmFighter.Interfaces;
 using System.Collections.Generic;
@@ -15,14 +16,13 @@ namespace RhytmFighter.Main
         [Header("Links")]
         public ManagersHolder ManagersHolder;
         public Transform CameraRoot;
-        public GameObject Player;//temp
+
+        [Header("Temp")]
+        public Character Player;//temp
 
         private DataHolder m_DataHolder;
         private ControllersHolder m_ControllersHolder;
-
         private List<iUpdateable> m_Updateables;
-
-        private Vector3 targetPos; //temp
 
 
         private void Awake()
@@ -41,9 +41,7 @@ namespace RhytmFighter.Main
         private void Update()
         {
             for (int i = 0; i < m_Updateables.Count; i++)
-                m_Updateables[i].Update(Time.deltaTime);
-
-            Player.transform.position = Vector3.MoveTowards(Player.transform.position, targetPos, Time.deltaTime * 5);
+                m_Updateables[i].PerformUpdate(Time.deltaTime);
         }
 
         private void Initialize()
@@ -92,11 +90,16 @@ namespace RhytmFighter.Main
         {
             //Temp
 
-            //Place player at start cell
+            //Init start cell
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
             startCellView.CorrespondingCellData.IsVisited = true;
-            Player.transform.position = startCellView.transform.position;
-            targetPos = Player.transform.position;
+            currentCell = startCellView;
+
+            //Place player on start cell
+            Player.Initialize(startCellView.transform.position, 1);
+            Player.OnMovementFinished += PlayerArrivedHandler;
+            Player.OnCellVisited += CellVisited;
+            m_Updateables.Add(Player);
 
             //Focus camera on player
             m_ControllersHolder.CameraController.InitializeCamera(CameraRoot, Player.transform, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
@@ -108,14 +111,31 @@ namespace RhytmFighter.Main
             m_ControllersHolder.LevelController.RoomViewBuilder.ExtendView(m_ControllersHolder.LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
         }
 
-        
+        private CellView currentCell;
         private void CellInputHandler(CellView cellView)
         {
-            //Move player temp
-            targetPos = cellView.transform.position;
+            GridCellData[] path = m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(currentCell.CorrespondingCellData, cellView.CorrespondingCellData);
+            currentCell = cellView;
 
+            List<Vector3> positions = new List<Vector3>();
+            foreach (GridCellData p in path)
+                positions.Add(m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(p.CorrespondingRoomID, p.X, p.Y).transform.position);
+
+            //Move player temp
+            Player.StartMove(positions.ToArray());
+        }
+
+        void CellVisited(int index)
+        {
+            Debug.Log("cell visited " + index);
+        }
+
+        //Move to player controler
+        private void PlayerArrivedHandler(int index)
+        {
+            Debug.Log("Movement finished " + index);
             //Refresh grid
-            m_ControllersHolder.GridPositionTrackingController.Refresh(cellView.CorrespondingCellData);
+            //m_ControllersHolder.GridPositionTrackingController.Refresh(cellView.CorrespondingCellData);
         }
     }
 }
