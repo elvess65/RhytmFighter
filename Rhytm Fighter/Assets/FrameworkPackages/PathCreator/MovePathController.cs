@@ -58,7 +58,9 @@ namespace FrameworkPackage.PathCreation
                 DistanceTravelled += deltaTime * m_Speed * m_SpeedMltp;
 
                 ControlledTransform.position = m_VertexPath.GetPointAtDistance(DistanceTravelled, EndOfPathInstruction.Stop);
-                ControlledTransform.rotation = m_VertexPath.GetRotationAtDistance(DistanceTravelled, EndOfPathInstruction.Stop);
+
+                Quaternion rotation = m_VertexPath.GetRotationAtDistance(DistanceTravelled, EndOfPathInstruction.Stop);
+                ControlledTransform.localEulerAngles = new Vector3(ControlledTransform.localEulerAngles.x, rotation.eulerAngles.y, ControlledTransform.localEulerAngles.z);
 
                 if (DistanceTravelled >= m_VertexPath.length)
                 {

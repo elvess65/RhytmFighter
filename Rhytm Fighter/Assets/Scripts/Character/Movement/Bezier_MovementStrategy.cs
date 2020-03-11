@@ -44,8 +44,8 @@ namespace RhytmFighter.Characters.Movement
                 path[0] = m_MovePathController.ControlledTransform.position;
 
                 //Создать кривую по массиву точек
-                BezierPath bezierPath = GenerateBezierPath(path);   //Отображение
-                VertexPath vertexPath = GenerateVertexPath(path);   //Передвижение
+                BezierPath bezierPath = null;                                       //Отображение
+                VertexPath vertexPath = GenerateVertexPath(path, out bezierPath);   //Передвижение
 
                 //Данные для обновления позиции при смене ячеек
                 m_CellPositionUpdateDist = vertexPath.length / (path.Length - 1);
@@ -100,16 +100,19 @@ namespace RhytmFighter.Characters.Movement
         void MovementInterruptedHandler() => OnMovementInterrupted?.Invoke();
 
 
-        BezierPath GenerateBezierPath(Vector3[] points) => new BezierPath(points, false, PathSpace.xyz);
-
-        VertexPath GenerateVertexPath(Vector3[] points)
+        VertexPath GenerateVertexPath(Vector3[] points, out BezierPath bezierPath)
         {
             // Create a closed, 2D bezier path from the supplied points array
             // These points are treated as anchors, which the path will pass through
             // The control points for the path will be generated automatically
             //BezierPath bezierPath = new BezierPath(points, false, PathSpace.xyz);
             // Then create a vertex path from the bezier path, to be used for movement etc
-            return new VertexPath(GenerateBezierPath(points));
+            bezierPath = GenerateBezierPath(points);
+            bezierPath.GlobalNormalsAngle = 90;
+
+            return new VertexPath(bezierPath);
         }
+
+        BezierPath GenerateBezierPath(Vector3[] points) => new BezierPath(points, false, PathSpace.xyz);
     }
 }
