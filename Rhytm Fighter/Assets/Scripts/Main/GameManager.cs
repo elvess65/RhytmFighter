@@ -18,7 +18,7 @@ namespace RhytmFighter.Main
         public Transform CameraRoot;
 
         [Header("Temp")]
-        public Character Player;//temp
+        public CharacterWrapper Player;//temp
 
         private DataHolder m_DataHolder;
         private ControllersHolder m_ControllersHolder;
@@ -54,10 +54,15 @@ namespace RhytmFighter.Main
             m_Updateables = new List<iUpdateable>();
             m_Updateables.Add(m_ControllersHolder.InputController);
             m_Updateables.Add(m_ControllersHolder.CameraController);
+            m_Updateables.Add(m_ControllersHolder.PlayerCharacterController);
 
             //Subscribe for events
             m_ControllersHolder.InputController.OnTouch += m_ControllersHolder.GridInputProxy.TryGetCellFromInput;
             m_ControllersHolder.GridInputProxy.OnCellInput += CellInputHandler;
+
+            m_ControllersHolder.PlayerCharacterController.OnMovementFinished += MovementFinishedHandler;
+            m_ControllersHolder.PlayerCharacterController.OnCellVisited += CellVisitedHandler;
+            m_ControllersHolder.PlayerCharacterController.OnMovementInterrupted += MovementInterruptedHandler;
 
             //Initialize connection
             m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
@@ -88,54 +93,42 @@ namespace RhytmFighter.Main
 
         private void CreatePlayer()
         {
-            //Temp
+            //Temp 
+            //TODO Get from data
+            float playerMoveSpeed = 1;
 
-            //Init start cell
-            CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
-            startCellView.CorrespondingCellData.IsVisited = true;
-            currentCell = startCellView;
+            //Create player character
+            m_ControllersHolder.PlayerCharacterController.CreateCharacter(Player, playerMoveSpeed, m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0), m_ControllersHolder.LevelController);
 
-            //Place player on start cell
-            Player.Initialize(startCellView.transform.position, 1);
-            Player.OnMovementFinished += PlayerArrivedHandler;
-            Player.OnCellVisited += CellVisited;
-            m_Updateables.Add(Player);
-
-            //Focus camera on player
-            m_ControllersHolder.CameraController.InitializeCamera(CameraRoot, Player.transform, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
-
-            //Hide all cells except start cell
-            m_ControllersHolder.LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_ControllersHolder.LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
-
-            //Extend view
-            m_ControllersHolder.LevelController.RoomViewBuilder.ExtendView(m_ControllersHolder.LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
+            //Focus camera on character
+            m_ControllersHolder.CameraController.InitializeCamera(CameraRoot, m_ControllersHolder.PlayerCharacterController.PlayerCharacter.transform, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
         }
 
-        private CellView currentCell;
+
         private void CellInputHandler(CellView cellView)
         {
-            GridCellData[] path = m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(currentCell.CorrespondingCellData, cellView.CorrespondingCellData);
-            currentCell = cellView;
-
-            List<Vector3> positions = new List<Vector3>();
-            foreach (GridCellData p in path)
-                positions.Add(m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(p.CorrespondingRoomID, p.X, p.Y).transform.position);
-
-            //Move player temp
-            Player.StartMove(positions.ToArray());
+            m_ControllersHolder.PlayerCharacterController.MoveCharacter(cellView);
         }
 
-        void CellVisited(int index)
+        private void MovementFinishedHandler(GridCellData cellData)
         {
-            Debug.Log("cell visited " + index);
-        }
+            Debug.LogError("MovementFinishedHandler " + cellData.ToString());
 
-        //Move to player controler
-        private void PlayerArrivedHandler(int index)
-        {
-            Debug.Log("Movement finished " + index);
             //Refresh grid
-            //m_ControllersHolder.GridPositionTrackingController.Refresh(cellView.CorrespondingCellData);
+            m_ControllersHolder.GridPositionTrackingController.Refresh(cellData);
+        }
+
+        private void CellVisitedHandler(GridCellData cellData)
+        {
+            Debug.LogError("CellVisitedHandler " + cellData.ToString());
+
+            //Refresh grid
+            m_ControllersHolder.GridPositionTrackingController.Refresh(cellData);
+        }
+
+        private void MovementInterruptedHandler()
+        {
+            Debug.LogError("MovementInterruptedHandler");
         }
     }
 }

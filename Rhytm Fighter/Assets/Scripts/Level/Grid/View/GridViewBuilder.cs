@@ -85,7 +85,7 @@ namespace Frameworks.Grid.View
         /// <summary>
         /// Hide all cells of the room with exception
         /// </summary>
-        public void HideAllUnvisitedCells(LevelRoomData roomData, GridCellData exceptionalCell)
+        public void HideAllUnvisitedCells(LevelRoomData roomData, GridCellData exceptionalCell = null)
         {
             for (int i = 0; i < roomData.GridData.WidthInCells; i++)
             {
