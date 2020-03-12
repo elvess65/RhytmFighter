@@ -1,4 +1,5 @@
 ﻿using Frameworks.Grid.Data;
+using RhytmFighter.Objects;
 using UnityEngine;
 
 namespace RhytmFighter.Level.Data
@@ -70,6 +71,9 @@ namespace RhytmFighter.Level.Data
 
                     cell.SetCellType(cellType);
                     cell.SetRoomID(node.ID);
+
+                    if (i == 2 && j == 1)
+                        cell.AddObject(new DummyObject());
                 }
             }
         }

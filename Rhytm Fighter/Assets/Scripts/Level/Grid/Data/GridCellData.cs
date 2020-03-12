@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RhytmFighter.Objects;
+using UnityEngine;
 
 namespace Frameworks.Grid.Data
 {
@@ -17,7 +18,7 @@ namespace Frameworks.Grid.Data
         public bool IsVisited { get; set; }
 
         //Object
-        //public bool HasObject => m_Object != null;
+        public bool HasObject => m_Object != null;
 
         //Pathfinding
         public int GCost;
@@ -26,6 +27,7 @@ namespace Frameworks.Grid.Data
         public Vector2Int CoordAsVec2Int => new Vector2Int(X, Y);
         public GridCellData ParentNodeData;
 
+        private iInteractableObject m_Object;
 
         public GridCellData(int xCoord, int yCoord, float cellSize, CellTypes type)
         {
@@ -39,11 +41,11 @@ namespace Frameworks.Grid.Data
         }
 
 
-        //public void AddObject(iInteractableObject obj) => m_Object = obj;
+        public void AddObject(iInteractableObject obj) => m_Object = obj;
 
-        //public iInteractableObject GetObject() => m_Object;
+        public iInteractableObject GetObject() => m_Object;
 
-        //public void RemoveObject() => m_Object = null;
+        public void RemoveObject() => m_Object = null;
 
 
         public void SetCellType(CellTypes type) => CellType = type;

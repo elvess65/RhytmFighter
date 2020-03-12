@@ -107,6 +107,7 @@ namespace RhytmFighter.Main
 
         private void CellInputHandler(CellView cellView)
         {
+            Debug.LogError(cellView.CorrespondingCellData.HasObject);
             m_ControllersHolder.PlayerCharacterController.MoveCharacter(cellView);
         }
 
