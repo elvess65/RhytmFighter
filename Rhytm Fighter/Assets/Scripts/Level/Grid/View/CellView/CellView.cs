@@ -1,11 +1,14 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View.Cell;
+using RhytmFighter.Objects;
 using UnityEngine;
 
 namespace Frameworks.Grid.View
 {
     public class CellView : MonoBehaviour
     {
+        public System.Action<CellView, iInteractableObject> OnObjectDetected;
+
         private Abstract_CellContent m_CellContent;
         private iCellAppearanceStrategy m_CellAppearanceStrategy;
 
@@ -39,7 +42,9 @@ namespace Frameworks.Grid.View
             if (!CorrespondingCellData.IsVisited)
                 CorrespondingCellData.IsVisited = true;
 
-            gameObject.name = $"Cell_(X - {CorrespondingCellData.X}. Y - {CorrespondingCellData.Y}) {CorrespondingCellData.IsVisited}";
+            //Notify if cell contains object
+            if (CorrespondingCellData.HasObject)
+                OnObjectDetected?.Invoke(this, CorrespondingCellData.GetObject());
         }
 
         public void HideCell()
@@ -48,8 +53,6 @@ namespace Frameworks.Grid.View
                 return;
 
             m_CellAppearanceStrategy.Hide();
-
-            gameObject.name = $"Cell_(X - {CorrespondingCellData.X}. Y - {CorrespondingCellData.Y}) {CorrespondingCellData.IsVisited}";
         }
     }
 }

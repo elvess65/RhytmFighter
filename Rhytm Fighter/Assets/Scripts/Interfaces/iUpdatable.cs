@@ -3,7 +3,7 @@
     /// <summary>
     /// Interface for objects, that can be updated
     /// </summary>
-    public interface iUpdateable
+    public interface iUpdatable
     {
         void PerformUpdate(float deltaTime);
     }

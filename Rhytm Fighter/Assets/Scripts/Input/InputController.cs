@@ -7,7 +7,7 @@ namespace RhytmFighter.Input
     /// <summary>
     /// Tracking low level input
     /// </summary>
-    public class InputController : iUpdateable
+    public class InputController : iUpdatable
     {
         public event System.Action<Vector3> OnTouch;
 

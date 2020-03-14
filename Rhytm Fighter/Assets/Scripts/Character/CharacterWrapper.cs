@@ -7,7 +7,7 @@ namespace RhytmFighter.Characters
     /// <summary>
     /// Character wrapper
     /// </summary>
-    public class CharacterWrapper : MonoBehaviour, iUpdateable
+    public class CharacterWrapper : MonoBehaviour, iUpdatable
     {
         public event System.Action OnMovementFinished;
         public event System.Action<int> OnCellVisited;

@@ -2,7 +2,9 @@
 using Frameworks.Grid.View;
 using RhytmFighter.Characters;
 using RhytmFighter.Data;
+using RhytmFighter.GameState;
 using RhytmFighter.Interfaces;
+using RhytmFighter.Objects;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,8 +23,14 @@ namespace RhytmFighter.Main
         public CharacterWrapper Player;//temp
 
         private DataHolder m_DataHolder;
+        private GameStateMachine m_GameStateMachine;
         private ControllersHolder m_ControllersHolder;
-        private List<iUpdateable> m_Updateables;
+        private List<iUpdatable> m_Updateables;
+
+        //States
+        private GameState_Idle m_GameStateIdle;
+        private GameState_Battle m_GameStateBattle;
+        private GameState_Adventure m_GameStateAdventure;
 
 
         private void Awake()
@@ -48,26 +56,30 @@ namespace RhytmFighter.Main
         {
             //Initialize objects
             m_DataHolder = new DataHolder();
+            m_GameStateMachine = new GameStateMachine();
             m_ControllersHolder = new ControllersHolder();
 
+            //Initialize state machine
+            m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController);
+            m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController);
+            m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.GridPositionTrackingController, m_ControllersHolder.PlayerCharacterController);
+            m_GameStateMachine.Initialize(m_GameStateIdle);
+
             //Initialize updatables
-            m_Updateables = new List<iUpdateable>();
-            m_Updateables.Add(m_ControllersHolder.InputController);
-            m_Updateables.Add(m_ControllersHolder.CameraController);
-            m_Updateables.Add(m_ControllersHolder.PlayerCharacterController);
-
-            //Subscribe for events
-            m_ControllersHolder.InputController.OnTouch += m_ControllersHolder.GridInputProxy.TryGetCellFromInput;
-            m_ControllersHolder.GridInputProxy.OnCellInput += CellInputHandler;
-
-            m_ControllersHolder.PlayerCharacterController.OnMovementFinished += MovementFinishedHandler;
-            m_ControllersHolder.PlayerCharacterController.OnCellVisited += CellVisitedHandler;
-            m_ControllersHolder.PlayerCharacterController.OnMovementInterrupted += MovementInterruptedHandler;
+            m_Updateables = new List<iUpdatable>
+            {
+                m_ControllersHolder.InputController,
+                m_ControllersHolder.CameraController,
+                m_GameStateMachine
+            };
 
             //Initialize connection
             m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
             m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
             m_DataHolder.DBProxy.Initialize(ManagersHolder.SettingsManager.ProxySettings);
+
+            //Subscribe for events
+            m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
         }
 
         private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)
@@ -89,6 +101,12 @@ namespace RhytmFighter.Main
         private void BuildLevel()
         {
             m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.GetLevelParams(m_DataHolder.PlayerDataModel.CurrentLevelID), false, true);
+            m_ControllersHolder.LevelController.RoomViewBuilder.OnCellWithObjectDetected +=
+                (CellView cell, iInteractableObject objectInCell) =>
+                {
+                    Debug.Log("Cell with object was detected: " + cell);
+                    cell.transform.position += new Vector3 (0, -0.1f, 0);
+                };
         }
 
         private void CreatePlayer()
@@ -102,34 +120,9 @@ namespace RhytmFighter.Main
 
             //Focus camera on character
             m_ControllersHolder.CameraController.InitializeCamera(CameraRoot, m_ControllersHolder.PlayerCharacterController.PlayerCharacter.transform, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
-        }
 
-
-        private void CellInputHandler(CellView cellView)
-        {
-            Debug.LogError(cellView.CorrespondingCellData.HasObject);
-            m_ControllersHolder.PlayerCharacterController.MoveCharacter(cellView);
-        }
-
-        private void MovementFinishedHandler(GridCellData cellData)
-        {
-            Debug.LogError("MovementFinishedHandler " + cellData.ToString());
-
-            //Refresh grid
-            m_ControllersHolder.GridPositionTrackingController.Refresh(cellData);
-        }
-
-        private void CellVisitedHandler(GridCellData cellData)
-        {
-            Debug.LogError("CellVisitedHandler " + cellData.ToString());
-
-            //Refresh grid
-            m_ControllersHolder.GridPositionTrackingController.Refresh(cellData);
-        }
-
-        private void MovementInterruptedHandler()
-        {
-            Debug.LogError("MovementInterruptedHandler");
+            //Chacge state
+            m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace RhytmFighter.Characters
     /// <summary>
     /// Controller for player character
     /// </summary>
-    public class PlayerCharacterController : iUpdateable
+    public class PlayerCharacterController : iUpdatable
     {
         public event System.Action<GridCellData> OnMovementFinished;
         public event System.Action<GridCellData> OnCellVisited;
@@ -47,8 +47,17 @@ namespace RhytmFighter.Characters
 
         public void MoveCharacter(CellView targetCellView)
         {
+            GridCellData targetCellData = targetCellView.CorrespondingCellData;
+
+            //If cell has object - move to the closest cell
+            if (targetCellView.CorrespondingCellData.HasObject)
+            {
+                targetCellData = m_LevelController.Model.GetCurrenRoomData().GridData.GetClosestWalkableCell(m_CurrentPlayerCell.CorrespondingCellData, targetCellView.CorrespondingCellData, 1);
+                targetCellView = m_LevelController.RoomViewBuilder.GetCellVisual(targetCellData.CorrespondingRoomID, targetCellData.X, targetCellData.Y);
+            }
+
             //Find path of cells
-            m_PathCells = m_LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(m_CurrentPlayerCell.CorrespondingCellData, targetCellView.CorrespondingCellData);
+            m_PathCells = m_LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(m_CurrentPlayerCell.CorrespondingCellData, targetCellData);
             m_CurrentPlayerCell = targetCellView;
 
             //Cells positions

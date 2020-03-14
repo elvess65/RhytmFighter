@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RhytmFighter.Camera
 {
-    public class CameraController : iUpdateable
+    public class CameraController : iUpdatable
     {
         //Root camera object
         private Transform m_Root;   
