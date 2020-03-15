@@ -62,7 +62,7 @@ namespace RhytmFighter.Main
             //Initialize state machine
             m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController);
             m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController);
-            m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.GridPositionTrackingController, m_ControllersHolder.PlayerCharacterController);
+            m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.LevelController, m_ControllersHolder.PlayerCharacterController);
             m_GameStateMachine.Initialize(m_GameStateIdle);
 
             //Initialize updatables

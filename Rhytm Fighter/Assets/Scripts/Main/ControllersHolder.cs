@@ -16,7 +16,6 @@ namespace RhytmFighter.Main
         public InputController InputController { get; private set; }
         public CameraController CameraController { get; private set; }
         public PlayerCharacterController PlayerCharacterController { get; private set; }
-        public GridPositionTrackingController GridPositionTrackingController { get; private set; }
 
         public ControllersHolder()
         {
@@ -25,7 +24,6 @@ namespace RhytmFighter.Main
             InputController = new InputController();
             CameraController = new CameraController();
             PlayerCharacterController = new PlayerCharacterController();
-            GridPositionTrackingController = new GridPositionTrackingController(LevelController);
         }
     }
 }

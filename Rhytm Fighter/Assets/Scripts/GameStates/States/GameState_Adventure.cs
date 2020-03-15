@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Frameworks.Grid.Data;
+﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
 using RhytmFighter.Characters;
 using RhytmFighter.Input;
+using RhytmFighter.Level;
 using UnityEngine;
 
 namespace RhytmFighter.GameState
@@ -14,12 +13,12 @@ namespace RhytmFighter.GameState
         private GridPositionTrackingController m_GridPositionTrackingController;
 
 
-        public GameState_Adventure(GridPositionTrackingController gridPositionTrackingController, PlayerCharacterController playerCharacterController) : base(playerCharacterController)
+        public GameState_Adventure(LevelController levelController, PlayerCharacterController playerCharacterController) : base(playerCharacterController)
         {
             m_GridInputProxy = new GridInputProxy();
             m_GridInputProxy.OnCellInput += CellInputHandler;
 
-            m_GridPositionTrackingController = gridPositionTrackingController;
+            m_GridPositionTrackingController = new GridPositionTrackingController(levelController);
         }
 
 
