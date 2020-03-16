@@ -10,7 +10,7 @@ namespace RhytmFighter.GameState
 {
     public class GameState_Adventure : GameState_Abstract
     {
-        public System.Action<iGridObject> OnPlayerInteractWithItem;
+        public System.Action<GridCellData> OnPlayerInteractWithItem;
 
         private GridInputProxy m_GridInputProxy;
         private GridPositionTrackingController m_GridPositionTrackingController;
@@ -74,12 +74,12 @@ namespace RhytmFighter.GameState
             Debug.LogError("MovementInterruptedHandler");
         }
 
-        private void PlayerInteractsWithObjectHandler(iGridObject gridObject)
+        private void PlayerInteractsWithObjectHandler(GridCellData cellData)
         {
-            switch(gridObject.Type)
+            switch(cellData.GetObject().Type)
             {
                 case ObjectTypes.Item:
-                    OnPlayerInteractWithItem?.Invoke(gridObject);
+                    OnPlayerInteractWithItem?.Invoke(cellData);
                     break;
             }
         }

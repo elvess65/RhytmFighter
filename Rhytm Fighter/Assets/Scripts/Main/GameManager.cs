@@ -128,9 +128,14 @@ namespace RhytmFighter.Main
         }
 
 
-        private void PlayerInteractWithItemHandler(iGridObject gridObject)
+        private void PlayerInteractWithItemHandler(GridCellData cellData)
         {
+            iGridObject gridObject = cellData.GetObject();
+            cellData.RemoveObject();
+
+            //Remove visuals
             Debug.LogError("Interact with item " + gridObject.ID + " " + gridObject.Type);
+
             m_GameStateMachine.ChangeState(m_GameStateIdle);
             StartCoroutine(TEMP_INTERATCION_COROUTINE());
         }
@@ -139,7 +144,7 @@ namespace RhytmFighter.Main
         {
             yield return new WaitForSeconds(1);
 
-            m_GameStateMachine.ChangeState(m_GameStateBattle);
+            m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
     }
 }
