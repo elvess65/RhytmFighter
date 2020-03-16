@@ -59,10 +59,13 @@ namespace RhytmFighter.Characters
 
             GridCellData targetCellData = targetCellView.CorrespondingCellData;
 
+
             //If cell has object - move to the closest cell
             if (targetCellData.HasObject)
             {
-                iGridObject objectToInteract = targetCellView.CorrespondingCellData.GetObject();
+                GridCellData objectToInteractCellData = targetCellView.CorrespondingCellData;
+                iGridObject objectToInteract = objectToInteractCellData.GetObject();
+                
 
                 //Get closest walkable cell to cell with object
                 targetCellData = m_LevelController.Model.GetCurrenRoomData().GridData.GetClosestWalkableCell(m_CurrentPlayerCell.CorrespondingCellData, targetCellView.CorrespondingCellData, m_CLOSEST_WALKABLE_CELL_RANGE);
@@ -88,6 +91,7 @@ namespace RhytmFighter.Characters
                 //Set closest cell view as target cell view
                 targetCellView = m_LevelController.RoomViewBuilder.GetCellVisual(targetCellData.CorrespondingRoomID, targetCellData.X, targetCellData.Y);
             }
+
 
             //Find path of cells
             m_PathCells = m_LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(m_CurrentPlayerCell.CorrespondingCellData, targetCellData);
@@ -124,6 +128,6 @@ namespace RhytmFighter.Characters
 
         private void MovementInterruptedHandler() => OnMovementInterrupted?.Invoke();
 
-        private void PlayerInteractsWithObjectHandler(iGridObject gridObject) => OnPlayerInteractsWithObject?.Invoke(gridObject);
+        private void PlayerInteractsWithObjectHandler(GridCellData cellData, iGridObject gridObject) => OnPlayerInteractsWithObject?.Invoke(gridObject);
     }
 }

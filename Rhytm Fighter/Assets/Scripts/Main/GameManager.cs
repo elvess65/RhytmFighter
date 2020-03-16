@@ -131,6 +131,15 @@ namespace RhytmFighter.Main
         private void PlayerInteractWithItemHandler(iGridObject gridObject)
         {
             Debug.LogError("Interact with item " + gridObject.ID + " " + gridObject.Type);
+            m_GameStateMachine.ChangeState(m_GameStateIdle);
+            StartCoroutine(TEMP_INTERATCION_COROUTINE());
+        }
+
+        System.Collections.IEnumerator TEMP_INTERATCION_COROUTINE()
+        {
+            yield return new WaitForSeconds(1);
+
+            m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
     }
 }
