@@ -63,6 +63,7 @@ namespace RhytmFighter.Main
             m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController);
             m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController);
             m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.LevelController, m_ControllersHolder.PlayerCharacterController);
+            m_GameStateAdventure.OnPlayerInteractWithItem += PlayerInteractWithItemHandler;
             m_GameStateMachine.Initialize(m_GameStateIdle);
 
             //Initialize updatables
@@ -102,9 +103,10 @@ namespace RhytmFighter.Main
         {
             m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.GetLevelParams(m_DataHolder.PlayerDataModel.CurrentLevelID), false, true);
             m_ControllersHolder.LevelController.RoomViewBuilder.OnCellWithObjectDetected +=
-                (CellView cell, iInteractableObject objectInCell) =>
+                (CellView cell, iGridObject objectInCell) =>
                 {
-                    Debug.Log("Cell with object was detected: " + cell);
+                    //For update view
+                    Debug.Log("Cell with object was detected in: " + cell + " Object: " + objectInCell.Type);
                     cell.transform.position += new Vector3 (0, -0.1f, 0);
                 };
         }
@@ -123,6 +125,12 @@ namespace RhytmFighter.Main
 
             //Chacge state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
+        }
+
+
+        private void PlayerInteractWithItemHandler(iGridObject gridObject)
+        {
+            Debug.LogError("Interact with item " + gridObject.ID + " " + gridObject.Type);
         }
     }
 }

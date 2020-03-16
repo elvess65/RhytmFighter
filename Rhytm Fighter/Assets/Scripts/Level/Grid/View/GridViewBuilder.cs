@@ -9,7 +9,7 @@ namespace Frameworks.Grid.View
 {
     public class GridViewBuilder 
     {
-        public System.Action<CellView, iInteractableObject> OnCellWithObjectDetected;
+        public System.Action<CellView, iGridObject> OnCellWithObjectDetected;
 
         private float m_CellOffset => 1.1f;
         private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
@@ -228,7 +228,7 @@ namespace Frameworks.Grid.View
             }
         }
 
-        void CellWithObjectDetectedHandler(CellView cell, iInteractableObject objectInCell) => OnCellWithObjectDetected?.Invoke(cell, objectInCell);
+        void CellWithObjectDetectedHandler(CellView cell, iGridObject objectInCell) => OnCellWithObjectDetected?.Invoke(cell, objectInCell);
     }
 
 

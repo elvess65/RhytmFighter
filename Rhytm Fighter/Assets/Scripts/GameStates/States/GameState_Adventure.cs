@@ -3,12 +3,15 @@ using Frameworks.Grid.View;
 using RhytmFighter.Characters;
 using RhytmFighter.Input;
 using RhytmFighter.Level;
+using RhytmFighter.Objects;
 using UnityEngine;
 
 namespace RhytmFighter.GameState
 {
     public class GameState_Adventure : GameState_Abstract
     {
+        public System.Action<iGridObject> OnPlayerInteractWithItem;
+
         private GridInputProxy m_GridInputProxy;
         private GridPositionTrackingController m_GridPositionTrackingController;
 
@@ -19,6 +22,8 @@ namespace RhytmFighter.GameState
             m_GridInputProxy.OnCellInput += CellInputHandler;
 
             m_GridPositionTrackingController = new GridPositionTrackingController(levelController);
+
+            m_PlayerCharacterController.OnPlayerInteractsWithObject += PlayerInteractsWithObjectHandler;
         }
 
 
@@ -67,6 +72,16 @@ namespace RhytmFighter.GameState
         private void MovementInterruptedHandler()
         {
             Debug.LogError("MovementInterruptedHandler");
+        }
+
+        private void PlayerInteractsWithObjectHandler(iGridObject gridObject)
+        {
+            switch(gridObject.Type)
+            {
+                case ObjectTypes.Item:
+                    OnPlayerInteractWithItem?.Invoke(gridObject);
+                    break;
+            }
         }
     }
 }

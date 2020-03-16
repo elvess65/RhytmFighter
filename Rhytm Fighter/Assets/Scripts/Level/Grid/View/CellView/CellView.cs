@@ -7,7 +7,7 @@ namespace Frameworks.Grid.View
 {
     public class CellView : MonoBehaviour
     {
-        public System.Action<CellView, iInteractableObject> OnObjectDetected;
+        public System.Action<CellView, iGridObject> OnObjectDetected;
 
         private Abstract_CellContent m_CellContent;
         private iCellAppearanceStrategy m_CellAppearanceStrategy;
