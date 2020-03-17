@@ -5,6 +5,7 @@ using RhytmFighter.Data;
 using RhytmFighter.GameState;
 using RhytmFighter.Interfaces;
 using RhytmFighter.Objects;
+using RhytmFighter.Objects.Data;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -103,11 +104,9 @@ namespace RhytmFighter.Main
         {
             m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.GetLevelParams(m_DataHolder.PlayerDataModel.CurrentLevelID), false, true);
             m_ControllersHolder.LevelController.RoomViewBuilder.OnCellWithObjectDetected +=
-                (CellView cell, iGridObject objectInCell) =>
+                (CellView cell, AbstractGridObject gridObject) =>
                 {
-                    //For update view
-                    Debug.Log("Cell with object was detected in: " + cell + " Object: " + objectInCell.Type);
-                    cell.transform.position += new Vector3 (0, -0.1f, 0);
+                    gridObject.Detect(cell);
                 };
         }
 
@@ -128,15 +127,15 @@ namespace RhytmFighter.Main
         }
 
 
-        private void PlayerInteractWithItemHandler(GridCellData cellData)
+        private void PlayerInteractWithItemHandler(AbstractItemGridObject interactableItem)
         {
-            iGridObject gridObject = cellData.GetObject();
-            cellData.RemoveObject();
+            //Interact
+            interactableItem.Interact();
 
-            //Remove visuals
-            Debug.LogError("Interact with item " + gridObject.ID + " " + gridObject.Type);
-
+            //Lock input for animation time
             m_GameStateMachine.ChangeState(m_GameStateIdle);
+
+            //Debug animation time
             StartCoroutine(TEMP_INTERATCION_COROUTINE());
         }
 

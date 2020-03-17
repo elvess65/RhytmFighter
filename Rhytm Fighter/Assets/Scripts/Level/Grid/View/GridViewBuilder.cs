@@ -2,6 +2,7 @@
 using Frameworks.Grid.View.Cell;
 using RhytmFighter.Level.Data;
 using RhytmFighter.Objects;
+using RhytmFighter.Objects.Data;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Frameworks.Grid.View
 {
     public class GridViewBuilder 
     {
-        public System.Action<CellView, iGridObject> OnCellWithObjectDetected;
+        public System.Action<CellView, AbstractGridObject> OnCellWithObjectDetected;
 
         private float m_CellOffset => 1.1f;
         private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
@@ -228,7 +229,7 @@ namespace Frameworks.Grid.View
             }
         }
 
-        void CellWithObjectDetectedHandler(CellView cell, iGridObject objectInCell) => OnCellWithObjectDetected?.Invoke(cell, objectInCell);
+        void CellWithObjectDetectedHandler(CellView cell, AbstractGridObject objectInCell) => OnCellWithObjectDetected?.Invoke(cell, objectInCell);
     }
 
 

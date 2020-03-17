@@ -1,5 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using RhytmFighter.Objects;
+using RhytmFighter.Objects.Data;
 using UnityEngine;
 
 namespace RhytmFighter.Level.Data
@@ -73,9 +74,9 @@ namespace RhytmFighter.Level.Data
                     cell.SetRoomID(node.ID);
 
                     if (i == 2 && j == 0)
-                        cell.AddObject(new DummyItemObject(1));
+                        cell.AddObject(new DummyItemObject(1, cell));
                     else if (i == 2 && j == 3)
-                        cell.AddObject(new DummyEnemyObject(2));
+                        cell.AddObject(new DummyEnemyObject(2, cell));
                 }
             }
         }
