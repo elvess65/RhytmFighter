@@ -1,16 +1,16 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
-using UnityEngine;
+using RhytmFighter.Objects.View;
 
 namespace RhytmFighter.Objects.Data
 {
     public abstract class AbstractGridObject
     {
-        public int ID { get; private set; }
+        public int ID { get; protected set; }
         public GridObjectTypes Type { get; protected set; }
-        public GridCellData CorrespondingCell { get; private set; }
+        public GridCellData CorrespondingCell { get; protected set; }
+        public AbstractGridObjectView View { get; private set; }
 
-        protected GameObject m_View;
 
         public AbstractGridObject(int id, GridCellData correspondingCell)
         {
@@ -20,22 +20,23 @@ namespace RhytmFighter.Objects.Data
 
         public void Detect(CellView cellView)
         {
-            CreateView(cellView);
+            View = CreateView(cellView);
+            View.Show(this);
         }
 
         public virtual void RemoveView()
         {
-            Object.Destroy(m_View);
+            View.Hide();
         }
 
 
-        protected abstract void CreateView(CellView cellView);
+        protected abstract AbstractGridObjectView CreateView(CellView cellView);
 
     }
 
     public enum GridObjectTypes
     {
         Item,
-        Enemy
+        NPC
     }
 }

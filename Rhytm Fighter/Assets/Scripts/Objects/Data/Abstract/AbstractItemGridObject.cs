@@ -6,6 +6,7 @@ namespace RhytmFighter.Objects.Data
     {
         public AbstractItemGridObject(int id, GridCellData correspondingCell) : base(id, correspondingCell)
         {
+            Type = GridObjectTypes.Item;
         }
 
         public override void Interact()

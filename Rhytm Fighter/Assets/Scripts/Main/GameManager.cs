@@ -65,6 +65,7 @@ namespace RhytmFighter.Main
             m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController);
             m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.LevelController, m_ControllersHolder.PlayerCharacterController);
             m_GameStateAdventure.OnPlayerInteractWithItem += PlayerInteractWithItemHandler;
+            m_GameStateAdventure.OnPlayerInteractWithNPC += PlayerInteractWithNPCHandler;
             m_GameStateMachine.Initialize(m_GameStateIdle);
 
             //Initialize updatables
@@ -103,11 +104,7 @@ namespace RhytmFighter.Main
         private void BuildLevel()
         {
             m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.GetLevelParams(m_DataHolder.PlayerDataModel.CurrentLevelID), false, true);
-            m_ControllersHolder.LevelController.RoomViewBuilder.OnCellWithObjectDetected +=
-                (CellView cell, AbstractGridObject gridObject) =>
-                {
-                    gridObject.Detect(cell);
-                };
+            m_ControllersHolder.LevelController.RoomViewBuilder.OnCellWithObjectDetected += CellWithObjectDetectedHandler;
         }
 
         private void CreatePlayer()
@@ -127,21 +124,49 @@ namespace RhytmFighter.Main
         }
 
 
+        private void CellWithObjectDetectedHandler(CellView cell, AbstractGridObject gridObject)
+        {
+            gridObject.Detect(cell);
+
+            //Detect enemy
+            if (gridObject.Type == GridObjectTypes.NPC)
+            {
+                AbstractNPCGridObject npc = gridObject as AbstractNPCGridObject;
+                if (npc.IsEnemy)
+                {
+                    Debug.LogError("ENEMY WAS DETECTED: ID: " + npc.ID + " IS ENEMY: " + npc.IsEnemy + " VIEW: " + npc.View.gameObject.name);
+                }
+            }
+        }
+
         private void PlayerInteractWithItemHandler(AbstractItemGridObject interactableItem)
         {
             //Interact
-            interactableItem.Interact();
+            PlayerInteractWithObject(interactableItem);
 
             //Lock input for animation time
             m_GameStateMachine.ChangeState(m_GameStateIdle);
 
             //Debug animation time
-            StartCoroutine(TEMP_INTERATCION_COROUTINE());
+            StartCoroutine(TEMP_INTERATCION_COROUTINE(2));
         }
 
-        System.Collections.IEnumerator TEMP_INTERATCION_COROUTINE()
+        private void PlayerInteractWithNPCHandler(AbstractNPCGridObject interactableNPC)
         {
-            yield return new WaitForSeconds(1);
+            //Interact
+            PlayerInteractWithObject(interactableNPC);
+
+            Debug.Log("INTERACT WITH NPC: " + interactableNPC.View.gameObject.name + " " + interactableNPC.ID + " " + interactableNPC.Type);
+        }
+
+        private void PlayerInteractWithObject(AbstractInteractableGridObject interactableObject)
+        {
+            interactableObject.Interact();
+        }
+
+        System.Collections.IEnumerator TEMP_INTERATCION_COROUTINE(float animationDelay)
+        {
+            yield return new WaitForSeconds(animationDelay);
 
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }

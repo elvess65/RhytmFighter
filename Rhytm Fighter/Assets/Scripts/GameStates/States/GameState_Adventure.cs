@@ -11,6 +11,7 @@ namespace RhytmFighter.GameState
     public class GameState_Adventure : GameState_Abstract
     {
         public System.Action<AbstractItemGridObject> OnPlayerInteractWithItem;
+        public System.Action<AbstractNPCGridObject> OnPlayerInteractWithNPC;
 
         private GridInputProxy m_GridInputProxy;
         private GridPositionTrackingController m_GridPositionTrackingController;
@@ -80,6 +81,10 @@ namespace RhytmFighter.GameState
             {
                 case GridObjectTypes.Item:
                     OnPlayerInteractWithItem?.Invoke(interactableObject as AbstractItemGridObject);
+                    break;
+
+                case GridObjectTypes.NPC:
+                    OnPlayerInteractWithNPC?.Invoke(interactableObject as AbstractNPCGridObject);
                     break;
             }
         }

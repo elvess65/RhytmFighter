@@ -74,9 +74,9 @@ namespace RhytmFighter.Level.Data
                     cell.SetRoomID(node.ID);
 
                     if (i == 2 && j == 0)
-                        cell.AddObject(new DummyItemObject(1, cell));
+                        cell.AddObject(new ExampleItemGridObject(1, cell));
                     else if (i == 2 && j == 3)
-                        cell.AddObject(new DummyEnemyObject(2, cell));
+                        cell.AddObject(new ExampleEnemyNPCGridObject(2, cell));
                 }
             }
         }
