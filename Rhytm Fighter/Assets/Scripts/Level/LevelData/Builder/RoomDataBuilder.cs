@@ -76,7 +76,7 @@ namespace RhytmFighter.Level.Data
                     if (i == 2 && j == 0)
                         cell.AddObject(new ExampleItemGridObject(1, cell));
                     else if (i == 2 && j == 3)
-                        cell.AddObject(new ExampleEnemyNPCGridObject(2, cell));
+                        cell.AddObject(new ExampleEnemyNPCGridObject(2, cell, null));
                 }
             }
         }

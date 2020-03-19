@@ -1,24 +1,24 @@
 ﻿using RhytmFighter.Characters;
 using System.Collections.Generic;
 
-namespace RhytmFighter.Main
+namespace RhytmFighter.Battle
 {
     public class BattleController
     {
         public System.Action OnBattleStarted;
         public System.Action OnBattleFinished;
 
-        private Dictionary<int, CharacterWrapper> m_Enemies;
+        private Dictionary<int, iBattleObject> m_Enemies;
 
         public BattleController()
         {
-            m_Enemies = new Dictionary<int, CharacterWrapper>();
+            m_Enemies = new Dictionary<int, iBattleObject>();
         }
 
-        public void AddEnemyToActiveBattle(CharacterWrapper enemyCharacterWrapper)
+        public void AddEnemyToActiveBattle(iBattleObject battleObject)
         {
-            if (!m_Enemies.ContainsKey(enemyCharacterWrapper.ID))
-                m_Enemies.Add(enemyCharacterWrapper.ID, enemyCharacterWrapper);
+            if (!m_Enemies.ContainsKey(1))
+                m_Enemies.Add(1, battleObject);
 
             //Start battle with adding the first enemy
             if (m_Enemies.Count == 1)

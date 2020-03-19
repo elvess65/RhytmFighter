@@ -131,10 +131,10 @@ namespace RhytmFighter.Main
             //Detect enemy
             if (gridObject.Type == GridObjectTypes.NPC)
             {
-                AbstractNPCGridObject npc = gridObject as AbstractNPCGridObject;
-                if (npc.IsEnemy)
+                AbstractBattleNPCGridObject battleNPC = gridObject as AbstractBattleNPCGridObject;
+                if (battleNPC.IsEnemy)
                 {
-                    Debug.LogError("ENEMY WAS DETECTED: ID: " + npc.ID + " IS ENEMY: " + npc.IsEnemy + " VIEW: " + npc.View.gameObject.name);
+                    Debug.LogError("ENEMY WAS DETECTED: ID: " + battleNPC.ID + " IS ENEMY: " + battleNPC.IsEnemy + " VIEW: " + battleNPC.View.gameObject.name);
                 }
             }
         }
@@ -158,6 +158,7 @@ namespace RhytmFighter.Main
 
             Debug.Log("INTERACT WITH NPC: " + interactableNPC.View.gameObject.name + " " + interactableNPC.ID + " " + interactableNPC.Type);
         }
+
 
         private void PlayerInteractWithObject(AbstractInteractableGridObject interactableObject)
         {
