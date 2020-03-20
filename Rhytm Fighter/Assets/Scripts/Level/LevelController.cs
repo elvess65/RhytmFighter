@@ -144,7 +144,7 @@ namespace RhytmFighter.Level
         public void RemoveRoom(int roomID)
         {
             //Model.RemoveRoom(roomID);
-            RoomViewBuilder.RemoveRoom(roomID);
+            RoomViewBuilder.RemoveRoom(Model.GetRoomDataByID(roomID));
         }
 
 

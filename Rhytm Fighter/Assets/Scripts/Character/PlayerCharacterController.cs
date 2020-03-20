@@ -43,7 +43,7 @@ namespace RhytmFighter.Characters
             PlayerCharacter.OnCellVisited += CellVisitedHandler;
 
             //Hide all cells except start cell
-            m_LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_LevelController.Model.GetCurrenRoomData());
+            m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetCurrenRoomData());
 
             //Extend view
             m_LevelController.RoomViewBuilder.ExtendView(m_LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);

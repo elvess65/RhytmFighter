@@ -12,7 +12,7 @@ namespace RhytmFighter.Objects.Data
         public override void Interact()
         {
             CorrespondingCell.RemoveObject();
-            RemoveView();
+            HideView();
         }
     }
 }

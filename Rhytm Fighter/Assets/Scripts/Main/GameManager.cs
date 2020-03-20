@@ -127,10 +127,8 @@ namespace RhytmFighter.Main
         }
 
 
-        private void CellWithObjectDetectedHandler(CellView cell, AbstractGridObject gridObject)
+        private void CellWithObjectDetectedHandler(AbstractGridObject gridObject)
         {
-            gridObject.Detect(cell);
-
             //Detect NPC
             if (gridObject.Type == GridObjectTypes.NPC)
             {

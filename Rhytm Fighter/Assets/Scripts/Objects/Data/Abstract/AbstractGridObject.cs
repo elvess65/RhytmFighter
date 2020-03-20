@@ -18,15 +18,16 @@ namespace RhytmFighter.Objects.Data
             CorrespondingCell = correspondingCell;
         }
 
-        public void Detect(CellView cellView)
+        public void ShowView(CellView cellView)
         {
             View = CreateView(cellView);
             View.Show(this);
         }
 
-        public virtual void RemoveView()
+        public void HideView()
         {
-            View.Hide();
+            if (View != null)
+                View.Hide();
         }
 
 

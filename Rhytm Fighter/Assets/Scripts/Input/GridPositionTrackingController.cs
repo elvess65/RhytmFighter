@@ -56,11 +56,11 @@ namespace RhytmFighter.Input
 
                         //Hide all cells of created room exept gate cell
                         if (isRightRoom)
-                            m_LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
-                                                                                m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.RightNodeGate);
+                            m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true,
+                                                                        m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.RightNodeGate);
                         else
-                            m_LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
-                                                                                m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.LeftNodeGate);
+                            m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true,
+                                                                        m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.LeftNodeGate);
                     }
                     //Visit right node check
                     else if (cellData.IsEqualCoord(cellRoomData.GridData.RightNodeGate))
@@ -73,8 +73,8 @@ namespace RhytmFighter.Input
                         m_CreatedOtherRoomID = cellRoomData.NodeData.RightNode.ID;
 
                         //Hide all cells of created room exept parent gate cell
-                        m_LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
-                                                                            m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.ParentNodeGate);
+                        m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true,
+                                                                    m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.ParentNodeGate);
                     }
                     //Visit left node check
                     else if (cellData.IsEqualCoord(cellRoomData.GridData.LeftNodeGate))
@@ -87,14 +87,17 @@ namespace RhytmFighter.Input
                         m_CreatedOtherRoomID = cellRoomData.NodeData.LeftNode.ID;
 
                         //Hide all cells of created room exept parent gate cell
-                        m_LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID),
-                                                                            m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.ParentNodeGate);
+                        m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true,
+                                                                    m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.ParentNodeGate);
                     }
                 }
                 //Click the cell in other room
                 else
                 {
                     Debug.Log("Transition to other room");
+
+                    //Hide previous room view
+                    m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetCurrenRoomData(), true, m_LastVisitedCell);
 
                     //Cache current room id
                     int currentRoomID = m_LevelController.Model.CurrentRoomID;

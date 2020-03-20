@@ -7,7 +7,7 @@ namespace Frameworks.Grid.View
 {
     public class CellView : MonoBehaviour
     {
-        public System.Action<CellView, AbstractGridObject> OnObjectDetected;
+        public System.Action<AbstractGridObject> OnObjectDetected;
 
         private Abstract_CellContent m_CellContent;
         private iCellAppearanceStrategy m_CellAppearanceStrategy;
@@ -42,9 +42,15 @@ namespace Frameworks.Grid.View
             if (!CorrespondingCellData.IsVisited)
                 CorrespondingCellData.IsVisited = true;
 
-            //Notify if cell contains object
+            //If cell contains object
             if (CorrespondingCellData.HasObject)
-                OnObjectDetected?.Invoke(this, CorrespondingCellData.GetObject());
+            {
+                //Show object graphics
+                CorrespondingCellData.GetObject().ShowView(this);
+
+                //Notify about object detection
+                OnObjectDetected?.Invoke(CorrespondingCellData.GetObject());
+            }
         }
 
         public void HideCell()
@@ -53,6 +59,13 @@ namespace Frameworks.Grid.View
                 return;
 
             m_CellAppearanceStrategy.Hide();
+
+            //If cell contains object
+            if (CorrespondingCellData.HasObject)
+            {
+                //Hide object graphics
+                CorrespondingCellData.GetObject().HideView();
+            }
         }
     }
 }

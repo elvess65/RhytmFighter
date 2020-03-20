@@ -1,7 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View.Cell;
 using RhytmFighter.Level.Data;
-using RhytmFighter.Objects;
 using RhytmFighter.Objects.Data;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +9,7 @@ namespace Frameworks.Grid.View
 {
     public class GridViewBuilder 
     {
-        public System.Action<CellView, AbstractGridObject> OnCellWithObjectDetected;
+        public System.Action<AbstractGridObject> OnCellWithObjectDetected;
 
         private float m_CellOffset => 1.1f;
         private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
@@ -59,15 +58,15 @@ namespace Frameworks.Grid.View
         /// Remove room graphics
         /// </summary>
         /// <param name="roomID"></param>
-        public void RemoveRoom(int roomID)
+        public void RemoveRoom(LevelRoomData roomData)
         {
-            if (m_GridViews.ContainsKey(roomID))
+            if (m_GridViews.ContainsKey(roomData.ID))
             {
                 //Remove parent - remove all grids
-                MonoBehaviour.Destroy(m_GridViews[roomID].GridParent.gameObject);
+                MonoBehaviour.Destroy(m_GridViews[roomData.ID].GridParent.gameObject);
 
                 //Remove data
-                m_GridViews.Remove(roomID);
+                m_GridViews.Remove(roomData.ID);
             }
         }
 
@@ -85,9 +84,9 @@ namespace Frameworks.Grid.View
 
 
         /// <summary>
-        /// Hide all cells of the room with exception
+        /// Hide all cells of the room with exception and with ignore visited options
         /// </summary>
-        public void HideAllUnvisitedCells(LevelRoomData roomData, GridCellData exceptionalCell = null)
+        public void HideCells(LevelRoomData roomData, bool ignoreVisited = false, GridCellData exceptionalCell = null)
         {
             for (int i = 0; i < roomData.GridData.WidthInCells; i++)
             {
@@ -97,7 +96,7 @@ namespace Frameworks.Grid.View
                     CellView cellView = GetCellVisual(roomData.ID, i, j);
 
                     //If cell view is not exceptional - try hide if is not visited
-                    if (!cellView.CorrespondingCellData.IsEqualCoord(exceptionalCell) && !cellView.CorrespondingCellData.IsVisited)
+                    if (!cellView.CorrespondingCellData.IsEqualCoord(exceptionalCell) && (ignoreVisited || !cellView.CorrespondingCellData.IsVisited))
                         cellView.HideCell();
                 }
             }
@@ -217,11 +216,11 @@ namespace Frameworks.Grid.View
                         switch (gatesToNodeProperty.GateType)
                         {
                             case GridCellProperty_GateToNode.GateTypes.ToParentNode:
-                                cellContentObj.transform.localScale *= 0.5f;
+                                //cellContentObj.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.yellow);
                                 break;
 
                             case GridCellProperty_GateToNode.GateTypes.ToNextNode:
-                                cellContentObj.transform.localScale *= 0.3f;
+                                //cellContentObj.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.yellow);
                                 break;
                         }
                     }
@@ -229,7 +228,7 @@ namespace Frameworks.Grid.View
             }
         }
 
-        void CellWithObjectDetectedHandler(CellView cell, AbstractGridObject objectInCell) => OnCellWithObjectDetected?.Invoke(cell, objectInCell);
+        void CellWithObjectDetectedHandler(AbstractGridObject objectInCell) => OnCellWithObjectDetected?.Invoke(objectInCell);
     }
 
 

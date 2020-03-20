@@ -12,12 +12,6 @@ namespace RhytmFighter.Objects.Data
         {
         }
 
-        public override void RemoveView()
-        {
-            base.RemoveView();
-            Debug.Log("REMOVE VIEW FOR ENEMY " + ID + " in CELL " + CorrespondingCell);
-        }
-
         protected override AbstractGridObjectView CreateView(CellView cellView)
         {
             GameObject view = GameObject.CreatePrimitive(PrimitiveType.Cube);
