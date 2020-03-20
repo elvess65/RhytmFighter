@@ -9,7 +9,6 @@ namespace RhytmFighter.Characters.Movement
     {
         public event Action OnMovementFinished;
         public event Action<int> OnCellVisited;
-        public event Action OnMovementInterrupted;
 
         //Movement
         private float m_MoveSpeed;
@@ -63,7 +62,10 @@ namespace RhytmFighter.Characters.Movement
             }
         }
 
-        public void StopMove() => m_MovePathController.StopMovement();
+        public void StopMove()
+        {
+            m_MovePathController.StopMovement();
+        }
 
         public void Update(float deltaTime)
         {
@@ -96,9 +98,6 @@ namespace RhytmFighter.Characters.Movement
             //Событие посещения ячейки (Индекс клетки из массива пути, в котором сейчас пребывает персонаж)
             OnCellVisited?.Invoke(++m_CurPathIndex);
         }
-
-        void MovementInterruptedHandler() => OnMovementInterrupted?.Invoke();
-
 
         VertexPath GenerateVertexPath(Vector3[] points, out BezierPath bezierPath)
         {

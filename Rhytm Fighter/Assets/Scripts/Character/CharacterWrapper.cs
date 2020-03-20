@@ -11,7 +11,6 @@ namespace RhytmFighter.Characters
     {
         public event System.Action OnMovementFinished;
         public event System.Action<int> OnCellVisited;
-        public event System.Action OnMovementInterrupted;
 
         private iMovementStrategy m_MoveStrategy;
 
@@ -27,7 +26,6 @@ namespace RhytmFighter.Characters
             m_MoveStrategy = new Bezier_MovementStrategy(transform, moveSpeed);
             m_MoveStrategy.OnMovementFinished += MovementFinishedHandler;
             m_MoveStrategy.OnCellVisited += CellVisitedHandler;
-            m_MoveStrategy.OnMovementInterrupted += MovementInterruptedHandler;
         }
 
 
@@ -45,7 +43,5 @@ namespace RhytmFighter.Characters
         void MovementFinishedHandler() => OnMovementFinished?.Invoke();
 
         void CellVisitedHandler(int index) => OnCellVisited?.Invoke(index);
-
-        void MovementInterruptedHandler() => OnMovementInterrupted();
     }
 }

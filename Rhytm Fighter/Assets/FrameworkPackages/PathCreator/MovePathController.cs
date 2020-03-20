@@ -9,6 +9,7 @@ namespace FrameworkPackage.PathCreation
     public class MovePathController
     {
         public event System.Action OnMovementFinished;
+
         public bool IsMoving { get; private set; }
 
         private VertexPath m_VertexPath;
@@ -44,7 +45,11 @@ namespace FrameworkPackage.PathCreation
         /// <summary>
         /// Остановить движение по пути
         /// </summary>
-        public void StopMovement() => IsMoving = false;
+        public void StopMovement()
+        {
+            IsMoving = false;
+            OnMovementFinished?.Invoke();
+        }
 
         /// <summary>
         /// Изменить множитель времени
@@ -63,10 +68,7 @@ namespace FrameworkPackage.PathCreation
                 ControlledTransform.localEulerAngles = new Vector3(ControlledTransform.localEulerAngles.x, rotation.eulerAngles.y, ControlledTransform.localEulerAngles.z);
 
                 if (DistanceTravelled >= m_VertexPath.length)
-                {
-                    IsMoving = false;
-                    OnMovementFinished?.Invoke();
-                }
+                    StopMovement();
 
                 //Quaternion rot = m_PathCreator.path.GetRotation(t / tt);
                 //Debug.Log(rot.eulerAngles);

@@ -169,13 +169,14 @@ namespace RhytmFighter.Main
         private void BattleStartedHandler()
         {
             Debug.LogError("BATTLE STARTED");
-            m_GameStateMachine.ChangeState(m_GameStateBattle);
+            //m_ControllersHolder.PlayerCharacterController.StopMove();
+            //m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
 
         private void BattleFinishedHandler()
         {
             Debug.LogError("BATTLE FINISHED");
-            m_GameStateMachine.ChangeState(m_GameStateAdventure);
+            //m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
 
 

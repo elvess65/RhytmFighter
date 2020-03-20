@@ -15,7 +15,6 @@ namespace RhytmFighter.Characters
     {
         public event System.Action<GridCellData> OnMovementFinished;
         public event System.Action<GridCellData> OnCellVisited;
-        public event System.Action OnMovementInterrupted;
         public event System.Action<AbstractInteractableGridObject> OnPlayerInteractsWithObject;
 
         private event System.Action m_OnMovementFinishedInternal;
@@ -42,7 +41,6 @@ namespace RhytmFighter.Characters
             PlayerCharacter.Initialize(startCellView.transform.position, moveSpeed);
             PlayerCharacter.OnMovementFinished += MovementFinishedHandler;
             PlayerCharacter.OnCellVisited += CellVisitedHandler;
-            PlayerCharacter.OnMovementInterrupted += MovementInterruptedHandler;
 
             //Hide all cells except start cell
             m_LevelController.RoomViewBuilder.HideAllUnvisitedCells(m_LevelController.Model.GetCurrenRoomData());
@@ -113,6 +111,11 @@ namespace RhytmFighter.Characters
             PlayerCharacter.StartMove(pathPos.ToArray());
         }
 
+        public void StopMove()
+        {
+            PlayerCharacter.StopMove();
+        }
+
 
         public void PerformUpdate(float deltaTime)
         {
@@ -128,8 +131,6 @@ namespace RhytmFighter.Characters
         }
 
         private void CellVisitedHandler(int index) => OnCellVisited?.Invoke(m_PathCells[index]);
-
-        private void MovementInterruptedHandler() => OnMovementInterrupted?.Invoke();
 
         private void PlayerInteractsWithObjectHandler(AbstractInteractableGridObject interactableObject) => OnPlayerInteractsWithObject?.Invoke(interactableObject);
     }

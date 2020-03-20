@@ -6,7 +6,6 @@ namespace RhytmFighter.Characters.Movement
     {
         event System.Action OnMovementFinished;
         event System.Action<int> OnCellVisited;
-        event System.Action OnMovementInterrupted;
 
         bool IsMoving { get; }
 

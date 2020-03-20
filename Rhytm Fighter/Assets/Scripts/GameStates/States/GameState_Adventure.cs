@@ -32,14 +32,12 @@ namespace RhytmFighter.GameState
         {
             m_PlayerCharacterController.OnCellVisited += CellVisitedHandler;
             m_PlayerCharacterController.OnMovementFinished += MovementFinishedHandler;
-            m_PlayerCharacterController.OnMovementInterrupted += MovementInterruptedHandler;
         }
 
         public override void ExitState()
         {
             m_PlayerCharacterController.OnCellVisited -= CellVisitedHandler;
             m_PlayerCharacterController.OnMovementFinished -= MovementFinishedHandler;
-            m_PlayerCharacterController.OnMovementInterrupted -= MovementInterruptedHandler;
         }
 
         public override void HandleTouch(Vector3 mouseScreenPos)
@@ -64,11 +62,6 @@ namespace RhytmFighter.GameState
         {
             //Refresh grid
             m_GridPositionTrackingController.Refresh(cellData);
-        }
-
-        private void MovementInterruptedHandler()
-        {
-            Debug.LogError("MovementInterruptedHandler");
         }
 
         private void PlayerInteractsWithObjectHandler(AbstractInteractableGridObject interactableObject)
