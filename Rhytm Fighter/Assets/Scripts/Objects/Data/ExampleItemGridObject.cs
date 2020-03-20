@@ -20,8 +20,6 @@ namespace RhytmFighter.Objects.Data
 
         protected override AbstractGridObjectView CreateView(CellView cellView)
         {
-            Debug.Log("CREATE VIEW FOR ITEM " + ID + " in CELL " + CorrespondingCell);
-
             GameObject view = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             view.GetComponent<Collider>().enabled = false;
             view.transform.localScale = Vector3.one * 0.2f;

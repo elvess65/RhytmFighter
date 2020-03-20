@@ -30,8 +30,6 @@ namespace RhytmFighter.GameState
 
         public override void EnterState()
         {
-            Debug.Log("ENTER ADVENTURE STATE");
-
             m_PlayerCharacterController.OnCellVisited += CellVisitedHandler;
             m_PlayerCharacterController.OnMovementFinished += MovementFinishedHandler;
             m_PlayerCharacterController.OnMovementInterrupted += MovementInterruptedHandler;
@@ -39,8 +37,6 @@ namespace RhytmFighter.GameState
 
         public override void ExitState()
         {
-            Debug.Log("EXIT ADVENTURE STATE");
-
             m_PlayerCharacterController.OnCellVisited -= CellVisitedHandler;
             m_PlayerCharacterController.OnMovementFinished -= MovementFinishedHandler;
             m_PlayerCharacterController.OnMovementInterrupted -= MovementInterruptedHandler;

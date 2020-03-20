@@ -1,5 +1,4 @@
-﻿using RhytmFighter.Characters;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace RhytmFighter.Battle
 {
@@ -17,8 +16,9 @@ namespace RhytmFighter.Battle
 
         public void AddEnemyToActiveBattle(iBattleObject battleObject)
         {
-            if (!m_Enemies.ContainsKey(1))
-                m_Enemies.Add(1, battleObject);
+            //Add enemy to process list
+            if (!m_Enemies.ContainsKey(battleObject.ID))
+                m_Enemies.Add(battleObject.ID, battleObject);
 
             //Start battle with adding the first enemy
             if (m_Enemies.Count == 1)

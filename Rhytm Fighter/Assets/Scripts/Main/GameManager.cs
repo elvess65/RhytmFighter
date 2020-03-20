@@ -1,5 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
+using RhytmFighter.Battle;
 using RhytmFighter.Characters;
 using RhytmFighter.Data;
 using RhytmFighter.GameState;
@@ -83,6 +84,8 @@ namespace RhytmFighter.Main
 
             //Subscribe for events
             m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
+            m_ControllersHolder.BattleController.OnBattleStarted += BattleStartedHandler;
+            m_ControllersHolder.BattleController.OnBattleFinished += BattleFinishedHandler;
         }
 
         private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)
@@ -128,13 +131,16 @@ namespace RhytmFighter.Main
         {
             gridObject.Detect(cell);
 
-            //Detect enemy
+            //Detect NPC
             if (gridObject.Type == GridObjectTypes.NPC)
             {
-                AbstractBattleNPCGridObject battleNPC = gridObject as AbstractBattleNPCGridObject;
-                if (battleNPC.IsEnemy)
+                //Detect battle NPC
+                iBattleObject battleObject = gridObject as iBattleObject;
+                if (battleObject != null)
                 {
-                    Debug.LogError("ENEMY WAS DETECTED: ID: " + battleNPC.ID + " IS ENEMY: " + battleNPC.IsEnemy + " VIEW: " + battleNPC.View.gameObject.name);
+                    //Detect enemy
+                    if (battleObject.IsEnemy)
+                        m_ControllersHolder.BattleController.AddEnemyToActiveBattle(battleObject);
                 }
             }
         }
@@ -157,6 +163,19 @@ namespace RhytmFighter.Main
             PlayerInteractWithObject(interactableNPC);
 
             Debug.Log("INTERACT WITH NPC: " + interactableNPC.View.gameObject.name + " " + interactableNPC.ID + " " + interactableNPC.Type);
+        }
+
+
+        private void BattleStartedHandler()
+        {
+            Debug.LogError("BATTLE STARTED");
+            m_GameStateMachine.ChangeState(m_GameStateBattle);
+        }
+
+        private void BattleFinishedHandler()
+        {
+            Debug.LogError("BATTLE FINISHED");
+            m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
 
 
