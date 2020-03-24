@@ -5,11 +5,11 @@ using RhytmFighter.Battle.Health;
 using RhytmFighter.Objects.View;
 using UnityEngine;
 
-namespace RhytmFighter.Objects.Data
+namespace RhytmFighter.Objects.Model
 {
-    public class ExampleEnemyNPCGridObject : AbstractBattleNPCGridObject
+    public class StandardEnemyNPCModel : AbstractBattleNPCModel
     {
-        public ExampleEnemyNPCGridObject(int id, GridCellData correspondingCell, iBattleActionBehaviour actionBehaviour, iHealthBehaviour healthBehaviour) : 
+        public StandardEnemyNPCModel(int id, GridCellData correspondingCell, iBattleActionBehaviour actionBehaviour, iHealthBehaviour healthBehaviour) : 
             base(id, correspondingCell, actionBehaviour, healthBehaviour, true)
         {
         }
@@ -21,7 +21,7 @@ namespace RhytmFighter.Objects.Data
             view.transform.localScale = Vector3.one * 0.2f;
             view.transform.position = cellView.transform.position + new Vector3(0, 0.2f, 0);
 
-            return view.AddComponent<ExampleNPCView>();
+            return view.AddComponent<StandardEnemyNPCView>();
         }
     }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 namespace RhytmFighter.Characters
 {
     /// <summary>
-    /// Character wrapper
+    /// Player view
     /// </summary>
-    public class CharacterWrapper : MonoBehaviour, iUpdatable
+    public class PlayerView : MonoBehaviour, iUpdatable
     {
         public event System.Action OnMovementFinished;
         public event System.Action<int> OnCellVisited;

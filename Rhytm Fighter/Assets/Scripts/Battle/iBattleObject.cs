@@ -9,6 +9,6 @@ namespace RhytmFighter.Battle
         bool IsEnemy { get; }
 
         iBattleActionBehaviour ActionBehaviour { get; }
-        iHealthBehaviour HealthBehaviour { get; } 
+        iHealthBehaviour HealthBehaviour { get; }
     }
 }

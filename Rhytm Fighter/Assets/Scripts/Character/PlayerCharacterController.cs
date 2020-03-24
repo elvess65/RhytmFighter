@@ -2,7 +2,7 @@
 using Frameworks.Grid.View;
 using RhytmFighter.Interfaces;
 using RhytmFighter.Level;
-using RhytmFighter.Objects.Data;
+using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,11 +15,11 @@ namespace RhytmFighter.Characters
     {
         public event System.Action<GridCellData> OnMovementFinished;
         public event System.Action<GridCellData> OnCellVisited;
-        public event System.Action<AbstractInteractableGridObject> OnPlayerInteractsWithObject;
+        public event System.Action<AbstractInteractableObjectModel> OnPlayerInteractsWithObject;
 
         private event System.Action m_OnMovementFinishedInternal;
 
-        public CharacterWrapper PlayerCharacter { get; private set; }
+        public PlayerView PlayerCharacter { get; private set; }
 
         private GridCellData[] m_PathCells;
         private CellView m_CurrentPlayerCell;
@@ -28,7 +28,7 @@ namespace RhytmFighter.Characters
         private const float m_CLOSEST_WALKABLE_CELL_RANGE = 1.5f;
 
 
-        public void CreateCharacter(CharacterWrapper characterWrapper, float moveSpeed, CellView startCellView, LevelController levelController)
+        public void CreateCharacter(PlayerView characterWrapper, float moveSpeed, CellView startCellView, LevelController levelController)
         {
             m_LevelController = levelController;
 
@@ -60,7 +60,7 @@ namespace RhytmFighter.Characters
             //If cell has object - move to the closest cell
             if (targetCellData.HasObject)
             {
-                AbstractInteractableGridObject interactableGridObject = targetCellView.CorrespondingCellData.GetObject() as AbstractInteractableGridObject;
+                AbstractInteractableObjectModel interactableGridObject = targetCellView.CorrespondingCellData.GetObject() as AbstractInteractableObjectModel;
                 if (interactableGridObject == null)
                 {
                     Debug.LogError("ERROR: Trying to interact with non interactable object");
@@ -131,6 +131,6 @@ namespace RhytmFighter.Characters
 
         private void CellVisitedHandler(int index) => OnCellVisited?.Invoke(m_PathCells[index]);
 
-        private void PlayerInteractsWithObjectHandler(AbstractInteractableGridObject interactableObject) => OnPlayerInteractsWithObject?.Invoke(interactableObject);
+        private void PlayerInteractsWithObjectHandler(AbstractInteractableObjectModel interactableObject) => OnPlayerInteractsWithObject?.Invoke(interactableObject);
     }
 }

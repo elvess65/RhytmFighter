@@ -6,7 +6,7 @@ using RhytmFighter.Data;
 using RhytmFighter.GameState;
 using RhytmFighter.Interfaces;
 using RhytmFighter.Objects;
-using RhytmFighter.Objects.Data;
+using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +22,7 @@ namespace RhytmFighter.Main
         public Transform CameraRoot;
 
         [Header("Temp")]
-        public CharacterWrapper Player;//temp
+        public PlayerView Player;//temp
         public GameObject BeatIndicatorTemp;
 
         private DataHolder m_DataHolder;
@@ -139,7 +139,7 @@ namespace RhytmFighter.Main
         }
 
 
-        private void CellWithObjectDetectedHandler(AbstractGridObject gridObject)
+        private void CellWithObjectDetectedHandler(AbstractGridObjectModel gridObject)
         {
             //Detect NPC
             if (gridObject.Type == GridObjectTypes.NPC)
@@ -155,7 +155,7 @@ namespace RhytmFighter.Main
             }
         }
 
-        private void PlayerInteractWithItemHandler(AbstractItemGridObject interactableItem)
+        private void PlayerInteractWithItemHandler(AbstractItemModel interactableItem)
         {
             //Interact
             PlayerInteractWithObject(interactableItem);
@@ -167,7 +167,7 @@ namespace RhytmFighter.Main
             StartCoroutine(TEMP_INTERATCION_COROUTINE(2));
         }
 
-        private void PlayerInteractWithNPCHandler(AbstractNPCGridObject interactableNPC)
+        private void PlayerInteractWithNPCHandler(AbstractNPCModel interactableNPC)
         {
             //Interact
             PlayerInteractWithObject(interactableNPC);
@@ -211,7 +211,7 @@ namespace RhytmFighter.Main
         }
 
 
-        private void PlayerInteractWithObject(AbstractInteractableGridObject interactableObject)
+        private void PlayerInteractWithObject(AbstractInteractableObjectModel interactableObject)
         {
             interactableObject.Interact();
         }

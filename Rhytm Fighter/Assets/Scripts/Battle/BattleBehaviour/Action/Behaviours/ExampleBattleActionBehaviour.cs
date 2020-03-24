@@ -4,6 +4,8 @@ namespace RhytmFighter.Battle.Action.Behaviours
 {
     public class ExampleBattleActionBehaviour : iBattleActionBehaviour
     {
+        public event System.Action OnActionExecuted;
+
         private int m_CycleIterator = 0;
         private int m_ActionIterator = 0;
         private int m_IdlesBeforeAttack;
@@ -35,6 +37,7 @@ namespace RhytmFighter.Battle.Action.Behaviours
                     {
                         case PatternActionTypes.Action:
                             Debug.LogError("Execute battle action");
+                            OnActionExecuted?.Invoke();
                             break;
                     }
                 }

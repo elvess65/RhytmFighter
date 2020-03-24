@@ -1,5 +1,5 @@
 ﻿using RhytmFighter.Objects;
-using RhytmFighter.Objects.Data;
+using RhytmFighter.Objects.Model;
 using UnityEngine;
 
 namespace Frameworks.Grid.Data
@@ -28,7 +28,7 @@ namespace Frameworks.Grid.Data
         public Vector2Int CoordAsVec2Int => new Vector2Int(X, Y);
         public GridCellData ParentNodeData;
 
-        private AbstractGridObject m_Object;
+        private AbstractGridObjectModel m_Object;
 
         public GridCellData(int xCoord, int yCoord, float cellSize, CellTypes type)
         {
@@ -42,9 +42,9 @@ namespace Frameworks.Grid.Data
         }
 
 
-        public void AddObject(AbstractGridObject obj) => m_Object = obj;
+        public void AddObject(AbstractGridObjectModel obj) => m_Object = obj;
 
-        public AbstractGridObject GetObject() => m_Object;
+        public AbstractGridObjectModel GetObject() => m_Object;
 
         public void RemoveObject() => m_Object = null;
 

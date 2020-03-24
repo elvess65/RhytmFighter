@@ -1,7 +1,7 @@
 ﻿using Frameworks.Grid.Data;
 using RhytmFighter.Battle.Action.Behaviours;
 using RhytmFighter.Battle.Health.Behaviours;
-using RhytmFighter.Objects.Data;
+using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -91,7 +91,7 @@ namespace RhytmFighter.Level.Data
             
             int rndIndex = Random.Range(0, m_EmptyCells.Count);
 
-            ExampleItemGridObject item = new ExampleItemGridObject(1, m_EmptyCells[rndIndex]);
+            StandardItemModel item = new StandardItemModel(1, m_EmptyCells[rndIndex]);
             m_EmptyCells[rndIndex].AddObject(item);
             m_EmptyCells.RemoveAt(rndIndex);
 
@@ -99,7 +99,7 @@ namespace RhytmFighter.Level.Data
             {
                 rndIndex = Random.Range(0, m_EmptyCells.Count);
 
-                ExampleEnemyNPCGridObject enemyNPC = new ExampleEnemyNPCGridObject(2, m_EmptyCells[rndIndex], new ExampleBattleActionBehaviour(), new ExampleHealthBehaviour(2, 3));
+                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(2, m_EmptyCells[rndIndex], new ExampleBattleActionBehaviour(), new ExampleHealthBehaviour(2, 3));
                 m_EmptyCells[rndIndex].AddObject(enemyNPC);
                 m_EmptyCells.RemoveAt(rndIndex);
             }

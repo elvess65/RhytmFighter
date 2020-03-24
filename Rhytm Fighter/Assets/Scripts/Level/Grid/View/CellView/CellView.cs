@@ -1,13 +1,13 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View.Cell;
-using RhytmFighter.Objects.Data;
+using RhytmFighter.Objects.Model;
 using UnityEngine;
 
 namespace Frameworks.Grid.View
 {
     public class CellView : MonoBehaviour
     {
-        public System.Action<AbstractGridObject> OnObjectDetected;
+        public System.Action<AbstractGridObjectModel> OnObjectDetected;
 
         private Abstract_CellContent m_CellContent;
         private iCellAppearanceStrategy m_CellAppearanceStrategy;

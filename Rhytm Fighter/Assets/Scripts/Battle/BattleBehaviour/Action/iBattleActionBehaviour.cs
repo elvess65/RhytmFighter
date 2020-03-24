@@ -2,6 +2,8 @@
 {
     public interface iBattleActionBehaviour
     {
+        event System.Action OnActionExecuted;
+
         void ExecuteAction();
     }
 

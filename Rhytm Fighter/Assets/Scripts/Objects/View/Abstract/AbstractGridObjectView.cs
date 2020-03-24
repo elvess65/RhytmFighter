@@ -1,14 +1,14 @@
-﻿using RhytmFighter.Objects.Data;
+﻿using RhytmFighter.Objects.Model;
 using UnityEngine;
 
 namespace RhytmFighter.Objects.View
 {
     public abstract class AbstractGridObjectView : MonoBehaviour
     {
-        public AbstractGridObject CorrespondingGridObject { get; protected set; }
+        public AbstractGridObjectModel CorrespondingGridObject { get; protected set; }
 
 
-        public virtual void Show(AbstractGridObject correspondingGridObject)
+        public virtual void Show(AbstractGridObjectModel correspondingGridObject)
         {
             CorrespondingGridObject = correspondingGridObject;
         }

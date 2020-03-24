@@ -8,7 +8,6 @@ namespace RhytmFighter.Battle
         public System.Action OnBattleStarted;
         public System.Action OnBattleFinished;
 
-        private iBattleObject m_Player;
         private Dictionary<int, iBattleObject> m_Enemies;
 
 
@@ -28,16 +27,6 @@ namespace RhytmFighter.Battle
                 OnBattleStarted();
         }
 
-        public void SetPlayer(iBattleObject player)
-        {
-            m_Player = player;
-        }
-
-        public iBattleObject GetClosestEnemy()
-        {
-            return null;
-        }
-
         public void RhytmBeatHandler()
         {
             foreach (iBattleObject enemy in m_Enemies.Values)
@@ -45,7 +34,7 @@ namespace RhytmFighter.Battle
         }
 
 
-        private void HandleEnemyDestroyed(int id)
+        private void EnemyDestroyedHandler(int id)
         {
             if (m_Enemies.ContainsKey(id))
                 m_Enemies.Remove(id);

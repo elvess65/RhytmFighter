@@ -3,15 +3,15 @@ using Frameworks.Grid.View;
 using RhytmFighter.Characters;
 using RhytmFighter.Input;
 using RhytmFighter.Level;
-using RhytmFighter.Objects.Data;
+using RhytmFighter.Objects.Model;
 using UnityEngine;
 
 namespace RhytmFighter.GameState
 {
     public class GameState_Adventure : GameState_Abstract
     {
-        public System.Action<AbstractItemGridObject> OnPlayerInteractWithItem;
-        public System.Action<AbstractNPCGridObject> OnPlayerInteractWithNPC;
+        public System.Action<AbstractItemModel> OnPlayerInteractWithItem;
+        public System.Action<AbstractNPCModel> OnPlayerInteractWithNPC;
 
         private GridInputProxy m_GridInputProxy;
         private GridPositionTrackingController m_GridPositionTrackingController;
@@ -64,16 +64,16 @@ namespace RhytmFighter.GameState
             m_GridPositionTrackingController.Refresh(cellData);
         }
 
-        private void PlayerInteractsWithObjectHandler(AbstractInteractableGridObject interactableObject)
+        private void PlayerInteractsWithObjectHandler(AbstractInteractableObjectModel interactableObject)
         {
             switch(interactableObject.Type)
             {
                 case GridObjectTypes.Item:
-                    OnPlayerInteractWithItem?.Invoke(interactableObject as AbstractItemGridObject);
+                    OnPlayerInteractWithItem?.Invoke(interactableObject as AbstractItemModel);
                     break;
 
                 case GridObjectTypes.NPC:
-                    OnPlayerInteractWithNPC?.Invoke(interactableObject as AbstractNPCGridObject);
+                    OnPlayerInteractWithNPC?.Invoke(interactableObject as AbstractNPCModel);
                     break;
             }
         }
