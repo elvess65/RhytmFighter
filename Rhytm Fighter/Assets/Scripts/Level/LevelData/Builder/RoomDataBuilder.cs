@@ -1,5 +1,6 @@
 ﻿using Frameworks.Grid.Data;
-using RhytmFighter.Objects;
+using RhytmFighter.Battle.Action.Behaviours;
+using RhytmFighter.Battle.Health.Behaviours;
 using RhytmFighter.Objects.Data;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +13,8 @@ namespace RhytmFighter.Level.Data
 
         public LevelRoomData Build(LevelNodeData node, int minWidth, int maxWidth, int minHeight, int maxheight, float cellSize, int fillPercent)
         {
-            Debug.LogError("Build data for room " + node.ID);
             m_EmptyCells = new List<GridCellData>();
+
             Random.InitState(node.NodeSeed);
 
             int width = Random.Range(minWidth, maxWidth);
@@ -89,16 +90,19 @@ namespace RhytmFighter.Level.Data
 
             
             int rndIndex = Random.Range(0, m_EmptyCells.Count);
-            m_EmptyCells[rndIndex].AddObject(new ExampleItemGridObject(1, m_EmptyCells[rndIndex]));
+
+            ExampleItemGridObject item = new ExampleItemGridObject(1, m_EmptyCells[rndIndex]);
+            m_EmptyCells[rndIndex].AddObject(item);
             m_EmptyCells.RemoveAt(rndIndex);
 
             if (!node.IsStartNode)
             {
                 rndIndex = Random.Range(0, m_EmptyCells.Count);
-                m_EmptyCells[rndIndex].AddObject(new ExampleEnemyNPCGridObject(2, m_EmptyCells[rndIndex], null));
+
+                ExampleEnemyNPCGridObject enemyNPC = new ExampleEnemyNPCGridObject(2, m_EmptyCells[rndIndex], new ExampleBattleActionBehaviour(), new ExampleHealthBehaviour(2, 3));
+                m_EmptyCells[rndIndex].AddObject(enemyNPC);
                 m_EmptyCells.RemoveAt(rndIndex);
             }
-
         }
     }
 }

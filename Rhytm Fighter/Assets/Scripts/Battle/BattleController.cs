@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace RhytmFighter.Battle
 {
@@ -7,7 +8,9 @@ namespace RhytmFighter.Battle
         public System.Action OnBattleStarted;
         public System.Action OnBattleFinished;
 
+        private iBattleObject m_Player;
         private Dictionary<int, iBattleObject> m_Enemies;
+
 
         public BattleController()
         {
@@ -24,6 +27,23 @@ namespace RhytmFighter.Battle
             if (m_Enemies.Count == 1)
                 OnBattleStarted();
         }
+
+        public void SetPlayer(iBattleObject player)
+        {
+            m_Player = player;
+        }
+
+        public iBattleObject GetClosestEnemy()
+        {
+            return null;
+        }
+
+        public void RhytmBeatHandler()
+        {
+            foreach (iBattleObject enemy in m_Enemies.Values)
+                enemy.ActionBehaviour.ExecuteAction();
+        }
+
 
         private void HandleEnemyDestroyed(int id)
         {

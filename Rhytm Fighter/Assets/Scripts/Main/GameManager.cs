@@ -179,6 +179,9 @@ namespace RhytmFighter.Main
         private void BattleStartedHandler()
         {
             Debug.LogError("BEGIN BATTLE");
+
+            m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.BattleController.RhytmBeatHandler;
+
             m_ControllersHolder.PlayerCharacterController.StopMove();
             m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
@@ -186,6 +189,9 @@ namespace RhytmFighter.Main
         private void BattleFinishedHandler()
         {
             Debug.LogError("BATTLE FINISHED");
+
+            m_ControllersHolder.RhytmController.OnBeat -= m_ControllersHolder.BattleController.RhytmBeatHandler;
+
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
 

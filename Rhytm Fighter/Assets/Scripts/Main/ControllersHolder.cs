@@ -20,8 +20,10 @@ namespace RhytmFighter.Main
         public RhytmController RhytmController { get; private set; }
         public CameraController CameraController { get; private set; }
         public BattleController BattleController { get; private set; }
+
         public PlayerCharacterController PlayerCharacterController { get; private set; }
         
+
         public ControllersHolder()
         {
             int bps = 60;
@@ -33,9 +35,9 @@ namespace RhytmFighter.Main
             RhytmController = new RhytmController(bps);
             CameraController = new CameraController();
             BattleController = new BattleController();
-            PlayerCharacterController = new PlayerCharacterController();
-
             RhytmInputProxy = new RhytmInputProxy(RhytmController, 0.25);
+
+            PlayerCharacterController = new PlayerCharacterController();
         }
     }
 }

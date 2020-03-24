@@ -1,6 +1,7 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
-using RhytmFighter.Battle;
+using RhytmFighter.Battle.Action;
+using RhytmFighter.Battle.Health;
 using RhytmFighter.Objects.View;
 using UnityEngine;
 
@@ -8,7 +9,8 @@ namespace RhytmFighter.Objects.Data
 {
     public class ExampleEnemyNPCGridObject : AbstractBattleNPCGridObject
     {
-        public ExampleEnemyNPCGridObject(int id, GridCellData correspondingCell, iBattleBehaviour battleBehaviour) : base(id, correspondingCell, battleBehaviour, true)
+        public ExampleEnemyNPCGridObject(int id, GridCellData correspondingCell, iBattleActionBehaviour actionBehaviour, iHealthBehaviour healthBehaviour) : 
+            base(id, correspondingCell, actionBehaviour, healthBehaviour, true)
         {
         }
 
