@@ -3,6 +3,7 @@ using RhytmFighter.Camera;
 using RhytmFighter.Characters;
 using RhytmFighter.Input;
 using RhytmFighter.Level;
+using RhytmFighter.Rhytm;
 
 namespace RhytmFighter.Main
 {
@@ -12,21 +13,29 @@ namespace RhytmFighter.Main
     public class ControllersHolder
     {
         public GridInputProxy GridInputProxy { get; private set; }
+        public RhytmInputProxy RhytmInputProxy { get; private set; }
 
         public LevelController LevelController { get; private set; }
         public InputController InputController { get; private set; }
+        public RhytmController RhytmController { get; private set; }
         public CameraController CameraController { get; private set; }
         public BattleController BattleController { get; private set; }
         public PlayerCharacterController PlayerCharacterController { get; private set; }
         
         public ControllersHolder()
         {
+            int bps = 60;
+
             GridInputProxy = new GridInputProxy();
+
             LevelController = new LevelController();
             InputController = new InputController();
+            RhytmController = new RhytmController(bps);
             CameraController = new CameraController();
             BattleController = new BattleController();
             PlayerCharacterController = new PlayerCharacterController();
+
+            RhytmInputProxy = new RhytmInputProxy(RhytmController, 0.25);
         }
     }
 }

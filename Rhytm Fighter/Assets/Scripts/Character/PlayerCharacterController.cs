@@ -57,7 +57,6 @@ namespace RhytmFighter.Characters
 
             GridCellData targetCellData = targetCellView.CorrespondingCellData;
 
-
             //If cell has object - move to the closest cell
             if (targetCellData.HasObject)
             {
@@ -93,7 +92,7 @@ namespace RhytmFighter.Characters
                 targetCellView = m_LevelController.RoomViewBuilder.GetCellVisual(targetCellData.CorrespondingRoomID, targetCellData.X, targetCellData.Y);
             }
 
-
+            
             //Find path of cells
             m_PathCells = m_LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(m_CurrentPlayerCell.CorrespondingCellData, targetCellData);
             m_CurrentPlayerCell = targetCellView;

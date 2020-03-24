@@ -216,11 +216,11 @@ namespace Frameworks.Grid.View
                         switch (gatesToNodeProperty.GateType)
                         {
                             case GridCellProperty_GateToNode.GateTypes.ToParentNode:
-                                //cellContentObj.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.yellow);
+                                cellContentObj.transform.localScale *= 1.1f;
                                 break;
 
                             case GridCellProperty_GateToNode.GateTypes.ToNextNode:
-                                //cellContentObj.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.yellow);
+                                cellContentObj.transform.localScale *= 1.1f;
                                 break;
                         }
                     }

@@ -23,6 +23,7 @@ namespace RhytmFighter.Main
 
         [Header("Temp")]
         public CharacterWrapper Player;//temp
+        public GameObject BeatIndicatorTemp;
 
         private DataHolder m_DataHolder;
         private GameStateMachine m_GameStateMachine;
@@ -63,7 +64,7 @@ namespace RhytmFighter.Main
 
             //Initialize state machine
             m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController);
-            m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController);
+            m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
             m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.LevelController, m_ControllersHolder.PlayerCharacterController);
             m_GameStateAdventure.OnPlayerInteractWithItem += PlayerInteractWithItemHandler;
             m_GameStateAdventure.OnPlayerInteractWithNPC += PlayerInteractWithNPCHandler;
@@ -73,6 +74,7 @@ namespace RhytmFighter.Main
             m_Updateables = new List<iUpdatable>
             {
                 m_ControllersHolder.InputController,
+                m_ControllersHolder.RhytmController,
                 m_ControllersHolder.CameraController,
                 m_GameStateMachine
             };
@@ -86,6 +88,16 @@ namespace RhytmFighter.Main
             m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
             m_ControllersHolder.BattleController.OnBattleStarted += BattleStartedHandler;
             m_ControllersHolder.BattleController.OnBattleFinished += BattleFinishedHandler;
+            m_ControllersHolder.RhytmController.OnBeat += BeatHandler;
+        }
+
+        private void InitializationFinished()
+        {
+            //Start beat
+            m_ControllersHolder.RhytmController.StartBeat();
+
+            //Chacge state
+            m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
 
         private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)
@@ -114,7 +126,7 @@ namespace RhytmFighter.Main
         {
             //Temp 
             //TODO Get from data
-            float playerMoveSpeed = 1;
+            float playerMoveSpeed = 5;
 
             //Create player character
             m_ControllersHolder.PlayerCharacterController.CreateCharacter(Player, playerMoveSpeed, m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0), m_ControllersHolder.LevelController);
@@ -122,8 +134,8 @@ namespace RhytmFighter.Main
             //Focus camera on character
             m_ControllersHolder.CameraController.InitializeCamera(CameraRoot, m_ControllersHolder.PlayerCharacterController.PlayerCharacter.transform, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
 
-            //Chacge state
-            m_GameStateMachine.ChangeState(m_GameStateAdventure);
+            //Finish initialization
+            InitializationFinished();
         }
 
 
@@ -166,15 +178,30 @@ namespace RhytmFighter.Main
 
         private void BattleStartedHandler()
         {
-            Debug.LogError("BATTLE STARTED");
-            //m_ControllersHolder.PlayerCharacterController.StopMove();
-            //m_GameStateMachine.ChangeState(m_GameStateBattle);
+            Debug.LogError("BEGIN BATTLE");
+            m_ControllersHolder.PlayerCharacterController.StopMove();
+            m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
 
         private void BattleFinishedHandler()
         {
             Debug.LogError("BATTLE FINISHED");
-            //m_GameStateMachine.ChangeState(m_GameStateAdventure);
+            m_GameStateMachine.ChangeState(m_GameStateAdventure);
+        }
+
+
+        private void BeatHandler()
+        {
+            StartCoroutine(BeatIndicatorTempCoroutine());
+        }
+
+        System.Collections.IEnumerator BeatIndicatorTempCoroutine()
+        {
+            BeatIndicatorTemp.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+            yield return null;
+            yield return null;
+            yield return null;
+            BeatIndicatorTemp.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
         }
 
 

@@ -12,6 +12,7 @@ namespace RhytmFighter.Level.Data
 
         public int ID { get; private set; }
         public int NodeSeed { get; private set; }
+        public bool IsStartNode { get; set; }
         public bool IsFinishNode { get; set; }
 
         public LevelNodeData LeftNode;

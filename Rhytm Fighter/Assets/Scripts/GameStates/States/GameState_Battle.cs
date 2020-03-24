@@ -1,15 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using RhytmFighter.Characters;
+﻿using RhytmFighter.Characters;
+using RhytmFighter.Rhytm;
 using UnityEngine;
 
 namespace RhytmFighter.GameState
 {
-	public class GameState_Battle : GameState_Abstract
+    public class GameState_Battle : GameState_Abstract
 	{
-        public GameState_Battle(PlayerCharacterController playerCharacterController) : base(playerCharacterController)
-        {
+        private RhytmInputProxy m_RhytmInputProxy;
 
+        public GameState_Battle(PlayerCharacterController playerCharacterController, RhytmInputProxy rhytmInputProxy) : base(playerCharacterController)
+        {
+            m_RhytmInputProxy = rhytmInputProxy;
         }
 
 
@@ -25,7 +26,9 @@ namespace RhytmFighter.GameState
 
 		public override void HandleTouch(Vector3 mouseScreenPos)
 		{
-
+            bool inputIsValid = m_RhytmInputProxy.IsInputValid();
+            if (inputIsValid)
+                Debug.Log("Execute action");
 		}
     }
 }

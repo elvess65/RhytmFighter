@@ -47,6 +47,7 @@ namespace RhytmFighter.Level.Data
                 curDepthLevel++;
             }
 
+            startNode.IsStartNode = true;
             finishNode.IsFinishNode = true;
 
             //Создать дополнительную часть уровня

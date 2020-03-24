@@ -1,14 +1,19 @@
 ﻿using Frameworks.Grid.Data;
 using RhytmFighter.Objects;
 using RhytmFighter.Objects.Data;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RhytmFighter.Level.Data
 {
     public class RoomDataBuilder 
     {
+        private List<GridCellData> m_EmptyCells;
+
         public LevelRoomData Build(LevelNodeData node, int minWidth, int maxWidth, int minHeight, int maxheight, float cellSize, int fillPercent)
         {
+            Debug.LogError("Build data for room " + node.ID);
+            m_EmptyCells = new List<GridCellData>();
             Random.InitState(node.NodeSeed);
 
             int width = Random.Range(minWidth, maxWidth);
@@ -69,16 +74,31 @@ namespace RhytmFighter.Level.Data
                         cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.RightNode.ID, GridCellProperty_GateToNode.GateTypes.ToNextNode));
                         grid.RightNodeGate = cell;
                     }
+                    else
+                        m_EmptyCells.Add(cell);
 
                     cell.SetCellType(cellType);
                     cell.SetRoomID(node.ID);
 
-                    if (i == 2 && j == 0)
+                    /*if (i == 1 && j == 0)
                         cell.AddObject(new ExampleItemGridObject(1, cell));
                     else if (i == 2 && j == 3)
-                        cell.AddObject(new ExampleEnemyNPCGridObject(2, cell, null));
+                        cell.AddObject(new ExampleEnemyNPCGridObject(2, cell, null));*/
                 }
             }
+
+            
+            int rndIndex = Random.Range(0, m_EmptyCells.Count);
+            m_EmptyCells[rndIndex].AddObject(new ExampleItemGridObject(1, m_EmptyCells[rndIndex]));
+            m_EmptyCells.RemoveAt(rndIndex);
+
+            if (!node.IsStartNode)
+            {
+                rndIndex = Random.Range(0, m_EmptyCells.Count);
+                m_EmptyCells[rndIndex].AddObject(new ExampleEnemyNPCGridObject(2, m_EmptyCells[rndIndex], null));
+                m_EmptyCells.RemoveAt(rndIndex);
+            }
+
         }
     }
 }
