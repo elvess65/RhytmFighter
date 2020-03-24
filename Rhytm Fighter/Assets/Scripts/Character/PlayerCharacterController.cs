@@ -19,7 +19,7 @@ namespace RhytmFighter.Characters
 
         private event System.Action m_OnMovementFinishedInternal;
 
-        public PlayerView PlayerCharacter { get; private set; }
+        public PlayerModel PlayerModel { get; private set; }
 
         private GridCellData[] m_PathCells;
         private CellView m_CurrentPlayerCell;
@@ -28,8 +28,9 @@ namespace RhytmFighter.Characters
         private const float m_CLOSEST_WALKABLE_CELL_RANGE = 1.5f;
 
 
-        public void CreateCharacter(PlayerView characterWrapper, float moveSpeed, CellView startCellView, LevelController levelController)
+        public void CreateCharacter(PlayerModel playerModel, CellView startCellView, LevelController levelController)
         {
+            //Level controller
             m_LevelController = levelController;
 
             //Init start cell
@@ -37,10 +38,9 @@ namespace RhytmFighter.Characters
             m_CurrentPlayerCell = startCellView;
 
             //Place player on start cell
-            PlayerCharacter = characterWrapper;
-            PlayerCharacter.Initialize(startCellView.transform.position, moveSpeed);
-            PlayerCharacter.OnMovementFinished += MovementFinishedHandler;
-            PlayerCharacter.OnCellVisited += CellVisitedHandler;
+            PlayerModel = playerModel;
+            PlayerModel.OnMovementFinished += MovementFinishedHandler;
+            PlayerModel.OnCellVisited += CellVisitedHandler;
 
             //Hide all cells except start cell
             m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetCurrenRoomData());
@@ -107,18 +107,18 @@ namespace RhytmFighter.Characters
                 pathPos.Insert(1, (pathPos[0] + pathPos[1]) / 2);
 
             //Start move character
-            PlayerCharacter.StartMove(pathPos.ToArray());
+            PlayerModel.StartMove(pathPos.ToArray());
         }
 
         public void StopMove()
         {
-            PlayerCharacter.StopMove();
+            PlayerModel.StopMove();
         }
 
 
         public void PerformUpdate(float deltaTime)
         {
-            PlayerCharacter?.PerformUpdate(deltaTime);
+            PlayerModel?.PerformUpdate(deltaTime);
         }
 
 

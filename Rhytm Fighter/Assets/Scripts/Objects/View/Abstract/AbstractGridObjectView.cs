@@ -5,12 +5,12 @@ namespace RhytmFighter.Objects.View
 {
     public abstract class AbstractGridObjectView : MonoBehaviour
     {
-        public AbstractGridObjectModel CorrespondingGridObject { get; protected set; }
+        public AbstractGridObjectModel CorrespondingModel { get; protected set; }
 
 
-        public virtual void Show(AbstractGridObjectModel correspondingGridObject)
+        public virtual void Show(AbstractGridObjectModel correspondingModel)
         {
-            CorrespondingGridObject = correspondingGridObject;
+            CorrespondingModel = correspondingModel;
         }
 
         public virtual void Hide()

@@ -35,7 +35,10 @@ namespace RhytmFighter.GameState
 		{
             bool inputIsValid = m_RhytmInputProxy.IsInputValid();
             if (inputIsValid)
+            {
                 Debug.Log("Execute action");
-		}
+                m_PlayerCharacterController.PlayerModel.ActionBehaviour.ExecuteAction();
+            }
+        }
     }
 }

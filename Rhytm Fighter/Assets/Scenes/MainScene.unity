@@ -290,7 +290,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -15.800003, y: -12.13}
+  m_AnchoredPosition: {x: -15.799988, y: -12.130005}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &510244932
@@ -807,7 +807,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ManagersHolder: {fileID: 88609300}
   CameraRoot: {fileID: 1259799369}
-  Player: {fileID: 1980019803}
+  Player: {fileID: 0}
   BeatIndicatorTemp: {fileID: 510244930}
 --- !u!4 &1655152185
 Transform:
@@ -832,7 +832,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1980019802}
-  - component: {fileID: 1980019803}
+  - component: {fileID: 1980019800}
   m_Layer: 0
   m_Name: Player Temp
   m_TagString: Untagged
@@ -840,6 +840,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1980019800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980019799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe780a97641190f479ba2b410fad615a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1980019802
 Transform:
   m_ObjectHideFlags: 0
@@ -855,18 +867,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1980019803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1980019799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62f35fcb55d80794fa140033470687f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2027747559
 GameObject:
   m_ObjectHideFlags: 0
