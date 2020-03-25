@@ -21,7 +21,7 @@ namespace RhytmFighter.Battle.Health.Behaviours
                 Debug.Log("Object destroyed");
         }
 
-        public void RestoreHP(int amount)
+        public void IncreaseHP(int amount)
         {
             m_HP += amount;
 

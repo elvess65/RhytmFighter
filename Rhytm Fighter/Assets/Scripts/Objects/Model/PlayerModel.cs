@@ -1,5 +1,4 @@
 ﻿using System;
-using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
 using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.Health;

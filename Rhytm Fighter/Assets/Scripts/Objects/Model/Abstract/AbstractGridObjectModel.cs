@@ -20,7 +20,9 @@ namespace RhytmFighter.Objects.Model
 
         public virtual void ShowView(CellView cellView)
         {
-            View = CreateView(cellView);
+            if (View == null)
+                View = CreateView(cellView);
+
             View.Show(this);
         }
 

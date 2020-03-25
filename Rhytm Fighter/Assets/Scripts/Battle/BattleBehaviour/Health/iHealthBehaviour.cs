@@ -3,6 +3,6 @@
     public interface iHealthBehaviour 
     {
         void ReduceHP(int dmg);
-        void RestoreHP(int amount);
+        void IncreaseHP(int amount);
     }
 }
