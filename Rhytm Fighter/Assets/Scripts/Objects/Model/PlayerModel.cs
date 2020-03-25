@@ -14,56 +14,61 @@ namespace RhytmFighter.Objects.Model
         public event Action OnMovementFinished;
         public event Action<int> OnCellVisited;
 
-        public bool IsMoving => m_PlayerView.IsMoving;
+        public bool IsMoving => m_ViewAsMovable.IsMoving;
 
-        private PlayerView m_PlayerView;
+        private iMovable m_ViewAsMovable;
 
 
         public PlayerModel(int id, CellView startCellView, float moveSpeed, iBattleActionBehaviour actionBehaviour, iHealthBehaviour healthBehaviour)
-            : base(id, null, actionBehaviour, healthBehaviour, false)
+            : base(id, startCellView.CorrespondingCellData, actionBehaviour, healthBehaviour, false)
         {
             ShowView(startCellView);
-
-            m_PlayerView.Initialize(startCellView.transform.position, moveSpeed);
-            m_PlayerView.OnMovementFinished += MovementFinishedHandler;
-            m_PlayerView.OnCellVisited += CellVisitedHandler;
+            Initialize(startCellView.transform.position, moveSpeed);
         }
 
+        #region AbstractModel
         public override void ShowView(CellView cellView)
         {
             base.ShowView(cellView);
 
             //Bind view
-            m_PlayerView = View as PlayerView;
+            m_ViewAsMovable = View as iMovable;
         }
-
-
-        public void StartMove(Vector3[] path)
-        {
-            m_PlayerView.StartMove(path);
-        }
-
-        public void StopMove()
-        {
-            m_PlayerView.StopMove();
-        }
-
-        public void PerformUpdate(float deltaTime)
-        {
-            m_PlayerView.PerformUpdate(deltaTime);
-        }
-
 
         protected override AbstractGridObjectView CreateView(CellView cellView)
         {
             return GameObject.FindObjectOfType<PlayerView>();
+        }
+        #endregion
+
+        #region iMovable
+        public void Initialize(Vector3 pos, float moveSpeed)
+        {
+            m_ViewAsMovable.Initialize(pos, moveSpeed);
+            m_ViewAsMovable.OnMovementFinished += MovementFinishedHandler;
+            m_ViewAsMovable.OnCellVisited += CellVisitedHandler;
+        }
+
+        public void StartMove(Vector3[] path)
+        {
+            m_ViewAsMovable.StartMove(path);
+        }
+
+        public void StopMove()
+        {
+            m_ViewAsMovable.StopMove();
+        }
+
+        //iUpdatable
+        public void PerformUpdate(float deltaTime)
+        {
+            m_ViewAsMovable.PerformUpdate(deltaTime);
         }
 
 
         private void MovementFinishedHandler() => OnMovementFinished?.Invoke();
 
         private void CellVisitedHandler(int index) => OnCellVisited?.Invoke(index);
-
- 
+        #endregion  
     }
 }

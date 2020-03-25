@@ -12,7 +12,7 @@ namespace RhytmFighter.Objects.Model
         public iBattleActionBehaviour ActionBehaviour { get; private set; }
         public iHealthBehaviour HealthBehaviour { get; private set; }
 
-        private iBattleModelViewProxy m_BattleView;
+        private iBattleModelViewProxy m_ViewAsBattle;
 
 
         public AbstractBattleNPCModel(int id, 
@@ -36,13 +36,13 @@ namespace RhytmFighter.Objects.Model
             base.ShowView(cellView);
 
             //Bind view
-            m_BattleView = View as iBattleModelViewProxy;
+            m_ViewAsBattle = View as iBattleModelViewProxy;
         }
 
 
         private void ActionBehaviour_OnActionExecutedHandler()
         {
-            m_BattleView.ExecuteAction();
+            m_ViewAsBattle.ExecuteAction();
         }
     }
 }

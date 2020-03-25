@@ -30,6 +30,11 @@ namespace RhytmFighter.Characters
 
         public void CreateCharacter(PlayerModel playerModel, CellView startCellView, LevelController levelController)
         {
+            //Initialize player model
+            PlayerModel = playerModel;
+            PlayerModel.OnMovementFinished += MovementFinishedHandler;
+            PlayerModel.OnCellVisited += CellVisitedHandler;
+
             //Level controller
             m_LevelController = levelController;
 
@@ -37,17 +42,13 @@ namespace RhytmFighter.Characters
             startCellView.CorrespondingCellData.IsVisited = true;
             m_CurrentPlayerCell = startCellView;
 
-            //Place player on start cell
-            PlayerModel = playerModel;
-            PlayerModel.OnMovementFinished += MovementFinishedHandler;
-            PlayerModel.OnCellVisited += CellVisitedHandler;
-
             //Hide all cells except start cell
             m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetCurrenRoomData());
 
             //Extend view
             m_LevelController.RoomViewBuilder.ExtendView(m_LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
         }
+
 
         public void MoveCharacter(CellView targetCellView)
         {
@@ -115,10 +116,15 @@ namespace RhytmFighter.Characters
             PlayerModel.StopMove();
         }
 
-
         public void PerformUpdate(float deltaTime)
         {
             PlayerModel?.PerformUpdate(deltaTime);
+        }
+
+
+        public void ExecuteAction()
+        {
+            PlayerModel.ActionBehaviour.ExecuteAction();
         }
 
 

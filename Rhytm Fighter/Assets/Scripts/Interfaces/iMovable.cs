@@ -1,5 +1,4 @@
-﻿using RhytmFighter.Objects.View;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RhytmFighter.Interfaces
 {
@@ -8,10 +7,9 @@ namespace RhytmFighter.Interfaces
         event System.Action OnMovementFinished;
         event System.Action<int> OnCellVisited;
 
-        int ID { get; }
         bool IsMoving { get; }
-        AbstractGridObjectView View { get; }
 
+        void Initialize(Vector3 pos, float moveSpeed);
         void StartMove(Vector3[] path);
         void StopMove();
     }

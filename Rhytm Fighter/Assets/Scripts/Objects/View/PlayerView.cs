@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RhytmFighter.Objects.View
 {
-    public class PlayerView : AbstractBattleNPCView, iUpdatable
+    public class PlayerView : AbstractBattleNPCView, iMovable
     {
         public event System.Action OnMovementFinished;
         public event System.Action<int> OnCellVisited;
@@ -14,7 +14,7 @@ namespace RhytmFighter.Objects.View
         public int ID { get; private set; }
         public bool IsMoving => m_MoveStrategy.IsMoving;
 
-
+        #region iMovable
         public void Initialize(Vector3 pos, float moveSpeed)
         {
             transform.position = pos;
@@ -25,23 +25,11 @@ namespace RhytmFighter.Objects.View
             m_MoveStrategy.OnCellVisited += CellVisitedHandler;
         }
 
-
         public void StartMove(Vector3[] path) => m_MoveStrategy.StartMove(path);
 
         public void StopMove() => m_MoveStrategy.StopMove();
 
-
-        public override void ExecuteAction()
-        {
-            Debug.Log("Player view execture action animation");
-        }
-
-        public override void TakeDamage()
-        {
-            Debug.Log("Player view execture take damage animation");
-        }
-
-
+        //iUpdatable
         public void PerformUpdate(float deltaTime)
         {
             m_MoveStrategy.Update(deltaTime);
@@ -51,5 +39,20 @@ namespace RhytmFighter.Objects.View
         void MovementFinishedHandler() => OnMovementFinished?.Invoke();
 
         void CellVisitedHandler(int index) => OnCellVisited?.Invoke(index);
+        #endregion
+
+        #region iBattleModelViewProxy
+        public override void ExecuteAction()
+        {
+            base.ExecuteAction();
+            Debug.Log("Player view execture action animation");
+        }
+
+        public override void TakeDamage()
+        {
+            base.ExecuteAction();
+            Debug.Log("Player view execture take damage animation");
+        }
+        #endregion
     }
 }

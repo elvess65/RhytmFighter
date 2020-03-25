@@ -128,11 +128,13 @@ namespace RhytmFighter.Main
             //TODO Get from data
             float playerMoveSpeed = 5;
 
-            //Create player character
+            //Cache start cell view
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
 
+            //Create player model
             PlayerModel playerModel = new PlayerModel(0, startCellView, playerMoveSpeed, new Battle.Action.Behaviours.PlayerBattleActionBehaviour(), null);
 
+            //Initialize character controller
             m_ControllersHolder.PlayerCharacterController.CreateCharacter(playerModel, startCellView, m_ControllersHolder.LevelController);
 
             //Focus camera on character
@@ -208,9 +210,8 @@ namespace RhytmFighter.Main
         System.Collections.IEnumerator BeatIndicatorTempCoroutine()
         {
             BeatIndicatorTemp.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
-            yield return null;
-            yield return null;
-            yield return null;
+            for (int i = 0; i < 5; i++)
+                yield return null;
             BeatIndicatorTemp.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
         }
 
