@@ -15,6 +15,16 @@ namespace RhytmFighter.Objects.View
             StartCoroutine(TakeDamageCoroutine());
         }
 
+        public void IncreaseHP()
+        {
+
+        }
+
+        public virtual void Destroy()
+        {
+            Destroy(gameObject);
+        }
+
 
         System.Collections.IEnumerator ExecuteActionCoroutine()
         {

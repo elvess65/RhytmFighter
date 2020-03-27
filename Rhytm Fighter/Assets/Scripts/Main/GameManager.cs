@@ -1,6 +1,8 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
 using RhytmFighter.Battle;
+using RhytmFighter.Battle.Action.Behaviours;
+using RhytmFighter.Battle.Health.Behaviours;
 using RhytmFighter.Characters;
 using RhytmFighter.Data;
 using RhytmFighter.GameState;
@@ -131,8 +133,12 @@ namespace RhytmFighter.Main
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
 
             //Initialize character controller
-            PlayerModel playerModel = new PlayerModel(0, startCellView, playerMoveSpeed, new Battle.Action.Behaviours.SimpleBattleActionBehaviour(1, 1, 2), null);
+            SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(1, 1, 2);
+            SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(5);
+
+            PlayerModel playerModel = new PlayerModel(0, startCellView, playerMoveSpeed, battleBehaviour, healthBehaviour);
             m_ControllersHolder.PlayerCharacterController.CreateCharacter(playerModel, startCellView, m_ControllersHolder.LevelController);
+            playerModel.OnDestroyed += PlayerDestroyedHandler;
 
             //Set player to battle controller
             m_ControllersHolder.BattleController.Player = m_ControllersHolder.PlayerCharacterController.PlayerModel;
@@ -182,6 +188,15 @@ namespace RhytmFighter.Main
             PlayerInteractWithObject(interactableNPC);
 
             Debug.Log("INTERACT WITH NPC: " + interactableNPC.View.gameObject.name + " " + interactableNPC.ID + " " + interactableNPC.Type);
+        }
+
+
+        private void PlayerDestroyedHandler(iBattleObject sender)
+        {
+            Debug.LogError("DESTROY PLAYER");
+
+            BattleFinishedHandler();
+            m_GameStateMachine.ChangeState(m_GameStateIdle);
         }
 
 

@@ -4,5 +4,7 @@
     {
         void ExecuteAction();
         void TakeDamage();
+        void IncreaseHP();
+        void Destroy();
     }
 }

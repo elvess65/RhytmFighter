@@ -6,6 +6,8 @@ namespace RhytmFighter.Battle
 {
     public interface iBattleObject 
     {
+        event System.Action<iBattleObject> OnDestroyed;
+
         int ID { get; }
         bool IsEnemy { get; }
         UnityEngine.Vector3 ViewPosition { get; }

@@ -9,6 +9,8 @@ namespace RhytmFighter.Objects.Model
 {
     public abstract class AbstractBattleNPCModel : AbstractNPCModel, iBattleObject
     {
+        public event System.Action<iBattleObject> OnDestroyed;
+
         public bool IsEnemy { get; protected set; }
         public UnityEngine.Vector3 ViewPosition => View.transform.position;
 
@@ -38,6 +40,9 @@ namespace RhytmFighter.Objects.Model
 
             //Health behaviour
             HealthBehaviour = healthBehaviour;
+            HealthBehaviour.OnHPReduced += HealthBehaviour_OnHPReduced;
+            HealthBehaviour.OnHPIncreased += HealthBehaviour_OnHPIncreased;
+            HealthBehaviour.OnDestroyed += HealthBehaviour_OnDestroyed;
         }
 
         public override void ShowView(CellView cellView)
@@ -50,7 +55,15 @@ namespace RhytmFighter.Objects.Model
 
         public void ApplyCommand(BattleCommand command)
         {
-            UnityEngine.Debug.Log("APPLY COMMAND: " + command.Type);
+            switch(command.Type)
+            {
+                case CommandTypes.SimpleAttack:
+
+                    SimpleAttackCommand attackCommand = command as SimpleAttackCommand;
+                    HealthBehaviour.ReduceHP(attackCommand.Damage);
+
+                    break;
+            }
         }
 
 
@@ -59,6 +72,27 @@ namespace RhytmFighter.Objects.Model
             CommandsController.AddCommand(command);
 
             m_ViewAsBattle.ExecuteAction();
+        }
+
+
+        private void HealthBehaviour_OnHPReduced(int dmg)
+        {
+            UnityEngine.Debug.Log("REDUCE HP BY" + dmg);
+            m_ViewAsBattle.TakeDamage();
+        }
+
+        private void HealthBehaviour_OnHPIncreased(int amount)
+        {
+            UnityEngine.Debug.Log("INCREASE HP BY " + amount);
+            m_ViewAsBattle.IncreaseHP();
+        }
+
+        private void HealthBehaviour_OnDestroyed()
+        {
+            UnityEngine.Debug.Log("DESTROY");
+            
+            m_ViewAsBattle.Destroy();
+            OnDestroyed?.Invoke(this);
         }
     }
 }

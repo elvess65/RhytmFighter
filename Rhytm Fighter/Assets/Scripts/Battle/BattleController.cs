@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 namespace RhytmFighter.Battle
 {
     public class BattleController
@@ -23,6 +24,7 @@ namespace RhytmFighter.Battle
             {
                 m_Enemies.Add(battleObject.ID, battleObject);
                 battleObject.Target = Player;
+                battleObject.OnDestroyed += EnemyDestroyedHandler;
             }
 
             //Start battle with adding the first enemy
@@ -61,10 +63,10 @@ namespace RhytmFighter.Battle
         }
 
       
-        private void EnemyDestroyedHandler(int id)
+        private void EnemyDestroyedHandler(iBattleObject sender)
         {
-            if (m_Enemies.ContainsKey(id))
-                m_Enemies.Remove(id);
+            if (m_Enemies.ContainsKey(sender.ID))
+                m_Enemies.Remove(sender.ID);
 
             //Finish battle
             if (m_Enemies.Count == 0)

@@ -9,6 +9,7 @@ namespace RhytmFighter.Level.Data
 {
     public class RoomDataBuilder 
     {
+        private int m_ENEMY_ID = 2;
         private List<GridCellData> m_EmptyCells;
 
         public LevelRoomData Build(LevelNodeData node, int minWidth, int maxWidth, int minHeight, int maxheight, float cellSize, int fillPercent)
@@ -99,7 +100,7 @@ namespace RhytmFighter.Level.Data
             {
                 rndIndex = Random.Range(0, m_EmptyCells.Count);
 
-                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(2, m_EmptyCells[rndIndex], new ExampleBattleActionBehaviour(1, 1, 1), new ExampleHealthBehaviour(2, 3));
+                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, m_EmptyCells[rndIndex], new ExampleBattleActionBehaviour(1, 1, 1), new SimpleHealthBehaviour(3, 4));
                 m_EmptyCells[rndIndex].AddObject(enemyNPC);
                 m_EmptyCells.RemoveAt(rndIndex);
             }
