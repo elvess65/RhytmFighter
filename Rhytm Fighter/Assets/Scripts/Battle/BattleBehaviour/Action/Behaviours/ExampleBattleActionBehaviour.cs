@@ -1,32 +1,31 @@
-﻿using UnityEngine;
+﻿using RhytmFighter.Battle.Command;
 
 namespace RhytmFighter.Battle.Action.Behaviours
 {
-    public class ExampleBattleActionBehaviour : iBattleActionBehaviour
+    public class ExampleBattleActionBehaviour : SimpleBattleActionBehaviour
     {
-        public event System.Action OnActionExecuted;
-
         private int m_CycleIterator = 0;
         private int m_ActionIterator = 0;
         private int m_IdlesBeforeAttack;
         private int m_IdlesAfterAttack;
         private PatternActionTypes[] m_ActionPattern;
 
-        public ExampleBattleActionBehaviour()
+
+        public ExampleBattleActionBehaviour(int applyDelay, int useDelay, int damage) : base(applyDelay, useDelay, damage)
         {
             m_IdlesBeforeAttack = 2;
             m_IdlesAfterAttack = 3;
 
             m_ActionPattern = new PatternActionTypes[]
             {
-                PatternActionTypes.Action,
+                PatternActionTypes.SimpleAttack,
                 PatternActionTypes.Idle,
-                PatternActionTypes.Action,
+                PatternActionTypes.SimpleAttack,
                 PatternActionTypes.Idle
             };
         }
 
-        public void ExecuteAction()
+        public override void ExecuteAction()
         {
             if (m_CycleIterator++ >= m_IdlesBeforeAttack)
             {
@@ -35,9 +34,10 @@ namespace RhytmFighter.Battle.Action.Behaviours
                     PatternActionTypes action = m_ActionPattern[m_ActionIterator++];
                     switch(action)
                     {
-                        case PatternActionTypes.Action:
-                            Debug.LogError("Execute battle action");
-                            OnActionExecuted?.Invoke();
+                        case PatternActionTypes.SimpleAttack:
+
+                            ExecuteCommand(new SimpleAttackCommand(m_ControlledObject, Target, m_ApplyDelay, m_UseDelay, m_Damage));
+
                             break;
                     }
                 }

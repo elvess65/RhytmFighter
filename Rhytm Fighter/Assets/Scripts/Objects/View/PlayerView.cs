@@ -45,13 +45,11 @@ namespace RhytmFighter.Objects.View
         public override void ExecuteAction()
         {
             base.ExecuteAction();
-            Debug.Log("Player view execture action animation");
         }
 
         public override void TakeDamage()
         {
             base.ExecuteAction();
-            Debug.Log("Player view execture take damage animation");
         }
         #endregion
     }

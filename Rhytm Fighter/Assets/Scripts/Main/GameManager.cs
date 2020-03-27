@@ -127,15 +127,14 @@ namespace RhytmFighter.Main
             //Temp 
             //TODO Get from data
             float playerMoveSpeed = 5;
-
-            //Cache start cell view
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
 
-            //Create player model
-            PlayerModel playerModel = new PlayerModel(0, startCellView, playerMoveSpeed, new Battle.Action.Behaviours.PlayerBattleActionBehaviour(), null);
-
             //Initialize character controller
+            PlayerModel playerModel = new PlayerModel(0, startCellView, playerMoveSpeed, new Battle.Action.Behaviours.SimpleBattleActionBehaviour(1, 1, 2), null);
             m_ControllersHolder.PlayerCharacterController.CreateCharacter(playerModel, startCellView, m_ControllersHolder.LevelController);
+
+            //Set player to battle controller
+            m_ControllersHolder.BattleController.Player = m_ControllersHolder.PlayerCharacterController.PlayerModel;
 
             //Focus camera on character
             m_ControllersHolder.CameraController.InitializeCamera(CameraRoot, m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
@@ -156,7 +155,10 @@ namespace RhytmFighter.Main
                 {
                     //Detect enemy
                     if (battleObject.IsEnemy)
+                    {
                         m_ControllersHolder.BattleController.AddEnemyToActiveBattle(battleObject);
+                        m_ControllersHolder.PlayerCharacterController.PlayerModel.Target = m_ControllersHolder.BattleController.GetClosestEnemy(m_ControllersHolder.PlayerCharacterController.PlayerModel);
+                    }
                 }
             }
         }
@@ -186,9 +188,11 @@ namespace RhytmFighter.Main
         {
             Debug.LogError("BEGIN BATTLE");
 
-            m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.BattleController.RhytmBeatHandler;
+            m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.BattleController.ProcessEnemyActions;
+            m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             m_ControllersHolder.PlayerCharacterController.StopMove();
+
             m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
 
@@ -196,7 +200,8 @@ namespace RhytmFighter.Main
         {
             Debug.LogError("BATTLE FINISHED");
 
-            m_ControllersHolder.RhytmController.OnBeat -= m_ControllersHolder.BattleController.RhytmBeatHandler;
+            m_ControllersHolder.RhytmController.OnBeat -= m_ControllersHolder.BattleController.ProcessEnemyActions;
+            m_ControllersHolder.RhytmController.OnBeat -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }

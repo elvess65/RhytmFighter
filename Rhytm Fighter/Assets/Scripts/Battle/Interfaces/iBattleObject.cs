@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.Battle.Action;
+using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Health;
 
 namespace RhytmFighter.Battle
@@ -7,8 +8,12 @@ namespace RhytmFighter.Battle
     {
         int ID { get; }
         bool IsEnemy { get; }
+        UnityEngine.Vector3 ViewPosition { get; }
 
+        iBattleObject Target { get; set; }
         iBattleActionBehaviour ActionBehaviour { get; }
         iHealthBehaviour HealthBehaviour { get; }
+        
+        void ApplyCommand(BattleCommand command);
     }
 }

@@ -2,6 +2,7 @@
 using Frameworks.Grid.View;
 using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action;
+using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Health;
 
 namespace RhytmFighter.Objects.Model
@@ -9,6 +10,13 @@ namespace RhytmFighter.Objects.Model
     public abstract class AbstractBattleNPCModel : AbstractNPCModel, iBattleObject
     {
         public bool IsEnemy { get; protected set; }
+        public UnityEngine.Vector3 ViewPosition => View.transform.position;
+
+        public iBattleObject Target
+        {
+            get { return ActionBehaviour.Target; }
+            set { ActionBehaviour.Target = value; }
+        }
         public iBattleActionBehaviour ActionBehaviour { get; private set; }
         public iHealthBehaviour HealthBehaviour { get; private set; }
 
@@ -25,6 +33,7 @@ namespace RhytmFighter.Objects.Model
 
             //Battle behaviour
             ActionBehaviour = actionBehaviour;
+            ActionBehaviour.SetControlledObject(this);
             ActionBehaviour.OnActionExecuted += ActionBehaviour_OnActionExecutedHandler;
 
             //Health behaviour
@@ -39,9 +48,16 @@ namespace RhytmFighter.Objects.Model
             m_ViewAsBattle = View as iBattleModelViewProxy;
         }
 
-
-        private void ActionBehaviour_OnActionExecutedHandler()
+        public void ApplyCommand(BattleCommand command)
         {
+            UnityEngine.Debug.Log("APPLY COMMAND: " + command);
+        }
+
+
+        private void ActionBehaviour_OnActionExecutedHandler(BattleCommand command)
+        {
+            CommandsController.AddCommand(command);
+
             m_ViewAsBattle.ExecuteAction();
         }
     }

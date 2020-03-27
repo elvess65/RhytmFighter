@@ -1,15 +1,20 @@
-﻿namespace RhytmFighter.Battle.Action
+﻿using RhytmFighter.Battle.Command;
+
+namespace RhytmFighter.Battle.Action
 {
     public interface iBattleActionBehaviour
     {
-        event System.Action OnActionExecuted;
+        event System.Action<BattleCommand> OnActionExecuted;
 
+        iBattleObject Target { get; set; }
+
+        void SetControlledObject(iBattleObject controlledObject);
         void ExecuteAction();
     }
 
     public enum PatternActionTypes
     {
-        Action,
+        SimpleAttack,
         Idle
     }
 }

@@ -99,7 +99,7 @@ namespace RhytmFighter.Level.Data
             {
                 rndIndex = Random.Range(0, m_EmptyCells.Count);
 
-                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(2, m_EmptyCells[rndIndex], new ExampleBattleActionBehaviour(), new ExampleHealthBehaviour(2, 3));
+                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(2, m_EmptyCells[rndIndex], new ExampleBattleActionBehaviour(1, 1, 1), new ExampleHealthBehaviour(2, 3));
                 m_EmptyCells[rndIndex].AddObject(enemyNPC);
                 m_EmptyCells.RemoveAt(rndIndex);
             }
