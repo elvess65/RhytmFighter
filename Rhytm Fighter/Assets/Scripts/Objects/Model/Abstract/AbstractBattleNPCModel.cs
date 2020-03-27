@@ -25,11 +25,10 @@ namespace RhytmFighter.Objects.Model
         private iBattleModelViewProxy m_ViewAsBattle;
 
 
-        public AbstractBattleNPCModel(int id, 
-                                      GridCellData correspondingCell, 
+        public AbstractBattleNPCModel(int id, GridCellData correspondingCell, 
                                       iBattleActionBehaviour actionBehaviour, 
-                                      iHealthBehaviour healthBehaviour, 
-                                      bool isEnemy) : base(id, correspondingCell)
+                                      iHealthBehaviour healthBehaviour, bool isEnemy) 
+                                      : base(id, correspondingCell)
         {
             IsEnemy = isEnemy;
 
@@ -77,21 +76,21 @@ namespace RhytmFighter.Objects.Model
 
         private void HealthBehaviour_OnHPReduced(int dmg)
         {
-            UnityEngine.Debug.Log("REDUCE HP BY" + dmg);
             m_ViewAsBattle.TakeDamage();
         }
 
         private void HealthBehaviour_OnHPIncreased(int amount)
         {
-            UnityEngine.Debug.Log("INCREASE HP BY " + amount);
             m_ViewAsBattle.IncreaseHP();
         }
 
         private void HealthBehaviour_OnDestroyed()
         {
-            UnityEngine.Debug.Log("DESTROY");
-            
-            m_ViewAsBattle.Destroy();
+            HideView();
+
+            if (CorrespondingCell.HasObject && CorrespondingCell.GetObject().ID.Equals(ID))
+                CorrespondingCell.RemoveObject();
+
             OnDestroyed?.Invoke(this);
         }
     }

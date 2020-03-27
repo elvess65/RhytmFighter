@@ -219,6 +219,8 @@ namespace RhytmFighter.Main
             m_ControllersHolder.RhytmController.OnBeat -= m_ControllersHolder.BattleController.ProcessEnemyActions;
             m_ControllersHolder.RhytmController.OnBeat -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
+            m_ControllersHolder.PlayerCharacterController.PlayerModel.Target = null;
+
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
 
