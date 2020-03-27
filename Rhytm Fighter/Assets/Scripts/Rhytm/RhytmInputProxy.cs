@@ -17,10 +17,10 @@
             //In other case consider to calculate time after previous beat
 
             double inputDelta = 0;
-            double timeSinceLastBeat = m_RhytmController.m_TickRate - m_RhytmController.TimeToNextBeat;
+            double timeSinceLastBeat = m_RhytmController.TickRate - m_RhytmController.TimeToNextBeat;
 
             //Pre beat
-            if (timeSinceLastBeat >= m_RhytmController.m_TickRate / 2)
+            if (timeSinceLastBeat >= m_RhytmController.TickRate / 2)
                 inputDelta = m_RhytmController.TimeToNextBeat;
             //Post beat
             else

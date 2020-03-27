@@ -50,7 +50,7 @@ namespace RhytmFighter.Objects.Model
 
         public void ApplyCommand(BattleCommand command)
         {
-            UnityEngine.Debug.Log("APPLY COMMAND: " + command);
+            UnityEngine.Debug.Log("APPLY COMMAND: " + command.Type);
         }
 
 

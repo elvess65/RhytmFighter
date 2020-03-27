@@ -76,6 +76,7 @@ namespace RhytmFighter.Main
                 m_ControllersHolder.InputController,
                 m_ControllersHolder.RhytmController,
                 m_ControllersHolder.CameraController,
+                m_ControllersHolder.CommandsController,
                 m_GameStateMachine
             };
 
