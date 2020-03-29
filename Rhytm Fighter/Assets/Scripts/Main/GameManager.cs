@@ -64,6 +64,9 @@ namespace RhytmFighter.Main
             m_GameStateMachine = new GameStateMachine();
             m_ControllersHolder = new ControllersHolder();
 
+            //Initialize managers
+            ManagersHolder.Initialize();
+
             //Initialize state machine
             m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController);
             m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);

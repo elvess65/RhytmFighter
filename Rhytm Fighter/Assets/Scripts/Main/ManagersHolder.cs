@@ -1,4 +1,5 @@
-﻿using RhytmFighter.Settings;
+﻿using RhytmFighter.Assets;
+using RhytmFighter.Settings;
 using UnityEngine;
 
 namespace RhytmFighter.Main
@@ -8,6 +9,12 @@ namespace RhytmFighter.Main
     /// </summary>
     public class ManagersHolder : MonoBehaviour
     {
+        public AssetsManager AssetsManager;
         public SettingsManager SettingsManager;
+
+        public void Initialize()
+        {
+            AssetsManager.Initialize();
+        }
     }
 }
