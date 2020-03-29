@@ -1,5 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View.Cell;
+using RhytmFighter.Assets;
 using RhytmFighter.Level.Data;
 using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Frameworks.Grid.View
     {
         public System.Action<AbstractGridObjectModel> OnCellWithObjectDetected;
 
-        private float m_CellOffset => 1.1f;
+        private float m_CellOffset => 1f;
         private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
 
         public GridViewBuilder()
@@ -183,49 +184,49 @@ namespace Frameworks.Grid.View
         CellView CreateCellView(GridCellData cellData, Vector3 startPos, Transform gridParent)
         {
             //Create view
-            GameObject cellViewObj = new GameObject();
-            cellViewObj.transform.position = new Vector3(startPos.x + m_CellOffset / 2 + cellData.X * m_CellOffset, 0, startPos.z + m_CellOffset / 2 + cellData.Y * m_CellOffset);
-            cellViewObj.transform.localScale = Vector3.one;
-            cellViewObj.transform.parent = gridParent;
-            cellViewObj.gameObject.name = $"Cell_(X - {cellData.X}. Y - {cellData.Y})";
+            Vector3 viewPos = new Vector3(startPos.x + m_CellOffset / 2 + cellData.X * m_CellOffset, 0, startPos.z + m_CellOffset / 2 + cellData.Y * m_CellOffset);
+            CellView cellView = AssetsManager.GetPrefabAssets().InstantiatePrefab<CellView>(AssetsManager.GetPrefabAssets().CellView_Prefab, viewPos);
+            cellView.transform.parent = gridParent;
+            cellView.gameObject.name = $"Cell_(X - {cellData.X}. Y - {cellData.Y})";
 
-            //Create content
-            GameObject cellContentObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cellContentObj.transform.localScale = new Vector3(1, cellData.CellType == CellTypes.Normal ? 0.1f : 1, 1);
-
-            Abstract_CellContent cellContent = cellContentObj.AddComponent<DummyCellContent>();
-
-            //Apply properties
-            if (cellData.HasProperty)
-                ApplyProperty(cellData, cellContentObj);
+            //Create content 
+            Abstract_CellContentView cellContent = GetCellContentPrefab(cellData);
 
             //Initialize view
-            CellView cellView = cellViewObj.AddComponent<CellView>();
             cellView.Initialize(cellData, cellContent);
             cellView.OnObjectDetected += CellWithObjectDetectedHandler;
 
             return cellView;
         }
 
-        void ApplyProperty(GridCellData cellData, GameObject cellContentObj)
+        Abstract_CellContentView GetCellContentPrefab(GridCellData cellData)
         {
-            switch (cellData.CellProperty)
-            {
-                case GridCellProperty_GateToNode gatesToNodeProperty:
-                    {
-                        switch (gatesToNodeProperty.GateType)
-                        {
-                            case GridCellProperty_GateToNode.GateTypes.ToParentNode:
-                                cellContentObj.transform.localScale *= 1.1f;
-                                break;
+            Abstract_CellContentView cellContent = null;
 
-                            case GridCellProperty_GateToNode.GateTypes.ToNextNode:
-                                cellContentObj.transform.localScale *= 1.1f;
-                                break;
+            if (cellData.HasProperty)
+            {
+                switch (cellData.CellProperty)
+                {
+                    case GridCellProperty_GateToNode gatesToNodeProperty:
+                        {
+                            switch (gatesToNodeProperty.GateType)
+                            {
+                                case GridCellProperty_GateToNode.GateTypes.ToParentNode:
+                                    cellContent = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().CellContent_Gate_Parent_Prefab);
+                                    break;
+
+                                case GridCellProperty_GateToNode.GateTypes.ToNextNode:
+                                    cellContent = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().CellContent_Gate_Next_Prefab);
+                                    break;
+                            }
                         }
-                    }
-                    break;
+                        break;
+                }
             }
+            else
+                cellContent = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().GetRandomCellContent(cellData.CellType));
+
+            return cellContent;
         }
 
         void CellWithObjectDetectedHandler(AbstractGridObjectModel objectInCell) => OnCellWithObjectDetected?.Invoke(objectInCell);

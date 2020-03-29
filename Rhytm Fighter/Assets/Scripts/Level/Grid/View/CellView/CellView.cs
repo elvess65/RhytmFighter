@@ -9,21 +9,23 @@ namespace Frameworks.Grid.View
     {
         public System.Action<AbstractGridObjectModel> OnObjectDetected;
 
-        private Abstract_CellContent m_CellContent;
+        public Transform ConentParent;
+
+        private Abstract_CellContentView m_CellContent;
         private iCellAppearanceStrategy m_CellAppearanceStrategy;
 
         public GridCellData CorrespondingCellData { get; private set; }
         public bool IsShowed => m_CellAppearanceStrategy.IsShowed;
 
 
-        public void Initialize(GridCellData correspondingCellData, Abstract_CellContent cellContent)
+        public void Initialize(GridCellData correspondingCellData, Abstract_CellContentView cellContent)
         {
             //Cell data
             CorrespondingCellData = correspondingCellData;
 
             //Cell content
             m_CellContent = cellContent; 
-            m_CellContent.transform.parent = transform;
+            m_CellContent.transform.parent = ConentParent;
             m_CellContent.transform.localPosition = Vector3.zero;
 
             //Cell appearance

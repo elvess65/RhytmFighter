@@ -16,12 +16,12 @@ MonoBehaviour:
   - ID: 1
     LevelDepth: 4
     LevelSeed: 10
-    MinWidth: 3
-    MaxWidth: 5
-    MinHeight: 4
-    Maxheight: 5
+    MinWidth: 5
+    MaxWidth: 10
+    MinHeight: 5
+    Maxheight: 10
     CellSize: 1
-    FillPercent: 90
+    FillPercent: 80
   - ID: 2
     LevelDepth: 5
     LevelSeed: 15

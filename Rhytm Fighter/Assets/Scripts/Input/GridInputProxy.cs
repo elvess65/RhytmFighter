@@ -18,7 +18,7 @@ namespace RhytmFighter.Input
         {
             if (Physics.Raycast(UnityEngine.Camera.main.ScreenPointToRay(mousePos), out RaycastHit hit))
             {
-                CellView cellView = hit.collider.transform.parent.gameObject.GetComponent<CellView>();
+                CellView cellView = hit.collider.gameObject.GetComponent<CellView>();
                 if (cellView != null)
                     OnCellInput?.Invoke(cellView);
             }

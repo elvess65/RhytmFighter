@@ -1,5 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
+using RhytmFighter.Assets;
 using RhytmFighter.Objects.View;
 using UnityEngine;
 
@@ -13,12 +14,7 @@ namespace RhytmFighter.Objects.Model
 
         protected override AbstractGridObjectView CreateView(CellView cellView)
         {
-            GameObject view = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            view.GetComponent<Collider>().enabled = false;
-            view.transform.localScale = Vector3.one * 0.2f;
-            view.transform.position = cellView.transform.position + new Vector3(0, 0.2f, 0);
-
-            return view.AddComponent<StandardItemView>();
+            return AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().StandartItemViewPrefab, cellView.transform.position);
         }
     }
 }

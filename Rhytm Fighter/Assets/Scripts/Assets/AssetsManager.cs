@@ -12,6 +12,11 @@ namespace RhytmFighter.Assets
 
         public static PrefabAssets GetPrefabAssets() => m_Instance.PrefabAssets;
 
-        public void Initialize() => m_Instance = this;
+        public void Initialize()
+        {
+            m_Instance = this;
+
+            PrefabAssets.Initialize();
+        }
     }
 }
