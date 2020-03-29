@@ -1,4 +1,5 @@
-﻿using RhytmFighter.Characters.Movement;
+﻿using RhytmFighter.Characters;
+using RhytmFighter.Characters.Movement;
 using RhytmFighter.Interfaces;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace RhytmFighter.Objects.View
         public event System.Action<int> OnCellVisited;
 
         private iMovementStrategy m_MoveStrategy;
+        private StandartAnimationController m_AnimationController;
 
         public int ID { get; private set; }
         public bool IsMoving => m_MoveStrategy.IsMoving;
@@ -23,11 +25,21 @@ namespace RhytmFighter.Objects.View
             m_MoveStrategy = new Bezier_MovementStrategy(transform, moveSpeed);
             m_MoveStrategy.OnMovementFinished += MovementFinishedHandler;
             m_MoveStrategy.OnCellVisited += CellVisitedHandler;
+
+            //Animation
+            m_AnimationController = GetComponent<StandartAnimationController>();
         }
 
-        public void StartMove(Vector3[] path) => m_MoveStrategy.StartMove(path);
+        public void StartMove(Vector3[] path)
+        {
+            m_MoveStrategy.StartMove(path);
+            m_AnimationController.PlayMoveAnimation();
+        }
 
-        public void StopMove() => m_MoveStrategy.StopMove();
+        public void StopMove()
+        {
+            m_MoveStrategy.StopMove();
+        }
 
         //iUpdatable
         public void PerformUpdate(float deltaTime)
@@ -36,7 +48,12 @@ namespace RhytmFighter.Objects.View
         }
 
 
-        void MovementFinishedHandler() => OnMovementFinished?.Invoke();
+        void MovementFinishedHandler()
+        {
+            m_AnimationController.PlayIdleAnimation();
+
+            OnMovementFinished?.Invoke();
+        }
 
         void CellVisitedHandler(int index) => OnCellVisited?.Invoke(index);
         #endregion

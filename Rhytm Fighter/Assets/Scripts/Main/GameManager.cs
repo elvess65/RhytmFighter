@@ -1,13 +1,10 @@
-﻿using Frameworks.Grid.Data;
-using Frameworks.Grid.View;
+﻿using Frameworks.Grid.View;
 using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action.Behaviours;
 using RhytmFighter.Battle.Health.Behaviours;
-using RhytmFighter.Characters;
 using RhytmFighter.Data;
 using RhytmFighter.GameState;
 using RhytmFighter.Interfaces;
-using RhytmFighter.Objects;
 using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +21,6 @@ namespace RhytmFighter.Main
         public Transform CameraRoot;
 
         [Header("Temp")]
-        public PlayerView Player;//temp
         public GameObject BeatIndicatorTemp;
 
         private DataHolder m_DataHolder;
@@ -132,7 +128,7 @@ namespace RhytmFighter.Main
         {
             //Temp 
             //TODO Get from data
-            float playerMoveSpeed = 5;
+            float playerMoveSpeed = 2;
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
 
             //Initialize character controller

@@ -258,6 +258,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerData: {fileID: 11400000, guid: 43f862930635dc84daebbd8bf3a7ce41, type: 2}
   LevelsData: {fileID: 11400000, guid: 4d66c12bfec60f64dba45c7561e9e614, type: 2}
+--- !u!95 &350858866 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9569962, guid: fe2a5bf9b4c2d4a4b9853a8506f18c40,
+    type: 3}
+  m_PrefabInstance: {fileID: 734377398}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &510244930
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,6 +820,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1980019802}
   - component: {fileID: 1980019800}
+  - component: {fileID: 1980019801}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -833,6 +840,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe780a97641190f479ba2b410fad615a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1980019801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980019799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42370dc540b73224db1397dffe7f8f5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Controller: {fileID: 350858866}
 --- !u!4 &1980019802
 Transform:
   m_ObjectHideFlags: 0

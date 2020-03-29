@@ -24,6 +24,8 @@ namespace Frameworks.Grid.Data
         private GridCellData m_LeftNodeGate     { get; set; }
         private GridCellData m_RightNodeGate    { get; set; }
 
+        private const bool m_ALLOW_DIAGONAL_PATHFINDING = false;
+
 
         public SquareGrid(int widthInCells, int heightInCells, float cellSize, Vector2 _offset)
         {
@@ -33,7 +35,7 @@ namespace Frameworks.Grid.Data
             m_Offset = new Vector3(_offset.x, 0, _offset.y);
 
             m_Grid = new GridCellData[WidthInCells, HeightInCells];
-            m_GridPathFindController = new GridPathFindController(this, true);
+            m_GridPathFindController = new GridPathFindController(this, m_ALLOW_DIAGONAL_PATHFINDING);
 
             for (int i = 0; i < WidthInCells; i++)
             {
