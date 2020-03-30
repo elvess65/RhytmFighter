@@ -12,7 +12,7 @@ namespace RhytmFighter.Objects.Model
 {
     public abstract class AbstractBattleNPCModel : AbstractNPCModel, iBattleObject, iMovable
     {
-        public event Action OnMovementFinished;
+        public event Action<int> OnMovementFinished;
         public event Action<int> OnCellVisited;
         public event Action<iBattleObject> OnDestroyed;
 
@@ -76,6 +76,16 @@ namespace RhytmFighter.Objects.Model
             }
         }
 
+        public void SetCorrespondingCell(GridCellData cellData)
+        {
+            if (CorrespondingCell.HasObject && CorrespondingCell.GetObject().ID == ID)
+            {
+                CorrespondingCell.RemoveObject();
+                CorrespondingCell = cellData;
+                CorrespondingCell.AddObject(this);
+            }
+        }
+
 
         #region ActionBehaviour
         private void ActionBehaviour_OnActionExecutedHandler(BattleCommand command)
@@ -133,7 +143,10 @@ namespace RhytmFighter.Objects.Model
         }
 
 
-        private void MovementFinishedHandler() => OnMovementFinished?.Invoke();
+        private void MovementFinishedHandler(int index)
+        {
+            OnMovementFinished?.Invoke(index);
+        }
 
         private void CellVisitedHandler(int index) => OnCellVisited?.Invoke(index);
         #endregion  

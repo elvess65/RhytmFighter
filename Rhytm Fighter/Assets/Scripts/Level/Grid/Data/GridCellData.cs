@@ -17,6 +17,7 @@ namespace Frameworks.Grid.Data
         public bool HasProperty => CellProperty != null;
         public int CorrespondingRoomID { get; private set; }
         public bool IsVisited { get; set; }
+        public bool IsShowed { get; set; }
 
         //Object
         public bool HasObject => m_Object != null;

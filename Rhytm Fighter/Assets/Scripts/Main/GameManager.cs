@@ -65,6 +65,19 @@ namespace RhytmFighter.Main
                 m_ControllersHolder.LevelController.RoomViewBuilder.ShowCell_Debug(m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
                     m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.X, m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.Y));
             }
+
+            if (GUI.Button(new Rect(10, 160, 150, 50), "Distant cell"))
+            {
+                CellView playerView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
+                                                                                                        m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.X,
+                                                                                                        m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.Y);
+
+                Frameworks.Grid.Data.GridCellData data = m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.GetTheMostDistantWlkableCell(playerView.CorrespondingCellData.X, playerView.CorrespondingCellData.Y, 2);
+
+                CellView view = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, data.X, data.Y);
+                if (view != null)
+                    m_ControllersHolder.LevelController.RoomViewBuilder.ShowCell_Debug(view);
+            }
         }
 
         private void Initialize()
@@ -220,7 +233,9 @@ namespace RhytmFighter.Main
             //m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.BattleController.ProcessEnemyActions;
             //m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
-            m_ControllersHolder.PlayerCharacterController.StopMove();
+            //No need to stop movement if players destination cell is the cell where enemy was detected
+            if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
+                m_ControllersHolder.PlayerCharacterController.StopMove();
 
             m_GameStateMachine.ChangeState(m_GameStateBattle);
         }

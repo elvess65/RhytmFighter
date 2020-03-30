@@ -4,7 +4,7 @@ namespace RhytmFighter.Interfaces
 {
     public interface iMovable : iUpdatable
     {
-        event System.Action OnMovementFinished;
+        event System.Action<int> OnMovementFinished;
         event System.Action<int> OnCellVisited;
 
         bool IsMoving { get; }

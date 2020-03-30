@@ -8,7 +8,7 @@ namespace FrameworkPackage.PathCreation
     /// </summary>
     public class MovePathController
     {
-        public event System.Action OnMovementFinished;
+        public event System.Action<bool> OnMovementFinished;
 
         public bool IsMoving { get; private set; }
 
@@ -47,8 +47,7 @@ namespace FrameworkPackage.PathCreation
         /// </summary>
         public void StopMovement()
         {
-            IsMoving = false;
-            OnMovementFinished?.Invoke();
+            StopMovement(true);
         }
 
         /// <summary>
@@ -68,13 +67,20 @@ namespace FrameworkPackage.PathCreation
                 ControlledTransform.localEulerAngles = new Vector3(ControlledTransform.localEulerAngles.x, rotation.eulerAngles.y, ControlledTransform.localEulerAngles.z);
 
                 if (DistanceTravelled >= m_VertexPath.length)
-                    StopMovement();
+                    StopMovement(false);
 
                 //Quaternion rot = m_PathCreator.path.GetRotation(t / tt);
                 //Debug.Log(rot.eulerAngles);
                 //transform.localEulerAngles = new Vector3(rot.eulerAngles.x, rot.eulerAngles.y - 90, rot.eulerAngles.z);
                 //transform.rotation = rot * Quaternion.Euler(0, -90, 0);
             }
+        }
+
+
+        private void StopMovement(bool forcedToStop)
+        {
+            IsMoving = false;
+            OnMovementFinished?.Invoke(forcedToStop);
         }
     }
 }

@@ -187,6 +187,35 @@ namespace Frameworks.Grid.Data
 
 
         /// <summary>
+        /// Самая отдаленной доступная для перемещения ячейка
+        /// </summary>
+        /// <returns></returns>
+        public GridCellData GetTheMostDistantWlkableCell(int x, int y, int r)
+        {
+            float maxDist = float.MinValue;
+            GridCellData result = null;
+            GridCellData fromCellData = GetCellByCoord(x, y);
+            (int x, int y)[] cells = GetWalkableCellNeighboursCoordInRange(x, y, r);
+
+            for (int i = 0; i < cells.Length; i++)
+            {
+                GridCellData cellData = m_Grid[cells[i].x, cells[i].y];
+
+                if (cellData.IsShowed)
+                {
+                    float curDist = GetDistanceBetweenCells(fromCellData, cellData);
+                    if (curDist > maxDist)
+                    {
+                        maxDist = curDist;
+                        result = cellData;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Ближайшая доступная для перемещения ячейка
         /// </summary>
         public GridCellData GetClosestWalkableCell(GridCellData fromCell, GridCellData targetCell, float rangeToFindClosest)

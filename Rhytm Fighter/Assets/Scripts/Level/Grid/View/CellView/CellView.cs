@@ -44,6 +44,8 @@ namespace Frameworks.Grid.View
             if (!CorrespondingCellData.IsVisited)
                 CorrespondingCellData.IsVisited = true;
 
+            CorrespondingCellData.IsShowed = true;
+
             //If cell contains object
             if (CorrespondingCellData.HasObject)
             {
@@ -61,6 +63,8 @@ namespace Frameworks.Grid.View
                 return;
 
             m_CellAppearanceStrategy.Hide();
+
+            CorrespondingCellData.IsShowed = false;
 
             //If cell contains object
             if (CorrespondingCellData.HasObject)

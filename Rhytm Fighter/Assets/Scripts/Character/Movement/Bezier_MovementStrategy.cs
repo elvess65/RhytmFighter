@@ -7,7 +7,7 @@ namespace RhytmFighter.Characters.Movement
 {
     public class Bezier_MovementStrategy : iMovementStrategy
     {
-        public event Action OnMovementFinished;
+        public event Action<int> OnMovementFinished;
         public event Action<int> OnCellVisited;
 
         //Movement
@@ -16,7 +16,7 @@ namespace RhytmFighter.Characters.Movement
         private MovePathController m_MovePathController;
 
         //Update position
-        private int m_CurPathIndex;                         //Инекс клетки пути в которой находится персонаж
+        private int m_CurPathIndex;                         //Индекс клетки пути в которой находится персонаж
         private float m_CellPositionUpdateDist;             //Дистанция, которую нужно пройти для обновления позиции ячейки
         private float m_PassedDistanceSinceLastPoint;       //Дистанция, которую прошел персонаж с последнего обновления ячейки
 
@@ -84,10 +84,12 @@ namespace RhytmFighter.Characters.Movement
         }
 
 
-        void MovementFinishedHandler()
+        void MovementFinishedHandler(bool forcedToStop)
         {
             m_PathVisualizer.enabled = false;
-            OnMovementFinished?.Invoke();
+
+            int index = forcedToStop ? m_CurPathIndex : m_CurPathIndex + 1;
+            OnMovementFinished?.Invoke(index);
         }
 
         void CellVisitedHandler()

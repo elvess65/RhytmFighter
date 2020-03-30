@@ -4,7 +4,7 @@ namespace RhytmFighter.Characters.Movement
 {
     public interface iMovementStrategy
     {
-        event System.Action OnMovementFinished;
+        event System.Action<int> OnMovementFinished;
         event System.Action<int> OnCellVisited;
 
         bool IsMoving { get; }

@@ -21,9 +21,9 @@ namespace RhytmFighter.Characters
 
         public PlayerModel PlayerModel { get; private set; }
 
-        private GridCellData[] m_PathCells;
         private CellView m_CurrentPlayerCell;
         private LevelController m_LevelController;
+        private GridCellData[] m_PathCells;
 
         private const float m_CLOSEST_WALKABLE_CELL_RANGE = 1.5f;
 
@@ -40,6 +40,7 @@ namespace RhytmFighter.Characters
 
             //Init start cell
             startCellView.CorrespondingCellData.IsVisited = true;
+            startCellView.CorrespondingCellData.AddObject(playerModel);
             m_CurrentPlayerCell = startCellView;
 
             //Show player view
@@ -80,7 +81,7 @@ namespace RhytmFighter.Characters
                     //If distance between cells less than 1.5 (horizontal/vertical = 1, diagonal = 1.4) - cell are neighbours 
                     if (m_LevelController.Model.GetCurrenRoomData().GridData.GetDistanceBetweenCells(m_CurrentPlayerCell.CorrespondingCellData, targetCellView.CorrespondingCellData) < m_CLOSEST_WALKABLE_CELL_RANGE)
                     {
-                        MovementFinishedHandler();
+                        MovementFinishedHandler(m_PathCells.Length - 1);
                         PlayerInteractsWithObjectHandler(interactableGridObject);
                     }
                     else
@@ -131,9 +132,17 @@ namespace RhytmFighter.Characters
         }
 
 
-        private void MovementFinishedHandler()
+        private void MovementFinishedHandler(int index)
         {
-            OnMovementFinished?.Invoke(m_PathCells[m_PathCells.Length - 1]);
+            //Clamp index of cell which player finished movement
+            if (index >= m_PathCells.Length)
+                index = m_PathCells.Length - 1;
+
+            //Update corresponding cell data
+            PlayerModel.SetCorrespondingCell(m_PathCells[index]);
+
+            //Events
+            OnMovementFinished?.Invoke(m_PathCells[index]);
 
             m_OnMovementFinishedInternal?.Invoke();
         }

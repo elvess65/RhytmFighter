@@ -8,7 +8,7 @@ namespace RhytmFighter.Objects.View
 {
     public class AbstractBattleNPCView : AbstractNPCView, iBattleModelViewProxy, iMovable
     {
-        public event System.Action OnMovementFinished;
+        public event System.Action<int> OnMovementFinished;
         public event System.Action<int> OnCellVisited;
 
         private iMovementStrategy m_MoveStrategy;
@@ -47,11 +47,11 @@ namespace RhytmFighter.Objects.View
         }
 
 
-        void MovementFinishedHandler()
+        void MovementFinishedHandler(int index)
         {
             m_AnimationController.PlayIdleAnimation();
 
-            OnMovementFinished?.Invoke();
+            OnMovementFinished?.Invoke(index);
         }
 
         void CellVisitedHandler(int index) => OnCellVisited?.Invoke(index);
