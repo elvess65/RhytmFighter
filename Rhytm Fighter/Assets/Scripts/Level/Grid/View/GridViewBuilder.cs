@@ -59,7 +59,7 @@ namespace Frameworks.Grid.View
         /// Remove room graphics
         /// </summary>
         /// <param name="roomID"></param>
-        public void RemoveRoom(LevelRoomData roomData)
+        public void RemoveRoomView(LevelRoomData roomData)
         {
             if (m_GridViews.ContainsKey(roomData.ID))
             {
@@ -81,6 +81,28 @@ namespace Frameworks.Grid.View
                 return m_GridViews[roomID].GetCellVisual(x, y);
 
             return null;
+        }
+
+
+        public void ShowAllCellsWithObjects_Debug(LevelRoomData roomData)
+        {
+            for (int i = 0; i < roomData.GridData.WidthInCells; i++)
+            {
+                for (int j = 0; j < roomData.GridData.HeightInCells; j++)
+                {
+                    //Get cell view
+                    CellView cellView = GetCellVisual(roomData.ID, i, j);
+                    if (cellView.CorrespondingCellData.HasObject)
+                    {
+                        ShowCell_Debug(cellView);
+                    }
+                }
+            }
+        }
+
+        public void ShowCell_Debug(CellView cellView)
+        {
+            GameObject.CreatePrimitive(PrimitiveType.Cube).transform.position = cellView.transform.position;
         }
 
 
