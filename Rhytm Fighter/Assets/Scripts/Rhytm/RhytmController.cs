@@ -5,6 +5,8 @@ namespace RhytmFighter.Rhytm
 {
     public class RhytmController : iUpdatable
     {
+        private static RhytmController m_Instance;
+
         public System.Action OnBeatStarted;
         public System.Action OnBeatStopped;
         public System.Action OnBeat;
@@ -22,6 +24,8 @@ namespace RhytmFighter.Rhytm
 
         public RhytmController(int bps)
         {
+            m_Instance = this;
+
             m_BPS = bps;
             TickRate = 60.0 / m_BPS;
         }
@@ -54,6 +58,22 @@ namespace RhytmFighter.Rhytm
         {
             m_NextBeatTime = AudioSettings.dspTime + TickRate;
             OnBeat?.Invoke();
+        }
+
+
+        public static void SubscribeForBeatEvent(System.Action action)
+        {
+            m_Instance.OnBeat += action;
+        }
+
+        public static void UnscribeFromBeatEvent(System.Action action)
+        {
+            m_Instance.OnBeat -= action;
+        }
+
+        public static double GetTickRate()
+        {
+            return m_Instance.TickRate;
         }
     }
 }

@@ -42,6 +42,9 @@ namespace RhytmFighter.Characters
             startCellView.CorrespondingCellData.IsVisited = true;
             m_CurrentPlayerCell = startCellView;
 
+            //Show player view
+            playerModel.ShowView(startCellView);
+
             //Hide all cells except start cell
             m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetCurrenRoomData());
 

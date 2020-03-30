@@ -22,6 +22,8 @@ MonoBehaviour:
   - {fileID: 4167423890742070114, guid: 46b60e2210cf6694bbde986b193febaf, type: 3}
   CellContent_Obstacle_Prefabs:
   - {fileID: 4167423890742070114, guid: f2a8521ead1c6c2418607721b7b083f0, type: 3}
+  PlayerViewPrefab: {fileID: 5206831727226302146, guid: 49a1dad011aebf743837f1340ceccf92,
+    type: 3}
   StandartItemViewPrefab: {fileID: -8202855839088546251, guid: b60b792dfabe591449d10e4c78007d72,
     type: 3}
   StandartEnemyNPCViewPrefab: {fileID: 1181045626910733427, guid: 8fbf892300f755f4b905492541937271,

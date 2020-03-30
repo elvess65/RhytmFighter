@@ -9,7 +9,7 @@ namespace RhytmFighter.Interfaces
 
         bool IsMoving { get; }
 
-        void Initialize(Vector3 pos, float moveSpeed);
+        void Initialize(float moveSpeed);
         void StartMove(Vector3[] path);
         void StopMove();
     }

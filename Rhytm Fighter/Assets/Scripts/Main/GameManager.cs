@@ -128,14 +128,14 @@ namespace RhytmFighter.Main
         {
             //Temp 
             //TODO Get from data
+            int playerID = 0;
             float playerMoveSpeed = 2;
+            SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(5);
+            SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(1, 1, 2);
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
 
-            //Initialize character controller
-            SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(1, 1, 2);
-            SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(5);
-
-            PlayerModel playerModel = new PlayerModel(0, startCellView, playerMoveSpeed, battleBehaviour, healthBehaviour);
+            //Create player model
+            PlayerModel playerModel = new PlayerModel(playerID, startCellView.CorrespondingCellData, playerMoveSpeed, battleBehaviour, healthBehaviour);
             m_ControllersHolder.PlayerCharacterController.CreateCharacter(playerModel, startCellView, m_ControllersHolder.LevelController);
             playerModel.OnDestroyed += PlayerDestroyedHandler;
 

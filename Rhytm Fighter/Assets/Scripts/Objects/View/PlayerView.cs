@@ -17,10 +17,8 @@ namespace RhytmFighter.Objects.View
         public bool IsMoving => m_MoveStrategy.IsMoving;
 
         #region iMovable
-        public void Initialize(Vector3 pos, float moveSpeed)
+        public void Initialize(float moveSpeed)
         {
-            transform.position = pos;
-
             //Movement
             m_MoveStrategy = new Bezier_MovementStrategy(transform, moveSpeed);
             m_MoveStrategy.OnMovementFinished += MovementFinishedHandler;

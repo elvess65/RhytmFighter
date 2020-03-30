@@ -1,5 +1,7 @@
 ﻿using System;
+using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
+using RhytmFighter.Assets;
 using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.Health;
 using RhytmFighter.Interfaces;
@@ -16,13 +18,13 @@ namespace RhytmFighter.Objects.Model
         public bool IsMoving => m_ViewAsMovable.IsMoving;
 
         private iMovable m_ViewAsMovable;
+        private float m_MoveSpeed;
 
 
-        public PlayerModel(int id, CellView startCellView, float moveSpeed, iBattleActionBehaviour actionBehaviour, iHealthBehaviour healthBehaviour)
-            : base(id, startCellView.CorrespondingCellData, actionBehaviour, healthBehaviour, false)
+        public PlayerModel(int id, GridCellData correspondingCell, float moveSpeed, iBattleActionBehaviour actionBehaviour, iHealthBehaviour healthBehaviour)
+            : base(id, correspondingCell, actionBehaviour, healthBehaviour, false)
         {
-            ShowView(startCellView);
-            Initialize(startCellView.transform.position, moveSpeed);
+            m_MoveSpeed = moveSpeed;
         }
 
         #region AbstractModel
@@ -32,18 +34,19 @@ namespace RhytmFighter.Objects.Model
 
             //Bind view
             m_ViewAsMovable = View as iMovable;
+            Initialize(m_MoveSpeed);
         }
 
         protected override AbstractGridObjectView CreateView(CellView cellView)
         {
-            return GameObject.FindObjectOfType<PlayerView>();
+            return AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().PlayerViewPrefab, cellView.transform.position);
         }
         #endregion
 
         #region iMovable
-        public void Initialize(Vector3 pos, float moveSpeed)
+        public void Initialize(float moveSpeed)
         {
-            m_ViewAsMovable.Initialize(pos, moveSpeed);
+            m_ViewAsMovable.Initialize(moveSpeed);
             m_ViewAsMovable.OnMovementFinished += MovementFinishedHandler;
             m_ViewAsMovable.OnCellVisited += CellVisitedHandler;
         }

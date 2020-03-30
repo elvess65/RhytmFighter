@@ -20,6 +20,7 @@ namespace RhytmFighter.Assets
         public Abstract_CellContentView[] CellContent_Obstacle_Prefabs;
 
         [Header("Objects")]
+        public AbstractGridObjectView PlayerViewPrefab;
         public AbstractGridObjectView StandartItemViewPrefab;
         public AbstractGridObjectView StandartEnemyNPCViewPrefab;
 
