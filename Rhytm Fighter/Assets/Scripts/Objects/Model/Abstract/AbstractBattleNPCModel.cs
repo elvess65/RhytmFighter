@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace RhytmFighter.Objects.Model
 {
-    public abstract class AbstractBattleNPCModel : AbstractNPCModel, iBattleObject, iMovable
+    public abstract class AbstractBattleNPCModel : AbstractNPCModel, iBattleObject, iMovableModel
     {
         public event Action<int> OnMovementFinished;
         public event Action<int> OnCellVisited;
@@ -76,16 +76,6 @@ namespace RhytmFighter.Objects.Model
             }
         }
 
-        public void SetCorrespondingCell(GridCellData cellData)
-        {
-            if (CorrespondingCell.HasObject && CorrespondingCell.GetObject().ID == ID)
-            {
-                CorrespondingCell.RemoveObject();
-                CorrespondingCell = cellData;
-                CorrespondingCell.AddObject(this);
-            }
-        }
-
 
         #region ActionBehaviour
         private void ActionBehaviour_OnActionExecutedHandler(BattleCommand command)
@@ -118,7 +108,7 @@ namespace RhytmFighter.Objects.Model
         }
         #endregion
 
-        #region iMovable
+        #region iMovableModel
         public void Initialize(float moveSpeed)
         {
             m_ViewAsMovable.Initialize(moveSpeed);
@@ -134,6 +124,16 @@ namespace RhytmFighter.Objects.Model
         public void StopMove()
         {
             m_ViewAsMovable.StopMove();
+        }
+
+        public void MovementFinishedReverseCallback(GridCellData cellData)
+        {
+            if (CorrespondingCell.HasObject && CorrespondingCell.GetObject().ID == ID)
+            {
+                CorrespondingCell.RemoveObject();
+                CorrespondingCell = cellData;
+                CorrespondingCell.AddObject(this);
+            }
         }
 
         //iUpdatable

@@ -8,49 +8,44 @@ using UnityEngine;
 
 namespace RhytmFighter.Characters
 {
-    /// <summary>
-    /// Controller for player character
-    /// </summary>
-    public class PlayerCharacterController : iUpdatable
+    public class ModelMovementController : iUpdatable
     {
-        public event System.Action<GridCellData> OnMovementFinished;//
-        public event System.Action<GridCellData> OnCellVisited;//
-        public event System.Action<AbstractInteractableObjectModel> OnPlayerInteractsWithObject;//
+        public event System.Action<GridCellData> OnMovementFinished;
+        public event System.Action<GridCellData> OnCellVisited;
+        public event System.Action<AbstractInteractableObjectModel> OnPlayerInteractsWithObject;
 
-        private event System.Action m_OnMovementFinishedInternal;//
+        private event System.Action m_OnMovementFinishedInternal;
 
-        public PlayerModel PlayerModel { get; private set; }//
 
-        private LevelController m_LevelController;//
-        private GridCellData[] m_PathCells;//
+        public AbstractBattleNPCModel Model { get; private set; }
+
+        private CellView m_CurrentPlayerCell;
+        private LevelController m_LevelController;
+        private GridCellData[] m_PathCells;
 
         private const float m_CLOSEST_WALKABLE_CELL_RANGE = 1.5f;
 
 
-        public void CreateCharacter(PlayerModel playerModel, CellView startCellView, LevelController levelController)
+        public void Initialize(LevelController levelController)
         {
-            //Initialize player model
-            PlayerModel = playerModel;//
-            PlayerModel.OnMovementFinished += MovementFinishedHandler;//
-            PlayerModel.OnCellVisited += CellVisitedHandler;//
-
             //Level controller
-            m_LevelController = levelController;//
-
-            //Init start cell
-            startCellView.CorrespondingCellData.IsVisited = true;
-            startCellView.CorrespondingCellData.AddObject(playerModel);
-
-            //Show player view
-            playerModel.ShowView(startCellView);
-
-            //Hide all cells except start cell
-            m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetCurrenRoomData());
-
-            //Extend view
-            m_LevelController.RoomViewBuilder.ExtendView(m_LevelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
+            m_LevelController = levelController;
         }
 
+        public void SetModel(AbstractBattleNPCModel model)
+        {
+            //Clear event from previous model
+            if (Model != null)
+            {
+                Model.OnMovementFinished -= MovementFinishedHandler;
+                Model.OnCellVisited -= CellVisitedHandler;
+            }
+
+            //Initialize model
+            Model = model;
+            Model.OnMovementFinished += MovementFinishedHandler;
+            Model.OnCellVisited += CellVisitedHandler;
+        }
 
         public void MoveCharacter(CellView targetCellView)
         {
@@ -71,13 +66,13 @@ namespace RhytmFighter.Characters
                 }
 
                 //Get closest walkable cell to cell with object
-                targetCellData = m_LevelController.Model.GetCurrenRoomData().GridData.GetClosestWalkableCell(PlayerModel.CorrespondingCell, targetCellView.CorrespondingCellData, m_CLOSEST_WALKABLE_CELL_RANGE);
+                targetCellData = m_LevelController.Model.GetCurrenRoomData().GridData.GetClosestWalkableCell(m_CurrentPlayerCell.CorrespondingCellData, targetCellView.CorrespondingCellData, m_CLOSEST_WALKABLE_CELL_RANGE);
 
                 //If cant find closest cell - supposedly cells are neighbours
                 if (targetCellData == null)
                 {
                     //If distance between cells less than 1.5 (horizontal/vertical = 1, diagonal = 1.4) - cell are neighbours 
-                    if (m_LevelController.Model.GetCurrenRoomData().GridData.GetDistanceBetweenCells(PlayerModel.CorrespondingCell, targetCellView.CorrespondingCellData) < m_CLOSEST_WALKABLE_CELL_RANGE)
+                    if (m_LevelController.Model.GetCurrenRoomData().GridData.GetDistanceBetweenCells(m_CurrentPlayerCell.CorrespondingCellData, targetCellView.CorrespondingCellData) < m_CLOSEST_WALKABLE_CELL_RANGE)
                     {
                         MovementFinishedHandler(m_PathCells.Length - 1);
                         PlayerInteractsWithObjectHandler(interactableGridObject);
@@ -95,12 +90,13 @@ namespace RhytmFighter.Characters
                 targetCellView = m_LevelController.RoomViewBuilder.GetCellVisual(targetCellData.CorrespondingRoomID, targetCellData.X, targetCellData.Y);
             }
 
-            
+
             //Find path of cells
-            m_PathCells = m_LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(PlayerModel.CorrespondingCell, targetCellData);
+            m_PathCells = m_LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(m_CurrentPlayerCell.CorrespondingCellData, targetCellData);
+            m_CurrentPlayerCell = targetCellView;
 
             //Convert gridCellData to positions
-            List <Vector3> pathPos = new List<Vector3>();
+            List<Vector3> pathPos = new List<Vector3>();
             foreach (GridCellData pathCell in m_PathCells)
                 pathPos.Add(m_LevelController.RoomViewBuilder.GetCellVisual(pathCell.CorrespondingRoomID, pathCell.X, pathCell.Y).transform.position);
 
@@ -109,23 +105,17 @@ namespace RhytmFighter.Characters
                 pathPos.Insert(1, (pathPos[0] + pathPos[1]) / 2);
 
             //Start move character
-            PlayerModel.StartMove(pathPos.ToArray());
+            Model.StartMove(pathPos.ToArray());
         }
 
         public void StopMove()
         {
-            PlayerModel.StopMove();
+            Model.StopMove();
         }
 
         public void PerformUpdate(float deltaTime)
         {
-            PlayerModel?.PerformUpdate(deltaTime);
-        }
-
-
-        public void ExecuteAction()
-        {
-            PlayerModel.ActionBehaviour.ExecuteAction();
+            Model?.PerformUpdate(deltaTime);
         }
 
 
@@ -136,12 +126,10 @@ namespace RhytmFighter.Characters
                 index = m_PathCells.Length - 1;
 
             //Update corresponding cell data
-            PlayerModel.MovementFinishedReverseCallback(m_PathCells[index]);
+            Model.MovementFinishedReverseCallback(m_PathCells[index]);
 
             //Events
             OnMovementFinished?.Invoke(m_PathCells[index]);
-
-            m_OnMovementFinishedInternal?.Invoke();
         }
 
         private void CellVisitedHandler(int index) => OnCellVisited?.Invoke(m_PathCells[index]);

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Frameworks.Grid.Data;
+using UnityEngine;
 
 namespace RhytmFighter.Interfaces
 {
