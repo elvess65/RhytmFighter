@@ -12,27 +12,26 @@ namespace RhytmFighter.Characters
     {
         public event System.Action<GridCellData> OnMovementFinished;
         public event System.Action<GridCellData> OnCellVisited;
-        public event System.Action<AbstractInteractableObjectModel> OnPlayerInteractsWithObject;
+        public event System.Action<AbstractInteractableObjectModel> OnInteractsWithObject;
 
         private event System.Action m_OnMovementFinishedInternal;
 
 
-        public AbstractBattleNPCModel Model { get; private set; }
+        public iMovableModel Model { get; private set; }
 
-        private CellView m_CurrentPlayerCell;
         private LevelController m_LevelController;
         private GridCellData[] m_PathCells;
 
         private const float m_CLOSEST_WALKABLE_CELL_RANGE = 1.5f;
 
 
-        public void Initialize(LevelController levelController)
+        public ModelMovementController(LevelController levelController)
         {
-            //Level controller
             m_LevelController = levelController;
         }
 
-        public void SetModel(AbstractBattleNPCModel model)
+
+        public void SetModel(iMovableModel model)
         {
             //Clear event from previous model
             if (Model != null)
@@ -66,13 +65,13 @@ namespace RhytmFighter.Characters
                 }
 
                 //Get closest walkable cell to cell with object
-                targetCellData = m_LevelController.Model.GetCurrenRoomData().GridData.GetClosestWalkableCell(m_CurrentPlayerCell.CorrespondingCellData, targetCellView.CorrespondingCellData, m_CLOSEST_WALKABLE_CELL_RANGE);
+                targetCellData = m_LevelController.Model.GetCurrenRoomData().GridData.GetClosestWalkableCell(Model.CorrespondingCell, targetCellView.CorrespondingCellData, m_CLOSEST_WALKABLE_CELL_RANGE);
 
                 //If cant find closest cell - supposedly cells are neighbours
                 if (targetCellData == null)
                 {
                     //If distance between cells less than 1.5 (horizontal/vertical = 1, diagonal = 1.4) - cell are neighbours 
-                    if (m_LevelController.Model.GetCurrenRoomData().GridData.GetDistanceBetweenCells(m_CurrentPlayerCell.CorrespondingCellData, targetCellView.CorrespondingCellData) < m_CLOSEST_WALKABLE_CELL_RANGE)
+                    if (m_LevelController.Model.GetCurrenRoomData().GridData.GetDistanceBetweenCells(Model.CorrespondingCell, targetCellView.CorrespondingCellData) < m_CLOSEST_WALKABLE_CELL_RANGE)
                     {
                         MovementFinishedHandler(m_PathCells.Length - 1);
                         PlayerInteractsWithObjectHandler(interactableGridObject);
@@ -90,10 +89,8 @@ namespace RhytmFighter.Characters
                 targetCellView = m_LevelController.RoomViewBuilder.GetCellVisual(targetCellData.CorrespondingRoomID, targetCellData.X, targetCellData.Y);
             }
 
-
             //Find path of cells
-            m_PathCells = m_LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(m_CurrentPlayerCell.CorrespondingCellData, targetCellData);
-            m_CurrentPlayerCell = targetCellView;
+            m_PathCells = m_LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(Model.CorrespondingCell, targetCellData);
 
             //Convert gridCellData to positions
             List<Vector3> pathPos = new List<Vector3>();
@@ -130,10 +127,19 @@ namespace RhytmFighter.Characters
 
             //Events
             OnMovementFinished?.Invoke(m_PathCells[index]);
+
+            //Internal event (if model interacted with something)
+            m_OnMovementFinishedInternal?.Invoke();
         }
 
-        private void CellVisitedHandler(int index) => OnCellVisited?.Invoke(m_PathCells[index]);
+        private void CellVisitedHandler(int index)
+        {
+            OnCellVisited?.Invoke(m_PathCells[index]);
+        }
 
-        private void PlayerInteractsWithObjectHandler(AbstractInteractableObjectModel interactableObject) => OnPlayerInteractsWithObject?.Invoke(interactableObject);
+        private void PlayerInteractsWithObjectHandler(AbstractInteractableObjectModel interactableObject)
+        {
+            OnInteractsWithObject?.Invoke(interactableObject);
+        }
     }
 }
