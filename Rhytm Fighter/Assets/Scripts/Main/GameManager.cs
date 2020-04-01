@@ -93,6 +93,7 @@ namespace RhytmFighter.Main
                 m_ControllersHolder.RhytmController,
                 m_ControllersHolder.CameraController,
                 m_ControllersHolder.CommandsController,
+                m_ControllersHolder.BattleController,
                 m_GameStateMachine
             };
 

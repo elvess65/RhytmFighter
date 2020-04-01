@@ -10,9 +10,9 @@ namespace Frameworks.Grid.Data
         public int HeightInCells { get; private set; }
 
         //Gates
-        public GridCellData ParentNodeGate  { get => m_ParentNodeGate;  set { m_ParentNodeGate = value; } }
-        public GridCellData LeftNodeGate    { get => m_LeftNodeGate;    set { m_LeftNodeGate = value;   } }
-        public GridCellData RightNodeGate   { get => m_RightNodeGate;   set { m_RightNodeGate = value;  } }
+        public GridCellData ParentNodeGate { get => m_ParentNodeGate; set { m_ParentNodeGate = value; } }
+        public GridCellData LeftNodeGate { get => m_LeftNodeGate; set { m_LeftNodeGate = value; } }
+        public GridCellData RightNodeGate { get => m_RightNodeGate; set { m_RightNodeGate = value; } }
 
         //Base
         private float m_CellSize;
@@ -20,9 +20,9 @@ namespace Frameworks.Grid.Data
         private GridCellData[,] m_Grid;
         private GridPathFindController m_GridPathFindController;
         //Gates
-        private GridCellData m_ParentNodeGate   { get; set; }
-        private GridCellData m_LeftNodeGate     { get; set; }
-        private GridCellData m_RightNodeGate    { get; set; }
+        private GridCellData m_ParentNodeGate { get; set; }
+        private GridCellData m_LeftNodeGate { get; set; }
+        private GridCellData m_RightNodeGate { get; set; }
 
         private const bool m_ALLOW_DIAGONAL_PATHFINDING = false;
 
@@ -171,7 +171,7 @@ namespace Frameworks.Grid.Data
                 {
                     (int x, int y) neighbouCoord = (i, j);
                     if (!(neighbouCoord.x.Equals(x) && neighbouCoord.y.Equals(y)) && CoordIsOnGrid(neighbouCoord.x, neighbouCoord.y))
-                            cellNeighbours.Add(neighbouCoord);
+                        cellNeighbours.Add(neighbouCoord);
                 }
             }
 
@@ -182,7 +182,7 @@ namespace Frameworks.Grid.Data
         /// <summary>
         /// Список координат всех доступных для перемещения и показанных соседей для указанной координаты (3*3)
         /// </summary>
-        public List<GridCellData> GetCellWalkableAndVisibleNeighboursCoordInRange(int x, int y, int r)
+        public List<GridCellData> GetWalkableAndVisibleCellsInRange(int x, int y, int r)
         {
             //Список соседних координат относительно указанной
             List<GridCellData> cellNeighbours = new List<GridCellData>();
