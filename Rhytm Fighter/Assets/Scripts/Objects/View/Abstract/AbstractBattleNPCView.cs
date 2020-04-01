@@ -1,5 +1,5 @@
 ﻿using RhytmFighter.Battle;
-using RhytmFighter.Characters;
+using RhytmFighter.Characters.Animation;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Interfaces;
 using UnityEngine;
@@ -12,7 +12,7 @@ namespace RhytmFighter.Objects.View
         public event System.Action<int> OnCellVisited;
 
         private iMovementStrategy m_MoveStrategy;
-        private StandartAnimationController m_AnimationController;
+        private iBattleNPCAnimationController m_AnimationController;
 
         public bool IsMoving => m_MoveStrategy.IsMoving;
 
@@ -26,7 +26,7 @@ namespace RhytmFighter.Objects.View
             m_MoveStrategy.OnCellVisited += CellVisitedHandler;
 
             //Animation
-            m_AnimationController = GetComponent<StandartAnimationController>();
+            m_AnimationController = GetComponent<iBattleNPCAnimationController>();
         }
 
         public void StartMove(Vector3[] path)
@@ -60,12 +60,12 @@ namespace RhytmFighter.Objects.View
         #region iBattleModelViewProxy
         public virtual void ExecuteAction()
         {
-            StartCoroutine(ExecuteActionCoroutine());
+            m_AnimationController.PlayAttackAnimation();
         }
 
         public virtual void TakeDamage()
         {
-            StartCoroutine(TakeDamageCoroutine());
+            m_AnimationController.PlayTakeDamageAnimation();
         }
 
         public void IncreaseHP()
@@ -75,28 +75,7 @@ namespace RhytmFighter.Objects.View
 
         public virtual void Destroy()
         {
-            Destroy(gameObject);
-        }
-
-
-        System.Collections.IEnumerator ExecuteActionCoroutine()
-        {
-            transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
-
-            for (int i = 0; i < 5; i++)
-                yield return null;
-
-            transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
-        }
-
-        System.Collections.IEnumerator TakeDamageCoroutine()
-        {
-            transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
-
-            for (int i = 0; i < 5; i++)
-                yield return null;
-
-            transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+            m_AnimationController.PlayDestroyAnimation();
         }
         #endregion
     }

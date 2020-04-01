@@ -176,8 +176,6 @@ namespace RhytmFighter.Battle
                                                                                 adjustedCell.X,
                                                                                 adjustedCell.Y);
 
-                GameObject.CreatePrimitive(PrimitiveType.Capsule).transform.position = view.transform.position;
-
                 m_EnemyMovementController.OnMovementFinished += EnemyAdjustementMovementFinished;
                 m_EnemyMovementController.SetModel(battleObject as iMovableModel);
                 m_EnemyMovementController.MoveCharacter(view);

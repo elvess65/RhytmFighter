@@ -145,7 +145,7 @@ namespace RhytmFighter.Main
             //Temp 
             //TODO Get from data
             int playerID = 0;
-            float playerMoveSpeed = 12;
+            float playerMoveSpeed = 5;
             SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(5);
             SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(1, 1, 2);
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
@@ -230,8 +230,8 @@ namespace RhytmFighter.Main
         {
             Debug.LogError("BEGIN BATTLE");
 
-            //m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.BattleController.ProcessEnemyActions;
-            //m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.CommandsController.ProcessPendingCommands;
+            m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.BattleController.ProcessEnemyActions;
+            m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
