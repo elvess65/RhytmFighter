@@ -26,6 +26,9 @@ namespace Frameworks.Grid.Data
 
         public List<GridCellData> FindPath(GridCellData startNode, GridCellData targetNode)
         {
+            if (startNode == null && targetNode == null)
+                return null;
+
             //Create open and close sets
             List<GridCellData> openSet = new List<GridCellData>();
             HashSet<GridCellData> closedSet = new HashSet<GridCellData>();

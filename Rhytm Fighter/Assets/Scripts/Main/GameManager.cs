@@ -2,6 +2,7 @@
 using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action.Behaviours;
 using RhytmFighter.Battle.Health.Behaviours;
+using RhytmFighter.Characters;
 using RhytmFighter.Data;
 using RhytmFighter.GameState;
 using RhytmFighter.Interfaces;
@@ -65,19 +66,6 @@ namespace RhytmFighter.Main
                 m_ControllersHolder.LevelController.RoomViewBuilder.ShowCell_Debug(m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
                     m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.X, m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.Y));
             }
-
-            if (GUI.Button(new Rect(10, 160, 150, 50), "Distant cell"))
-            {
-                CellView playerView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
-                                                                                                        m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.X,
-                                                                                                        m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.Y);
-
-                Frameworks.Grid.Data.GridCellData data = m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.GetTheMostDistantWlkableCell(playerView.CorrespondingCellData.X, playerView.CorrespondingCellData.Y, 2);
-
-                CellView view = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, data.X, data.Y);
-                if (view != null)
-                    m_ControllersHolder.LevelController.RoomViewBuilder.ShowCell_Debug(view);
-            }
         }
 
         private void Initialize()
@@ -115,6 +103,7 @@ namespace RhytmFighter.Main
 
             //Subscribe for events
             m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
+            m_ControllersHolder.BattleController.OnPrepareForBattle += PrepareForBattleHandler;
             m_ControllersHolder.BattleController.OnBattleStarted += BattleStartedHandler;
             m_ControllersHolder.BattleController.OnBattleFinished += BattleFinishedHandler;
             m_ControllersHolder.RhytmController.OnBeat += BeatHandler;
@@ -156,7 +145,7 @@ namespace RhytmFighter.Main
             //Temp 
             //TODO Get from data
             int playerID = 0;
-            float playerMoveSpeed = 2;
+            float playerMoveSpeed = 12;
             SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(5);
             SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(1, 1, 2);
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
@@ -189,7 +178,7 @@ namespace RhytmFighter.Main
                     //Detect enemy
                     if (battleObject.IsEnemy)
                     {
-                        m_ControllersHolder.BattleController.AddEnemyToActiveBattle(battleObject);
+                        m_ControllersHolder.BattleController.AddEnemy(battleObject);
                         m_ControllersHolder.PlayerCharacterController.PlayerModel.Target = m_ControllersHolder.BattleController.GetClosestEnemy(m_ControllersHolder.PlayerCharacterController.PlayerModel);
                     }
                 }
@@ -226,16 +215,23 @@ namespace RhytmFighter.Main
         }
 
 
+        private void PrepareForBattleHandler()
+        {
+            Debug.LogError("PREPARE FOR BATTLE");
+
+            //No need to stop movement if players destination cell is the cell where enemy was detected
+            if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
+                m_ControllersHolder.PlayerCharacterController.StopMove();
+
+            m_GameStateMachine.ChangeState(m_GameStateIdle);
+        }
+
         private void BattleStartedHandler()
         {
             Debug.LogError("BEGIN BATTLE");
 
             //m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.BattleController.ProcessEnemyActions;
             //m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.CommandsController.ProcessPendingCommands;
-
-            //No need to stop movement if players destination cell is the cell where enemy was detected
-            if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
-                m_ControllersHolder.PlayerCharacterController.StopMove();
 
             m_GameStateMachine.ChangeState(m_GameStateBattle);
         }

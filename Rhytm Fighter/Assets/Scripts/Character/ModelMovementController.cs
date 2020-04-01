@@ -16,7 +16,6 @@ namespace RhytmFighter.Characters
 
         private event System.Action m_OnMovementFinishedInternal;
 
-
         public iMovableModel Model { get; private set; }
 
         private LevelController m_LevelController;

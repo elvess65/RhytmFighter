@@ -30,7 +30,6 @@ namespace RhytmFighter.Input
                 //Click the cell in the same room
                 if (cellData.CorrespondingRoomID.Equals(m_LevelController.Model.CurrentRoomID))
                 {
-                    Debug.Log("MOVE THE SAVE ROOM");
                     //If other room was created - hide created room
                     if (m_CreatedOtherRoomID >= 0)
                     {

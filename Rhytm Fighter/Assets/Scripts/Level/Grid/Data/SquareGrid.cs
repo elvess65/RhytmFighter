@@ -51,7 +51,16 @@ namespace Frameworks.Grid.Data
         {
             //Find path in the same room
             if (from.CorrespondingRoomID == to.CorrespondingRoomID)
-                return m_GridPathFindController.FindPath(from, to).ToArray();
+            {
+                try
+                {
+                    return m_GridPathFindController.FindPath(from, to).ToArray();
+                }
+                catch
+                {
+                    return null;
+                }
+            }
 
             //Find path for room transition
             return new GridCellData[] { from, to };
@@ -162,12 +171,40 @@ namespace Frameworks.Grid.Data
                 {
                     (int x, int y) neighbouCoord = (i, j);
                     if (!(neighbouCoord.x.Equals(x) && neighbouCoord.y.Equals(y)) && CoordIsOnGrid(neighbouCoord.x, neighbouCoord.y))
-                        cellNeighbours.Add(neighbouCoord);
+                            cellNeighbours.Add(neighbouCoord);
                 }
             }
 
 
             return cellNeighbours.ToArray();
+        }
+
+        /// <summary>
+        /// Список координат всех доступных для перемещения и показанных соседей для указанной координаты (3*3)
+        /// </summary>
+        public List<GridCellData> GetCellWalkableAndVisibleNeighboursCoordInRange(int x, int y, int r)
+        {
+            //Список соседних координат относительно указанной
+            List<GridCellData> cellNeighbours = new List<GridCellData>();
+
+            //Если координата, для которой нужно получить список соседей не находится в пределах сетки - вернуть пустой список
+            if (!CoordIsOnGrid(x, y))
+                return cellNeighbours;
+
+            for (int i = x - r; i <= x + r; i++)
+            {
+                for (int j = y - r; j <= y + r; j++)
+                {
+                    GridCellData currecntCell = m_Grid[i, j];
+                    if (!(currecntCell.X.Equals(x) && currecntCell.Y.Equals(y)) && CoordIsOnGrid(currecntCell.X, currecntCell.Y) &&
+                        CellIsWalkable(m_Grid[currecntCell.X, currecntCell.Y]) && m_Grid[currecntCell.X, currecntCell.Y].IsShowed)
+                    {
+                        cellNeighbours.Add(currecntCell);
+                    }
+                }
+            }
+
+            return cellNeighbours;
         }
 
         /// <summary>
@@ -183,36 +220,6 @@ namespace Frameworks.Grid.Data
             }
 
             return cellNeighbours.ToArray();
-        }
-
-
-        /// <summary>
-        /// Самая отдаленной доступная для перемещения ячейка
-        /// </summary>
-        /// <returns></returns>
-        public GridCellData GetTheMostDistantWlkableCell(int x, int y, int r)
-        {
-            float maxDist = float.MinValue;
-            GridCellData result = null;
-            GridCellData fromCellData = GetCellByCoord(x, y);
-            (int x, int y)[] cells = GetWalkableCellNeighboursCoordInRange(x, y, r);
-
-            for (int i = 0; i < cells.Length; i++)
-            {
-                GridCellData cellData = m_Grid[cells[i].x, cells[i].y];
-
-                if (cellData.IsShowed)
-                {
-                    float curDist = GetDistanceBetweenCells(fromCellData, cellData);
-                    if (curDist > maxDist)
-                    {
-                        maxDist = curDist;
-                        result = cellData;
-                    }
-                }
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -276,10 +283,14 @@ namespace Frameworks.Grid.Data
         public bool CoordIsOnGrid(int x, int y) => (x >= 0 && x < WidthInCells) && (y >= 0 && y < HeightInCells);
 
         /// <summary>
-        /// Является ли ячейка доступной для перемещения
+        /// Является ли ячейка недоступной для перемещения
         /// </summary>
         public bool CellIsNotWalkable(GridCellData cell) => cell.CellType != CellTypes.Normal || cell.HasObject;
 
+        /// <summary>
+        /// Является ли ячейка доступной для перемещения
+        /// </summary>
+        public bool CellIsWalkable(GridCellData cell) => !CellIsNotWalkable(cell);
 
         void CreateDummyObstacle(PrimitiveType type, Vector3 pos)
         {

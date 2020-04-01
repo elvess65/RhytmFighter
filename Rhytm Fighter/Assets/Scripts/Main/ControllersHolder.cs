@@ -35,7 +35,7 @@ namespace RhytmFighter.Main
             InputController = new InputController();
             RhytmController = new RhytmController(bps);
             CameraController = new CameraController();
-            BattleController = new BattleController();
+            BattleController = new BattleController(LevelController);
             CommandsController = new CommandsController(RhytmController.TickRate);
             RhytmInputProxy = new RhytmInputProxy(RhytmController, 0.25);
 

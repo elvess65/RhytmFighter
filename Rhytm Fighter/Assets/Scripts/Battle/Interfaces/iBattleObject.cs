@@ -1,4 +1,5 @@
-﻿using RhytmFighter.Battle.Action;
+﻿using Frameworks.Grid.Data;
+using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Health;
 
@@ -10,6 +11,7 @@ namespace RhytmFighter.Battle
 
         int ID { get; }
         bool IsEnemy { get; }
+        GridCellData CorrespondingCell { get; }
         UnityEngine.Vector3 ViewPosition { get; }
 
         iBattleObject Target { get; set; }
