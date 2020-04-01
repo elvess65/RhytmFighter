@@ -2,9 +2,9 @@
 {
     public interface iBattleModelViewProxy
     {
-        void ExecuteAction();
-        void TakeDamage();
-        void IncreaseHP();
-        void Destroy();
+        void NotifyView_ExecuteAction();
+        void NotifyView_TakeDamage();
+        void NotifyView_IncreaseHP();
+        void NotifyView_Destroyed();
     }
 }

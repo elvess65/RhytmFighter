@@ -101,12 +101,12 @@ namespace RhytmFighter.Characters
                 pathPos.Insert(1, (pathPos[0] + pathPos[1]) / 2);
 
             //Start move character
-            Model.StartMove(pathPos.ToArray());
+            Model.NotifyView_StartMove(pathPos.ToArray());
         }
 
         public void StopMove()
         {
-            Model.StopMove();
+            Model.NotifyView_StopMove();
         }
 
         public void PerformUpdate(float deltaTime)

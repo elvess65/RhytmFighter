@@ -29,13 +29,13 @@ namespace RhytmFighter.Objects.View
             m_AnimationController = GetComponent<iBattleNPCAnimationController>();
         }
 
-        public void StartMove(Vector3[] path)
+        public void NotifyView_StartMove(Vector3[] path)
         {
             m_MoveStrategy.StartMove(path);
             m_AnimationController.PlayMoveAnimation();
         }
 
-        public void StopMove()
+        public void NotifyView_StopMove()
         {
             m_MoveStrategy.StopMove();
         }
@@ -58,22 +58,22 @@ namespace RhytmFighter.Objects.View
         #endregion
 
         #region iBattleModelViewProxy
-        public virtual void ExecuteAction()
+        public virtual void NotifyView_ExecuteAction()
         {
             m_AnimationController.PlayAttackAnimation();
         }
 
-        public virtual void TakeDamage()
+        public virtual void NotifyView_TakeDamage()
         {
             m_AnimationController.PlayTakeDamageAnimation();
         }
 
-        public void IncreaseHP()
+        public void NotifyView_IncreaseHP()
         {
 
         }
 
-        public virtual void Destroy()
+        public virtual void NotifyView_Destroyed()
         {
             m_AnimationController.PlayDestroyAnimation();
         }

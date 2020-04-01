@@ -98,6 +98,10 @@ namespace RhytmFighter.Battle
       
         private void EnemyDestroyedHandler(iBattleObject sender)
         {
+            //Clear players target
+            if (Player.Target.ID == sender.ID)
+                Player.Target = null;
+
             //Get closest enemy to player
             iBattleObject closestEnemy = GetClosestEnemy(Player);
 

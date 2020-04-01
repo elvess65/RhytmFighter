@@ -82,28 +82,31 @@ namespace RhytmFighter.Objects.Model
         {
             CommandsController.AddCommand(command);
 
-            m_ViewAsBattle.ExecuteAction();
+            m_ViewAsBattle.NotifyView_ExecuteAction();
         }
         #endregion
 
         #region HealthBehaviour
         private void HealthBehaviour_OnHPReduced(int dmg)
         {
-            m_ViewAsBattle.TakeDamage();
+            m_ViewAsBattle.NotifyView_TakeDamage();
         }
 
         private void HealthBehaviour_OnHPIncreased(int amount)
         {
-            m_ViewAsBattle.IncreaseHP();
+            m_ViewAsBattle.NotifyView_IncreaseHP();
         }
 
         private void HealthBehaviour_OnDestroyed()
         {
-            HideView();
+            //Notify view
+            m_ViewAsBattle.NotifyView_Destroyed();
 
+            //Remove object from cell
             if (CorrespondingCell.HasObject && CorrespondingCell.GetObject().ID.Equals(ID))
                 CorrespondingCell.RemoveObject();
 
+            //Event
             OnDestroyed?.Invoke(this);
         }
         #endregion
@@ -116,14 +119,14 @@ namespace RhytmFighter.Objects.Model
             m_ViewAsMovable.OnCellVisited += CellVisitedHandler;
         }
 
-        public void StartMove(Vector3[] path)
+        public void NotifyView_StartMove(Vector3[] path)
         {
-            m_ViewAsMovable.StartMove(path);
+            m_ViewAsMovable.NotifyView_StartMove(path);
         }
 
-        public void StopMove()
+        public void NotifyView_StopMove()
         {
-            m_ViewAsMovable.StopMove();
+            m_ViewAsMovable.NotifyView_StopMove();
         }
 
         public void MovementFinishedReverseCallback(GridCellData cellData)
