@@ -2,7 +2,6 @@
 using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action.Behaviours;
 using RhytmFighter.Battle.Health.Behaviours;
-using RhytmFighter.Characters;
 using RhytmFighter.Data;
 using RhytmFighter.GameState;
 using RhytmFighter.Interfaces;
@@ -195,7 +194,7 @@ namespace RhytmFighter.Main
             m_GameStateMachine.ChangeState(m_GameStateIdle);
 
             //Debug animation time
-            StartCoroutine(TEMP_INTERATCION_COROUTINE(2));
+            StartCoroutine(TEMP_INTERATCION_COROUTINE(0.5f));
         }
 
         private void PlayerInteractWithNPCHandler(AbstractNPCModel interactableNPC)

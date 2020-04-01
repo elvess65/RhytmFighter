@@ -76,11 +76,12 @@ namespace RhytmFighter.Level.Data
                         cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.RightNode.ID, GridCellProperty_GateToNode.GateTypes.ToNextNode));
                         grid.RightNodeGate = cell;
                     }
-                    else
-                        m_EmptyCells.Add(cell);
 
                     cell.SetCellType(cellType);
                     cell.SetRoomID(node.ID);
+
+                    if (grid.CellIsWalkable(cell))
+                        m_EmptyCells.Add(cell);
 
                     /*if (i == 1 && j == 0)
                         cell.AddObject(new ExampleItemGridObject(1, cell));

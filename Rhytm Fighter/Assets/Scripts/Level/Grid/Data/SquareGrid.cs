@@ -195,9 +195,10 @@ namespace Frameworks.Grid.Data
             {
                 for (int j = y - r; j <= y + r; j++)
                 {
-                    GridCellData currecntCell = m_Grid[i, j];
-                    if (!(currecntCell.X.Equals(x) && currecntCell.Y.Equals(y)) && CoordIsOnGrid(currecntCell.X, currecntCell.Y) &&
-                        CellIsWalkable(m_Grid[currecntCell.X, currecntCell.Y]) && m_Grid[currecntCell.X, currecntCell.Y].IsShowed)
+                    GridCellData currecntCell = GetCellByCoord(i, j);
+                    if (currecntCell != null && !(currecntCell.X.Equals(x) && currecntCell.Y.Equals(y)) &&
+                        CellIsWalkable(m_Grid[currecntCell.X, currecntCell.Y]) &&
+                        m_Grid[currecntCell.X, currecntCell.Y].IsShowed)
                     {
                         cellNeighbours.Add(currecntCell);
                     }
