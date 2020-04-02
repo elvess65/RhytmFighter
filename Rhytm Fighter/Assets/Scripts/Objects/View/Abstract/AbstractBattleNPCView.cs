@@ -1,10 +1,8 @@
-﻿using RhytmFighter.Assets;
-using RhytmFighter.Battle;
+﻿using RhytmFighter.Battle;
 using RhytmFighter.Characters.Animation;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Interfaces;
 using RhytmFighter.UI;
-using RhytmFighter.UI.Bar;
 using UnityEngine;
 
 namespace RhytmFighter.Objects.View

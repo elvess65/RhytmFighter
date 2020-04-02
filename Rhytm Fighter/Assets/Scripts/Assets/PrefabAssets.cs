@@ -27,7 +27,7 @@ namespace RhytmFighter.Assets
 
         [Header("UI")]
         public SingleBarBehaviour EnemyHealthBarPrefab;
-        public SingleBarBehaviour PlayerHealthBarPrefab;
+        public DoubleBarBehaviour PlayerHealthBarPrefab;
 
         private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
 

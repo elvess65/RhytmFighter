@@ -6,7 +6,7 @@ namespace RhytmFighter.Objects.View
 {
     public class PlayerView : AbstractBattleNPCView
     {
-        private SingleBarBehaviour m_HealthBarBehaviour;
+        private DoubleBarBehaviour m_HealthBarBehaviour;
 
         protected override void CreateHealthBar()
         {

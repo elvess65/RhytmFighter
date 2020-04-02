@@ -30,5 +30,5 @@ MonoBehaviour:
     type: 3}
   EnemyHealthBarPrefab: {fileID: 2847699074814303975, guid: 1e6f30333bc82499287e0e74ac9ee481,
     type: 3}
-  PlayerHealthBarPrefab: {fileID: 2081946992909373137, guid: 4d020cef8800d4f30ad0ea2fc7edeefa,
+  PlayerHealthBarPrefab: {fileID: -3937909374599639112, guid: 4d020cef8800d4f30ad0ea2fc7edeefa,
     type: 3}
