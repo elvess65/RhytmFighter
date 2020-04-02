@@ -1,12 +1,14 @@
-﻿using RhytmFighter.Battle;
+﻿using RhytmFighter.Assets;
+using RhytmFighter.Battle;
 using RhytmFighter.Characters.Animation;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Interfaces;
+using RhytmFighter.UI;
 using UnityEngine;
 
 namespace RhytmFighter.Objects.View
 {
-    public class AbstractBattleNPCView : AbstractNPCView, iBattleModelViewProxy, iMovable
+    public abstract class AbstractBattleNPCView : AbstractNPCView, iBattleModelViewProxy, iMovable, iUIOwner
     {
         public event System.Action<int> OnMovementFinished;
         public event System.Action<int> OnCellVisited;
@@ -77,6 +79,29 @@ namespace RhytmFighter.Objects.View
         {
             m_AnimationController.PlayDestroyAnimation();
         }
+        #endregion
+
+        #region iUIOwner
+        public void CreateUI()
+        {
+            
+        }
+
+        public void HideUI()
+        {
+            
+        }
+
+
+        void CreateHealthBar()
+        {
+            AssetsManager.GetPrefabAssets().InstantiatePrefab(GetHealthBarPrefab());
+            //AssetsManager.GetPrefabAssets().InstantiatePrefab(GetHealthBarParent().gameObject);
+        }
+
+        protected Transform GetHealthBarParent() { return null; }
+
+        protected Frameworks.Grid.View.CellView GetHealthBarPrefab() { return null; }
         #endregion
     }
 }

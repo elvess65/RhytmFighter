@@ -692,6 +692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7177d9dce3d0c948861c367cb32dfc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
   ManagersHolder: {fileID: 88609300}
   CameraRoot: {fileID: 1259799369}
   BeatIndicatorTemp: {fileID: 510244930}
