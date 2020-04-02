@@ -26,8 +26,8 @@ namespace RhytmFighter.Assets
         public AbstractGridObjectView StandartEnemyNPCViewPrefab;
 
         [Header("UI")]
-        public BarBehaviour EnemyHealthBarPrefab;
-        public BarBehaviour PlayerHealthBarPrefab;
+        public SingleBarBehaviour EnemyHealthBarPrefab;
+        public SingleBarBehaviour PlayerHealthBarPrefab;
 
         private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
 

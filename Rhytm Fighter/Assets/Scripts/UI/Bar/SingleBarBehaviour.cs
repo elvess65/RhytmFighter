@@ -2,14 +2,13 @@
 
 namespace RhytmFighter.UI.Bar
 {
-    public class BarBehaviour : AbstractUIObject
+    public class SingleBarBehaviour : AbstractUIObject
     {
         [SerializeField] private AbstractBarStrategy BarStrategy;
 
-     
-        public void Initialize()
+        public void SetProgress(int cur, int max)
         {
-
+            BarStrategy.SetProgress(cur, max);
         }
     }
 }

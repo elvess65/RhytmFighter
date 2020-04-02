@@ -1,18 +1,23 @@
-﻿using RhytmFighter.UI.Bar;
+﻿using RhytmFighter.Assets;
+using RhytmFighter.UI.Bar;
 using UnityEngine;
 
 namespace RhytmFighter.Objects.View
 {
     public class PlayerView : AbstractBattleNPCView
     {
-        protected override Transform GetHealthBarParent()
+        private SingleBarBehaviour m_HealthBarBehaviour;
+
+        protected override void CreateHealthBar()
         {
-            return FindObjectOfType<Canvas>().transform;
+            m_HealthBarBehaviour = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().PlayerHealthBarPrefab);
+            m_HealthBarBehaviour.RectTransform.SetParent(FindObjectOfType<Canvas>().transform);
+            m_HealthBarBehaviour.RectTransform.anchoredPosition3D = Vector3.zero;
         }
 
-        protected override BarBehaviour GetHealthBarPrefab()
+        protected override void DestroyHealthBar()
         {
-            return Assets.AssetsManager.GetPrefabAssets().PlayerHealthBarPrefab;
+            Destroy(m_HealthBarBehaviour);
         }
     }
 }

@@ -14,9 +14,6 @@ namespace RhytmFighter.Objects.View
         public event System.Action<int> OnMovementFinished;
         public event System.Action<int> OnCellVisited;
 
-        public Transform HealthBarParent;
-
-        private BarBehaviour m_HealthBarBehaviour;
         private iMovementStrategy m_MoveStrategy;
         private iBattleNPCAnimationController m_AnimationController;
 
@@ -93,28 +90,13 @@ namespace RhytmFighter.Objects.View
 
         public void HideUI()
         {
-            Destroy(m_HealthBarBehaviour);
+            DestroyHealthBar();
         }
 
 
-        protected virtual Transform GetHealthBarParent()
-        {
-            return HealthBarParent;
-        }
+        protected abstract void CreateHealthBar();
 
-        protected virtual BarBehaviour GetHealthBarPrefab()
-        {
-            return AssetsManager.GetPrefabAssets().EnemyHealthBarPrefab;
-        }
-
-
-        private void CreateHealthBar()
-        {
-            m_HealthBarBehaviour = AssetsManager.GetPrefabAssets().InstantiatePrefab(GetHealthBarPrefab());
-            m_HealthBarBehaviour.RectTransform.SetParent(GetHealthBarParent());
-            m_HealthBarBehaviour.RectTransform.anchoredPosition3D = Vector3.zero;
-            m_HealthBarBehaviour.Initialize();
-        }
+        protected abstract void DestroyHealthBar();
         #endregion
     }
 }

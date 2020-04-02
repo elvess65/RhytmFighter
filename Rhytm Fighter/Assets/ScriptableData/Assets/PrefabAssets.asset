@@ -28,7 +28,7 @@ MonoBehaviour:
     type: 3}
   StandartEnemyNPCViewPrefab: {fileID: 1181045626910733427, guid: 8fbf892300f755f4b905492541937271,
     type: 3}
-  EnemyHealthBarPrefab: {fileID: 2847699074814303975, guid: 60da1df1f7edb3747bea8f735b2768d1,
+  EnemyHealthBarPrefab: {fileID: 2847699074814303975, guid: 1e6f30333bc82499287e0e74ac9ee481,
     type: 3}
-  PlayerHealthBarPrefab: {fileID: 8895894616281831300, guid: 34017cf12560c804bb2f669f00c7af91,
+  PlayerHealthBarPrefab: {fileID: 2081946992909373137, guid: 4d020cef8800d4f30ad0ea2fc7edeefa,
     type: 3}
