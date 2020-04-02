@@ -1,5 +1,4 @@
-﻿using Frameworks.Grid.Data;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RhytmFighter.Interfaces
 {
@@ -10,7 +9,7 @@ namespace RhytmFighter.Interfaces
 
         bool IsMoving { get; }
 
-        void Initialize(float moveSpeed);
+        void InitializeMovement(float moveSpeed);
         void NotifyView_StartMove(Vector3[] path);
         void NotifyView_StopMove();
     }

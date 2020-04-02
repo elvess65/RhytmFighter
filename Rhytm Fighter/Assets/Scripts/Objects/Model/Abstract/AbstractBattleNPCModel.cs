@@ -5,6 +5,7 @@ using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Health;
 using RhytmFighter.Interfaces;
+using RhytmFighter.UI;
 using System;
 using UnityEngine;
 
@@ -30,6 +31,7 @@ namespace RhytmFighter.Objects.Model
 
         private iBattleModelViewProxy m_ViewAsBattle;
         private iMovable m_ViewAsMovable;
+        private iUIOwner m_ViewAsUIOwner;
         private float m_MoveSpeed;
 
 
@@ -60,7 +62,10 @@ namespace RhytmFighter.Objects.Model
             //Bind view
             m_ViewAsBattle = View as iBattleModelViewProxy;
             m_ViewAsMovable = View as iMovable;
-            Initialize(m_MoveSpeed);
+            m_ViewAsUIOwner = View as iUIOwner;
+            m_ViewAsUIOwner.CreateUI();
+
+            InitializeMovement(m_MoveSpeed);
         }
 
         public void ApplyCommand(BattleCommand command)
@@ -112,9 +117,9 @@ namespace RhytmFighter.Objects.Model
         #endregion
 
         #region iMovableModel
-        public void Initialize(float moveSpeed)
+        public void InitializeMovement(float moveSpeed)
         {
-            m_ViewAsMovable.Initialize(moveSpeed);
+            m_ViewAsMovable.InitializeMovement(moveSpeed);
             m_ViewAsMovable.OnMovementFinished += MovementFinishedHandler;
             m_ViewAsMovable.OnCellVisited += CellVisitedHandler;
         }

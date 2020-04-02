@@ -4,6 +4,7 @@ using RhytmFighter.Characters.Animation;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Interfaces;
 using RhytmFighter.UI;
+using RhytmFighter.UI.Bar;
 using UnityEngine;
 
 namespace RhytmFighter.Objects.View
@@ -13,6 +14,9 @@ namespace RhytmFighter.Objects.View
         public event System.Action<int> OnMovementFinished;
         public event System.Action<int> OnCellVisited;
 
+        public Transform HealthBarParent;
+
+        private BarBehaviour m_HealthBarBehaviour;
         private iMovementStrategy m_MoveStrategy;
         private iBattleNPCAnimationController m_AnimationController;
 
@@ -20,7 +24,7 @@ namespace RhytmFighter.Objects.View
 
 
         #region iMovable
-        public void Initialize(float moveSpeed)
+        public void InitializeMovement(float moveSpeed)
         {
             //Movement
             m_MoveStrategy = new Bezier_MovementStrategy(transform, moveSpeed);
@@ -84,24 +88,33 @@ namespace RhytmFighter.Objects.View
         #region iUIOwner
         public void CreateUI()
         {
-            
+            CreateHealthBar();
         }
 
         public void HideUI()
         {
-            
+            Destroy(m_HealthBarBehaviour);
         }
 
 
-        void CreateHealthBar()
+        protected virtual Transform GetHealthBarParent()
         {
-            AssetsManager.GetPrefabAssets().InstantiatePrefab(GetHealthBarPrefab());
-            //AssetsManager.GetPrefabAssets().InstantiatePrefab(GetHealthBarParent().gameObject);
+            return HealthBarParent;
         }
 
-        protected Transform GetHealthBarParent() { return null; }
+        protected virtual BarBehaviour GetHealthBarPrefab()
+        {
+            return AssetsManager.GetPrefabAssets().EnemyHealthBarPrefab;
+        }
 
-        protected Frameworks.Grid.View.CellView GetHealthBarPrefab() { return null; }
+
+        private void CreateHealthBar()
+        {
+            m_HealthBarBehaviour = AssetsManager.GetPrefabAssets().InstantiatePrefab(GetHealthBarPrefab());
+            m_HealthBarBehaviour.RectTransform.SetParent(GetHealthBarParent());
+            m_HealthBarBehaviour.RectTransform.anchoredPosition3D = Vector3.zero;
+            m_HealthBarBehaviour.Initialize();
+        }
         #endregion
     }
 }

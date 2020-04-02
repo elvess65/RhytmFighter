@@ -3,6 +3,7 @@ using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
 using Frameworks.Grid.View.Cell;
 using RhytmFighter.Objects.View;
+using RhytmFighter.UI.Bar;
 using UnityEngine;
 
 namespace RhytmFighter.Assets
@@ -23,6 +24,10 @@ namespace RhytmFighter.Assets
         public AbstractGridObjectView PlayerViewPrefab;
         public AbstractGridObjectView StandartItemViewPrefab;
         public AbstractGridObjectView StandartEnemyNPCViewPrefab;
+
+        [Header("UI")]
+        public BarBehaviour EnemyHealthBarPrefab;
+        public BarBehaviour PlayerHealthBarPrefab;
 
         private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
 
