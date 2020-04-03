@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RhytmFighter.Battle.Command.View
 {
-    public class ProjectileView : AbstractCommandView
+    public class SimpleProjectileView : AbstractProjectileView
     {
         private InterpolationData<Vector3> m_MoveData;
 
@@ -23,7 +23,7 @@ namespace RhytmFighter.Battle.Command.View
                 transform.position = Vector3.Lerp(m_MoveData.From, m_MoveData.To, m_MoveData.Progress);
 
                 if (m_MoveData.Overtime())
-                    gameObject.SetActive(false);
+                    DestroyProjectile();
             }
         }
     }

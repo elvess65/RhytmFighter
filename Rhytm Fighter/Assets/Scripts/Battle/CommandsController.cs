@@ -1,4 +1,5 @@
-﻿using RhytmFighter.Battle.Command;
+﻿using RhytmFighter.Assets;
+using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Command.View;
 using RhytmFighter.Interfaces;
 using System.Collections.Generic;
@@ -67,11 +68,10 @@ namespace RhytmFighter.Battle
             {
                 Command = command;
 
-                GameObject ob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                ob.transform.localScale *= 0.1f;
-
-                View = ob.AddComponent<ProjectileView>();
-                View.Initialize(command.Sender.ViewPosition, command.Target.ViewPosition, command.ApplyDelay * (float)iterationTime);
+                View = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().ProjectilePrefab);
+                View.Initialize(command.Sender.ProjectileSpawnPosition,
+                                command.Target.ProjectileHitPosition,
+                                command.ApplyDelay * (float)iterationTime);
 
                 m_IterationsToRelease = command.ApplyDelay;
             }

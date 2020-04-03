@@ -54,7 +54,7 @@ namespace RhytmFighter.Main
                 m_Updateables[i].PerformUpdate(Time.deltaTime);
         }
 
-        private void OnGUI()
+        /*private void OnGUI()
         {
             if (GUI.Button(new Rect(10, 10, 150, 50), "Show objects"))
             {
@@ -66,7 +66,7 @@ namespace RhytmFighter.Main
                 m_ControllersHolder.LevelController.RoomViewBuilder.ShowCell_Debug(m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
                     m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.X, m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.Y));
             }
-        }
+        }*/
 
         private void Initialize()
         {
