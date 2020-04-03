@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.Interfaces;
+using RhytmFighter.UI.Tools;
 using UnityEngine;
 
 namespace RhytmFighter.Camera
@@ -14,23 +15,24 @@ namespace RhytmFighter.Camera
         //Moving speed
         private float m_Speed;
 
+        private FollowObject m_FollowObject;
+
 
         public void InitializeCamera(Transform root, Transform target, float followSpeed)
         {
-            m_Root = root;
-            m_Speed = followSpeed;
-
-            SetTarget(target);
+            m_FollowObject = new FollowObject();
+            m_FollowObject.SetRoot(root);
+            m_FollowObject.SetTarget(target);
+            m_FollowObject.SetSpeed(followSpeed);
         }
 
-        public void SetTarget(Transform target) => m_Target = target;
+        public void SetTarget(Transform target) => m_FollowObject.SetTarget(target);
 
-        public void SetSpeed(float speed) => m_Speed = speed;
+        public void SetSpeed(float speed) => m_FollowObject.SetSpeed(speed);
 
         public void PerformUpdate(float deltaTime)
         {
-            if (m_Target != null && m_Root != null)
-                m_Root.transform.position = Vector3.Lerp(m_Root.transform.position, m_Target.position, Time.deltaTime * m_Speed);
+            m_FollowObject?.PerformUpdate(deltaTime);
         }
     }
 }

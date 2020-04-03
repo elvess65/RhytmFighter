@@ -42,7 +42,7 @@ namespace RhytmFighter.Objects.View
         }
 
         //iUpdatable
-        public void PerformUpdate(float deltaTime)
+        public virtual void PerformUpdate(float deltaTime)
         {
             m_MoveStrategy.Update(deltaTime);
         }
@@ -64,12 +64,12 @@ namespace RhytmFighter.Objects.View
             m_AnimationController.PlayAttackAnimation();
         }
 
-        public virtual void NotifyView_TakeDamage()
+        public virtual void NotifyView_TakeDamage(int curHP, int maxHP, int dmg)
         {
             m_AnimationController.PlayTakeDamageAnimation();
         }
 
-        public void NotifyView_IncreaseHP()
+        public virtual void NotifyView_IncreaseHP()
         {
 
         }
@@ -77,6 +77,8 @@ namespace RhytmFighter.Objects.View
         public virtual void NotifyView_Destroyed()
         {
             m_AnimationController.PlayDestroyAnimation();
+
+            HideUI();
         }
         #endregion
 

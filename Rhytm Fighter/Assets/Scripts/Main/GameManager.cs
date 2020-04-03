@@ -19,6 +19,7 @@ namespace RhytmFighter.Main
         [Header("Links")]
         public ManagersHolder ManagersHolder;
         public Transform CameraRoot;
+        public UnityEngine.Camera WorldCamera;
 
         [Header("Temp")]
         public GameObject BeatIndicatorTemp;

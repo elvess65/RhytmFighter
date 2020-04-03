@@ -8,6 +8,15 @@ namespace RhytmFighter.Objects.View
     {
         private DoubleBarBehaviour m_HealthBarBehaviour;
 
+
+        public override void NotifyView_TakeDamage(int curHP, int maxHP, int dmg)
+        {
+            base.NotifyView_TakeDamage(curHP, maxHP, dmg);
+
+            m_HealthBarBehaviour.SetProgress(curHP, maxHP);
+        }
+
+
         protected override void CreateHealthBar()
         {
             m_HealthBarBehaviour = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().PlayerHealthBarPrefab);
@@ -17,7 +26,7 @@ namespace RhytmFighter.Objects.View
 
         protected override void DestroyHealthBar()
         {
-            Destroy(m_HealthBarBehaviour);
+            m_HealthBarBehaviour.SetProgress(0, 1);
         }
     }
 }

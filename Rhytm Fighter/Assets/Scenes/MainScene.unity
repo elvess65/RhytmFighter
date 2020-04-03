@@ -694,6 +694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ManagersHolder: {fileID: 88609300}
   CameraRoot: {fileID: 1259799369}
+  WorldCamera: {fileID: 2027747561}
   BeatIndicatorTemp: {fileID: 510244930}
 --- !u!4 &1655152185
 Transform:
