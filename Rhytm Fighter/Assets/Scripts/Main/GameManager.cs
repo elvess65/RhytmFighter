@@ -20,6 +20,9 @@ namespace RhytmFighter.Main
         public ManagersHolder ManagersHolder;
         public Transform CameraRoot;
         public UnityEngine.Camera WorldCamera;
+        public AudioSource Music;
+        public AudioSource AttackSound;
+        public AudioSource HitSound;
 
         [Header("Temp")]
         public GameObject BeatIndicatorTemp;
@@ -114,6 +117,7 @@ namespace RhytmFighter.Main
         {
             //Start beat
             m_ControllersHolder.RhytmController.StartBeat();
+            Music.Play();
 
             //Chacge state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);

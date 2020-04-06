@@ -27,7 +27,7 @@ namespace RhytmFighter.Main
 
         public ControllersHolder()
         {
-            int bps = 60;
+            int bps = 130 / 2;
 
             GridInputProxy = new GridInputProxy();
 
