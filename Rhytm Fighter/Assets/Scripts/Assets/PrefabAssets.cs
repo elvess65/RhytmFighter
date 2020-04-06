@@ -2,6 +2,7 @@
 using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
 using Frameworks.Grid.View.Cell;
+using RhytmFighter.Battle.Command.View;
 using RhytmFighter.Objects.View;
 using RhytmFighter.UI.Bar;
 using UnityEngine;
@@ -28,6 +29,9 @@ namespace RhytmFighter.Assets
         [Header("UI")]
         public SingleBarBehaviour EnemyHealthBarPrefab;
         public DoubleBarBehaviour PlayerHealthBarPrefab;
+
+        [Header("Projectile")]
+        public AbstractProjectileView ProjectilePrefab;
 
         private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
 

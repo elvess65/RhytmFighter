@@ -12,10 +12,15 @@ namespace RhytmFighter.Objects.View
         public event System.Action<int> OnMovementFinished;
         public event System.Action<int> OnCellVisited;
 
+        public Transform ProjectileSpawnParent;
+        public Transform ProjectileHitParent;
+
         private iMovementStrategy m_MoveStrategy;
         private iBattleNPCAnimationController m_AnimationController;
 
         public bool IsMoving => m_MoveStrategy.IsMoving;
+        public Vector3 ProjectileHitPosition => ProjectileHitParent.position;
+        public Vector3 ProjectileSpawnPosition => ProjectileSpawnParent.position;
 
 
         #region iMovable

@@ -32,3 +32,5 @@ MonoBehaviour:
     type: 3}
   PlayerHealthBarPrefab: {fileID: -3937909374599639112, guid: 4d020cef8800d4f30ad0ea2fc7edeefa,
     type: 3}
+  ProjectilePrefab: {fileID: 3292289427469453457, guid: aaea7aad911f64bbb892afbe155a3661,
+    type: 3}

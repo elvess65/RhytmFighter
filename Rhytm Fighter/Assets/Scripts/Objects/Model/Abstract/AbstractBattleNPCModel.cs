@@ -20,6 +20,8 @@ namespace RhytmFighter.Objects.Model
         public bool IsMoving => m_ViewAsMovable.IsMoving;
         public bool IsEnemy { get; protected set; }
         public Vector3 ViewPosition => View.transform.position;
+        public Vector3 ProjectileHitPosition => m_ViewAsBattle.ProjectileHitPosition;
+        public Vector3 ProjectileSpawnPosition => m_ViewAsBattle.ProjectileSpawnPosition;
 
         public iBattleObject Target
         {
