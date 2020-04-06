@@ -17,14 +17,20 @@
             //In other case consider to calculate time after previous beat
 
             double inputDelta = 0;
-            double timeSinceLastBeat = m_RhytmController.TickRate - m_RhytmController.TimeToNextBeat;
+            double timeSinceLastBeat = m_RhytmController.TickRate - m_RhytmController.TimeToNextTick;
 
-            //Pre beat
+            //Pre tick
             if (timeSinceLastBeat >= m_RhytmController.TickRate / 2)
-                inputDelta = m_RhytmController.TimeToNextBeat;
-            //Post beat
+            {
+                UnityEngine.Debug.Log("PRE TICK");
+                inputDelta = m_RhytmController.TimeToNextTick;
+            }
+            //Post tick
             else
+            {
+                UnityEngine.Debug.Log("POST TICK");
                 inputDelta = timeSinceLastBeat;
+            }
 
             return inputDelta <= m_InputPrecious;
         }

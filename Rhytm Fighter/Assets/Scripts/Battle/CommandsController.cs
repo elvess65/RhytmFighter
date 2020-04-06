@@ -74,6 +74,7 @@ namespace RhytmFighter.Battle
                                 command.ApplyDelay * (float)iterationTime);
 
                 m_IterationsToRelease = command.ApplyDelay;
+                Debug.Log(command.ApplyDelay);
             }
 
             public bool Process() => m_IterationsToRelease-- <= 0;

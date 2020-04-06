@@ -7,19 +7,19 @@ namespace RhytmFighter.Rhytm
     {
         private static RhytmController m_Instance;
 
-        public System.Action OnBeatStarted;
-        public System.Action OnBeatStopped;
-        public System.Action OnBeat;
+        public System.Action OnStarted;
+        public System.Action OnStopped;
+        public System.Action OnTick;
 
         //Base 
         private int m_BPM;
 
         //Process
         private bool m_IsStarted = false;
-        private double m_NextBeatTime;
+        private double m_NextTickTime;
 
         public double TickRate { get; private set; }
-        public double TimeToNextBeat => m_NextBeatTime - AudioSettings.dspTime;
+        public double TimeToNextTick => m_NextTickTime - AudioSettings.dspTime;
         
 
         public RhytmController(int bpm)
@@ -30,45 +30,46 @@ namespace RhytmFighter.Rhytm
             TickRate = 60.0 / m_BPM;
         }
 
-        public void StartBeat()
+        public void StartTicking()
         {
-            ExecuteBeat();
+            m_NextTickTime = AudioSettings.dspTime;
+            ExecuteTick();
 
             m_IsStarted = true;
-            OnBeatStarted?.Invoke();
+            OnStarted?.Invoke();
         }
 
-        public void StopBeat()
+        public void StopTicking()
         {
             m_IsStarted = false;
-            OnBeatStopped?.Invoke();
+            OnStopped?.Invoke();
         }
 
         public void PerformUpdate(float deltaTime)
         {
             if (m_IsStarted)
             {
-                if (TimeToNextBeat <= 0)
-                    ExecuteBeat();
+                if (TimeToNextTick <= 0)
+                    ExecuteTick();
             }
         }
 
 
-        private void ExecuteBeat()
+        private void ExecuteTick()
         {
-            m_NextBeatTime = AudioSettings.dspTime + TickRate;
-            OnBeat?.Invoke();
+            m_NextTickTime = m_NextTickTime + TickRate;
+            OnTick?.Invoke();
         }
 
 
         public static void SubscribeForBeatEvent(System.Action action)
         {
-            m_Instance.OnBeat += action;
+            m_Instance.OnTick += action;
         }
 
         public static void UnscribeFromBeatEvent(System.Action action)
         {
-            m_Instance.OnBeat -= action;
+            m_Instance.OnTick -= action;
         }
 
         public static double GetTickRate()

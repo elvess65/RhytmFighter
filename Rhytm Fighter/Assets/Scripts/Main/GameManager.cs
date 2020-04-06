@@ -1,4 +1,5 @@
-﻿using Frameworks.Grid.View;
+﻿using FrameworkPackage.Utils;
+using Frameworks.Grid.View;
 using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action.Behaviours;
 using RhytmFighter.Battle.Health.Behaviours;
@@ -23,11 +24,11 @@ namespace RhytmFighter.Main
 
         [Header("Temp")]
         public GameObject BeatIndicatorTemp;
-        public Metronome metronome;
         public AudioSource Music;
         public AudioSource AttackSound;
         public AudioSource HitSound;
         public AudioSource BeatSound;
+        public Metronome Metronome;
 
         private DataHolder m_DataHolder;
         private GameStateMachine m_GameStateMachine;
@@ -39,6 +40,7 @@ namespace RhytmFighter.Main
         private GameState_Battle m_GameStateBattle;
         private GameState_Adventure m_GameStateAdventure;
 
+        public static float ENEMY_MOVE_SPEED;
 
         private void Awake()
         {
@@ -57,13 +59,6 @@ namespace RhytmFighter.Main
         {
             for (int i = 0; i < m_Updateables.Count; i++)
                 m_Updateables[i].PerformUpdate(Time.deltaTime);
-
-            if (metronome.beat)
-            {
-               // metronome.beat = false;
-               // BeatSound.Play();
-               // StartCoroutine(BeatIndicatorTempCoroutine());
-            }
         }
 
         /*private void OnGUI()
@@ -84,6 +79,8 @@ namespace RhytmFighter.Main
         {
             int bpm = 130;
             float inputPrecious = 0.25f;
+
+            Metronome.bpm = bpm;
 
             //Initialize objects
             m_DataHolder = new DataHolder();
@@ -124,14 +121,14 @@ namespace RhytmFighter.Main
             m_ControllersHolder.BattleController.OnBattleStarted += BattleStartedHandler;
             m_ControllersHolder.BattleController.OnBattleFinished += BattleFinishedHandler;
 
-            m_ControllersHolder.RhytmController.OnBeat += BeatHandler;
-            m_ControllersHolder.RhytmController.OnBeatStarted += BeatStartedHandler;
+            m_ControllersHolder.RhytmController.OnTick += TickHandler;
+            m_ControllersHolder.RhytmController.OnStarted += TickingStartedHandler;
         }
 
         private void InitializationFinished()
         {
             //Start beat
-            m_ControllersHolder.RhytmController.StartBeat();
+            m_ControllersHolder.RhytmController.StartTicking();
 
             //Chacge state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
@@ -164,7 +161,8 @@ namespace RhytmFighter.Main
             //Temp 
             //TODO Get from data
             int playerID = 0;
-            float playerMoveSpeed = (float)m_ControllersHolder.RhytmController.TickRate;
+            float playerMoveSpeed = (float)m_ControllersHolder.RhytmController.TickRate * 4f;
+            ENEMY_MOVE_SPEED = playerMoveSpeed;
             Debug.Log(playerMoveSpeed);
 
             SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(5);
@@ -251,8 +249,8 @@ namespace RhytmFighter.Main
         {
             Debug.LogError("BEGIN BATTLE");
 
-            m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.BattleController.ProcessEnemyActions;
-            m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.CommandsController.ProcessPendingCommands;
+            //m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.BattleController.ProcessEnemyActions;
+            m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
@@ -261,8 +259,8 @@ namespace RhytmFighter.Main
         {
             Debug.LogError("BATTLE FINISHED");
 
-            m_ControllersHolder.RhytmController.OnBeat -= m_ControllersHolder.BattleController.ProcessEnemyActions;
-            m_ControllersHolder.RhytmController.OnBeat -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
+            m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.BattleController.ProcessEnemyActions;
+            m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             m_ControllersHolder.PlayerCharacterController.PlayerModel.Target = null;
 
@@ -270,16 +268,16 @@ namespace RhytmFighter.Main
         }
 
 
-        private void BeatHandler()
+        private void TickHandler()
         {
             BeatSound.Play();
             StartCoroutine(BeatIndicatorTempCoroutine());
         }
 
-        private void BeatStartedHandler()
+        private void TickingStartedHandler()
         {
             Music.Play();
-            metronome.StartMetronome();
+            Metronome.StartMetronome();
         }
 
         System.Collections.IEnumerator BeatIndicatorTempCoroutine()
