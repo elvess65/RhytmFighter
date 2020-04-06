@@ -20,12 +20,14 @@ namespace RhytmFighter.Main
         public ManagersHolder ManagersHolder;
         public Transform CameraRoot;
         public UnityEngine.Camera WorldCamera;
-        public AudioSource Music;
-        public AudioSource AttackSound;
-        public AudioSource HitSound;
 
         [Header("Temp")]
         public GameObject BeatIndicatorTemp;
+        public Metronome metronome;
+        public AudioSource Music;
+        public AudioSource AttackSound;
+        public AudioSource HitSound;
+        public AudioSource BeatSound;
 
         private DataHolder m_DataHolder;
         private GameStateMachine m_GameStateMachine;
@@ -55,6 +57,13 @@ namespace RhytmFighter.Main
         {
             for (int i = 0; i < m_Updateables.Count; i++)
                 m_Updateables[i].PerformUpdate(Time.deltaTime);
+
+            if (metronome.beat)
+            {
+               // metronome.beat = false;
+               // BeatSound.Play();
+               // StartCoroutine(BeatIndicatorTempCoroutine());
+            }
         }
 
         /*private void OnGUI()
@@ -73,10 +82,13 @@ namespace RhytmFighter.Main
 
         private void Initialize()
         {
+            int bpm = 130;
+            float inputPrecious = 0.25f;
+
             //Initialize objects
             m_DataHolder = new DataHolder();
             m_GameStateMachine = new GameStateMachine();
-            m_ControllersHolder = new ControllersHolder();
+            m_ControllersHolder = new ControllersHolder(bpm / 2, inputPrecious);
 
             //Initialize managers
             ManagersHolder.Initialize();
@@ -107,17 +119,19 @@ namespace RhytmFighter.Main
 
             //Subscribe for events
             m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
+
             m_ControllersHolder.BattleController.OnPrepareForBattle += PrepareForBattleHandler;
             m_ControllersHolder.BattleController.OnBattleStarted += BattleStartedHandler;
             m_ControllersHolder.BattleController.OnBattleFinished += BattleFinishedHandler;
+
             m_ControllersHolder.RhytmController.OnBeat += BeatHandler;
+            m_ControllersHolder.RhytmController.OnBeatStarted += BeatStartedHandler;
         }
 
         private void InitializationFinished()
         {
             //Start beat
             m_ControllersHolder.RhytmController.StartBeat();
-            Music.Play();
 
             //Chacge state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
@@ -150,7 +164,9 @@ namespace RhytmFighter.Main
             //Temp 
             //TODO Get from data
             int playerID = 0;
-            float playerMoveSpeed = 5;
+            float playerMoveSpeed = (float)m_ControllersHolder.RhytmController.TickRate;
+            Debug.Log(playerMoveSpeed);
+
             SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(5);
             SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(1, 1, 2);
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
@@ -256,13 +272,20 @@ namespace RhytmFighter.Main
 
         private void BeatHandler()
         {
+            BeatSound.Play();
             StartCoroutine(BeatIndicatorTempCoroutine());
+        }
+
+        private void BeatStartedHandler()
+        {
+            Music.Play();
+            metronome.StartMetronome();
         }
 
         System.Collections.IEnumerator BeatIndicatorTempCoroutine()
         {
             BeatIndicatorTemp.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 2; i++)
                 yield return null;
             BeatIndicatorTemp.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
         }

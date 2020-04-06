@@ -63,7 +63,7 @@ namespace RhytmFighter.Characters.Movement
         }
 
         public void StopMove()
-        {
+        {;
             m_MovePathController.StopMovement();
         }
 

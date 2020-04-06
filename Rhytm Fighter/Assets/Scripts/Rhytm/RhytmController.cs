@@ -12,7 +12,7 @@ namespace RhytmFighter.Rhytm
         public System.Action OnBeat;
 
         //Base 
-        private int m_BPS;
+        private int m_BPM;
 
         //Process
         private bool m_IsStarted = false;
@@ -22,12 +22,12 @@ namespace RhytmFighter.Rhytm
         public double TimeToNextBeat => m_NextBeatTime - AudioSettings.dspTime;
         
 
-        public RhytmController(int bps)
+        public RhytmController(int bpm)
         {
             m_Instance = this;
 
-            m_BPS = bps;
-            TickRate = 60.0 / m_BPS;
+            m_BPM = bpm;
+            TickRate = 60.0 / m_BPM;
         }
 
         public void StartBeat()
