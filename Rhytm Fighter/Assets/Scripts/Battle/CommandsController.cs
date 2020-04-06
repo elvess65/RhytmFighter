@@ -2,6 +2,7 @@
 using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Command.View;
 using RhytmFighter.Interfaces;
+using RhytmFighter.Main;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -60,6 +61,7 @@ namespace RhytmFighter.Battle
         {
             private AbstractCommandView View;
             private int m_IterationsToRelease;
+            //TODO: Target tick
 
             public BattleCommand Command { get; private set; }
 
@@ -73,11 +75,20 @@ namespace RhytmFighter.Battle
                                 command.Target.ProjectileHitPosition,
                                 command.ApplyDelay * (float)iterationTime);
 
+                //TODO: LeftTime = R.TimeToNextTick + ((ApplyDelay - 1) * TickDuration)
+                //Target tick = R.TicksSinceStart + command.applyDelay
+
                 m_IterationsToRelease = command.ApplyDelay;
-                Debug.Log(command.ApplyDelay);
+                Debug.Log(GameManager.Instance.R.TicksSinceStart);
             }
 
-            public bool Process() => m_IterationsToRelease-- <= 0;
+            public bool Process()
+            {
+                //TODO: If ticks since start == relaseTick
+                Debug.Log("PROCESS: " + GameManager.Instance.R.TicksSinceStart);
+
+                return m_IterationsToRelease-- <= 0;
+            }
 
             public void PerformUpdate(float deltaTime) => View?.PerformUpdate(deltaTime);
 
