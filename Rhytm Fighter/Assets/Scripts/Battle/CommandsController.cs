@@ -12,13 +12,12 @@ namespace RhytmFighter.Battle
     {
         private static CommandsController m_Instance;
 
-        private double m_IterationTime;
         private List<PendingCommand> m_PendingCommands;
 
 
         public static void AddCommand(BattleCommand command)
         {
-            m_Instance.m_PendingCommands.Add(new PendingCommand(command, m_Instance.m_IterationTime));
+            m_Instance.m_PendingCommands.Add(new PendingCommand(command, Rhytm.RhytmController.GetInstance().CurrentTick));
         }
 
         public CommandsController()
@@ -29,6 +28,9 @@ namespace RhytmFighter.Battle
 
         public void ProcessPendingCommands(int ticksSinceStart)
         {
+            if (m_PendingCommands.Count > 0)
+                Debug.Log("Process command " + ticksSinceStart);
+
             for(int i = 0; i < m_PendingCommands.Count; i++)
             {
                 if (m_PendingCommands[i].Process())
@@ -61,34 +63,33 @@ namespace RhytmFighter.Battle
         class PendingCommand : iUpdatable
         {
             private AbstractCommandView View;
-            private int m_IterationsToRelease;
-            //TODO: Target tick
+            private int m_CreationTick;
 
             public BattleCommand Command { get; private set; }
 
 
-            public PendingCommand(BattleCommand command, double iterationTime)
+            public PendingCommand(BattleCommand command, int creationTick)
             {
                 Command = command;
+                m_CreationTick = creationTick;
+                float viewLifeTime = command.ApplyDelay * (float)Rhytm.RhytmController.GetInstance().TickDurationSeconds;
 
                 View = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().ProjectilePrefab);
                 View.Initialize(command.Sender.ProjectileSpawnPosition,
                                 command.Target.ProjectileHitPosition,
-                                command.ApplyDelay * (float)iterationTime);
+                                viewLifeTime);
 
                 //TODO: LeftTime = R.TimeToNextTick + ((ApplyDelay - 1) * TickDuration)
                 //Target tick = R.TicksSinceStart + command.applyDelay
 
-                m_IterationsToRelease = command.ApplyDelay;
-                Debug.Log(GameManager.Instance.R.TicksSinceStart);
+                Debug.Log("Command created. Tick " + m_CreationTick + " View life time: " + viewLifeTime + " Time to next tick: " +
+                    Rhytm.RhytmController.GetInstance().TimeToNextTick);
             }
 
             public bool Process()
             {
                 //TODO: If ticks since start == relaseTick
-                Debug.Log("PROCESS: " + GameManager.Instance.R.TicksSinceStart);
-
-                return m_IterationsToRelease-- <= 0;
+                return false;
             }
 
             public void PerformUpdate(float deltaTime) => View?.PerformUpdate(deltaTime);

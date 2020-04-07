@@ -29,7 +29,7 @@ namespace RhytmFighter.Rhytm
         /// <summary>
         /// Ticks passed since start (in ticks)
         /// </summary>
-        public int TicksSinceStart => Mathf.RoundToInt((float)m_TicksSinceStart);
+        public int CurrentTick => Mathf.RoundToInt((float)m_TicksSinceStart);
 
         /// <summary>
         /// Current position in loop (in ticks)
@@ -115,7 +115,7 @@ namespace RhytmFighter.Rhytm
         {
             StringBuilder str = new StringBuilder(50);
             str.AppendFormat($"TickDuration:        {TickDurationSeconds}  (sec)  \n");
-            str.AppendFormat($"Ticks Since Start:   {TicksSinceStart}      (int)  \n");
+            str.AppendFormat($"Ticks Since Start:   {CurrentTick}      (int)  \n");
             str.AppendFormat($"Ticks Since Start:   {m_TicksSinceStart}    (raw)  \n");
             str.AppendFormat($"Time To next Tick:   {TimeToNextTick}       (sec)  \n");
             str.AppendFormat($"Loop Position        {LoopPositionTicks}    (Tick) \n");
@@ -129,7 +129,7 @@ namespace RhytmFighter.Rhytm
         private void ExecuteTick()
         {
             m_NextTickTime = m_NextTickTime + TickDurationSeconds;
-            OnTick?.Invoke(TicksSinceStart);
+            OnTick?.Invoke(CurrentTick);
         }
     }
 }

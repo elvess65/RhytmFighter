@@ -1,11 +1,13 @@
 ﻿using RhytmFighter.Characters;
+using RhytmFighter.Rhytm;
 using UnityEngine;
 
 namespace RhytmFighter.GameState
 {
     public class GameState_Idle : GameState_Abstract        
 	{
-        public GameState_Idle(PlayerCharacterController playerCharacterController) : base(playerCharacterController)
+        public GameState_Idle(PlayerCharacterController playerCharacterController, RhytmInputProxy rhytmInputProxy) :
+            base(playerCharacterController, rhytmInputProxy)
         {
         }
 

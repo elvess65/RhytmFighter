@@ -4,6 +4,7 @@ using RhytmFighter.Characters;
 using RhytmFighter.Input;
 using RhytmFighter.Level;
 using RhytmFighter.Objects.Model;
+using RhytmFighter.Rhytm;
 using UnityEngine;
 
 namespace RhytmFighter.GameState
@@ -17,7 +18,8 @@ namespace RhytmFighter.GameState
         private GridPositionTrackingController m_GridPositionTrackingController;
 
 
-        public GameState_Adventure(LevelController levelController, PlayerCharacterController playerCharacterController) : base(playerCharacterController)
+        public GameState_Adventure(LevelController levelController, PlayerCharacterController playerCharacterController, RhytmInputProxy rhytmInputProxy) :
+            base(playerCharacterController, rhytmInputProxy)
         {
             m_GridInputProxy = new GridInputProxy();
             m_GridInputProxy.OnCellInput += CellInputHandler;
@@ -43,6 +45,11 @@ namespace RhytmFighter.GameState
         public override void HandleTouch(Vector3 mouseScreenPos)
         {
             m_GridInputProxy.TryGetCellFromInput(mouseScreenPos);
+
+            if (m_RhytmInputProxy.IsInputAllowed() && m_RhytmInputProxy.IsInputTickValid())
+                Debug.Log("Input is valid");
+
+            base.HandleTouch(mouseScreenPos);
         }
 
 

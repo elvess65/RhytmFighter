@@ -3,17 +3,28 @@
     public class RhytmInputProxy 
     {
         private double m_InputPrecious;
+        private float m_LastInputTime;
+        private const float m_TICK_DURATION_REDUCE = 0.4f;
 
-        public RhytmInputProxy()
-        {
-        }
 
         public void SetInputPrecious(double inputPrecious)
         {
             m_InputPrecious = inputPrecious;
         }
 
-        public bool IsInputValid()
+        public void RegisterInput()
+        {
+            m_LastInputTime = UnityEngine.Time.time;
+        }
+
+        public bool IsInputAllowed()
+        {
+            float deltaInput = UnityEngine.Time.time - m_LastInputTime;
+
+            return deltaInput > RhytmController.GetInstance().TickDurationSeconds * m_TICK_DURATION_REDUCE;
+        }
+
+        public bool IsInputTickValid()
         {
             double timeToNextTickAnalog = RhytmController.GetInstance().TimeToNextTickAnalog;
 

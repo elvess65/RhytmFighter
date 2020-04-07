@@ -97,9 +97,16 @@ namespace RhytmFighter.Main
             ManagersHolder.Initialize();
 
             //Initialize state machine
-            m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController);
-            m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
-            m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.LevelController, m_ControllersHolder.PlayerCharacterController);
+            m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController,
+                                                 m_ControllersHolder.RhytmInputProxy);
+
+            m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController,
+                                                     m_ControllersHolder.RhytmInputProxy);
+
+            m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.LevelController,
+                                                           m_ControllersHolder.PlayerCharacterController,
+                                                           m_ControllersHolder.RhytmInputProxy);
+
             m_GameStateAdventure.OnPlayerInteractWithItem += PlayerInteractWithItemHandler;
             m_GameStateAdventure.OnPlayerInteractWithNPC += PlayerInteractWithNPCHandler;
             m_GameStateMachine.Initialize(m_GameStateIdle);
@@ -138,7 +145,6 @@ namespace RhytmFighter.Main
 
             //Chacge state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
-            m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
 
         private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)

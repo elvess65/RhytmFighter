@@ -6,12 +6,9 @@ namespace RhytmFighter.GameState
 {
     public class GameState_Battle : GameState_Abstract
 	{
-        private RhytmInputProxy m_RhytmInputProxy;
-
-
-        public GameState_Battle(PlayerCharacterController playerCharacterController, RhytmInputProxy rhytmInputProxy) : base(playerCharacterController)
+        public GameState_Battle(PlayerCharacterController playerCharacterController, RhytmInputProxy rhytmInputProxy) :
+            base(playerCharacterController, rhytmInputProxy)
         {
-            m_RhytmInputProxy = rhytmInputProxy;
         }
 
 
@@ -27,11 +24,14 @@ namespace RhytmFighter.GameState
 
 		public override void HandleTouch(Vector3 mouseScreenPos)
 		{
+            if (m_RhytmInputProxy.IsInputAllowed())
+            {
+                bool inputIsValid = m_RhytmInputProxy.IsInputTickValid();
+                if (inputIsValid)
+                    m_PlayerCharacterController.ExecuteAction();
+            }
 
-            bool inputIsValid = m_RhytmInputProxy.IsInputValid();
-            Debug.Log(inputIsValid);
-            //if (inputIsValid)
-            //    m_PlayerCharacterController.ExecuteAction();
+            base.HandleTouch(mouseScreenPos);
         }
     }
 }
