@@ -25,17 +25,17 @@ namespace RhytmFighter.Main
         public PlayerCharacterController PlayerCharacterController { get; private set; }
         
 
-        public ControllersHolder(int bpm, double inputPrecious)
+        public ControllersHolder()
         {
             GridInputProxy = new GridInputProxy();
 
             LevelController = new LevelController();
             InputController = new InputController();
-            RhytmController = new RhytmController(bpm);
+            RhytmController = new RhytmController();
             CameraController = new CameraController();
             BattleController = new BattleController(LevelController);
-            CommandsController = new CommandsController(RhytmController.TickDurationSeconds);
-            RhytmInputProxy = new RhytmInputProxy(RhytmController, inputPrecious);
+            CommandsController = new CommandsController();
+            RhytmInputProxy = new RhytmInputProxy();
 
             PlayerCharacterController = new PlayerCharacterController();
         }

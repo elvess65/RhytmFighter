@@ -2,12 +2,14 @@
 {
     public class RhytmInputProxy 
     {
-        private readonly RhytmController m_RhytmController;
-        private readonly double m_InputPrecious;
+        private double m_InputPrecious;
 
-        public RhytmInputProxy(RhytmController rhytmController, double inputPrecious)
+        public RhytmInputProxy()
         {
-            m_RhytmController = rhytmController;
+        }
+
+        public void SetInputPrecious(double inputPrecious)
+        {
             m_InputPrecious = inputPrecious;
         }
 
@@ -17,13 +19,13 @@
             //In other case consider to calculate time after previous beat
 
             double inputDelta = 0;
-            double timeSinceLastBeat = m_RhytmController.TickDurationSeconds - m_RhytmController.TimeToNextTick;
+            double timeSinceLastBeat = RhytmController.GetInstance().TickDurationSeconds - RhytmController.GetInstance().TimeToNextTick;
 
             //Pre tick
-            if (timeSinceLastBeat >= m_RhytmController.TickDurationSeconds / 2)
+            if (timeSinceLastBeat >= RhytmController.GetInstance().TickDurationSeconds / 2)
             {
                 UnityEngine.Debug.Log("PRE TICK");
-                inputDelta = m_RhytmController.TimeToNextTick;
+                inputDelta = RhytmController.GetInstance().TimeToNextTick;
             }
             //Post tick
             else

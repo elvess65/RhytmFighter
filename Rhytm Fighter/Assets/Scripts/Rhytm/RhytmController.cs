@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.Interfaces;
+using System.Text;
 using UnityEngine;
 
 namespace RhytmFighter.Rhytm
@@ -45,16 +46,29 @@ namespace RhytmFighter.Rhytm
         /// </summary>
         public double TimeToNextTick => m_NextTickTime - AudioSettings.dspTime;
 
+        /// <summary>
+        /// Time to the next tick (from 0 to 1)
+        /// </summary>
+        public double TimeToNextTickAnalog => 1 - (TimeToNextTick / TickDurationSeconds);
+
         private const float m_TICKS_PER_LOOP = 4;
 
 
-        public RhytmController(int bpm)
+        public static RhytmController GetInstance()
+        {
+            return m_Instance;
+        }
+
+        public RhytmController()
         {
             m_Instance = this;
 
             m_IsStarted = false;
             m_CompletedLoops = 0;
+        }
 
+        public void SetBPM(int bpm)
+        {
             m_BPM = bpm;
             TickDurationSeconds = 60.0 / m_BPM;
         }
@@ -91,28 +105,33 @@ namespace RhytmFighter.Rhytm
 
                 //Loop position (in ticks)
                 m_LoopPositionInTicks = m_TicksSinceStart - m_CompletedLoops * m_TICKS_PER_LOOP;
-                
+
                 if (TimeToNextTick <= 0)
                     ExecuteTick();
             }
         }
 
+        public override string ToString()
+        {
+            StringBuilder str = new StringBuilder(50);
+            str.AppendFormat($"TickDuration:        {TickDurationSeconds}  (sec)  \n");
+            str.AppendFormat($"Ticks Since Start:   {TicksSinceStart}      (int)  \n");
+            str.AppendFormat($"Ticks Since Start:   {m_TicksSinceStart}    (raw)  \n");
+            str.AppendFormat($"Time To next Tick:   {TimeToNextTick}       (sec)  \n");
+            str.AppendFormat($"Loop Position        {LoopPositionTicks}    (Tick) \n");
+            str.AppendFormat($"Loop PositionAnalog: {LoopPositionAnalog}   (0-1)  \n");
+            str.AppendFormat($"TimeToNextTickAnalog {TimeToNextTickAnalog} (0-1)");
+
+            return str.ToString();
+        }
+
 
         private void ExecuteTick()
         {
+            Debug.LogError("TICK EXECUTION " + TicksSinceStart);
+
             m_NextTickTime = m_NextTickTime + TickDurationSeconds;
             OnTick?.Invoke();
-        }
-
-
-        public static void SubscribeForBeatEvent(System.Action action)
-        {
-            m_Instance.OnTick += action;
-        }
-
-        public static void UnscribeFromBeatEvent(System.Action action)
-        {
-            m_Instance.OnTick -= action;
         }
     }
 }

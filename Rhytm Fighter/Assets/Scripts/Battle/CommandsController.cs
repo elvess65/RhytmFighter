@@ -16,13 +16,14 @@ namespace RhytmFighter.Battle
         private List<PendingCommand> m_PendingCommands;
 
 
-        public static void AddCommand(BattleCommand command) => m_Instance.m_PendingCommands.Add(new PendingCommand(command, m_Instance.m_IterationTime));
+        public static void AddCommand(BattleCommand command)
+        {
+            m_Instance.m_PendingCommands.Add(new PendingCommand(command, m_Instance.m_IterationTime));
+        }
 
-        public CommandsController(double iterationTime)
+        public CommandsController()
         {
             m_Instance = this;
-
-            m_IterationTime = iterationTime;
             m_PendingCommands = new List<PendingCommand>();
         }
 

@@ -80,14 +80,18 @@ namespace RhytmFighter.Main
         private void Initialize()
         {
             int bpm = 130;
-            float inputPrecious = 0.25f;
+            double inputPrecious = 0.25;
 
             Metronome.bpm = bpm;
 
             //Initialize objects
             m_DataHolder = new DataHolder();
             m_GameStateMachine = new GameStateMachine();
-            m_ControllersHolder = new ControllersHolder(bpm / 2, inputPrecious);
+            m_ControllersHolder = new ControllersHolder();
+
+            //Set object params
+            m_ControllersHolder.RhytmController.SetBPM(bpm);
+            m_ControllersHolder.RhytmInputProxy.SetInputPrecious(inputPrecious);
 
             //Initialize managers
             ManagersHolder.Initialize();
@@ -125,8 +129,6 @@ namespace RhytmFighter.Main
 
             m_ControllersHolder.RhytmController.OnTick += TickHandler;
             m_ControllersHolder.RhytmController.OnStarted += TickingStartedHandler;
-
-            AudioListener.volume = 0f;
         }
 
         private void InitializationFinished()
