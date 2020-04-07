@@ -10,7 +10,7 @@ namespace RhytmFighter.Rhytm
 
         public System.Action OnStarted;
         public System.Action OnStopped;
-        public System.Action OnTick;
+        public System.Action<int> OnTick;
 
         //Base 
         private int m_BPM;
@@ -128,10 +128,8 @@ namespace RhytmFighter.Rhytm
 
         private void ExecuteTick()
         {
-            Debug.LogError("TICK EXECUTION " + TicksSinceStart);
-
             m_NextTickTime = m_NextTickTime + TickDurationSeconds;
-            OnTick?.Invoke();
+            OnTick?.Invoke(TicksSinceStart);
         }
     }
 }

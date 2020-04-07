@@ -55,7 +55,7 @@ namespace RhytmFighter.Battle
                 OnPrepareForBattle?.Invoke();
         }
 
-        public void ProcessEnemyActions()
+        public void ProcessEnemyActions(int ticksSinceStart)
         {
             m_CurrentEnemy?.ActionBehaviour.ExecuteAction();
         }

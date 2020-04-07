@@ -27,7 +27,7 @@ namespace RhytmFighter.Battle
             m_PendingCommands = new List<PendingCommand>();
         }
 
-        public void ProcessPendingCommands()
+        public void ProcessPendingCommands(int ticksSinceStart)
         {
             for(int i = 0; i < m_PendingCommands.Count; i++)
             {

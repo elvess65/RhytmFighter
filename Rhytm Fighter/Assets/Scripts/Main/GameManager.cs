@@ -79,7 +79,7 @@ namespace RhytmFighter.Main
 
         private void Initialize()
         {
-            int bpm = 130;
+            int bpm = 130 / 2;
             double inputPrecious = 0.25;
 
             Metronome.bpm = bpm;
@@ -138,6 +138,7 @@ namespace RhytmFighter.Main
 
             //Chacge state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
+            m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
 
         private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)
@@ -279,7 +280,7 @@ namespace RhytmFighter.Main
             Metronome.StartMetronome();
         }
 
-        private void TickHandler()
+        private void TickHandler(int ticksSinceStart)
         {
             BeatSound.Play();
             StartCoroutine(BeatIndicatorTempCoroutine());

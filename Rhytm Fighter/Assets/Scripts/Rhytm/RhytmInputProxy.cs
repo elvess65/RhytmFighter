@@ -15,26 +15,14 @@
 
         public bool IsInputValid()
         {
-            //If timeSinceLast beat is more than half of tick rate - consider calculating time before next beat
-            //In other case consider to calculate time after previous beat
-
-            double inputDelta = 0;
-            double timeSinceLastBeat = RhytmController.GetInstance().TickDurationSeconds - RhytmController.GetInstance().TimeToNextTick;
+            double timeToNextTickAnalog = RhytmController.GetInstance().TimeToNextTickAnalog;
 
             //Pre tick
-            if (timeSinceLastBeat >= RhytmController.GetInstance().TickDurationSeconds / 2)
-            {
-                UnityEngine.Debug.Log("PRE TICK");
-                inputDelta = RhytmController.GetInstance().TimeToNextTick;
-            }
+            if (timeToNextTickAnalog >= 0.5f)
+                return 1 - timeToNextTickAnalog <= m_InputPrecious;
             //Post tick
             else
-            {
-                UnityEngine.Debug.Log("POST TICK");
-                inputDelta = timeSinceLastBeat;
-            }
-
-            return inputDelta <= m_InputPrecious;
+                return timeToNextTickAnalog <= m_InputPrecious;
         }
     }
 }

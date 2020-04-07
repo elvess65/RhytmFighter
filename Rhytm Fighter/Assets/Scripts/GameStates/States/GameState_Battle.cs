@@ -27,9 +27,11 @@ namespace RhytmFighter.GameState
 
 		public override void HandleTouch(Vector3 mouseScreenPos)
 		{
+
             bool inputIsValid = m_RhytmInputProxy.IsInputValid();
-            if (inputIsValid)
-                m_PlayerCharacterController.ExecuteAction();
+            Debug.Log(inputIsValid);
+            //if (inputIsValid)
+            //    m_PlayerCharacterController.ExecuteAction();
         }
     }
 }
