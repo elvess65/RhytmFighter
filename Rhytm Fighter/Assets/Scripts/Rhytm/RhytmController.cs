@@ -49,7 +49,18 @@ namespace RhytmFighter.Rhytm
         /// <summary>
         /// Time to the next tick (from 0 to 1)
         /// </summary>
-        public double TimeToNextTickAnalog => 1 - (TimeToNextTick / TickDurationSeconds);
+        public double ProgressToNextTickAnalog => 1 - (TimeToNextTick / TickDurationSeconds);
+
+        /// <summary>
+        /// Time since start
+        /// </summary>
+        public double TimeSinceStart { get; set; }
+
+        /// <summary>
+        /// Last stored delta input
+        /// </summary>
+        public double DeltaInput { get; set; }
+
 
         private const float m_TICKS_PER_LOOP = 4;
 
@@ -94,10 +105,10 @@ namespace RhytmFighter.Rhytm
         {
             if (m_IsStarted)
             {
-                double timeSinceStart = AudioSettings.dspTime - m_DSPStartTime;
+                TimeSinceStart = AudioSettings.dspTime - m_DSPStartTime;
 
                 //Ticks since start
-                m_TicksSinceStart = timeSinceStart / TickDurationSeconds;
+                m_TicksSinceStart = TimeSinceStart / TickDurationSeconds;
 
                 //Loops
                 if (m_TicksSinceStart >= (m_CompletedLoops + 1) * m_TICKS_PER_LOOP)
@@ -120,7 +131,7 @@ namespace RhytmFighter.Rhytm
             str.AppendFormat($"Time To next Tick:   {TimeToNextTick}       (sec)  \n");
             str.AppendFormat($"Loop Position        {LoopPositionTicks}    (Tick) \n");
             str.AppendFormat($"Loop PositionAnalog: {LoopPositionAnalog}   (0-1)  \n");
-            str.AppendFormat($"TimeToNextTickAnalog {TimeToNextTickAnalog} (0-1)");
+            str.AppendFormat($"TimeToNextTickAnalog {ProgressToNextTickAnalog} (0-1)");
 
             return str.ToString();
         }

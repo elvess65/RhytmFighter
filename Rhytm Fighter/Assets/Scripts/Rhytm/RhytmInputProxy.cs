@@ -26,14 +26,20 @@
 
         public bool IsInputTickValid()
         {
-            double timeToNextTickAnalog = RhytmController.GetInstance().TimeToNextTickAnalog;
+            double progressToNextTickAnalog = RhytmController.GetInstance().ProgressToNextTickAnalog;
 
             //Pre tick
-            if (timeToNextTickAnalog >= 0.5f)
-                return 1 - timeToNextTickAnalog <= m_InputPrecious;
+            if (progressToNextTickAnalog >= 0.5f)
+            {
+                UnityEngine.Debug.Log("PRE TICK: " + (-RhytmController.GetInstance().TimeToNextTick));
+                return 1 - progressToNextTickAnalog <= m_InputPrecious;
+            }
             //Post tick
             else
-                return timeToNextTickAnalog <= m_InputPrecious;
+            {
+                UnityEngine.Debug.Log("POST TICK: " + (RhytmController.GetInstance().TickDurationSeconds - RhytmController.GetInstance().TimeToNextTick));
+                return progressToNextTickAnalog <= m_InputPrecious;
+            }
         }
     }
 }
