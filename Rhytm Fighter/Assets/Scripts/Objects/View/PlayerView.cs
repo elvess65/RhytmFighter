@@ -9,11 +9,11 @@ namespace RhytmFighter.Objects.View
         private DoubleBarBehaviour m_HealthBarBehaviour;
 
 
-        public override void NotifyView_TakeDamage(int curHP, int maxHP, int dmg)
+        public override void NotifyView_TakeDamage(int dmg)
         {
-            base.NotifyView_TakeDamage(curHP, maxHP, dmg);
+            base.NotifyView_TakeDamage(dmg);
 
-            m_HealthBarBehaviour.SetProgress(curHP, maxHP);
+            UpdateHealthBar();
         }
 
 
@@ -24,9 +24,14 @@ namespace RhytmFighter.Objects.View
             m_HealthBarBehaviour.RectTransform.anchoredPosition3D = Vector3.zero;
         }
 
+        protected override void UpdateHealthBar()
+        {
+            m_HealthBarBehaviour.SetProgress(m_ModelAsBattleModel.HealthBehaviour.HP, m_ModelAsBattleModel.HealthBehaviour.MaxHP);
+        }
+
         protected override void DestroyHealthBar()
         {
-            m_HealthBarBehaviour.SetProgress(0, 1);
+            UpdateHealthBar();
         }
     }
 }

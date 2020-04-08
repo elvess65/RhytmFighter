@@ -22,11 +22,11 @@ namespace RhytmFighter.Objects.View
             m_HealthBarFollow?.PerformUpdate(deltaTime);
         }
 
-        public override void NotifyView_TakeDamage(int curHP, int maxHP, int dmg)
+        public override void NotifyView_TakeDamage(int dmg)
         {
-            base.NotifyView_TakeDamage(curHP, maxHP, dmg);
+            base.NotifyView_TakeDamage(dmg);
 
-            m_HealthBarBehaviour.SetProgress(curHP, maxHP);
+            UpdateHealthBar();
         }
 
 
@@ -43,12 +43,17 @@ namespace RhytmFighter.Objects.View
             m_HealthBarFollow.SetTarget(HealthBarParent);
         }
 
+        protected override void UpdateHealthBar()
+        {
+            m_HealthBarBehaviour.SetProgress(m_ModelAsBattleModel.HealthBehaviour.HP, m_ModelAsBattleModel.HealthBehaviour.MaxHP);
+        }
+
         protected override void DestroyHealthBar()
         {
-            m_HealthBarBehaviour.SetProgress(0, 1);
-            Destroy(m_HealthBarBehaviour.gameObject, 1);
-
+            UpdateHealthBar();
             m_HealthBarFollow = null;
+
+            Destroy(m_HealthBarBehaviour.gameObject, 1);
         }
     }
 }

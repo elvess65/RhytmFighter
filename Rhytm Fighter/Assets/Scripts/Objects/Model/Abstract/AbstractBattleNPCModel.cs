@@ -96,7 +96,7 @@ namespace RhytmFighter.Objects.Model
         #region HealthBehaviour
         private void HealthBehaviour_OnHPReduced(int dmg)
         {
-            m_ViewAsBattle.NotifyView_TakeDamage(HealthBehaviour.HP, HealthBehaviour.MaxHP, dmg);
+            m_ViewAsBattle.NotifyView_TakeDamage(dmg);
             Main.GameManager.Instance.HitSound.Play();
         }
 

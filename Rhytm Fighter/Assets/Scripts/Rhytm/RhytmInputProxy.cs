@@ -31,13 +31,17 @@
             //Pre tick
             if (progressToNextTickAnalog >= 0.5f)
             {
-                UnityEngine.Debug.Log("PRE TICK: " + (-RhytmController.GetInstance().TimeToNextTick));
+                RhytmController.GetInstance().DeltaInput = -RhytmController.GetInstance().TimeToNextTick;
+                UnityEngine.Debug.Log("PRE TICK: " + RhytmController.GetInstance().DeltaInput);
+
                 return 1 - progressToNextTickAnalog <= m_InputPrecious;
             }
             //Post tick
             else
             {
-                UnityEngine.Debug.Log("POST TICK: " + (RhytmController.GetInstance().TickDurationSeconds - RhytmController.GetInstance().TimeToNextTick));
+                RhytmController.GetInstance().DeltaInput = RhytmController.GetInstance().TickDurationSeconds - RhytmController.GetInstance().TimeToNextTick;
+                UnityEngine.Debug.Log("POST TICK: " + RhytmController.GetInstance().DeltaInput);
+
                 return progressToNextTickAnalog <= m_InputPrecious;
             }
         }

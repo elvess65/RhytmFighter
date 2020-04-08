@@ -2,6 +2,7 @@
 using RhytmFighter.Characters.Animation;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Interfaces;
+using RhytmFighter.Objects.Model;
 using RhytmFighter.UI;
 using UnityEngine;
 
@@ -18,10 +19,19 @@ namespace RhytmFighter.Objects.View
         private iMovementStrategy m_MoveStrategy;
         private iBattleNPCAnimationController m_AnimationController;
 
+        protected AbstractBattleNPCModel m_ModelAsBattleModel;
+
         public bool IsMoving => m_MoveStrategy.IsMoving;
         public Vector3 ProjectileHitPosition => ProjectileHitParent.position;
         public Vector3 ProjectileSpawnPosition => ProjectileSpawnParent.position;
 
+
+        public override void Show(AbstractGridObjectModel correspondingModel)
+        {
+            base.Show(correspondingModel);
+
+            m_ModelAsBattleModel = CorrespondingModel as AbstractBattleNPCModel;
+        }
 
         #region iMovable
         public void InitializeMovement(float moveSpeed)
@@ -69,7 +79,7 @@ namespace RhytmFighter.Objects.View
             m_AnimationController.PlayAttackAnimation();
         }
 
-        public virtual void NotifyView_TakeDamage(int curHP, int maxHP, int dmg)
+        public virtual void NotifyView_TakeDamage(int dmg)
         {
             m_AnimationController.PlayTakeDamageAnimation();
         }
@@ -91,6 +101,7 @@ namespace RhytmFighter.Objects.View
         public void CreateUI()
         {
             CreateHealthBar();
+            UpdateHealthBar();
         }
 
         public void HideUI()
@@ -100,6 +111,8 @@ namespace RhytmFighter.Objects.View
 
 
         protected abstract void CreateHealthBar();
+
+        protected abstract void UpdateHealthBar();
 
         protected abstract void DestroyHealthBar();
         #endregion
