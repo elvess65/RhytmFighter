@@ -6,15 +6,6 @@ namespace RhytmFighter.Camera
 {
     public class CameraController : iUpdatable
     {
-        //Root camera object
-        private Transform m_Root;   
-
-        //Target should be followed
-        private Transform m_Target;
-
-        //Moving speed
-        private float m_Speed;
-
         private FollowObject m_FollowObject;
 
 
@@ -28,11 +19,12 @@ namespace RhytmFighter.Camera
 
         public void SetTarget(Transform target) => m_FollowObject.SetTarget(target);
 
+        public void SetFollowPoint(Vector3 followPoint) => m_FollowObject.SetFollowPoint(followPoint);
+
+        public void ClearFollowPoint() => m_FollowObject.ClearFollowPoint();
+
         public void SetSpeed(float speed) => m_FollowObject.SetSpeed(speed);
 
-        public void PerformUpdate(float deltaTime)
-        {
-            m_FollowObject?.PerformUpdate(deltaTime);
-        }
+        public void PerformUpdate(float deltaTime) => m_FollowObject?.PerformUpdate(deltaTime);
     }
 }

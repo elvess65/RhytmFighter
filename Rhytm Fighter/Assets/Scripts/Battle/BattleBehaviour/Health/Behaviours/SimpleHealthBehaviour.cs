@@ -27,7 +27,7 @@ namespace RhytmFighter.Battle.Health.Behaviours
 
         public void ReduceHP(int dmg)
         {
-            //HP -= dmg;
+            HP -= dmg;
 
             if (HP <= 0)
                 OnDestroyed?.Invoke();

@@ -14,9 +14,11 @@ namespace RhytmFighter.Battle
         public System.Action OnBattleStarted;
         public System.Action OnBattleFinished;
 
-        private iBattleObject m_CurrentEnemy;
+        private int m_TickOnStartBattle;
+        private bool m_AllowProcessing;
+        private bool m_ForceCameraFollowPoint;
         private Level.LevelController m_LevelController;
-        private WaitForSeconds m_WaitBeforeDistanceAdjustement;
+        private Camera.CameraController m_CameraController;
         private ModelMovementController m_EnemyMovementController;
         
         private Dictionary<int, iBattleObject> m_PendingEnemies;
@@ -25,16 +27,20 @@ namespace RhytmFighter.Battle
         public iBattleObject Player { get; set; }
 
         private const int m_DISTANCE_ADJUSTEMENT_RANGE = 2;
-        private const float m_DELAY_BEFORE_DISTANCE_ADJUSTEMENT = 1;
+        private const int m_TICKS_BEFORE_ACTIVATING_ENEMY = 1;
         private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE = 3;
         
 
-        public BattleController(Level.LevelController levelController)
+        public BattleController(Level.LevelController levelController, Camera.CameraController cameraController)
         {
+            m_AllowProcessing = false;
+            m_ForceCameraFollowPoint = false;
+
             m_LevelController = levelController;
+            m_CameraController = cameraController;
+
             m_PendingEnemies = new Dictionary<int, iBattleObject>();
             m_EnemyMovementController = new ModelMovementController(levelController);
-            m_WaitBeforeDistanceAdjustement = new WaitForSeconds(m_DELAY_BEFORE_DISTANCE_ADJUSTEMENT);
 
             OnPrepareForBattle += PrepareForBattleHandler;
         }
@@ -57,12 +63,17 @@ namespace RhytmFighter.Battle
 
         public void ProcessEnemyActions(int ticksSinceStart)
         {
-            m_CurrentEnemy?.ActionBehaviour.ExecuteAction();
+            if (m_AllowProcessing)
+                Player.Target?.ActionBehaviour.ExecuteAction();
         }
 
         public void PerformUpdate(float deltaTime)
         {
             m_EnemyMovementController?.PerformUpdate(deltaTime);
+
+            //Makes camera focus battle
+            if (m_ForceCameraFollowPoint)
+                m_CameraController.SetFollowPoint((Player.Target.ViewPosition + Player.ViewPosition) / 2);
         }
 
         public iBattleObject GetClosestEnemy(iBattleObject relativeToBattleObject)
@@ -91,17 +102,33 @@ namespace RhytmFighter.Battle
         }
 
 
-        private void PrepareForBattleHandler()
-        {
-            GameManager.Instance.StartCoroutine(DelayBeforEnemyActivationCoroutine());
-        }
-      
         private void EnemyDestroyedHandler(iBattleObject sender)
         {
             //Clear players target
             if (Player.Target.ID == sender.ID)
                 Player.Target = null;
 
+            ActivateNextEnemy();
+        }
+
+        private void PrepareForBattleHandler()
+        {
+            m_TickOnStartBattle = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_ACTIVATING_ENEMY;
+            Rhytm.RhytmController.GetInstance().OnTick += ActivateFirstEnemyOnTick;
+        }
+
+
+        private void ActivateFirstEnemyOnTick(int currentTick)
+        {
+            if (m_TickOnStartBattle >= currentTick)
+            {
+                Rhytm.RhytmController.GetInstance().OnTick -= ActivateFirstEnemyOnTick;
+                ActivateNextEnemy();
+            }
+        }
+
+        private void ActivateNextEnemy()
+        {
             //Get closest enemy to player
             iBattleObject closestEnemy = GetClosestEnemy(Player);
 
@@ -109,32 +136,38 @@ namespace RhytmFighter.Battle
             if (closestEnemy != null)
             {
                 Player.Target = closestEnemy;
-                ActivateNextEnemy();
+                ActivateEnemy(closestEnemy);
             }
             else
+            {
+                m_CameraController.ClearFollowPoint();
+
                 OnBattleFinished?.Invoke();
+            }
         }
 
-
-        private void ActivateNextEnemy()
+        private void ActivateEnemy(iBattleObject enemy)
         {
-            //Current target - player target
-            m_CurrentEnemy = Player.Target;
+            //Start follow focus point
+            m_ForceCameraFollowPoint = true;
 
             //Remove target from pending
-            if (m_PendingEnemies.ContainsKey(m_CurrentEnemy.ID))
-                m_PendingEnemies.Remove(m_CurrentEnemy.ID);
+            if (m_PendingEnemies.ContainsKey(enemy.ID))
+                m_PendingEnemies.Remove(enemy.ID);
 
             //Check distance between player and target
             SquareGrid curentGrid = m_LevelController.Model.GetCurrenRoomData().GridData;
-            float distanceBetweenTargetAndEnemy = curentGrid.GetDistanceBetweenCells(Player.CorrespondingCell, m_CurrentEnemy.CorrespondingCell);
+            float distanceBetweenTargetAndEnemy = curentGrid.GetDistanceBetweenCells(Player.CorrespondingCell, enemy.CorrespondingCell);
 
             //If distance is less than treshold - adjust movement or start battle
             if (distanceBetweenTargetAndEnemy < m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE)
-                AdjustDistanceForObject(m_CurrentEnemy);
+                AdjustDistanceForObject(enemy);
             else
+            {
                 OnBattleStarted?.Invoke();
+            }
         }
+
 
         private void AdjustDistanceForObject(iBattleObject battleObject)
         {
@@ -191,14 +224,9 @@ namespace RhytmFighter.Battle
         private void EnemyAdjustementMovementFinished(GridCellData cell)
         {
             m_EnemyMovementController.OnMovementFinished -= EnemyAdjustementMovementFinished;
+            m_ForceCameraFollowPoint = false;
+
             OnBattleStarted?.Invoke();
-        }
-
-        System.Collections.IEnumerator DelayBeforEnemyActivationCoroutine()
-        {
-            yield return m_WaitBeforeDistanceAdjustement;
-
-            ActivateNextEnemy();
         }
     }
 }

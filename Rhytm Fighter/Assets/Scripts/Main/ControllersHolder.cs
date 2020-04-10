@@ -33,11 +33,13 @@ namespace RhytmFighter.Main
             InputController = new InputController();
             RhytmController = new RhytmController();
             CameraController = new CameraController();
-            BattleController = new BattleController(LevelController);
+            BattleController = new BattleController(LevelController, CameraController);
             CommandsController = new CommandsController();
             RhytmInputProxy = new RhytmInputProxy();
 
             PlayerCharacterController = new PlayerCharacterController();
+
+            UnityEngine.AudioListener.volume = 0;
         }
     }
 }

@@ -208,10 +208,7 @@ namespace RhytmFighter.Main
                 {
                     //Detect enemy
                     if (battleObject.IsEnemy)
-                    {
                         m_ControllersHolder.BattleController.AddEnemy(battleObject);
-                        m_ControllersHolder.PlayerCharacterController.PlayerModel.Target = m_ControllersHolder.BattleController.GetClosestEnemy(m_ControllersHolder.PlayerCharacterController.PlayerModel);
-                    }
                 }
             }
         }
