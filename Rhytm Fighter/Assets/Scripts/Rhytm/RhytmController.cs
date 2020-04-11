@@ -11,6 +11,7 @@ namespace RhytmFighter.Rhytm
         public System.Action OnStarted;
         public System.Action OnStopped;
         public System.Action<int> OnTick;
+        public System.Action<int> OnEventProcessingTick;
 
         //Base 
         private int m_BPM;
@@ -140,7 +141,9 @@ namespace RhytmFighter.Rhytm
         private void ExecuteTick()
         {
             m_NextTickTime = m_NextTickTime + TickDurationSeconds;
+
             OnTick?.Invoke(CurrentTick);
+            OnEventProcessingTick?.Invoke(CurrentTick);
         }
     }
 }

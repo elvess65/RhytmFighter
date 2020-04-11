@@ -9,7 +9,7 @@ namespace RhytmFighter.Battle.Action
         iBattleObject Target { get; set; }
 
         void SetControlledObject(iBattleObject controlledObject);
-        void ExecuteAction();
+        void ExecuteAction(int currentTick);
     }
 
     public enum PatternActionTypes

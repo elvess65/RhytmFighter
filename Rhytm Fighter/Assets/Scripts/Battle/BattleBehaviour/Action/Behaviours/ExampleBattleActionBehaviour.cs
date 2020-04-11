@@ -25,7 +25,7 @@ namespace RhytmFighter.Battle.Action.Behaviours
             };
         }
 
-        public override void ExecuteAction()
+        public override void ExecuteAction(int currentTick)
         {
             if (m_CycleIterator++ >= m_IdlesBeforeAttack)
             {

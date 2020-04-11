@@ -132,6 +132,7 @@ namespace RhytmFighter.Main
 
             m_ControllersHolder.BattleController.OnPrepareForBattle += PrepareForBattleHandler;
             m_ControllersHolder.BattleController.OnBattleStarted += BattleStartedHandler;
+            m_ControllersHolder.BattleController.OnEnemyDestroyed += BattleEnemyDestroyedHandler;
             m_ControllersHolder.BattleController.OnBattleFinished += BattleFinishedHandler;
 
             m_ControllersHolder.RhytmController.OnTick += TickHandler;
@@ -245,7 +246,9 @@ namespace RhytmFighter.Main
 
         private void PrepareForBattleHandler()
         {
-            Debug.LogError("PREPARE FOR BATTLE");
+            Debug.LogError("Battle - Prepare");
+
+            //Show battle UI
 
             //No need to stop movement if players destination cell is the cell where enemy was detected
             if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
@@ -256,22 +259,31 @@ namespace RhytmFighter.Main
 
         private void BattleStartedHandler()
         {
-            Debug.LogError("BEGIN BATTLE");
+            Debug.LogError("Battle - Start");
 
-            //m_ControllersHolder.RhytmController.OnBeat += m_ControllersHolder.BattleController.ProcessEnemyActions;
-            m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
+            //Show Battle text
+
+            m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;
+            m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
 
-        private void BattleFinishedHandler()
+        private void BattleEnemyDestroyedHandler()
         {
-            Debug.LogError("BATTLE FINISHED");
+            Debug.LogError("Battle - Enemy destroyed");
 
             m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.BattleController.ProcessEnemyActions;
-            m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
+            m_ControllersHolder.RhytmController.OnEventProcessingTick -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
-            m_ControllersHolder.PlayerCharacterController.PlayerModel.Target = null;
+            m_GameStateMachine.ChangeState(m_GameStateIdle);
+        }
+
+        private void BattleFinishedHandler()
+        {
+            Debug.LogError("Battle - Finished");
+
+            //Hide UI
 
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }

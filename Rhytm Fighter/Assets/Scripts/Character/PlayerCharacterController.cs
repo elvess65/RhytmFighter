@@ -64,7 +64,7 @@ namespace RhytmFighter.Characters
 
         public void ExecuteAction()
         {
-            PlayerModel.ActionBehaviour.ExecuteAction();
+            PlayerModel.ActionBehaviour.ExecuteAction(Rhytm.RhytmController.GetInstance().CurrentTick);
         }
 
 

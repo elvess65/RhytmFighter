@@ -11,11 +11,11 @@ namespace RhytmFighter.Battle
     public class BattleController : iUpdatable
     {
         public System.Action OnPrepareForBattle;
+        public System.Action OnEnemyDestroyed;
         public System.Action OnBattleStarted;
         public System.Action OnBattleFinished;
 
-        private int m_TickOnStartBattle;
-        private bool m_AllowProcessing;
+        private int m_TargetTick;
         private bool m_ForceCameraFollowPoint;
         private Level.LevelController m_LevelController;
         private Camera.CameraController m_CameraController;
@@ -28,12 +28,12 @@ namespace RhytmFighter.Battle
 
         private const int m_DISTANCE_ADJUSTEMENT_RANGE = 2;
         private const int m_TICKS_BEFORE_ACTIVATING_ENEMY = 1;
+        private const int m_TICKS_BEFORE_FINISHING_BATTLE = 2;
         private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE = 3;
         
 
         public BattleController(Level.LevelController levelController, Camera.CameraController cameraController)
         {
-            m_AllowProcessing = false;
             m_ForceCameraFollowPoint = false;
 
             m_LevelController = levelController;
@@ -42,7 +42,8 @@ namespace RhytmFighter.Battle
             m_PendingEnemies = new Dictionary<int, iBattleObject>();
             m_EnemyMovementController = new ModelMovementController(levelController);
 
-            OnPrepareForBattle += PrepareForBattleHandler;
+            OnPrepareForBattle += PrepareForBattleEventHandler;
+            OnEnemyDestroyed += TryActivateNextEnemy;
         }
 
         public void AddEnemy(iBattleObject battleObject)
@@ -61,10 +62,9 @@ namespace RhytmFighter.Battle
                 OnPrepareForBattle?.Invoke();
         }
 
-        public void ProcessEnemyActions(int ticksSinceStart)
+        public void ProcessEnemyActions(int currentTick)
         {
-            if (m_AllowProcessing)
-                Player.Target?.ActionBehaviour.ExecuteAction();
+            Player.Target?.ActionBehaviour.ExecuteAction(currentTick);
         }
 
         public void PerformUpdate(float deltaTime)
@@ -108,27 +108,43 @@ namespace RhytmFighter.Battle
             if (Player.Target.ID == sender.ID)
                 Player.Target = null;
 
-            ActivateNextEnemy();
+            OnEnemyDestroyed?.Invoke();
         }
 
-        private void PrepareForBattleHandler()
+        private void PrepareForBattleEventHandler()
         {
-            m_TickOnStartBattle = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_ACTIVATING_ENEMY;
+            m_TargetTick = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_ACTIVATING_ENEMY;
             Rhytm.RhytmController.GetInstance().OnTick += ActivateFirstEnemyOnTick;
         }
 
 
-        private void ActivateFirstEnemyOnTick(int currentTick)
+        private void FinishBattleOnTick(int currentTick)
         {
-            if (m_TickOnStartBattle >= currentTick)
+            if (currentTick >= m_TargetTick)
             {
-                Rhytm.RhytmController.GetInstance().OnTick -= ActivateFirstEnemyOnTick;
-                ActivateNextEnemy();
+                Rhytm.RhytmController.GetInstance().OnTick -= FinishBattleOnTick;
+
+                m_CameraController.ClearFollowPoint();
+                OnBattleFinished?.Invoke();
             }
         }
 
-        private void ActivateNextEnemy()
+        private void ActivateFirstEnemyOnTick(int currentTick)
         {
+            if (currentTick >= m_TargetTick)
+            {
+                Rhytm.RhytmController.GetInstance().OnTick -= ActivateFirstEnemyOnTick;
+                TryActivateNextEnemy();
+            }
+        }
+
+
+        private void TryActivateNextEnemy()
+        {
+            //Stop follow focus point
+            if (m_ForceCameraFollowPoint)
+                m_ForceCameraFollowPoint = false;
+
             //Get closest enemy to player
             iBattleObject closestEnemy = GetClosestEnemy(Player);
 
@@ -140,9 +156,8 @@ namespace RhytmFighter.Battle
             }
             else
             {
-                m_CameraController.ClearFollowPoint();
-
-                OnBattleFinished?.Invoke();
+                m_TargetTick = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_FINISHING_BATTLE;
+                Rhytm.RhytmController.GetInstance().OnTick += FinishBattleOnTick;
             }
         }
 
@@ -163,9 +178,7 @@ namespace RhytmFighter.Battle
             if (distanceBetweenTargetAndEnemy < m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE)
                 AdjustDistanceForObject(enemy);
             else
-            {
                 OnBattleStarted?.Invoke();
-            }
         }
 
 
@@ -224,8 +237,6 @@ namespace RhytmFighter.Battle
         private void EnemyAdjustementMovementFinished(GridCellData cell)
         {
             m_EnemyMovementController.OnMovementFinished -= EnemyAdjustementMovementFinished;
-            m_ForceCameraFollowPoint = false;
-
             OnBattleStarted?.Invoke();
         }
     }
