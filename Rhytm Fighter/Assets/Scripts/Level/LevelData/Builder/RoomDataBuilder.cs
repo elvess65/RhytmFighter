@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace RhytmFighter.Level.Data
 {
-    public class RoomDataBuilder 
+    public class RoomDataBuilder
     {
         private int m_ENEMY_ID = 2;
         private List<GridCellData> m_EmptyCells;
@@ -90,7 +90,7 @@ namespace RhytmFighter.Level.Data
                 }
             }
 
-            
+
             int rndIndex = Random.Range(0, m_EmptyCells.Count);
 
             StandardItemModel item = new StandardItemModel(1, m_EmptyCells[rndIndex]);
@@ -102,7 +102,7 @@ namespace RhytmFighter.Level.Data
                 rndIndex = Random.Range(0, m_EmptyCells.Count);
 
                 float enemyMoveSpeed = Main.GameManager.ENEMY_MOVE_SPEED;
-                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, m_EmptyCells[rndIndex], enemyMoveSpeed, new ExampleBattleActionBehaviour(1, 1, 1), new SimpleHealthBehaviour(3, 4));
+                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, m_EmptyCells[rndIndex], enemyMoveSpeed, new SimpleAIBattleActionBehaviour(1, 1, 1), new SimpleHealthBehaviour(3, 4));
                 m_EmptyCells[rndIndex].AddObject(enemyNPC);
                 m_EmptyCells.RemoveAt(rndIndex);
             }

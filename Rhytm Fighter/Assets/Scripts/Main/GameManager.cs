@@ -29,6 +29,7 @@ namespace RhytmFighter.Main
         public AudioSource HitSound;
         public AudioSource BeatSound;
         public Metronome Metronome;
+        public UnityEngine.UI.Button Btn;
 
         private DataHolder m_DataHolder;
         private GameStateMachine m_GameStateMachine;
@@ -137,6 +138,9 @@ namespace RhytmFighter.Main
 
             m_ControllersHolder.RhytmController.OnTick += TickHandler;
             m_ControllersHolder.RhytmController.OnStarted += TickingStartedHandler;
+
+            //Temp
+            Btn.onClick.AddListener(BtnPressHandler);
         }
 
         private void InitializationFinished()
@@ -320,6 +324,12 @@ namespace RhytmFighter.Main
             yield return new WaitForSeconds(animationDelay);
 
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
+        }
+
+        //Temp
+        void BtnPressHandler()
+        {
+            Debug.Log("Press defence button");
         }
     }
 }

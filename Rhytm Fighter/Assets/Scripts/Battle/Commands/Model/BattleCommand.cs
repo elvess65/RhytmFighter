@@ -21,6 +21,7 @@
 
     public enum CommandTypes
     {
-        SimpleAttack
+        SimpleAttack,
+        Defence
     }
 }

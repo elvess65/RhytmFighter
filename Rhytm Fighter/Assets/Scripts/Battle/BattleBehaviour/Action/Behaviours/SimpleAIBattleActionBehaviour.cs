@@ -2,7 +2,7 @@
 
 namespace RhytmFighter.Battle.Action.Behaviours
 {
-    public class ExampleBattleActionBehaviour : SimpleBattleActionBehaviour
+    public class SimpleAIBattleActionBehaviour : SimpleBattleActionBehaviour
     {
         private int m_CycleIterator = 0;
         private int m_ActionIterator = 0;
@@ -11,7 +11,7 @@ namespace RhytmFighter.Battle.Action.Behaviours
         private PatternActionTypes[] m_ActionPattern;
 
 
-        public ExampleBattleActionBehaviour(int applyDelay, int useDelay, int damage) : base(applyDelay, useDelay, damage)
+        public SimpleAIBattleActionBehaviour(int applyDelay, int useDelay, int damage) : base(applyDelay, useDelay, damage)
         {
             m_IdlesBeforeAttack = 2;
             m_IdlesAfterAttack = 3;

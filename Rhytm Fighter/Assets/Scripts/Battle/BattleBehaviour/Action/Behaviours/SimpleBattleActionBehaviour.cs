@@ -29,7 +29,8 @@ namespace RhytmFighter.Battle.Action.Behaviours
 
         public virtual void ExecuteAction(int currentTick)
         {
-            ExecuteCommand(new SimpleAttackCommand(m_ControlledObject, Target, m_ApplyDelay, m_UseDelay, m_Damage));
+            //ExecuteCommand(new SimpleAttackCommand(m_ControlledObject, Target, m_ApplyDelay, m_UseDelay, m_Damage));
+            ExecuteCommand(new DefenceCommand(m_ControlledObject));
         }
 
 
