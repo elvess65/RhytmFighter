@@ -2,7 +2,6 @@
 using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Command.View;
 using RhytmFighter.Interfaces;
-using RhytmFighter.Main;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,81 +11,141 @@ namespace RhytmFighter.Battle
     {
         private static CommandsController m_Instance;
 
-        private List<PendingCommand> m_PendingCommands;
+        private List<PEPendingCommand> m_PEPCommands;
+        private List<SEPendingCommand> m_SEPCommands;
 
 
-        public static void AddCommand(BattleCommand command)
+        public static void AddCommand(AbstractBattleCommand command)
         {
-            m_Instance.m_PendingCommands.Add(new PendingCommand(command, Rhytm.RhytmController.GetInstance().CurrentTick));
+            switch(command.Layer)
+            {
+                case CommandExecutionLayers.PeriodicExecution:
+                    m_Instance.m_PEPCommands.Add(new PEPendingCommand(command as AbstractPeriodicBattleCommand, Rhytm.RhytmController.GetInstance().CurrentTick));
+                    break;
+                case CommandExecutionLayers.SingleExecution:
+                    m_Instance.m_SEPCommands.Add(new SEPendingCommand(command, Rhytm.RhytmController.GetInstance().CurrentTick));
+                    break;
+            }
         }
 
         public CommandsController()
         {
             m_Instance = this;
-            m_PendingCommands = new List<PendingCommand>();
+
+            m_PEPCommands = new List<PEPendingCommand>();
+            m_SEPCommands = new List<SEPendingCommand>();
         }
 
-        public void ProcessPendingCommands(int ticksSinceStart)
+        public void ProcessPendingCommands(int currentTick)
         {
-            for(int i = 0; i < m_PendingCommands.Count; i++)
-            {
-                if (m_PendingCommands[i].CommandShouldBeReleased(ticksSinceStart))
-                {
-                    ReleaseCommand(m_PendingCommands[i].Command);
+            Debug.Log(" - PROCESS COMMANDS " + currentTick + " -");
 
-                    m_PendingCommands[i].Dispose();
-                    m_PendingCommands.RemoveAt(i--);
+            //Apply periodic execution commands
+            for (int i = 0; i < m_PEPCommands.Count; i++)
+            {
+                if (m_PEPCommands[i].CommandShouldBeApplied(currentTick))
+                    ApplyCommand(m_PEPCommands[i].Command);
+            }
+
+            //Apply single execution commands
+            for (int i = 0; i < m_SEPCommands.Count; i++)
+            {
+                if (m_SEPCommands[i].CommandShouldBeApplied(currentTick))
+                {
+                    ApplyCommand(m_SEPCommands[i].Command);
+                    m_SEPCommands.RemoveAt(i--);
+                }
+            }
+
+            //Release periodic execution commands
+            for (int i = 0; i < m_PEPCommands.Count; i++)
+            {
+                if (m_PEPCommands[i].CommandSholdBeReleased(currentTick))
+                {
+                    ReleaseCommand(m_PEPCommands[i].Command);
+                    m_PEPCommands.RemoveAt(i--);
                 }
             }
         }
 
         public void PerformUpdate(float deltaTime)
         {
-            if (m_PendingCommands.Count == 0)
+            if (m_PEPCommands.Count == 0 && m_SEPCommands.Count == 0)
                 return;
 
-            for (int i = 0; i < m_PendingCommands.Count; i++)
-                m_PendingCommands[i].PerformUpdate(deltaTime);
+            for (int i = 0; i < m_PEPCommands.Count; i++)
+                m_PEPCommands[i].PerformUpdate(deltaTime);
+
+            for (int i = 0; i < m_SEPCommands.Count; i++)
+                m_SEPCommands[i].PerformUpdate(deltaTime);
         }
 
 
-        private void ReleaseCommand(BattleCommand command)
+        private void ApplyCommand(AbstractBattleCommand command)
         {
             command.Target.ApplyCommand(command);
         }
 
-        
-
-        class PendingCommand : iUpdatable
+        private void ReleaseCommand(AbstractBattleCommand command)
         {
-            private AbstractCommandView View;
-            private int m_CreationTick;
-            private int m_TargetTick;
-
-            public BattleCommand Command { get; private set; }
+            command.Target.ReleaseCommand(command);
+        }
 
 
-            public PendingCommand(BattleCommand command, int creationTick)
+        class SEPendingCommand : iUpdatable
+        {
+            protected AbstractCommandView View;
+            protected int m_ApplyTick;
+
+            public AbstractBattleCommand Command { get; private set; }
+
+
+            public SEPendingCommand(AbstractBattleCommand command, int creationTick)
             {
                 //Initialize data
                 Command = command;
-                m_CreationTick = creationTick;
-                m_TargetTick = m_CreationTick + command.ApplyDelay;
-                double viewLifeTime = command.ApplyDelay * Rhytm.RhytmController.GetInstance().TickDurationSeconds +
-                                                           Rhytm.RhytmController.GetInstance().DeltaInput;
+                m_ApplyTick = creationTick + command.ApplyDelay;
 
-                //Initialize view
-                View = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().ProjectilePrefab);
-                View.Initialize(command.Sender.ProjectileSpawnPosition,
-                                command.Target.ProjectileHitPosition,
-                                (float)viewLifeTime);
+                CreateView();
             }
 
-            public bool CommandShouldBeReleased(int ticksSinceStart) => m_TargetTick == ticksSinceStart;
+            public bool CommandShouldBeApplied(int currentTick) => m_ApplyTick == currentTick;
 
             public void PerformUpdate(float deltaTime) => View?.PerformUpdate(deltaTime);
 
-            public void Dispose() => View.Dispose();
+
+            protected void CreateView()
+            {
+                if (Command is AttackCommand)
+                {
+                    //TODO: Add view facotry
+                    //Move to view factory
+                    double viewLifeTime = Command.ApplyDelay * Rhytm.RhytmController.GetInstance().TickDurationSeconds +
+                                                               (!Command.Sender.IsEnemy ? Rhytm.RhytmController.GetInstance().DeltaInput : 0);
+
+                    //Initialize view
+                    View = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().ProjectilePrefab);
+                    View.Initialize(Command.Sender.ProjectileSpawnPosition,
+                                    Command.Target.ProjectileHitPosition,
+                                    (float)viewLifeTime);
+                }
+                else
+                {
+                    Debug.LogWarning("Create view for defence command.");
+                }
+            }
+        }
+
+        class PEPendingCommand : SEPendingCommand
+        {
+            protected int m_ReleaseTick;
+
+            public PEPendingCommand(AbstractPeriodicBattleCommand command, int creationTick) : base(command, creationTick)
+            {
+                m_ReleaseTick = m_ApplyTick + command.ReleaseDelay;
+            }
+
+            public bool CommandSholdBeReleased(int currentTick) => m_ReleaseTick == currentTick;
         }
     }
 }

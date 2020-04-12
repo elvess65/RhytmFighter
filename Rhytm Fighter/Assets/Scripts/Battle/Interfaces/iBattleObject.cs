@@ -20,6 +20,7 @@ namespace RhytmFighter.Battle
         iBattleActionBehaviour ActionBehaviour { get; }
         iHealthBehaviour HealthBehaviour { get; }
         
-        void ApplyCommand(BattleCommand command);
+        void ApplyCommand(AbstractBattleCommand command);
+        void ReleaseCommand(AbstractBattleCommand command);
     }
 }

@@ -4,7 +4,7 @@ namespace RhytmFighter.Battle.Action.Behaviours
 {
     public class SimpleBattleActionBehaviour : iBattleActionBehaviour
     {
-        public event System.Action<BattleCommand> OnActionExecuted;
+        public event System.Action<AbstractBattleCommand> OnActionExecuted;
 
         public iBattleObject Target { get; set; }
 
@@ -34,6 +34,6 @@ namespace RhytmFighter.Battle.Action.Behaviours
         }
 
 
-        protected void ExecuteCommand(BattleCommand command) => OnActionExecuted?.Invoke(command); 
+        protected void ExecuteCommand(AbstractBattleCommand command) => OnActionExecuted?.Invoke(command); 
     }
 }

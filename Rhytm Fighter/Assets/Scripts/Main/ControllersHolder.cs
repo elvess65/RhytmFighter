@@ -38,8 +38,6 @@ namespace RhytmFighter.Main
             RhytmInputProxy = new RhytmInputProxy();
 
             PlayerCharacterController = new PlayerCharacterController();
-
-            UnityEngine.AudioListener.volume = 0;
         }
     }
 }

@@ -41,9 +41,8 @@ namespace RhytmFighter.Main
         private GameState_Battle m_GameStateBattle;
         private GameState_Adventure m_GameStateAdventure;
 
-        public Rhytm.RhytmController R => m_ControllersHolder.RhytmController;
-
         public static float ENEMY_MOVE_SPEED;
+
 
         private void Awake()
         {
@@ -51,6 +50,8 @@ namespace RhytmFighter.Main
                 Destroy(gameObject);
 
             m_Instance = this;
+
+            AudioListener.volume = 0;
         }
 
         private void Start()

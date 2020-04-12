@@ -70,22 +70,40 @@ namespace RhytmFighter.Objects.Model
             InitializeMovement(m_MoveSpeed);
         }
 
-        public void ApplyCommand(BattleCommand command)
+        private bool m_ShieldIsUsed = false;
+        public void ApplyCommand(AbstractBattleCommand command)
         {
-            switch(command.Type)
+            switch(command)
             {
-                case CommandTypes.SimpleAttack:
-
-                    SimpleAttackCommand attackCommand = command as SimpleAttackCommand;
+                case AttackCommand attackCommand:
+                    Debug.Log("Apply attack command " + m_ShieldIsUsed);
                     HealthBehaviour.ReduceHP(attackCommand.Damage);
+                    break;
 
+                case DefenceCommand defenceCommand: 
+
+                    Debug.Log("Apply defence command");
+                    m_ShieldIsUsed = true;
                     break;
             }
         }
 
+        public void ReleaseCommand(AbstractBattleCommand command)
+        {
+            switch(command)
+            {
+                case DefenceCommand defenceCommand:
+
+                    Debug.Log("RELEASE COMMAND: " + command);
+                    m_ShieldIsUsed = false;
+
+                    break;
+            }   
+        }
+
 
         #region ActionBehaviour
-        private void ActionBehaviour_OnActionExecutedHandler(BattleCommand command)
+        private void ActionBehaviour_OnActionExecutedHandler(AbstractBattleCommand command)
         {
             CommandsController.AddCommand(command);
 

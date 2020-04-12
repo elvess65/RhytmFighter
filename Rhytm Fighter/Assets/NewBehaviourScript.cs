@@ -15,6 +15,6 @@ public class NewBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.gameObject.transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(0, 360, (float)GameManager.Instance.R.LoopPositionAnalog));
+        this.gameObject.transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(0, 360, (float)RhytmController.GetInstance().LoopPositionAnalog));
     }
 }

@@ -4,7 +4,7 @@ namespace RhytmFighter.Battle.Action
 {
     public interface iBattleActionBehaviour
     {
-        event System.Action<BattleCommand> OnActionExecuted;
+        event System.Action<AbstractBattleCommand> OnActionExecuted;
 
         iBattleObject Target { get; set; }
 
