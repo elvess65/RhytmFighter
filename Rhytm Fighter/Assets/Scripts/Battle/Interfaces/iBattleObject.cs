@@ -19,7 +19,8 @@ namespace RhytmFighter.Battle
         iBattleObject Target { get; set; }
         iBattleActionBehaviour ActionBehaviour { get; }
         iHealthBehaviour HealthBehaviour { get; }
-        
+        BattleEffectsProcessor BattleEffectsProcessor { get; }
+
         void ApplyCommand(AbstractBattleCommand command);
         void ReleaseCommand(AbstractBattleCommand command);
     }

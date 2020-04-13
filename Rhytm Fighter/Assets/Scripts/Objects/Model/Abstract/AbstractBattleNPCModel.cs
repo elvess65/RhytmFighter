@@ -30,6 +30,7 @@ namespace RhytmFighter.Objects.Model
         }
         public iBattleActionBehaviour ActionBehaviour { get; private set; }
         public iHealthBehaviour HealthBehaviour { get; private set; }
+        public BattleEffectsProcessor BattleEffectsProcessor { get; private set; }
 
         private iBattleModelViewProxy m_ViewAsBattle;
         private iMovable m_ViewAsMovable;
@@ -55,6 +56,9 @@ namespace RhytmFighter.Objects.Model
             HealthBehaviour.OnHPReduced += HealthBehaviour_OnHPReduced;
             HealthBehaviour.OnHPIncreased += HealthBehaviour_OnHPIncreased;
             HealthBehaviour.OnDestroyed += HealthBehaviour_OnDestroyed;
+
+            //Battle effects processor
+            BattleEffectsProcessor = new BattleEffectsProcessor();
         }
 
         public override void ShowView(CellView cellView)
@@ -70,7 +74,7 @@ namespace RhytmFighter.Objects.Model
             InitializeMovement(m_MoveSpeed);
         }
 
-        private bool m_ShieldIsUsed = false;
+        private bool m_ShieldIsUsed = false; //Temp
         public void ApplyCommand(AbstractBattleCommand command)
         {
             switch(command)
