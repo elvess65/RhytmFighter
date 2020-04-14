@@ -30,7 +30,7 @@ namespace RhytmFighter.Objects.Model
         }
         public iBattleActionBehaviour ActionBehaviour { get; private set; }
         public iHealthBehaviour HealthBehaviour { get; private set; }
-        public BattleEffectsProcessor BattleEffectsProcessor { get; private set; }
+        public BattleCommandsModificatorProcessor ModificatorsProcessor { get; private set; }
 
         private iBattleModelViewProxy m_ViewAsBattle;
         private iMovable m_ViewAsMovable;
@@ -58,7 +58,7 @@ namespace RhytmFighter.Objects.Model
             HealthBehaviour.OnDestroyed += HealthBehaviour_OnDestroyed;
 
             //Battle effects processor
-            BattleEffectsProcessor = new BattleEffectsProcessor();
+            ModificatorsProcessor = new BattleCommandsModificatorProcessor();
         }
 
         public override void ShowView(CellView cellView)
@@ -74,32 +74,36 @@ namespace RhytmFighter.Objects.Model
             InitializeMovement(m_MoveSpeed);
         }
 
-        private bool m_ShieldIsUsed = false; //Temp
         public void ApplyCommand(AbstractBattleCommand command)
         {
-            switch(command)
+            ModificatorsProcessor.ProcessApplyCommand(command);
+
+            switch (command)
             {
                 case AttackCommand attackCommand:
-                    Debug.Log("Apply attack command " + m_ShieldIsUsed);
+
+                    Debug.Log("Apply attack command: " + attackCommand);
+
                     HealthBehaviour.ReduceHP(attackCommand.Damage);
+
                     break;
 
                 case DefenceCommand defenceCommand: 
 
-                    Debug.Log("Apply defence command");
-                    m_ShieldIsUsed = true;
+                    Debug.Log("Apply defence command: " + defenceCommand);
                     break;
             }
         }
 
         public void ReleaseCommand(AbstractBattleCommand command)
         {
+            ModificatorsProcessor.ProcessReleaseCommand(command);
+
             switch(command)
             {
                 case DefenceCommand defenceCommand:
 
-                    Debug.Log("RELEASE COMMAND: " + command);
-                    m_ShieldIsUsed = false;
+                    Debug.Log("Release defence command: " + defenceCommand);
 
                     break;
             }   
