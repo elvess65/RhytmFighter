@@ -1,10 +1,14 @@
-﻿namespace RhytmFighter.Battle.Command.View
+﻿using UnityEngine;
+
+namespace RhytmFighter.Battle.Command.View
 {
     public abstract class AbstractProjectileView : AbstractCommandView
     {
-        protected virtual void DestroyProjectile()
+        public virtual void Initialize(Vector3 targetPos, Vector3 senderPos, float existTime)
         {
-            gameObject.SetActive(false);
+            m_LerpData.To = targetPos;
+
+            base.Initialize(senderPos, existTime);
         }
     }
 }

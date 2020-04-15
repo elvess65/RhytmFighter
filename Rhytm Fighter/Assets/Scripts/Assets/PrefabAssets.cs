@@ -33,6 +33,9 @@ namespace RhytmFighter.Assets
         [Header("Projectile")]
         public AbstractProjectileView ProjectilePrefab;
 
+        [Header("Defence")]
+        public AbstractDefenceView DefencePrefab;
+
         private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
 
 

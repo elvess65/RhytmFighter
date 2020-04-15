@@ -1,40 +1,48 @@
 ﻿using RhytmFighter.Assets;
-using UnityEngine;
 
 namespace RhytmFighter.Battle.Command.View
 {
     public abstract class AbstractCommandViewFactory
     {
         public abstract AbstractCommandView CreateView(AbstractBattleCommand command);
+
+        protected abstract float GetExistsTime(AbstractBattleCommand command);
     }
+
 
     public class AttackCommandViewFactory : AbstractCommandViewFactory
     {
         public override AbstractCommandView CreateView(AbstractBattleCommand command)
         {
-            AbstractCommandView result = null;
-
-            double viewLifeTime = command.ApplyDelay * Rhytm.RhytmController.GetInstance().TickDurationSeconds +
-                                  (!command.Sender.IsEnemy ? Rhytm.RhytmController.GetInstance().DeltaInput : 0);
-
-            //Initialize view
-            result = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().ProjectilePrefab);
-
-            result.Initialize(command.Sender.ProjectileSpawnPosition,
-                              command.Target.ProjectileHitPosition,
-                              (float)viewLifeTime);
+            AbstractProjectileView result = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().ProjectilePrefab);
+            result.Initialize(command.Target.ProjectileHitPosition, command.Sender.ProjectileSpawnPosition, GetExistsTime(command));
 
             return result;
         }
+
+        protected override float GetExistsTime(AbstractBattleCommand command)
+        {
+            double playerInputDelta = (!command.Sender.IsEnemy ? Rhytm.RhytmController.GetInstance().DeltaInput : 0);
+            double existTime = command.ApplyDelay * Rhytm.RhytmController.GetInstance().TickDurationSeconds + playerInputDelta;
+
+            return (float)existTime;
+        }
     }
+
 
     public class DefenceCommandViewFactory : AbstractCommandViewFactory
     {
         public override AbstractCommandView CreateView(AbstractBattleCommand command)
         {
-            Debug.LogWarning("DefenceCommandViewFactory: Create view for defence command");
+            AbstractDefenceView result = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().DefencePrefab);
+            result.Initialize(command.Sender.DefenceSpawnPosition, GetExistsTime(command));
 
-            return null;
+            return result;
+        }
+
+        protected override float GetExistsTime(AbstractBattleCommand command)
+        {
+            return 0.5f;
         }
     }
 }

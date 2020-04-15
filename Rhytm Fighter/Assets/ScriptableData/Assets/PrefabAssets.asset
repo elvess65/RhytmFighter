@@ -34,3 +34,5 @@ MonoBehaviour:
     type: 3}
   ProjectilePrefab: {fileID: 3292289427469453457, guid: aaea7aad911f64bbb892afbe155a3661,
     type: 3}
+  DefencePrefab: {fileID: 8717700199969591527, guid: 57528a7304250ca4daf67e5a5a621817,
+    type: 3}

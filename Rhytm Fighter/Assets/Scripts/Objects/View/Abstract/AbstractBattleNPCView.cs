@@ -15,6 +15,7 @@ namespace RhytmFighter.Objects.View
 
         public Transform ProjectileSpawnParent;
         public Transform ProjectileHitParent;
+        public Transform DefenceSpawnParent;
 
         private iMovementStrategy m_MoveStrategy;
         private iBattleNPCAnimationController m_AnimationController;
@@ -24,6 +25,7 @@ namespace RhytmFighter.Objects.View
         public bool IsMoving => m_MoveStrategy.IsMoving;
         public Vector3 ProjectileHitPosition => ProjectileHitParent.position;
         public Vector3 ProjectileSpawnPosition => ProjectileSpawnParent.position;
+        public Vector3 DefenceSpawnPosition => DefenceSpawnParent.position;
 
 
         public override void Show(AbstractGridObjectModel correspondingModel)

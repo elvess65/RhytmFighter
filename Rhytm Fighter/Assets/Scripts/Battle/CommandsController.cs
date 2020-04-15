@@ -1,5 +1,4 @@
-﻿using RhytmFighter.Assets;
-using RhytmFighter.Battle.Command;
+﻿using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Command.View;
 using RhytmFighter.Interfaces;
 using System.Collections.Generic;

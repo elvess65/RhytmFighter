@@ -6,6 +6,7 @@ namespace RhytmFighter.Battle
     {
         Vector3 ProjectileSpawnPosition { get; }
         Vector3 ProjectileHitPosition { get; }
+        Vector3 DefenceSpawnPosition { get; }
 
         void NotifyView_ExecuteAction();
         void NotifyView_TakeDamage(int dmg);

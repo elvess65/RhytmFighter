@@ -22,6 +22,7 @@ namespace RhytmFighter.Objects.Model
         public Vector3 ViewPosition => View.transform.position;
         public Vector3 ProjectileHitPosition => m_ViewAsBattle.ProjectileHitPosition;
         public Vector3 ProjectileSpawnPosition => m_ViewAsBattle.ProjectileSpawnPosition;
+        public Vector3 DefenceSpawnPosition => m_ViewAsBattle.DefenceSpawnPosition;
 
         public iBattleObject Target
         {
@@ -82,8 +83,11 @@ namespace RhytmFighter.Objects.Model
             {
                 case AttackCommand attackCommand:
 
-                    Debug.Log("NPC Model: Apply attack command: " + attackCommand + " " + attackCommand.Damage);
-                    HealthBehaviour.ReduceHP(attackCommand.Damage);
+                    if (attackCommand.Damage > 0)
+                    {
+                        Debug.Log("NPC Model: Apply attack command: " + attackCommand + " " + attackCommand.Damage);
+                        HealthBehaviour.ReduceHP(attackCommand.Damage);
+                    }
 
                     break;
 
