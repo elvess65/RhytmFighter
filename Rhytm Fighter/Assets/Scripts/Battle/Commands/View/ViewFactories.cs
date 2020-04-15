@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace RhytmFighter.Battle.Command.View
 {
-    public abstract class CommandViewFactory
+    public abstract class AbstractCommandViewFactory
     {
         public abstract AbstractCommandView CreateView(AbstractBattleCommand command);
     }
 
-    public class AttackCommandViewFactory : CommandViewFactory
+    public class AttackCommandViewFactory : AbstractCommandViewFactory
     {
         public override AbstractCommandView CreateView(AbstractBattleCommand command)
         {
@@ -28,11 +28,11 @@ namespace RhytmFighter.Battle.Command.View
         }
     }
 
-    public class DefenceCommandViewFactory : CommandViewFactory
+    public class DefenceCommandViewFactory : AbstractCommandViewFactory
     {
         public override AbstractCommandView CreateView(AbstractBattleCommand command)
         {
-            Debug.LogWarning("Create view for defence command");
+            Debug.LogWarning("DefenceCommandViewFactory: Create view for defence command");
 
             return null;
         }

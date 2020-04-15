@@ -13,16 +13,18 @@ namespace RhytmFighter.Battle
 
         private List<PeriodicPendingCommand> m_PeriodicCommands;
         private List<PendingCommand> m_SingleCommands;
+        private Dictionary<CommandTypes, AbstractCommandViewFactory> m_ViewFactories;
 
 
         public static void AddCommand(AbstractBattleCommand command)
         {
+            Debug.LogError("ADD NEW COMMAND: " + command.Type + " CurTick: " + Rhytm.RhytmController.GetInstance().CurrentTick);
             switch(command.Layer)
             {
                 case CommandExecutionLayers.PeriodicExecution:
                     m_Instance.m_PeriodicCommands.Add(new PeriodicPendingCommand(command as AbstractPeriodicBattleCommand,
-                                                                            Rhytm.RhytmController.GetInstance().CurrentTick,
-                                                                            m_Instance.GetCommandViewFactory(command)));
+                                                                                 Rhytm.RhytmController.GetInstance().CurrentTick,
+                                                                                 m_Instance.GetCommandViewFactory(command)));
                     break;
                 case CommandExecutionLayers.SingleExecution:
                     m_Instance.m_SingleCommands.Add(new PendingCommand(command,
@@ -39,6 +41,7 @@ namespace RhytmFighter.Battle
 
             m_PeriodicCommands = new List<PeriodicPendingCommand>();
             m_SingleCommands = new List<PendingCommand>();
+            m_ViewFactories = new Dictionary<CommandTypes, AbstractCommandViewFactory>();
         }
 
         public void ProcessPendingCommands(int currentTick)
@@ -96,22 +99,27 @@ namespace RhytmFighter.Battle
             command.Target.ReleaseCommand(command);
         }
 
-
-        private CommandViewFactory GetCommandViewFactory(AbstractBattleCommand command)
+        private AbstractCommandViewFactory GetCommandViewFactory(AbstractBattleCommand command)
         {
-            switch(command)
+            if (!m_ViewFactories.ContainsKey(command.Type))
             {
-                case AttackCommand attackCommand:
-                    return new AttackCommandViewFactory();
-                case DefenceCommand defenceCommand:
-                    return new DefenceCommandViewFactory();
+                switch (command.Type)
+                {
+                    case CommandTypes.Attack:
+                        m_ViewFactories.Add(command.Type, new AttackCommandViewFactory());
+                        break;
+
+                    case CommandTypes.Defence:
+                        m_ViewFactories.Add(command.Type, new DefenceCommandViewFactory());
+                        break;
+                }
             }
 
-            return null;
+            return m_ViewFactories[command.Type];
         }
 
 
-        private class PendingCommand : iUpdatable
+        class PendingCommand : iUpdatable
         {
             protected int m_ApplyTick;
             protected AbstractCommandView View;
@@ -119,7 +127,7 @@ namespace RhytmFighter.Battle
             public AbstractBattleCommand Command { get; private set; }
 
 
-            public PendingCommand(AbstractBattleCommand command, int creationTick, CommandViewFactory viewFactory)
+            public PendingCommand(AbstractBattleCommand command, int creationTick, AbstractCommandViewFactory viewFactory)
             {
                 //Initialize data
                 Command = command;
@@ -134,11 +142,11 @@ namespace RhytmFighter.Battle
             public void PerformUpdate(float deltaTime) => View?.PerformUpdate(deltaTime);
         }
 
-        private class PeriodicPendingCommand : PendingCommand
+        class PeriodicPendingCommand : PendingCommand
         {
             protected int m_ReleaseTick;
 
-            public PeriodicPendingCommand(AbstractPeriodicBattleCommand command, int creationTick, CommandViewFactory viewFactory) :
+            public PeriodicPendingCommand(AbstractPeriodicBattleCommand command, int creationTick, AbstractCommandViewFactory viewFactory) :
                 base(command, creationTick, viewFactory)
             {
                 m_ReleaseTick = m_ApplyTick + command.ReleaseDelay;

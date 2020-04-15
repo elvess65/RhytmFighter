@@ -2,7 +2,7 @@
 {
     public class AttackCommand : AbstractBattleCommand
     {
-        public int Damage { get; private set; }
+        public int Damage { get; set; }
 
         public AttackCommand(iBattleObject sender, iBattleObject target, int applyDelay, int damage) : 
             base(sender, target, applyDelay)

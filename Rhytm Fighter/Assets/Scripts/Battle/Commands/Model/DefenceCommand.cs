@@ -20,8 +20,12 @@
         {
             public void TryModifyCommand(AbstractBattleCommand command)
             {
-                if (command is AttackCommand attackCommand)
-                    UnityEngine.Debug.LogWarning("TRY TO MODIFY ATTACK COMMAND FROM DEFENCE MODIFICATOR " + attackCommand.Type + " " + attackCommand.Damage);
+                switch (command)
+                {
+                    case AttackCommand attackCommand:
+                        attackCommand.Damage = 0;
+                        break;
+                }
             }
         }
     }

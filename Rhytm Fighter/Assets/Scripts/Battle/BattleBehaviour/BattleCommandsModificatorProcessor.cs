@@ -33,7 +33,7 @@ namespace RhytmFighter.Battle
                 if (!HasModificator(inputCommand.Type))
                 {
                     m_ActiveModificators.Add(inputCommand.Type, modificatorCommand.GetModificator());
-                    Debug.Log("Add modificator " + inputCommand.Type);
+                    Debug.Log("Modificator Processor: Add modificator " + inputCommand.Type);
                 }
             }
         }
@@ -43,7 +43,7 @@ namespace RhytmFighter.Battle
             if (HasModificator(inputCommand.Type))
             {
                 m_ActiveModificators.Remove(inputCommand.Type);
-                Debug.Log("Remove modificator: " + inputCommand.Type);
+                Debug.Log("Modificator Processor: Remove modificator: " + inputCommand.Type);
             }
         }
 

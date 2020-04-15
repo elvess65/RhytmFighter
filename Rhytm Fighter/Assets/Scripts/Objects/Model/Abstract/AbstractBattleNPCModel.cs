@@ -82,15 +82,14 @@ namespace RhytmFighter.Objects.Model
             {
                 case AttackCommand attackCommand:
 
-                    Debug.Log("Apply attack command: " + attackCommand);
-
+                    Debug.Log("NPC Model: Apply attack command: " + attackCommand + " " + attackCommand.Damage);
                     HealthBehaviour.ReduceHP(attackCommand.Damage);
 
                     break;
 
                 case DefenceCommand defenceCommand: 
 
-                    Debug.Log("Apply defence command: " + defenceCommand);
+                    Debug.Log("NPC Model Apply defence command: " + defenceCommand);
                     break;
             }
         }
@@ -102,8 +101,6 @@ namespace RhytmFighter.Objects.Model
             switch(command)
             {
                 case DefenceCommand defenceCommand:
-
-                    Debug.Log("Release defence command: " + defenceCommand);
 
                     break;
             }   

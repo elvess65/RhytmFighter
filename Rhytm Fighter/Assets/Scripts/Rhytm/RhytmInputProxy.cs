@@ -32,7 +32,7 @@
             if (progressToNextTickAnalog >= 0.5f)
             {
                 RhytmController.GetInstance().DeltaInput = -RhytmController.GetInstance().TimeToNextTick;
-                UnityEngine.Debug.Log("PRE TICK: " + RhytmController.GetInstance().DeltaInput);
+                UnityEngine.Debug.Log("RhytmInputProxy: Pre Tick: " + RhytmController.GetInstance().DeltaInput);
 
                 return 1 - progressToNextTickAnalog <= m_InputPrecious;
             }
@@ -40,7 +40,7 @@
             else
             {
                 RhytmController.GetInstance().DeltaInput = RhytmController.GetInstance().TickDurationSeconds - RhytmController.GetInstance().TimeToNextTick;
-                UnityEngine.Debug.Log("POST TICK: " + RhytmController.GetInstance().DeltaInput);
+                UnityEngine.Debug.Log("RhytmInputProxy: Post Tick: " + RhytmController.GetInstance().DeltaInput);
 
                 return progressToNextTickAnalog <= m_InputPrecious;
             }
