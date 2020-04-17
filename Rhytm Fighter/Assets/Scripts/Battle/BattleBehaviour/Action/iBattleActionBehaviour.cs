@@ -1,10 +1,10 @@
-﻿using RhytmFighter.Battle.Command;
+﻿using RhytmFighter.Battle.Command.Model;
 
 namespace RhytmFighter.Battle.Action
 {
     public interface iBattleActionBehaviour
     {
-        event System.Action<AbstractBattleCommand> OnActionExecuted;
+        event System.Action<AbstractCommandModel> OnActionExecuted;
 
         iBattleObject Target { get; set; }
 

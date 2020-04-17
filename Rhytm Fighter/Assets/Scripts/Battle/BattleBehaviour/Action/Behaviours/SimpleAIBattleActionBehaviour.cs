@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.Battle.Command;
+using RhytmFighter.Battle.Command.Model;
 
 namespace RhytmFighter.Battle.Action.Behaviours
 {
@@ -36,7 +37,7 @@ namespace RhytmFighter.Battle.Action.Behaviours
                     {
                         case PatternActionTypes.SimpleAttack:
 
-                            ExecuteCommand(new AttackCommand(m_ControlledObject, Target, m_ApplyDelay, m_Damage));
+                            ExecuteCommand(new AttackCommandModel(m_ControlledObject, Target, m_ApplyDelay, m_Damage));
 
                             break;
                     }

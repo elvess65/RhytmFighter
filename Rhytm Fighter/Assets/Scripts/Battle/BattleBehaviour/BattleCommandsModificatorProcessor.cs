@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using RhytmFighter.Battle.Command;
+using RhytmFighter.Battle.Command.Model;
+using RhytmFighter.Battle.Command.Model.Modificator;
 using UnityEngine;
 
 namespace RhytmFighter.Battle
@@ -14,43 +15,43 @@ namespace RhytmFighter.Battle
             m_ActiveModificators = new Dictionary<CommandTypes, iCommandModificator>();
         }
 
-        public void ProcessApplyCommand(AbstractBattleCommand inputCommand)
+        public void ProcessApplyCommand(AbstractCommandModel inputCommandModel)
         {
-            TryAddModificator(inputCommand);
-            TryModifyCommand(inputCommand);
+            TryAddModificator(inputCommandModel);
+            TryModifyCommand(inputCommandModel);
         }
 
-        public void ProcessReleaseCommand(AbstractBattleCommand inputCommand)
+        public void ProcessReleaseCommand(AbstractCommandModel inputCommandModel)
         {
-            TryRemoveModificator(inputCommand);
+            TryRemoveModificator(inputCommandModel);
         }
 
 
-        private void TryAddModificator(AbstractBattleCommand inputCommand)
+        private void TryAddModificator(AbstractCommandModel inputCommandModel)
         {
-            if (inputCommand is iModificator modificatorCommand)
+            if (inputCommandModel is iModificator modificatorCommand)
             {
-                if (!HasModificator(inputCommand.Type))
+                if (!HasModificator(inputCommandModel.Type))
                 {
-                    m_ActiveModificators.Add(inputCommand.Type, modificatorCommand.GetModificator());
-                    Debug.Log("Modificator Processor: Add modificator " + inputCommand.Type);
+                    m_ActiveModificators.Add(inputCommandModel.Type, modificatorCommand.GetModificator());
+                    Debug.Log("Modificator Processor: Add modificator " + inputCommandModel.Type);
                 }
             }
         }
 
-        private void TryRemoveModificator(AbstractBattleCommand inputCommand)
+        private void TryRemoveModificator(AbstractCommandModel inputCommandModel)
         {
-            if (HasModificator(inputCommand.Type))
+            if (HasModificator(inputCommandModel.Type))
             {
-                m_ActiveModificators.Remove(inputCommand.Type);
-                Debug.Log("Modificator Processor: Remove modificator: " + inputCommand.Type);
+                m_ActiveModificators.Remove(inputCommandModel.Type);
+                Debug.Log("Modificator Processor: Remove modificator: " + inputCommandModel.Type);
             }
         }
 
-        private void TryModifyCommand(AbstractBattleCommand inputCommand)
+        private void TryModifyCommand(AbstractCommandModel inputCommandModel)
         {
             foreach(iCommandModificator commandModificator in m_ActiveModificators.Values)
-                commandModificator.TryModifyCommand(inputCommand);
+                commandModificator.TryModifyCommand(inputCommandModel);
         }
 
         private bool HasModificator(CommandTypes type)

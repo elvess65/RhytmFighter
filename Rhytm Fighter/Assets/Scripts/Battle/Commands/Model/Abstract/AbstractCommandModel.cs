@@ -1,6 +1,6 @@
-﻿namespace RhytmFighter.Battle.Command
+﻿namespace RhytmFighter.Battle.Command.Model
 {
-    public abstract class AbstractBattleCommand
+    public abstract class AbstractCommandModel
     {
         public iBattleObject Sender { get; private set; }
         public iBattleObject Target { get; private set; }
@@ -11,7 +11,7 @@
         /// </summary>
         public int ApplyDelay { get; private set; }
       
-        public AbstractBattleCommand(iBattleObject sender, iBattleObject target, int applyDelay)
+        public AbstractCommandModel(iBattleObject sender, iBattleObject target, int applyDelay)
         {
             Sender = sender;
             Target = target;

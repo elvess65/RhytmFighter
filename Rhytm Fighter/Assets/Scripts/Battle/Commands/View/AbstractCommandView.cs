@@ -6,6 +6,8 @@ namespace RhytmFighter.Battle.Command.View
 {
     public abstract class AbstractCommandView : MonoBehaviour, iUpdatable
     {
+        public System.Action<AbstractCommandView> OnViewDisposed;
+
         protected float m_ExistTime;
         protected InterpolationData<Vector3> m_LerpData;
 
@@ -27,16 +29,24 @@ namespace RhytmFighter.Battle.Command.View
                 ProcessUpdate();
 
                 if (m_LerpData.Overtime())
-                    Dispose();
+                    FinalizeView();
             }
         }
 
-        public virtual void Dispose()
+
+        protected abstract void ProcessUpdate();
+
+        protected virtual void FinalizeView()
         {
-            Destroy(gameObject);
+            DisposeView();
         }
 
+        protected void DisposeView()
+        {
+            OnViewDisposed?.Invoke(this);
+            OnViewDisposed = null;
 
-        protected abstract void ProcessUpdate(); 
+            Destroy(gameObject);
+        }
     }
 }

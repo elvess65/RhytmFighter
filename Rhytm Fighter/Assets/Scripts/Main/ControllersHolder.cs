@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.Battle;
+using RhytmFighter.Battle.Command;
 using RhytmFighter.Camera;
 using RhytmFighter.Characters;
 using RhytmFighter.Input;

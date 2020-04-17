@@ -2,7 +2,6 @@
 using Frameworks.Grid.View;
 using RhytmFighter.Characters;
 using RhytmFighter.Interfaces;
-using RhytmFighter.Main;
 using System.Collections.Generic;
 using UnityEngine;
 

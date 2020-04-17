@@ -1,10 +1,10 @@
-﻿using RhytmFighter.Battle.Command;
+﻿using RhytmFighter.Battle.Command.Model;
 
 namespace RhytmFighter.Battle.Action.Behaviours
 {
     public class SimpleBattleActionBehaviour : iBattleActionBehaviour
     {
-        public event System.Action<AbstractBattleCommand> OnActionExecuted;
+        public event System.Action<AbstractCommandModel> OnActionExecuted;
 
         public iBattleObject Target { get; set; }
 
@@ -30,10 +30,10 @@ namespace RhytmFighter.Battle.Action.Behaviours
         public virtual void ExecuteAction(int currentTick)
         {
             //ExecuteCommand(new SimpleAttackCommand(m_ControlledObject, Target, m_ApplyDelay, m_UseDelay, m_Damage));
-            ExecuteCommand(new DefenceCommand(m_ControlledObject));
+            ExecuteCommand(new DefenceCommandModel(m_ControlledObject));
         }
 
 
-        protected void ExecuteCommand(AbstractBattleCommand command) => OnActionExecuted?.Invoke(command); 
+        protected void ExecuteCommand(AbstractCommandModel command) => OnActionExecuted?.Invoke(command); 
     }
 }

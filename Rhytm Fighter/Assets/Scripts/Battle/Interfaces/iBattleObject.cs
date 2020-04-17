@@ -1,6 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using RhytmFighter.Battle.Action;
-using RhytmFighter.Battle.Command;
+using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;
 
 namespace RhytmFighter.Battle
@@ -22,7 +22,7 @@ namespace RhytmFighter.Battle
         iHealthBehaviour HealthBehaviour { get; }
         BattleCommandsModificatorProcessor ModificatorsProcessor { get; }
 
-        void ApplyCommand(AbstractBattleCommand command);
-        void ReleaseCommand(AbstractBattleCommand command);
+        void ApplyCommand(AbstractCommandModel command);
+        void ReleaseCommand(AbstractCommandModel command);
     }
 }

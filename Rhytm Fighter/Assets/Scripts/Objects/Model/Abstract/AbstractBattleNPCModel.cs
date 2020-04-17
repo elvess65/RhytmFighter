@@ -3,6 +3,7 @@ using Frameworks.Grid.View;
 using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.Command;
+using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;
 using RhytmFighter.Interfaces;
 using RhytmFighter.UI;
@@ -75,13 +76,13 @@ namespace RhytmFighter.Objects.Model
             InitializeMovement(m_MoveSpeed);
         }
 
-        public void ApplyCommand(AbstractBattleCommand command)
+        public void ApplyCommand(AbstractCommandModel command)
         {
             ModificatorsProcessor.ProcessApplyCommand(command);
 
             switch (command)
             {
-                case AttackCommand attackCommand:
+                case AttackCommandModel attackCommand:
 
                     if (attackCommand.Damage > 0)
                     {
@@ -91,20 +92,20 @@ namespace RhytmFighter.Objects.Model
 
                     break;
 
-                case DefenceCommand defenceCommand: 
+                case DefenceCommandModel defenceCommand: 
 
                     Debug.Log("NPC Model Apply defence command: " + defenceCommand);
                     break;
             }
         }
 
-        public void ReleaseCommand(AbstractBattleCommand command)
+        public void ReleaseCommand(AbstractCommandModel command)
         {
             ModificatorsProcessor.ProcessReleaseCommand(command);
 
             switch(command)
             {
-                case DefenceCommand defenceCommand:
+                case DefenceCommandModel defenceCommand:
 
                     break;
             }   
@@ -112,7 +113,7 @@ namespace RhytmFighter.Objects.Model
 
 
         #region ActionBehaviour
-        private void ActionBehaviour_OnActionExecutedHandler(AbstractBattleCommand command)
+        private void ActionBehaviour_OnActionExecutedHandler(AbstractCommandModel command)
         {
             CommandsController.AddCommand(command);
 

@@ -1,4 +1,4 @@
-﻿namespace RhytmFighter.Battle.Command
+﻿namespace RhytmFighter.Battle.Command.Model.Modificator
 {
     public interface iModificator 
     {
