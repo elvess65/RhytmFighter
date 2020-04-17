@@ -28,7 +28,7 @@ namespace RhytmFighter.GameState
             {
                 bool inputIsValid = m_RhytmInputProxy.IsInputTickValid();
                 if (inputIsValid)
-                    m_PlayerCharacterController.ExecuteAction();
+                    m_PlayerCharacterController.ExecuteAction(Battle.Command.Model.CommandTypes.Attack);
             }
 
             base.HandleTouch(mouseScreenPos);

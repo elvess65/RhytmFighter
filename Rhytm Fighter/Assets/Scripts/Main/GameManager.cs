@@ -330,7 +330,9 @@ namespace RhytmFighter.Main
         //Temp
         void BtnPressHandler()
         {
-            Debug.Log("Press defence button");
+            bool inputIsValid = m_ControllersHolder.RhytmInputProxy.IsInputTickValid();
+            if (inputIsValid)
+                m_ControllersHolder.PlayerCharacterController.ExecuteAction(Battle.Command.Model.CommandTypes.Defence);
         }
     }
 }

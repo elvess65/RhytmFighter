@@ -63,7 +63,8 @@ namespace RhytmFighter.Battle
 
         public void ProcessEnemyActions(int currentTick)
         {
-            Player.Target?.ActionBehaviour.ExecuteAction(currentTick);
+            //TODO: Replace by AI
+            Player.Target?.ActionBehaviour.ExecuteAction(currentTick, Command.Model.CommandTypes.Attack);
         }
 
         public void PerformUpdate(float deltaTime)

@@ -27,10 +27,17 @@ namespace RhytmFighter.Battle.Action.Behaviours
         public void SetTarget(iBattleObject target) => Target = target;
 
 
-        public virtual void ExecuteAction(int currentTick)
+        public virtual void ExecuteAction(int currentTick, CommandTypes type)
         {
-            //ExecuteCommand(new SimpleAttackCommand(m_ControlledObject, Target, m_ApplyDelay, m_UseDelay, m_Damage));
-            ExecuteCommand(new DefenceCommandModel(m_ControlledObject));
+            switch (type)
+            {
+                case CommandTypes.Attack:
+                    ExecuteCommand(new AttackCommandModel(m_ControlledObject, Target, m_ApplyDelay, m_Damage));
+                    break;
+                case CommandTypes.Defence:
+                    ExecuteCommand(new DefenceCommandModel(m_ControlledObject));
+                    break;
+            }
         }
 
 
