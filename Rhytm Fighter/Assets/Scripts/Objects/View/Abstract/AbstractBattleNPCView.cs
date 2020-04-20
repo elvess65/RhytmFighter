@@ -84,11 +84,12 @@ namespace RhytmFighter.Objects.View
         public virtual void NotifyView_TakeDamage(int dmg)
         {
             m_AnimationController.PlayTakeDamageAnimation();
+            UpdateHealthBar();
         }
 
-        public virtual void NotifyView_IncreaseHP()
+        public virtual void NotifyView_IncreaseHP(int amount)
         {
-
+            UpdateHealthBar();
         }
 
         public virtual void NotifyView_Destroyed()

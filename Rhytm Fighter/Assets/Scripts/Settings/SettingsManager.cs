@@ -8,8 +8,8 @@ namespace RhytmFighter.Settings
     /// </summary>
     public class SettingsManager : MonoBehaviour
     {
-        [Header("Simulation")]
-        public ProxySettings ProxySettings;
+        [Header("General")]
+        public GeneralSettings GeneralSettings;
 
         [Header("Other settings")]
         public CameraSettings CameraSettings;

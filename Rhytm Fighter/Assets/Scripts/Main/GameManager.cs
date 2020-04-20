@@ -27,6 +27,8 @@ namespace RhytmFighter.Main
         public AudioSource Music;
         public AudioSource AttackSound;
         public AudioSource HitSound;
+        public AudioSource DestroySound;
+        public AudioSource DefenceSound;
         public AudioSource BeatSound;
         public Metronome Metronome;
         public UnityEngine.UI.Button Btn;
@@ -42,6 +44,7 @@ namespace RhytmFighter.Main
         private GameState_Adventure m_GameStateAdventure;
 
         public static float ENEMY_MOVE_SPEED;
+        public static float PLAYER_MOVE_SPEED;
 
 
         private void Awake()
@@ -50,8 +53,6 @@ namespace RhytmFighter.Main
                 Destroy(gameObject);
 
             m_Instance = this;
-
-            AudioListener.volume = 0;
         }
 
         private void Start()
@@ -84,7 +85,10 @@ namespace RhytmFighter.Main
             int bpm = 130 / 2;
             double inputPrecious = 0.25;
 
-            Metronome.bpm = bpm;
+            Metronome.bpm = 130;
+
+            if (ManagersHolder.SettingsManager.GeneralSettings.MuteAudio)
+                AudioListener.volume = 0;
 
             //Initialize objects
             m_DataHolder = new DataHolder();
@@ -124,11 +128,6 @@ namespace RhytmFighter.Main
                 m_GameStateMachine
             };
 
-            //Initialize connection
-            m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
-            m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
-            m_DataHolder.DBProxy.Initialize(ManagersHolder.SettingsManager.ProxySettings);
-
             //Subscribe for events
             m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
 
@@ -142,6 +141,13 @@ namespace RhytmFighter.Main
 
             //Temp
             Btn.onClick.AddListener(BtnPressHandler);
+            PLAYER_MOVE_SPEED = (float)m_ControllersHolder.RhytmController.TickDurationSeconds * 4f;
+            ENEMY_MOVE_SPEED = PLAYER_MOVE_SPEED;
+
+            //Initialize connection
+            m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
+            m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
+            m_DataHolder.DBProxy.Initialize();
         }
 
         private void InitializationFinished()
@@ -149,8 +155,11 @@ namespace RhytmFighter.Main
             //Start beat
             m_ControllersHolder.RhytmController.StartTicking();
 
-            //Chacge state
+            //Change state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
+
+            //TEMP
+            m_ControllersHolder.PlayerCharacterController.ForceFistBattle();
         }
 
         private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)
@@ -180,15 +189,14 @@ namespace RhytmFighter.Main
             //Temp 
             //TODO Get from data
             int playerID = 0;
-            float playerMoveSpeed = (float)m_ControllersHolder.RhytmController.TickDurationSeconds * 4f;
-            ENEMY_MOVE_SPEED = playerMoveSpeed;
 
-            SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(5);
+            SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(20);
             SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(1, 1, 2);
-            CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, 0, 0);
+            CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
+                m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.WidthInCells / 2, 0);
 
             //Create player model
-            PlayerModel playerModel = new PlayerModel(playerID, startCellView.CorrespondingCellData, playerMoveSpeed, battleBehaviour, healthBehaviour);
+            PlayerModel playerModel = new PlayerModel(playerID, startCellView.CorrespondingCellData, PLAYER_MOVE_SPEED, battleBehaviour, healthBehaviour);
             m_ControllersHolder.PlayerCharacterController.CreateCharacter(playerModel, startCellView, m_ControllersHolder.LevelController);
             playerModel.OnDestroyed += PlayerDestroyedHandler;
 
@@ -297,19 +305,19 @@ namespace RhytmFighter.Main
         private void TickingStartedHandler()
         {
             Music.Play();
-            Metronome.StartMetronome();
+            //Metronome.StartMetronome();
         }
 
         private void TickHandler(int ticksSinceStart)
         {
-            BeatSound.Play();
+            //BeatSound.Play();
             StartCoroutine(BeatIndicatorTempCoroutine());
         }
 
         System.Collections.IEnumerator BeatIndicatorTempCoroutine()
         {
             BeatIndicatorTemp.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
                 yield return null;
             BeatIndicatorTemp.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
         }

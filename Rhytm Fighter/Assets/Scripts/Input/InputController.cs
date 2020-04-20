@@ -13,8 +13,25 @@ namespace RhytmFighter.Input
 
         public void PerformUpdate(float deltaTime)
         {
-            if (UnityEngine.Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (InputDetected() && !IsPointerOverUI())
                 OnTouch?.Invoke(UnityEngine.Input.mousePosition);
+        }
+
+        private bool InputDetected()
+        {
+#if !UNITY_EDITOR
+            return UnityEngine.Input.touchCount > 0 && UnityEngine.Input.touches[0].phase == TouchPhase.Began;
+#endif
+
+            return UnityEngine.Input.GetMouseButtonDown(0);
+        }
+
+        private bool IsPointerOverUI()
+        {
+#if !UNITY_EDITOR
+            return EventSystem.current.IsPointerOverGameObject(UnityEngine.Input.touches[0].fingerId); 
+#endif
+            return EventSystem.current.IsPointerOverGameObject();
         }
     }
 }

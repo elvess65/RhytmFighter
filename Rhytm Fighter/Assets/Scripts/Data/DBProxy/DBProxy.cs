@@ -1,6 +1,4 @@
-﻿using RhytmFighter.Settings.Proxy;
-
-namespace RhytmFighter.Data.DataBase
+﻿namespace RhytmFighter.Data.DataBase
 {
     /// <summary>
     /// Data base connection proxy
@@ -13,17 +11,17 @@ namespace RhytmFighter.Data.DataBase
         private iDataProvider m_DataProvider;
 
         
-        public void Initialize(ProxySettings settings)
+        public void Initialize()
         {
-            if (settings.UseSimulation)
+            bool useSimulation = true;
+            if (useSimulation)
             {
-                ProxySettings_Simulation simulationSettings = settings as ProxySettings_Simulation;
-                m_DataProvider = new SimulationDataProvider(simulationSettings.SimulateSuccess);
+                bool simulateError = false;
+                m_DataProvider = new SimulationDataProvider(!simulateError);
             }
             else
             {
-                ProxySettings_RemoteExample remoteSettings = settings as ProxySettings_RemoteExample;
-                UnityEngine.Debug.Log("Connecting to remote IP: " + remoteSettings.IP);
+                UnityEngine.Debug.Log("Connecting to remote IP");
                 OnConnectionErrorHandler(1);
             }
 

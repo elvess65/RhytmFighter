@@ -10,7 +10,7 @@ namespace RhytmFighter.Battle
 
         void NotifyView_ExecuteAction();
         void NotifyView_TakeDamage(int dmg);
-        void NotifyView_IncreaseHP();
+        void NotifyView_IncreaseHP(int amount);
         void NotifyView_Destroyed();
     }
 }

@@ -2,7 +2,6 @@
 using RhytmFighter.Battle.Command.View;
 using RhytmFighter.Interfaces;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace RhytmFighter.Battle.Command
 {
@@ -18,7 +17,6 @@ namespace RhytmFighter.Battle.Command
 
         public static void AddCommand(AbstractCommandModel command)
         {
-            Debug.LogError("ADD NEW COMMAND: " + command.Type + " CurTick: " + Rhytm.RhytmController.GetInstance().CurrentTick);
             switch(command.Layer)
             {
                 case CommandExecutionLayers.PeriodicExecution:
@@ -48,8 +46,6 @@ namespace RhytmFighter.Battle.Command
 
         public void ProcessPendingCommands(int currentTick)
         {
-            Debug.Log(" - PROCESS COMMANDS " + currentTick + " -");
-
             //Apply periodic execution commands
             for (int i = 0; i < m_PeriodicCommands.Count; i++)
             {

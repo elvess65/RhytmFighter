@@ -164,8 +164,9 @@ namespace Frameworks.Grid.View
         {
             //Move vertical by step until reach obstacle or end of the grid
 
+            int iteration = 3;
             CellView cellView = GetCellVisual(roomData.ID, anchorCellData.X, anchorCellData.Y + verticalOffset);
-            while (cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
+            while (iteration -- > 0 && cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
             {
                 //Show cellView
                 cellView.ShowCell();
@@ -183,8 +184,9 @@ namespace Frameworks.Grid.View
         {
             //Move horizontal by step until reach obstacle or end of the grid
 
+            int iteration = 3;
             CellView cellView = GetCellVisual(roomData.ID, anchorCellData.X + horizontalOffset, anchorCellData.Y);
-            while (cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
+            while (iteration-- > 0 && cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
             {
                 //Moving step horizontal move all possible steps vertical
                 ExtendViewVertical(roomData, cellView.CorrespondingCellData, 1);

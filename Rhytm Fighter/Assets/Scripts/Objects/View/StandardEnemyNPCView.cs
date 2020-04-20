@@ -22,13 +22,6 @@ namespace RhytmFighter.Objects.View
             m_HealthBarFollow?.PerformUpdate(deltaTime);
         }
 
-        public override void NotifyView_TakeDamage(int dmg)
-        {
-            base.NotifyView_TakeDamage(dmg);
-
-            UpdateHealthBar();
-        }
-
 
         protected override void CreateHealthBar()
         {

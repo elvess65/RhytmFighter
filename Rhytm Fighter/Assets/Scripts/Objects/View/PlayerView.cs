@@ -9,14 +9,6 @@ namespace RhytmFighter.Objects.View
         private DoubleBarBehaviour m_HealthBarBehaviour;
 
 
-        public override void NotifyView_TakeDamage(int dmg)
-        {
-            base.NotifyView_TakeDamage(dmg);
-
-            UpdateHealthBar();
-        }
-
-
         protected override void CreateHealthBar()
         {
             m_HealthBarBehaviour = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().PlayerHealthBarPrefab);

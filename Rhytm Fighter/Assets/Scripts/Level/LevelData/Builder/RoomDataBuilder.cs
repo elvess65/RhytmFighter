@@ -11,6 +11,7 @@ namespace RhytmFighter.Level.Data
     {
         private int m_ENEMY_ID = 2;
         private List<GridCellData> m_EmptyCells;
+        GridCellData e;
 
         public LevelRoomData Build(LevelNodeData node, int minWidth, int maxWidth, int minHeight, int maxheight, float cellSize, int fillPercent)
         {
@@ -77,34 +78,42 @@ namespace RhytmFighter.Level.Data
                         grid.RightNodeGate = cell;
                     }
 
+                    cellType = CellTypes.Normal;
                     cell.SetCellType(cellType);
                     cell.SetRoomID(node.ID);
 
                     if (grid.CellIsWalkable(cell))
                         m_EmptyCells.Add(cell);
 
-                    /*if (i == 1 && j == 0)
-                        cell.AddObject(new ExampleItemGridObject(1, cell));
-                    else if (i == 2 && j == 3)
-                        cell.AddObject(new ExampleEnemyNPCGridObject(2, cell, null));*/
+                    //TODO: Macros
+                    if (e == null && i == grid.WidthInCells / 2 && j == grid.HeightInCells / 2 + 1)
+                        e = cell;
                 }
             }
 
 
             int rndIndex = Random.Range(0, m_EmptyCells.Count);
 
-            StandardItemModel item = new StandardItemModel(1, m_EmptyCells[rndIndex]);
+            //TODO: Macros
+            /*StandardItemModel item = new StandardItemModel(1, m_EmptyCells[rndIndex]);
             m_EmptyCells[rndIndex].AddObject(item);
-            m_EmptyCells.RemoveAt(rndIndex);
+            m_EmptyCells.RemoveAt(rndIndex);*/
 
-            if (!node.IsStartNode)
+            //TODO: Macros
+            //if (!node.IsStartNode)
+            //if (node.IsStartNode)
             {
                 rndIndex = Random.Range(0, m_EmptyCells.Count);
 
                 float enemyMoveSpeed = Main.GameManager.ENEMY_MOVE_SPEED;
-                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, m_EmptyCells[rndIndex], enemyMoveSpeed, new SimpleAIBattleActionBehaviour(1, 1, 1), new SimpleHealthBehaviour(3, 4));
-                m_EmptyCells[rndIndex].AddObject(enemyNPC);
-                m_EmptyCells.RemoveAt(rndIndex);
+                int enemyHP = 10;
+                //TODO: Macros
+                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, e, enemyMoveSpeed, new SimpleAIBattleActionBehaviour(1, 1, 1), new SimpleHealthBehaviour(enemyHP));
+                e.AddObject(enemyNPC);
+                e = null;
+                //TODO: Macros
+                //m_EmptyCells[rndIndex].AddObject(enemyNPC);
+                //m_EmptyCells.RemoveAt(rndIndex);
             }
         }
     }

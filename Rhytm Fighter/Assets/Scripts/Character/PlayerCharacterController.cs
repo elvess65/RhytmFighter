@@ -18,6 +18,7 @@ namespace RhytmFighter.Characters
         public PlayerModel PlayerModel { get; private set; }
 
         private ModelMovementController m_MovementController;
+        
 
        
         public void CreateCharacter(PlayerModel playerModel, CellView startCellView, LevelController levelController)
@@ -42,10 +43,18 @@ namespace RhytmFighter.Characters
             //Hide all cells except start cell
             levelController.RoomViewBuilder.HideCells(levelController.Model.GetCurrenRoomData());
 
-            //Extend view
-            levelController.RoomViewBuilder.ExtendView(levelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
+            m_OnFirstBattleForced += () => 
+            { 
+                //Extend view
+                levelController.RoomViewBuilder.ExtendView(levelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
+            };
         }
 
+        private System.Action m_OnFirstBattleForced;
+        public void ForceFistBattle()
+        {
+            m_OnFirstBattleForced?.Invoke();
+        }
 
         public void MoveCharacter(CellView targetCellView)
         {

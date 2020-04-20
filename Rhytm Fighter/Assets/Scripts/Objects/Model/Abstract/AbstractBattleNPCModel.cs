@@ -86,15 +86,17 @@ namespace RhytmFighter.Objects.Model
 
                     if (attackCommand.Damage > 0)
                     {
-                        Debug.Log("NPC Model: Apply attack command: " + attackCommand + " " + attackCommand.Damage);
                         HealthBehaviour.ReduceHP(attackCommand.Damage);
+                    }
+                    else
+                    {
+                        Main.GameManager.Instance.DefenceSound.Play();
                     }
 
                     break;
 
                 case DefenceCommandModel defenceCommand: 
 
-                    Debug.Log("NPC Model Apply defence command: " + defenceCommand);
                     break;
             }
         }
@@ -117,6 +119,9 @@ namespace RhytmFighter.Objects.Model
         {
             CommandsController.AddCommand(command);
 
+            if (command.Type == CommandTypes.Attack)
+                Main.GameManager.Instance.AttackSound.Play();
+
             m_ViewAsBattle.NotifyView_ExecuteAction();
         }
         #endregion
@@ -130,11 +135,13 @@ namespace RhytmFighter.Objects.Model
 
         private void HealthBehaviour_OnHPIncreased(int amount)
         {
-            m_ViewAsBattle.NotifyView_IncreaseHP();
+            m_ViewAsBattle.NotifyView_IncreaseHP(amount);
         }
 
         private void HealthBehaviour_OnDestroyed()
         {
+            Main.GameManager.Instance.DestroySound.Play();
+
             //Notify view
             m_ViewAsBattle.NotifyView_Destroyed();
 

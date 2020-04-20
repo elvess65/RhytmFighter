@@ -5,52 +5,43 @@ namespace RhytmFighter.Battle.Action.Behaviours
 {
     public class SimpleAIBattleActionBehaviour : SimpleBattleActionBehaviour
     {
-        private int m_CycleIterator = 0;
         private int m_ActionIterator = 0;
-        private int m_IdlesBeforeAttack;
-        private int m_IdlesAfterAttack;
         private PatternActionTypes[] m_ActionPattern;
 
 
         public SimpleAIBattleActionBehaviour(int applyDelay, int useDelay, int damage) : base(applyDelay, useDelay, damage)
         {
-            m_IdlesBeforeAttack = 2;
-            m_IdlesAfterAttack = 3;
-
             m_ActionPattern = new PatternActionTypes[]
             {
+                PatternActionTypes.Idle,
                 PatternActionTypes.SimpleAttack,
                 PatternActionTypes.Idle,
                 PatternActionTypes.SimpleAttack,
+                PatternActionTypes.Idle,
+                PatternActionTypes.Idle,
+                PatternActionTypes.SimpleAttack,
+                PatternActionTypes.Idle,
                 PatternActionTypes.Idle
             };
         }
 
         public override void ExecuteAction(int currentTick, CommandTypes type)
         {
-            if (m_CycleIterator++ >= m_IdlesBeforeAttack)
+            if (m_ActionIterator < m_ActionPattern.Length)
             {
-                if (m_ActionIterator < m_ActionPattern.Length)
+                PatternActionTypes action = m_ActionPattern[m_ActionIterator++];
+                switch(action)
                 {
-                    PatternActionTypes action = m_ActionPattern[m_ActionIterator++];
-                    switch(action)
-                    {
-                        case PatternActionTypes.SimpleAttack:
+                    case PatternActionTypes.SimpleAttack:
 
-                            ExecuteCommand(new AttackCommandModel(m_ControlledObject, Target, m_ApplyDelay, m_Damage));
+                        ExecuteCommand(new AttackCommandModel(m_ControlledObject, Target, m_ApplyDelay, m_Damage));
 
-                            break;
-                    }
+                        break;
                 }
-                else if (m_CycleIterator < m_ActionPattern.Length + m_IdlesBeforeAttack + m_IdlesAfterAttack)
-                {
-                }
-                else
-                {
-                    m_CycleIterator = 0;
+
+                if (m_ActionIterator >= m_ActionPattern.Length)
                     m_ActionIterator = 0;
-                }
-            } 
+            }
         }
     }
 }
