@@ -445,7 +445,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GeneralSettings: {fileID: 11400000, guid: 6c82021ecd32ef54db3a7bea846e012a, type: 2}
-  ProxySettings: {fileID: 11400000, guid: 4e02e5c671289c347a878e926f460199, type: 2}
   CameraSettings: {fileID: 11400000, guid: 364fe36ff7a8af444ac6139bf2b5cb26, type: 2}
 --- !u!1 &327966457
 GameObject:

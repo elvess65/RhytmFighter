@@ -1,5 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using RhytmFighter.Battle.Action;
+using RhytmFighter.Battle.AI;
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;
 
@@ -21,6 +22,7 @@ namespace RhytmFighter.Battle
         iBattleActionBehaviour ActionBehaviour { get; }
         iHealthBehaviour HealthBehaviour { get; }
         BattleCommandsModificatorProcessor ModificatorsProcessor { get; }
+        AbstractAI AI { get; }
 
         void ApplyCommand(AbstractCommandModel command);
         void ReleaseCommand(AbstractCommandModel command);

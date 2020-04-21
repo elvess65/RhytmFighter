@@ -27,7 +27,7 @@ namespace RhytmFighter.Battle.Action.Behaviours
         public void SetTarget(iBattleObject target) => Target = target;
 
 
-        public virtual void ExecuteAction(int currentTick, CommandTypes type)
+        public virtual void ExecuteAction(CommandTypes type)
         {
             switch (type)
             {

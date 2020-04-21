@@ -63,13 +63,13 @@ namespace RhytmFighter.Battle
 
         public void ProcessEnemyActions(int currentTick)
         {
-            //TODO: Replace by AI
-            Player.Target?.ActionBehaviour.ExecuteAction(currentTick, Command.Model.CommandTypes.Attack);
+            Player.Target.AI.ExecuteAction(currentTick);
         }
 
         public void PerformUpdate(float deltaTime)
         {
             m_EnemyMovementController?.PerformUpdate(deltaTime);
+            Player?.Target?.AI?.PerformUpdate(deltaTime);
 
             //Makes camera focus battle
             if (m_ForceCameraFollowPoint)

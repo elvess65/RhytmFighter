@@ -73,7 +73,7 @@ namespace RhytmFighter.Characters
 
         public void ExecuteAction(Battle.Command.Model.CommandTypes type)
         {
-            PlayerModel.ActionBehaviour.ExecuteAction(Rhytm.RhytmController.GetInstance().CurrentTick, type);
+            PlayerModel.ActionBehaviour.ExecuteAction(type);
         }
 
 

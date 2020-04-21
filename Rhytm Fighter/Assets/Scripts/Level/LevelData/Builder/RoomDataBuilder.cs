@@ -11,7 +11,7 @@ namespace RhytmFighter.Level.Data
     {
         private int m_ENEMY_ID = 2;
         private List<GridCellData> m_EmptyCells;
-        GridCellData e;
+        private GridCellData enemyCell_debug;
 
         public LevelRoomData Build(LevelNodeData node, int minWidth, int maxWidth, int minHeight, int maxheight, float cellSize, int fillPercent)
         {
@@ -86,8 +86,8 @@ namespace RhytmFighter.Level.Data
                         m_EmptyCells.Add(cell);
 
                     //TODO: Macros
-                    if (e == null && i == grid.WidthInCells / 2 && j == grid.HeightInCells / 2 + 1)
-                        e = cell;
+                    if (enemyCell_debug == null && i == grid.WidthInCells / 2 && j == grid.HeightInCells / 2 + 1)
+                        enemyCell_debug = cell;
                 }
             }
 
@@ -108,9 +108,11 @@ namespace RhytmFighter.Level.Data
                 float enemyMoveSpeed = Main.GameManager.ENEMY_MOVE_SPEED;
                 int enemyHP = 10;
                 //TODO: Macros
-                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, e, enemyMoveSpeed, new SimpleAIBattleActionBehaviour(1, 1, 1), new SimpleHealthBehaviour(enemyHP));
-                e.AddObject(enemyNPC);
-                e = null;
+                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, enemyCell_debug, enemyMoveSpeed, new SimpleBattleActionBehaviour(1, 1, 1), 
+                                                                                                                          new SimpleHealthBehaviour(enemyHP),
+                                                                                                                          Battle.AI.AITypes.Simple);
+                enemyCell_debug.AddObject(enemyNPC);
+                enemyCell_debug = null;
                 //TODO: Macros
                 //m_EmptyCells[rndIndex].AddObject(enemyNPC);
                 //m_EmptyCells.RemoveAt(rndIndex);

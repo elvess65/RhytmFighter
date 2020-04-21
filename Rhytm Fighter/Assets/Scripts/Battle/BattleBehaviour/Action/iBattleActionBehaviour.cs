@@ -9,12 +9,6 @@ namespace RhytmFighter.Battle.Action
         iBattleObject Target { get; set; }
 
         void SetControlledObject(iBattleObject controlledObject);
-        void ExecuteAction(int currentTick, CommandTypes type);
-    }
-
-    public enum PatternActionTypes
-    {
-        SimpleAttack,
-        Idle
+        void ExecuteAction(CommandTypes type);
     }
 }

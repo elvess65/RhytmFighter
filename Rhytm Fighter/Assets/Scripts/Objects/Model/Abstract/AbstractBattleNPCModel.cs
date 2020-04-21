@@ -2,6 +2,7 @@
 using Frameworks.Grid.View;
 using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action;
+using RhytmFighter.Battle.AI;
 using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;
@@ -33,6 +34,7 @@ namespace RhytmFighter.Objects.Model
         public iBattleActionBehaviour ActionBehaviour { get; private set; }
         public iHealthBehaviour HealthBehaviour { get; private set; }
         public BattleCommandsModificatorProcessor ModificatorsProcessor { get; private set; }
+        public AbstractAI AI { get; protected set; }
 
         private iBattleModelViewProxy m_ViewAsBattle;
         private iMovable m_ViewAsMovable;
@@ -195,6 +197,6 @@ namespace RhytmFighter.Objects.Model
         }
 
         private void CellVisitedHandler(int index) => OnCellVisited?.Invoke(index);
-        #endregion  
+        #endregion
     }
 }
