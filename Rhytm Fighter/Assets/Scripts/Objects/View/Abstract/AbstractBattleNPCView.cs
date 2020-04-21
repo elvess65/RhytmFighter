@@ -72,7 +72,10 @@ namespace RhytmFighter.Objects.View
             OnMovementFinished?.Invoke(index);
         }
 
-        void CellVisitedHandler(int index) => OnCellVisited?.Invoke(index);
+        void CellVisitedHandler(int index)
+        {
+            OnCellVisited?.Invoke(index);
+        }
         #endregion
 
         #region iBattleModelViewProxy

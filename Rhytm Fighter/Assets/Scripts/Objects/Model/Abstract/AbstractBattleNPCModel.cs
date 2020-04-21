@@ -7,6 +7,7 @@ using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;
 using RhytmFighter.Interfaces;
+using RhytmFighter.Objects.View;
 using RhytmFighter.UI;
 using System;
 using UnityEngine;
@@ -19,12 +20,12 @@ namespace RhytmFighter.Objects.Model
         public event Action<int> OnCellVisited;
         public event Action<iBattleObject> OnDestroyed;
 
-        public bool IsMoving => m_ViewAsMovable.IsMoving;
         public bool IsEnemy { get; protected set; }
+        public bool IsMoving => m_BattleView.IsMoving;
         public Vector3 ViewPosition => View.transform.position;
-        public Vector3 ProjectileHitPosition => m_ViewAsBattle.ProjectileHitPosition;
-        public Vector3 ProjectileSpawnPosition => m_ViewAsBattle.ProjectileSpawnPosition;
-        public Vector3 DefenceSpawnPosition => m_ViewAsBattle.DefenceSpawnPosition;
+        public Vector3 ProjectileHitPosition => m_BattleView.ProjectileHitPosition;
+        public Vector3 ProjectileSpawnPosition => m_BattleView.ProjectileSpawnPosition;
+        public Vector3 DefenceSpawnPosition => m_BattleView.DefenceSpawnPosition;
 
         public iBattleObject Target
         {
@@ -36,9 +37,7 @@ namespace RhytmFighter.Objects.Model
         public BattleCommandsModificatorProcessor ModificatorsProcessor { get; private set; }
         public AbstractAI AI { get; protected set; }
 
-        private iBattleModelViewProxy m_ViewAsBattle;
-        private iMovable m_ViewAsMovable;
-        private iUIOwner m_ViewAsUIOwner;
+        private AbstractBattleNPCView m_BattleView;
         private float m_MoveSpeed;
 
 
@@ -70,10 +69,8 @@ namespace RhytmFighter.Objects.Model
             base.ShowView(cellView);
 
             //Bind view
-            m_ViewAsBattle = View as iBattleModelViewProxy;
-            m_ViewAsMovable = View as iMovable;
-            m_ViewAsUIOwner = View as iUIOwner;
-            m_ViewAsUIOwner.CreateUI();
+            m_BattleView = View as AbstractBattleNPCView;
+            m_BattleView.CreateUI();
 
             InitializeMovement(m_MoveSpeed);
         }
@@ -119,25 +116,29 @@ namespace RhytmFighter.Objects.Model
         #region ActionBehaviour
         private void ActionBehaviour_OnActionExecutedHandler(AbstractCommandModel command)
         {
-            CommandsController.AddCommand(command);
-
             if (command.Type == CommandTypes.Attack)
                 Main.GameManager.Instance.AttackSound.Play();
 
-            m_ViewAsBattle.NotifyView_ExecuteAction();
+            CommandsController.AddCommand(command);
+
+            //Notify view
+            m_BattleView.NotifyView_ExecuteAction();
         }
         #endregion
 
         #region HealthBehaviour
         private void HealthBehaviour_OnHPReduced(int dmg)
         {
-            m_ViewAsBattle.NotifyView_TakeDamage(dmg);
             Main.GameManager.Instance.HitSound.Play();
+
+            //Notify view
+            m_BattleView.NotifyView_TakeDamage(dmg);
         }
 
         private void HealthBehaviour_OnHPIncreased(int amount)
         {
-            m_ViewAsBattle.NotifyView_IncreaseHP(amount);
+            //Notify view
+            m_BattleView.NotifyView_IncreaseHP(amount);
         }
 
         private void HealthBehaviour_OnDestroyed()
@@ -145,7 +146,7 @@ namespace RhytmFighter.Objects.Model
             Main.GameManager.Instance.DestroySound.Play();
 
             //Notify view
-            m_ViewAsBattle.NotifyView_Destroyed();
+            m_BattleView.NotifyView_Destroyed();
 
             //Remove object from cell
             if (CorrespondingCell.HasObject && CorrespondingCell.GetObject().ID.Equals(ID))
@@ -159,19 +160,21 @@ namespace RhytmFighter.Objects.Model
         #region iMovableModel
         public void InitializeMovement(float moveSpeed)
         {
-            m_ViewAsMovable.InitializeMovement(moveSpeed);
-            m_ViewAsMovable.OnMovementFinished += MovementFinishedHandler;
-            m_ViewAsMovable.OnCellVisited += CellVisitedHandler;
+            m_BattleView.InitializeMovement(moveSpeed);
+            m_BattleView.OnCellVisited += CellVisitedHandler;
+            m_BattleView.OnMovementFinished += MovementFinishedHandler;
         }
 
         public void NotifyView_StartMove(Vector3[] path)
         {
-            m_ViewAsMovable.NotifyView_StartMove(path);
+            //Notify view
+            m_BattleView.NotifyView_StartMove(path);
         }
 
         public void NotifyView_StopMove()
         {
-            m_ViewAsMovable.NotifyView_StopMove();
+            //Notify view
+            m_BattleView.NotifyView_StopMove();
         }
 
         public void MovementFinishedReverseCallback(GridCellData cellData)
@@ -187,7 +190,7 @@ namespace RhytmFighter.Objects.Model
         //iUpdatable
         public void PerformUpdate(float deltaTime)
         {
-            m_ViewAsMovable.PerformUpdate(deltaTime);
+            m_BattleView.PerformUpdate(deltaTime);
         }
 
 
@@ -196,7 +199,10 @@ namespace RhytmFighter.Objects.Model
             OnMovementFinished?.Invoke(index);
         }
 
-        private void CellVisitedHandler(int index) => OnCellVisited?.Invoke(index);
+        private void CellVisitedHandler(int index)
+        {
+            OnCellVisited?.Invoke(index);
+        }
         #endregion
     }
 }

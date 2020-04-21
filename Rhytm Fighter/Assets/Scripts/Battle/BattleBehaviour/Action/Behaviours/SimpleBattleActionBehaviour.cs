@@ -14,7 +14,6 @@ namespace RhytmFighter.Battle.Action.Behaviours
         protected int m_Damage;
 
         
-
         public SimpleBattleActionBehaviour(int applyDelay, int useDelay, int damage)
         {
             m_ApplyDelay = applyDelay;
@@ -22,9 +21,15 @@ namespace RhytmFighter.Battle.Action.Behaviours
             m_Damage = damage;
         }
 
-        public void SetControlledObject(iBattleObject controlledObject) => m_ControlledObject = controlledObject;
+        public void SetControlledObject(iBattleObject controlledObject)
+        {
+            m_ControlledObject = controlledObject;
+        }
 
-        public void SetTarget(iBattleObject target) => Target = target;
+        public void SetTarget(iBattleObject target)
+        {
+            Target = target;
+        }
 
 
         public virtual void ExecuteAction(CommandTypes type)
@@ -41,6 +46,9 @@ namespace RhytmFighter.Battle.Action.Behaviours
         }
 
 
-        protected void ExecuteCommand(AbstractCommandModel command) => OnActionExecuted?.Invoke(command); 
+        protected void ExecuteCommand(AbstractCommandModel command)
+        {
+            OnActionExecuted?.Invoke(command);
+        }
     }
 }
