@@ -16,8 +16,9 @@
             Controller.SetBool(m_MOVE_KEY, false);
         }
 
-        public void PlayAttackAnimation()
+        public void PlayActionAnimation(AnimationActionTypes type)
         {
+            UnityEngine.Debug.Log("Play animation: " + type);
             Controller.SetTrigger(m_ATTACK_KEY);
         }
 

@@ -49,7 +49,12 @@
                 m_TimeToNextAction -= deltaTime;
 
                 //TODO: Substract animation offset
-                //Play animation first
+                //m_ControlledObject.AnimationController.GetEventExecutionTime(m_NextAction) = 0.25f
+                //if (m_timeToNextAction <= m_timeToNextAction - 0.25)
+                //{
+                //  m_ControlledObject.AnimationController(m_NextAction);
+                //  m_timeToNextAction = 0;
+                //}
             }
         }
 

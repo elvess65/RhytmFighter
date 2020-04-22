@@ -1,4 +1,6 @@
-﻿namespace RhytmFighter.Characters.Animation
+﻿using UnityEngine;
+
+namespace RhytmFighter.Characters.Animation
 {
     public class EnemyNPSAnimationController : AbstractAnimationController, iBattleNPCAnimationController
     {
@@ -7,9 +9,17 @@
         private const string m_TAKE_DAMAGE_KEY = "Take Damage";
         private const string m_DESTROY_KEY = "Die";
 
-        public void PlayAttackAnimation()
+        public void PlayActionAnimation(AnimationActionTypes type)
         {
+            Debug.Log("Play animation: " + type);
             Controller.SetTrigger(m_ATTACK_KEY);
+
+            AnimationClip[] clips = Controller.runtimeAnimatorController.animationClips;
+            foreach(AnimationClip clip in clips)
+            {
+                if (clip.name.Equals(m_ATTACK_KEY))
+                    Debug.Log(clip.name + " " + clip.length + " " + clip.events[0].time);
+            }
         }
 
         public void PlayDestroyAnimation()

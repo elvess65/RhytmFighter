@@ -123,6 +123,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 7902736592013530254}
+  ExposedAnimationKeys:
+  - Type: 0
+    Key: Stab Attack
+  - Type: 1
+    Key: _Defence
+  - Type: 2
+    Key: _Damage
+  - Type: 3
+    Key: _Destroy
+  - Type: 4
+    Key: _Move
 --- !u!1 &6471749484040664440
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,6 +164,18 @@ Transform:
   m_Father: {fileID: 7966208497476266955}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4106189429376925057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7853686919785686310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d50d0341aed9274ead4383dd4074336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8620334246851890956
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,6 +362,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9a03d46b76afe246a9ffd58d255bb65, type: 3}
+--- !u!1 &7853686919785686310 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1462720695320296, guid: e9a03d46b76afe246a9ffd58d255bb65,
+    type: 3}
+  m_PrefabInstance: {fileID: 7852260088944663502}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &7902736592013530254 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 95980759410839360, guid: e9a03d46b76afe246a9ffd58d255bb65,

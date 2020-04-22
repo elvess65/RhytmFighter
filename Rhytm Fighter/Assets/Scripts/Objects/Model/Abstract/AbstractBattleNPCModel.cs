@@ -8,7 +8,6 @@ using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;
 using RhytmFighter.Interfaces;
 using RhytmFighter.Objects.View;
-using RhytmFighter.UI;
 using System;
 using UnityEngine;
 
@@ -72,7 +71,7 @@ namespace RhytmFighter.Objects.Model
             m_BattleView = View as AbstractBattleNPCView;
             m_BattleView.CreateUI();
 
-            InitializeMovement(m_MoveSpeed);
+            Initialize(m_MoveSpeed);
         }
 
         public void ApplyCommand(AbstractCommandModel command)
@@ -112,6 +111,11 @@ namespace RhytmFighter.Objects.Model
             }   
         }
 
+        public void NotifyViewAboutCommand(AbstractCommandModel command)
+        {
+            //Notify view
+            m_BattleView.NotifyView_ExecuteCommand(command.Type);
+        }
 
         #region ActionBehaviour
         private void ActionBehaviour_OnActionExecutedHandler(AbstractCommandModel command)
@@ -120,9 +124,6 @@ namespace RhytmFighter.Objects.Model
                 Main.GameManager.Instance.AttackSound.Play();
 
             CommandsController.AddCommand(command);
-
-            //Notify view
-            m_BattleView.NotifyView_ExecuteAction();
         }
         #endregion
 
@@ -158,9 +159,9 @@ namespace RhytmFighter.Objects.Model
         #endregion
 
         #region iMovableModel
-        public void InitializeMovement(float moveSpeed)
+        public void Initialize(float moveSpeed)
         {
-            m_BattleView.InitializeMovement(moveSpeed);
+            m_BattleView.Initialize(moveSpeed);
             m_BattleView.OnCellVisited += CellVisitedHandler;
             m_BattleView.OnMovementFinished += MovementFinishedHandler;
         }

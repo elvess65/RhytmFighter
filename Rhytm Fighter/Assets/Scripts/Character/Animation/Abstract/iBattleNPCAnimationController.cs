@@ -2,10 +2,19 @@
 {
     public interface iBattleNPCAnimationController : iMovableAnimationController
     {
-        void PlayAttackAnimation();
+        void PlayActionAnimation(AnimationActionTypes type);
 
         void PlayTakeDamageAnimation();
 
         void PlayDestroyAnimation();
+    }
+
+    public enum AnimationActionTypes
+    {
+        Attack,
+        Defence,
+        Damage,
+        Destroy,
+        Move
     }
 }

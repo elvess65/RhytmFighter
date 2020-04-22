@@ -2,6 +2,8 @@
 {
     public interface iMovableAnimationController
     {
+        void Initialize();
+
         void PlayMoveAnimation();
 
         void PlayIdleAnimation();

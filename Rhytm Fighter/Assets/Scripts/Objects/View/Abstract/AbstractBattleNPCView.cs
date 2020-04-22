@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.Battle;
+using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Characters.Animation;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Interfaces;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace RhytmFighter.Objects.View
 {
-    public abstract class AbstractBattleNPCView : AbstractNPCView, iBattleModelViewProxy, iMovable, iUIOwner
+    public abstract class AbstractBattleNPCView : AbstractNPCView, iMovable
     {
         public event System.Action<int> OnMovementFinished;
         public event System.Action<int> OnCellVisited;
@@ -35,8 +36,9 @@ namespace RhytmFighter.Objects.View
             m_ModelAsBattleModel = CorrespondingModel as AbstractBattleNPCModel;
         }
 
+
         #region iMovable
-        public void InitializeMovement(float moveSpeed)
+        public void Initialize(float moveSpeed)
         {
             //Movement
             m_MoveStrategy = new Bezier_MovementStrategy(transform, moveSpeed);
@@ -45,6 +47,7 @@ namespace RhytmFighter.Objects.View
 
             //Animation
             m_AnimationController = GetComponent<iBattleNPCAnimationController>();
+            m_AnimationController.Initialize();
         }
 
         public void NotifyView_StartMove(Vector3[] path)
@@ -79,9 +82,10 @@ namespace RhytmFighter.Objects.View
         #endregion
 
         #region iBattleModelViewProxy
-        public virtual void NotifyView_ExecuteAction()
+        public virtual void NotifyView_ExecuteCommand(CommandTypes type)
         {
-            m_AnimationController.PlayAttackAnimation();
+            //TODO: Convert CommandType to AnimationActionType
+            m_AnimationController.PlayActionAnimation(AnimationActionTypes.Attack);
         }
 
         public virtual void NotifyView_TakeDamage(int dmg)

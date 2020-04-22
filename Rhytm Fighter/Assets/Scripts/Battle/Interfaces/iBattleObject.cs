@@ -26,5 +26,6 @@ namespace RhytmFighter.Battle
 
         void ApplyCommand(AbstractCommandModel command);
         void ReleaseCommand(AbstractCommandModel command);
+        void NotifyViewAboutCommand(AbstractCommandModel command);
     }
 }
