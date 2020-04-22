@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Main;
+﻿using RhytmFighter.Core;
 using UnityEngine;
 
 namespace RhytmFighter.UI.Tools

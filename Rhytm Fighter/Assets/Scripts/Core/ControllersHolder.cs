@@ -6,7 +6,7 @@ using RhytmFighter.Input;
 using RhytmFighter.Level;
 using RhytmFighter.Rhytm;
 
-namespace RhytmFighter.Main
+namespace RhytmFighter.Core
 {
     /// <summary>
     /// Holder for all controllers

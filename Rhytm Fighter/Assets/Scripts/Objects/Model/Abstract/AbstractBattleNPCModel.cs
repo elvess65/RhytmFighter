@@ -6,7 +6,9 @@ using RhytmFighter.Battle.AI;
 using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;
-using RhytmFighter.Interfaces;
+using RhytmFighter.Characters.Movement;
+using RhytmFighter.Core;
+using RhytmFighter.Core.Enums;
 using RhytmFighter.Objects.View;
 using System;
 using UnityEngine;
@@ -88,7 +90,7 @@ namespace RhytmFighter.Objects.Model
                     }
                     else
                     {
-                        Main.GameManager.Instance.DefenceSound.Play();
+                        GameManager.Instance.DefenceSound.Play();
                     }
 
                     break;
@@ -121,7 +123,7 @@ namespace RhytmFighter.Objects.Model
         private void ActionBehaviour_OnActionExecutedHandler(AbstractCommandModel command)
         {
             if (command.Type == CommandTypes.Attack)
-                Main.GameManager.Instance.AttackSound.Play();
+                GameManager.Instance.AttackSound.Play();
 
             CommandsController.AddCommand(command);
         }
@@ -130,7 +132,7 @@ namespace RhytmFighter.Objects.Model
         #region HealthBehaviour
         private void HealthBehaviour_OnHPReduced(int dmg)
         {
-            Main.GameManager.Instance.HitSound.Play();
+            GameManager.Instance.HitSound.Play();
 
             //Notify view
             m_BattleView.NotifyView_TakeDamage(dmg);
@@ -144,7 +146,7 @@ namespace RhytmFighter.Objects.Model
 
         private void HealthBehaviour_OnDestroyed()
         {
-            Main.GameManager.Instance.DestroySound.Play();
+            GameManager.Instance.DestroySound.Play();
 
             //Notify view
             m_BattleView.NotifyView_Destroyed();

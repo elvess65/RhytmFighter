@@ -1,10 +1,11 @@
 ﻿using Frameworks.Grid.Data;
+using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.AI;
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;
 
-namespace RhytmFighter.Battle
+namespace RhytmFighter.Core
 {
     public interface iBattleObject 
     {

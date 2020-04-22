@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Interfaces;
+﻿using RhytmFighter.Core;
 
 namespace RhytmFighter.Battle.AI
 {
@@ -23,11 +23,5 @@ namespace RhytmFighter.Battle.AI
             Defence,
             Idle
         }
-    }
-
-    public enum AITypes
-    {
-        None,
-        Simple
     }
 }

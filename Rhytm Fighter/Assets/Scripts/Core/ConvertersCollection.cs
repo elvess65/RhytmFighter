@@ -2,4 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Convertes
+namespace RhytmFighter.Core
+{
+    public static class ConvertersCollection
+    {
+
+    }
+}

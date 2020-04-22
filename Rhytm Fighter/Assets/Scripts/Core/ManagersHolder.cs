@@ -2,7 +2,7 @@
 using RhytmFighter.Settings;
 using UnityEngine;
 
-namespace RhytmFighter.Main
+namespace RhytmFighter.Core
 {
     /// <summary>
     /// Holder for managers

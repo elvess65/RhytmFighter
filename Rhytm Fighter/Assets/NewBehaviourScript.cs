@@ -1,7 +1,4 @@
-﻿using RhytmFighter.Main;
-using RhytmFighter.Rhytm;
-using System.Collections;
-using System.Collections.Generic;
+﻿using RhytmFighter.Rhytm;
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour

@@ -1,10 +1,18 @@
-﻿namespace RhytmFighter.Characters.Animation
+﻿using RhytmFighter.Core.Enums;
+
+namespace RhytmFighter.Characters.Animation
 {
     [System.Serializable]
-    public class SimpleAnimationController : AbstractAnimationController, iBattleNPCAnimationController
+    public class Simple_AnimationController : AbstractAnimationController
     {
         private const string m_MOVE_KEY = "move";
         private const string m_ATTACK_KEY = "attack";
+
+        public override void PlayAnimation(AnimationTypes animationKey)
+        {
+            UnityEngine.Debug.Log("Play animation: " + GetAnimationName(animationKey));
+            Controller.SetTrigger(m_ATTACK_KEY);
+        }
 
         public void PlayMoveAnimation()
         {
@@ -14,12 +22,6 @@
         public void PlayIdleAnimation()
         {
             Controller.SetBool(m_MOVE_KEY, false);
-        }
-
-        public void PlayActionAnimation(AnimationActionTypes type)
-        {
-            UnityEngine.Debug.Log("Play animation: " + type);
-            Controller.SetTrigger(m_ATTACK_KEY);
         }
 
         public void PlayTakeDamageAnimation()

@@ -1,6 +1,8 @@
 ﻿using Frameworks.Grid.Data;
 using RhytmFighter.Battle.Action.Behaviours;
 using RhytmFighter.Battle.Health.Behaviours;
+using RhytmFighter.Core;
+using RhytmFighter.Core.Enums;
 using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,7 +58,7 @@ namespace RhytmFighter.Level.Data
                         if (cellType != CellTypes.Normal)
                             cellType = CellTypes.Normal;
 
-                        cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.ParentNode.ID, GridCellProperty_GateToNode.GateTypes.ToParentNode));
+                        cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.ParentNode.ID, GateTypes.ToParentNode));
                         grid.ParentNodeGate = cell;
                     }
                     //Add property GateToLeftNode
@@ -65,7 +67,7 @@ namespace RhytmFighter.Level.Data
                         if (cellType != CellTypes.Normal)
                             cellType = CellTypes.Normal;
 
-                        cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.LeftNode.ID, GridCellProperty_GateToNode.GateTypes.ToNextNode));
+                        cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.LeftNode.ID, GateTypes.ToNextNode));
                         grid.LeftNodeGate = cell;
                     }
                     //Add property GateToRightNode
@@ -74,7 +76,7 @@ namespace RhytmFighter.Level.Data
                         if (cellType != CellTypes.Normal)
                             cellType = CellTypes.Normal;
 
-                        cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.RightNode.ID, GridCellProperty_GateToNode.GateTypes.ToNextNode));
+                        cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.RightNode.ID, GateTypes.ToNextNode));
                         grid.RightNodeGate = cell;
                     }
 
@@ -105,12 +107,12 @@ namespace RhytmFighter.Level.Data
             {
                 rndIndex = Random.Range(0, m_EmptyCells.Count);
 
-                float enemyMoveSpeed = Main.GameManager.ENEMY_MOVE_SPEED;
+                float enemyMoveSpeed = GameManager.ENEMY_MOVE_SPEED;
                 int enemyHP = 10;
                 //TODO: Macros
                 StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, enemyCell_debug, enemyMoveSpeed, new SimpleBattleActionBehaviour(1, 1, 1), 
                                                                                                                           new SimpleHealthBehaviour(enemyHP),
-                                                                                                                          Battle.AI.AITypes.Simple);
+                                                                                                                          AITypes.Simple);
                 enemyCell_debug.AddObject(enemyNPC);
                 enemyCell_debug = null;
                 //TODO: Macros

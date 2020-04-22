@@ -1,6 +1,8 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
-using RhytmFighter.Interfaces;
+using RhytmFighter.Characters.Movement;
+using RhytmFighter.Core;
+using RhytmFighter.Core.Enums;
 using RhytmFighter.Level;
 using RhytmFighter.Objects.Model;
 
@@ -71,7 +73,7 @@ namespace RhytmFighter.Characters
             m_MovementController?.PerformUpdate(deltaTime);
         }
 
-        public void ExecuteAction(Battle.Command.Model.CommandTypes type)
+        public void ExecuteAction(CommandTypes type)
         {
             PlayerModel.ActionBehaviour.ExecuteAction(type);
         }

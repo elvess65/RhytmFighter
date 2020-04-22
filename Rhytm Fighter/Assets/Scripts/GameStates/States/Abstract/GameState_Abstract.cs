@@ -1,5 +1,5 @@
 ﻿using RhytmFighter.Characters;
-using RhytmFighter.Interfaces;
+using RhytmFighter.Core;
 using RhytmFighter.Rhytm;
 using UnityEngine;
 

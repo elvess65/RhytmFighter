@@ -1,6 +1,7 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View.Cell;
 using RhytmFighter.Assets;
+using RhytmFighter.Core.Enums;
 using RhytmFighter.Level.Data;
 using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
@@ -235,11 +236,11 @@ namespace Frameworks.Grid.View
                         {
                             switch (gatesToNodeProperty.GateType)
                             {
-                                case GridCellProperty_GateToNode.GateTypes.ToParentNode:
+                                case GateTypes.ToParentNode:
                                     cellContent = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().CellContent_Gate_Parent_Prefab);
                                     break;
 
-                                case GridCellProperty_GateToNode.GateTypes.ToNextNode:
+                                case GateTypes.ToNextNode:
                                     cellContent = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().CellContent_Gate_Next_Prefab);
                                     break;
                             }

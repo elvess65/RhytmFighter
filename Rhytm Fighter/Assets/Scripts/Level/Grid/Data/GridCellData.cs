@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Objects;
+﻿using RhytmFighter.Core.Enums;
 using RhytmFighter.Objects.Model;
 using UnityEngine;
 
@@ -74,8 +74,6 @@ namespace Frameworks.Grid.Data
 
     public class GridCellProperty_GateToNode : GridCellProperty
     {
-        public enum GateTypes { ToParentNode, ToNextNode }
-
         public int LinkedNodeID { get; private set; }
         public GateTypes GateType { get; private set; }
 

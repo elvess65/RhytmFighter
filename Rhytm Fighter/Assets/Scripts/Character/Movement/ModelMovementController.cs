@@ -1,12 +1,12 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
-using RhytmFighter.Interfaces;
+using RhytmFighter.Core;
 using RhytmFighter.Level;
 using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RhytmFighter.Characters
+namespace RhytmFighter.Characters.Movement
 {
     public class ModelMovementController : iUpdatable
     {

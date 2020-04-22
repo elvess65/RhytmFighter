@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using RhytmFighter.Core.Enums;
+using System.Text;
 using UnityEngine;
 
 namespace RhytmFighter.Level.Data
@@ -8,8 +9,6 @@ namespace RhytmFighter.Level.Data
     /// </summary>
     public class LevelNodeData
     {
-        public enum AddNoteResult { None, AddedToLeft, AddedToRight }
-
         public int ID { get; private set; }
         public int NodeSeed { get; private set; }
         public bool IsStartNode { get; set; }

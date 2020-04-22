@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using RhytmFighter.Interfaces;
+using RhytmFighter.Core;
 using UnityEngine.EventSystems;
 
 namespace RhytmFighter.Input

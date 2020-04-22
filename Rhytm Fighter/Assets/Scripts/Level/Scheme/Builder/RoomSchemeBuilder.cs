@@ -1,4 +1,5 @@
 ﻿using Frameworks.Grid.Data;
+using RhytmFighter.Core.Enums;
 using RhytmFighter.Level.Data;
 using RhytmFighter.Level.Scheme.View;
 using UnityEngine;
@@ -113,11 +114,11 @@ namespace RhytmFighter.Level.Scheme.Builder
                     {
                         switch (gatesToNodeProperty.GateType)
                         {
-                            case GridCellProperty_GateToNode.GateTypes.ToParentNode:
+                            case GateTypes.ToParentNode:
                                 cellContentObj.transform.localScale *= 0.5f;
                                 break;
 
-                            case GridCellProperty_GateToNode.GateTypes.ToNextNode:
+                            case GateTypes.ToNextNode:
                                 cellContentObj.transform.localScale *= 0.3f;
                                 break;
 

@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.Characters;
+using RhytmFighter.Core.Enums;
 using RhytmFighter.Rhytm;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ namespace RhytmFighter.GameState
             {
                 bool inputIsValid = m_RhytmInputProxy.IsInputTickValid();
                 if (inputIsValid)
-                    m_PlayerCharacterController.ExecuteAction(Battle.Command.Model.CommandTypes.Attack);
+                    m_PlayerCharacterController.ExecuteAction(CommandTypes.Attack);
             }
 
             base.HandleTouch(mouseScreenPos);

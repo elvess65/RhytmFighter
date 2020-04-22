@@ -1,7 +1,7 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
-using RhytmFighter.Characters;
-using RhytmFighter.Interfaces;
+using RhytmFighter.Characters.Movement;
+using RhytmFighter.Core;
 using System.Collections.Generic;
 using UnityEngine;
 

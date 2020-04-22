@@ -1,4 +1,5 @@
-﻿using RhytmFighter.Data.DataBase.Simulation;
+﻿using RhytmFighter.Core;
+using RhytmFighter.Data.DataBase.Simulation;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -43,9 +44,9 @@ namespace RhytmFighter.Data.DataBase
             Debug.Log("Start connection");
 
             if (m_SimulateSuccessConnection)
-                Main.GameManager.Instance.StartCoroutine(SimulateSuccessConnectionDelay());
+                GameManager.Instance.StartCoroutine(SimulateSuccessConnectionDelay());
             else 
-                Main.GameManager.Instance.StartCoroutine(SimulateErrorConnectionDelay(100));
+                GameManager.Instance.StartCoroutine(SimulateErrorConnectionDelay(100));
         }
 
 

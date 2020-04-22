@@ -1,4 +1,6 @@
 ﻿using RhytmFighter.Battle.Command.Model;
+using RhytmFighter.Core;
+using RhytmFighter.Core.Enums;
 
 namespace RhytmFighter.Battle.Action.Behaviours
 {

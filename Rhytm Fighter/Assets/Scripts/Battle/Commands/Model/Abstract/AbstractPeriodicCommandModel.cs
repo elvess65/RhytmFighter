@@ -1,4 +1,7 @@
-﻿namespace RhytmFighter.Battle.Command.Model
+﻿using RhytmFighter.Core;
+using RhytmFighter.Core.Enums;
+
+namespace RhytmFighter.Battle.Command.Model
 {
     public abstract class AbstractPeriodicCommandModel : AbstractCommandModel
     {

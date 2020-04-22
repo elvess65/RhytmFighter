@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Interfaces;
+﻿using RhytmFighter.Core;
 using System.Text;
 using UnityEngine;
 

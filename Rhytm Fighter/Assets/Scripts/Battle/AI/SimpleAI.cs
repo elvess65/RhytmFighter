@@ -1,4 +1,7 @@
-﻿namespace RhytmFighter.Battle.AI
+﻿using RhytmFighter.Core;
+using RhytmFighter.Core.Enums;
+
+namespace RhytmFighter.Battle.AI
 {
     public class SimpleAI : AbstractAI
     {
@@ -31,10 +34,10 @@
                 switch (m_ActionPattern[m_ActionIterator])
                 {
                     case PatternActionTypes.SimpleAttack:
-                        m_ControlledObject.ActionBehaviour.ExecuteAction(Command.Model.CommandTypes.Attack);
+                        m_ControlledObject.ActionBehaviour.ExecuteAction(CommandTypes.Attack);
                         break;
                     case PatternActionTypes.Defence:
-                        m_ControlledObject.ActionBehaviour.ExecuteAction(Command.Model.CommandTypes.Defence);
+                        m_ControlledObject.ActionBehaviour.ExecuteAction(CommandTypes.Defence);
                         break;
                 }
 

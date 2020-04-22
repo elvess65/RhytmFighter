@@ -5,12 +5,13 @@ using RhytmFighter.Battle.Action.Behaviours;
 using RhytmFighter.Battle.Health.Behaviours;
 using RhytmFighter.Data;
 using RhytmFighter.GameState;
-using RhytmFighter.Interfaces;
+using RhytmFighter.Core;
 using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
+using RhytmFighter.Core.Enums;
 
-namespace RhytmFighter.Main
+namespace RhytmFighter.Core
 {
     public class GameManager : MonoBehaviour
     {
@@ -340,7 +341,7 @@ namespace RhytmFighter.Main
         {
             bool inputIsValid = m_ControllersHolder.RhytmInputProxy.IsInputTickValid();
             if (inputIsValid)
-                m_ControllersHolder.PlayerCharacterController.ExecuteAction(Battle.Command.Model.CommandTypes.Defence);
+                m_ControllersHolder.PlayerCharacterController.ExecuteAction(CommandTypes.Defence);
         }
     }
 }

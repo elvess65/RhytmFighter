@@ -1,4 +1,7 @@
-﻿namespace RhytmFighter.Battle.Command.Model
+﻿using RhytmFighter.Core;
+using RhytmFighter.Core.Enums;
+
+namespace RhytmFighter.Battle.Command.Model
 {
     public abstract class AbstractCommandModel
     {
@@ -21,7 +24,4 @@
 
         public override string ToString() => $"Type: {Type} Sender: {Sender.ID} Target: {Target.ID}";
     }
-
-    public enum CommandTypes { Attack, Defence }
-    public enum CommandExecutionLayers { PeriodicExecution, SingleExecution }
 }

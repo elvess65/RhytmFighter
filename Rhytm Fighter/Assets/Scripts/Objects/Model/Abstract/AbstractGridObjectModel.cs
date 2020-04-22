@@ -1,5 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
+using RhytmFighter.Core.Enums;
 using RhytmFighter.Objects.View;
 
 namespace RhytmFighter.Objects.Model
@@ -35,11 +36,5 @@ namespace RhytmFighter.Objects.Model
 
         protected abstract AbstractGridObjectView CreateView(CellView cellView);
 
-    }
-
-    public enum GridObjectTypes
-    {
-        Item,
-        NPC
     }
 }

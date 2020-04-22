@@ -1,4 +1,4 @@
-﻿namespace RhytmFighter.Interfaces
+﻿namespace RhytmFighter.Core
 {
     /// <summary>
     /// Interface for objects, that can be updated

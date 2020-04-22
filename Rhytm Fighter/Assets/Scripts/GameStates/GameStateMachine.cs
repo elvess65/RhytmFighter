@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Interfaces;
+﻿using RhytmFighter.Core;
 using UnityEngine;
 
 namespace RhytmFighter.GameState

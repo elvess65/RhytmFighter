@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using RhytmFighter.Core;
+using UnityEngine;
 
-namespace RhytmFighter.Interfaces
+namespace RhytmFighter.Characters.Movement
 {
     public interface iMovable : iUpdatable
     {

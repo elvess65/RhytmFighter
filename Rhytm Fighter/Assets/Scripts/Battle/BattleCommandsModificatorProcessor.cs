@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Command.Model.Modificator;
+using RhytmFighter.Core.Enums;
 using UnityEngine;
 
 namespace RhytmFighter.Battle

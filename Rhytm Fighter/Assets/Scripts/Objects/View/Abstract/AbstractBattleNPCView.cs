@@ -1,10 +1,7 @@
-﻿using RhytmFighter.Battle;
-using RhytmFighter.Battle.Command.Model;
-using RhytmFighter.Characters.Animation;
+﻿using RhytmFighter.Characters.Animation;
 using RhytmFighter.Characters.Movement;
-using RhytmFighter.Interfaces;
+using RhytmFighter.Core.Enums;
 using RhytmFighter.Objects.Model;
-using RhytmFighter.UI;
 using UnityEngine;
 
 namespace RhytmFighter.Objects.View
@@ -19,7 +16,7 @@ namespace RhytmFighter.Objects.View
         public Transform DefenceSpawnParent;
 
         private iMovementStrategy m_MoveStrategy;
-        private iBattleNPCAnimationController m_AnimationController;
+        private AbstractAnimationController m_AnimationController;
 
         protected AbstractBattleNPCModel m_ModelAsBattleModel;
 
@@ -36,8 +33,6 @@ namespace RhytmFighter.Objects.View
             m_ModelAsBattleModel = CorrespondingModel as AbstractBattleNPCModel;
         }
 
-
-        #region iMovable
         public void Initialize(float moveSpeed)
         {
             //Movement
@@ -46,14 +41,16 @@ namespace RhytmFighter.Objects.View
             m_MoveStrategy.OnCellVisited += CellVisitedHandler;
 
             //Animation
-            m_AnimationController = GetComponent<iBattleNPCAnimationController>();
+            m_AnimationController = GetComponent<AbstractAnimationController>();
             m_AnimationController.Initialize();
         }
 
+
+        #region Movement
         public void NotifyView_StartMove(Vector3[] path)
         {
             m_MoveStrategy.StartMove(path);
-            m_AnimationController.PlayMoveAnimation();
+            m_AnimationController.PlayAnimation(AnimationTypes.StartMove);
         }
 
         public void NotifyView_StopMove()
@@ -70,7 +67,7 @@ namespace RhytmFighter.Objects.View
 
         void MovementFinishedHandler(int index)
         {
-            m_AnimationController.PlayIdleAnimation();
+            m_AnimationController.PlayAnimation(AnimationTypes.Idle);
 
             OnMovementFinished?.Invoke(index);
         }
@@ -81,33 +78,33 @@ namespace RhytmFighter.Objects.View
         }
         #endregion
 
-        #region iBattleModelViewProxy
+        #region Battle
         public virtual void NotifyView_ExecuteCommand(CommandTypes type)
         {
             //TODO: Convert CommandType to AnimationActionType
-            m_AnimationController.PlayActionAnimation(AnimationActionTypes.Attack);
+            m_AnimationController.PlayAnimation(AnimationTypes.Attack);
         }
 
         public virtual void NotifyView_TakeDamage(int dmg)
         {
-            m_AnimationController.PlayTakeDamageAnimation();
+            m_AnimationController.PlayAnimation(AnimationTypes.TakeDamage);
             UpdateHealthBar();
         }
 
         public virtual void NotifyView_IncreaseHP(int amount)
         {
+            m_AnimationController.PlayAnimation(AnimationTypes.IncreaseHP);
             UpdateHealthBar();
         }
 
         public virtual void NotifyView_Destroyed()
         {
-            m_AnimationController.PlayDestroyAnimation();
-
+            m_AnimationController.PlayAnimation(AnimationTypes.Destroy);
             HideUI();
         }
         #endregion
 
-        #region iUIOwner
+        #region UI
         public void CreateUI()
         {
             CreateHealthBar();

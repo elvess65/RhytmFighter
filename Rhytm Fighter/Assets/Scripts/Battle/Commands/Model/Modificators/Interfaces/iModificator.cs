@@ -1,4 +1,6 @@
-﻿namespace RhytmFighter.Battle.Command.Model.Modificator
+﻿using RhytmFighter.Core.Enums;
+
+namespace RhytmFighter.Battle.Command.Model.Modificator
 {
     public interface iModificator 
     {
