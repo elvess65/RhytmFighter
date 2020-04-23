@@ -127,13 +127,15 @@ MonoBehaviour:
   - Type: 0
     Key: Stab Attack
   - Type: 1
-    Key: _Defence
+    Key: Defence
   - Type: 2
-    Key: _Damage
+    Key: Take Damage
   - Type: 3
-    Key: _Destroy
+    Key: Die
   - Type: 4
-    Key: _Move
+    Key: Run Forward
+  - Type: 5
+    Key: Run Forward
 --- !u!1 &6471749484040664440
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,10 @@ namespace RhytmFighter.Characters.Animation
         private Dictionary<AnimationTypes, string> m_AnimationKeys;
         private Dictionary<string, float> m_AnimationActionEventsExecuteTime;
 
+
+        public abstract void PlayAnimation(AnimationTypes animationType);
+
+
         public virtual void Initialize()
         {
             m_AnimationKeys = new Dictionary<AnimationTypes, string>();
@@ -33,15 +37,25 @@ namespace RhytmFighter.Characters.Animation
                 {
                     if (clip.name.Equals(animKey))
                     {
-                        m_AnimationActionEventsExecuteTime.Add(animKey, clip.events[0].time);
+                        if (clip.events.Length > 0)
+                            m_AnimationActionEventsExecuteTime.Add(animKey, clip.events[0].time);
+
                         continue;
                     }
                 }
             }
         }
 
-        public abstract void PlayAnimation(AnimationTypes animationType);
 
+        protected void SetTrigger(string name)
+        {
+            Controller.SetTrigger(name);
+        }
+
+        protected void SetBool(string name, bool state)
+        {
+            Controller.SetBool(name, state);
+        }
 
         protected string GetAnimationName(AnimationTypes animationType)
         {
