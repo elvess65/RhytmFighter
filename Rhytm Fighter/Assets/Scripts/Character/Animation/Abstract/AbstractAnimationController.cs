@@ -14,7 +14,35 @@ namespace RhytmFighter.Characters.Animation
         private Dictionary<string, float> m_AnimationActionEventsExecuteTime;
 
 
-        public abstract void PlayAnimation(AnimationTypes animationType);
+        public virtual void PlayAnimation(AnimationTypes animationType)
+        {
+            string key = GetAnimationName(animationType);
+
+            switch (animationType)
+            {
+                case AnimationTypes.Attack:
+                    SetTrigger(key);
+                    break;
+                case AnimationTypes.Defence:
+                    SetTrigger(key);
+                    break;
+                case AnimationTypes.Destroy:
+                    SetTrigger(key);
+                    break;
+                case AnimationTypes.Idle:
+                    Controller.SetBool(key, false);
+                    break;
+                case AnimationTypes.IncreaseHP:
+                    SetTrigger(key);
+                    break;
+                case AnimationTypes.StartMove:
+                    Controller.SetBool(key, true);
+                    break;
+                case AnimationTypes.TakeDamage:
+                    SetTrigger(key);
+                    break;
+            }
+        }
 
 
         public virtual void Initialize()
@@ -31,15 +59,19 @@ namespace RhytmFighter.Characters.Animation
 
             //Match action types with delays
             AnimationClip[] clips = Controller.runtimeAnimatorController.animationClips;
+            //Loop through all animation clips available in animator controller
             foreach (AnimationClip clip in clips)
             {
+                //Loop through all animation keys mentioned in exposed keys list
                 foreach (string animKey in m_AnimationKeys.Values)
                 {
+                    //Compare clip name with key (names should match)
                     if (clip.name.Equals(animKey))
                     {
-                        if (clip.events.Length > 0)
+                        //If there are some events and the key was not added - add to animation delay list
+                        if (clip.events.Length > 0 && !m_AnimationActionEventsExecuteTime.ContainsKey(animKey))
                             m_AnimationActionEventsExecuteTime.Add(animKey, clip.events[0].time);
-
+                        
                         continue;
                     }
                 }

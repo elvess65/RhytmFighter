@@ -17,7 +17,6 @@ namespace RhytmFighter.AnimationScene
             if (animationController != null)
             {
                 animationController.Initialize();
-                animationController.transform.localEulerAngles = new Vector3(0, 180, 0);
 
                 m_UIManager.SetController(animationController);
 

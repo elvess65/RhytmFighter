@@ -1,11 +1,9 @@
 ﻿using FrameworkPackage.Utils;
 using Frameworks.Grid.View;
-using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action.Behaviours;
 using RhytmFighter.Battle.Health.Behaviours;
 using RhytmFighter.Data;
 using RhytmFighter.GameState;
-using RhytmFighter.Core;
 using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
