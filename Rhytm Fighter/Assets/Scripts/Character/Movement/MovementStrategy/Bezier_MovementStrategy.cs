@@ -1,4 +1,5 @@
 ﻿using FrameworkPackage.PathCreation;
+using FrameworkPackage.Utils;
 using PathCreation;
 using System;
 using UnityEngine;
@@ -9,11 +10,15 @@ namespace RhytmFighter.Characters.Movement
     {
         public event Action<int> OnMovementFinished;
         public event Action<int> OnCellVisited;
+        public event Action OnRotationFinished;
 
         //Movement
         private float m_MoveSpeed;
         private PathCreator m_PathVisualizer;
         private MovePathController m_MovePathController;
+
+        //Rotation
+        private InterpolationData<Quaternion> m_RotationLerpData;
 
         //Update position
         private int m_CurPathIndex;                         //Индекс клетки пути в которой находится персонаж
@@ -26,6 +31,7 @@ namespace RhytmFighter.Characters.Movement
         public Bezier_MovementStrategy(Transform controlledTransform, float moveSpeed)
         {
             m_MoveSpeed = moveSpeed;
+            m_RotationLerpData = new InterpolationData<Quaternion>();
 
             //Create path controller
             m_MovePathController = new MovePathController(controlledTransform);
@@ -67,6 +73,14 @@ namespace RhytmFighter.Characters.Movement
             m_MovePathController.StopMovement();
         }
 
+        public void RotateTo(Quaternion targetRotation)
+        {
+            m_RotationLerpData.TotalTime = 1;
+            m_RotationLerpData.From = m_MovePathController.ControlledTransform.rotation;
+            m_RotationLerpData.To = targetRotation;
+            m_RotationLerpData.Start();
+        }
+
         public void Update(float deltaTime)
         {
             if (IsMoving)
@@ -80,6 +94,21 @@ namespace RhytmFighter.Characters.Movement
                 //IsMoving нужен для случая, когда движение закончилось - тогда не нужно вызывать CellVisited
                 if (IsMoving && distTravelled >= m_CellPositionUpdateDist)
                     CellVisitedHandler();
+            }
+            else
+            {
+                if (m_RotationLerpData.IsStarted)
+                {
+                    m_RotationLerpData.Increment();
+                    m_MovePathController.ControlledTransform.rotation = Quaternion.Lerp(m_RotationLerpData.From, m_RotationLerpData.To, m_RotationLerpData.Progress);
+
+                    if (m_RotationLerpData.Overtime())
+                    {
+                        m_RotationLerpData.Stop();
+
+                        OnRotationFinished?.Invoke();
+                    }
+                }
             }
         }
 

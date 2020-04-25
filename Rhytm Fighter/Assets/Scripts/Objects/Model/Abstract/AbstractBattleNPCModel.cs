@@ -19,11 +19,13 @@ namespace RhytmFighter.Objects.Model
     {
         public event Action<int> OnMovementFinished;
         public event Action<int> OnCellVisited;
+        public event Action OnRotationFinished;
         public event Action<iBattleObject> OnDestroyed;
         
         public bool IsMoving => m_BattleView.IsMoving;
         public float ActionExecutionTime => m_BattleView.ActionEventExecutionTime;
         public Vector3 ViewPosition => View.transform.position;
+        public Vector3 ViewForwardDir => View.transform.forward;
         public Vector3 ProjectileHitPosition => m_BattleView.ProjectileHitPosition;
         public Vector3 ProjectileSpawnPosition => m_BattleView.ProjectileSpawnPosition;
         public Vector3 DefenceSpawnPosition => m_BattleView.DefenceSpawnPosition;
@@ -174,6 +176,7 @@ namespace RhytmFighter.Objects.Model
             m_BattleView.Initialize(moveSpeed);
             m_BattleView.OnCellVisited += CellVisitedHandler;
             m_BattleView.OnMovementFinished += MovementFinishedHandler;
+            m_BattleView.OnRotationFinished += RotationFinishedHandler;
         }
 
         public void NotifyView_StartMove(Vector3[] path)
@@ -186,6 +189,12 @@ namespace RhytmFighter.Objects.Model
         {
             //Notify view
             m_BattleView.NotifyView_StopMove();
+        }
+
+        public void NotifyView_StartRotate(Quaternion targetRotation)
+        {
+            //Notify view
+            m_BattleView.NotifyView_StartRotate(targetRotation);
         }
 
         public void MovementFinishedReverseCallback(GridCellData cellData)
@@ -213,6 +222,11 @@ namespace RhytmFighter.Objects.Model
         private void CellVisitedHandler(int index)
         {
             OnCellVisited?.Invoke(index);
+        }
+
+        private void RotationFinishedHandler()
+        {
+            OnRotationFinished?.Invoke();
         }
         #endregion
     }

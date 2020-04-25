@@ -13,6 +13,7 @@ namespace RhytmFighter.Characters.Movement
         public event System.Action<GridCellData> OnMovementFinished;
         public event System.Action<GridCellData> OnCellVisited;
         public event System.Action<AbstractInteractableObjectModel> OnInteractsWithObject;
+        public event System.Action OnRotationFinished;
 
         private event System.Action m_OnMovementFinishedInternal;
 
@@ -35,14 +36,16 @@ namespace RhytmFighter.Characters.Movement
             //Clear event from previous model
             if (Model != null)
             {
-                Model.OnMovementFinished -= MovementFinishedHandler;
                 Model.OnCellVisited -= CellVisitedHandler;
+                Model.OnMovementFinished -= MovementFinishedHandler;
+                Model.OnRotationFinished -= RotationFinishedHandler;
             }
 
             //Initialize model
             Model = model;
-            Model.OnMovementFinished += MovementFinishedHandler;
             Model.OnCellVisited += CellVisitedHandler;
+            Model.OnMovementFinished += MovementFinishedHandler;
+            Model.OnRotationFinished += RotationFinishedHandler;
         }
 
         public void MoveCharacter(CellView targetCellView)
@@ -109,6 +112,11 @@ namespace RhytmFighter.Characters.Movement
             Model.NotifyView_StopMove();
         }
 
+        public void RotateCharacter(Quaternion targetRotation)
+        {
+            Model.NotifyView_StartRotate(targetRotation);
+        }
+
         public void PerformUpdate(float deltaTime)
         {
             Model?.PerformUpdate(deltaTime);
@@ -134,6 +142,11 @@ namespace RhytmFighter.Characters.Movement
         private void CellVisitedHandler(int index)
         {
             OnCellVisited?.Invoke(m_PathCells[index]);
+        }
+
+        private void RotationFinishedHandler()
+        {
+            OnRotationFinished?.Invoke();
         }
 
         private void PlayerInteractsWithObjectHandler(AbstractInteractableObjectModel interactableObject)

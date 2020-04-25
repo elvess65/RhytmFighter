@@ -22,14 +22,14 @@ namespace RhytmFighter.Battle
         
         private Dictionary<int, iBattleObject> m_PendingEnemies;
         
-
         public iBattleObject Player { get; set; }
 
         private const int m_DISTANCE_ADJUSTEMENT_RANGE = 2;
         private const int m_TICKS_BEFORE_ACTIVATING_ENEMY = 1;
         private const int m_TICKS_BEFORE_FINISHING_BATTLE = 2;
-        private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE = 3;
-        
+        private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE = 5;
+        private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_ROTATION = 5;
+
 
         public BattleController(Level.LevelController levelController, Camera.CameraController cameraController)
         {
@@ -101,7 +101,7 @@ namespace RhytmFighter.Battle
             return result;
         }
 
-
+        
         private void EnemyDestroyedHandler(iBattleObject sender)
         {
             //Clear players target
@@ -170,15 +170,18 @@ namespace RhytmFighter.Battle
             if (m_PendingEnemies.ContainsKey(enemy.ID))
                 m_PendingEnemies.Remove(enemy.ID);
 
+            //Sset model for movement
+            m_EnemyMovementController.SetModel(enemy as iMovableModel);
+
             //Check distance between player and target
             SquareGrid curentGrid = m_LevelController.Model.GetCurrenRoomData().GridData;
-            float distanceBetweenTargetAndEnemy = curentGrid.GetDistanceBetweenCells(Player.CorrespondingCell, enemy.CorrespondingCell);
+            float distanceBetweenPlayerAndEnemy = curentGrid.GetDistanceBetweenCells(Player.CorrespondingCell, enemy.CorrespondingCell);
 
             //If distance is less than treshold - adjust movement or start battle
-            if (distanceBetweenTargetAndEnemy < m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE)
+            if (distanceBetweenPlayerAndEnemy > m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE)
                 AdjustDistanceForObject(enemy);
             else
-                OnBattleStarted?.Invoke();
+                CheckRotationToPlayer(enemy);
         }
 
 
@@ -227,16 +230,43 @@ namespace RhytmFighter.Battle
                                                                                 adjustedCell.Y);
 
                 m_EnemyMovementController.OnMovementFinished += EnemyAdjustementMovementFinished;
-                m_EnemyMovementController.SetModel(battleObject as iMovableModel);
                 m_EnemyMovementController.MoveCharacter(view);
             }
             else
-                OnBattleStarted?.Invoke();
+                CheckRotationToPlayer(battleObject);
         }
 
         private void EnemyAdjustementMovementFinished(GridCellData cell)
         {
             m_EnemyMovementController.OnMovementFinished -= EnemyAdjustementMovementFinished;
+            CheckRotationToPlayer(Player.Target);
+        }
+
+
+        private void CheckRotationToPlayer(iBattleObject battleObject)
+        {
+            Vector3 dirToPlayer = Player.ViewPosition - Player.Target.ViewPosition;
+
+            if (Vector3.Angle(dirToPlayer, Player.Target.ViewForwardDir) > m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_ROTATION)
+            {
+                Quaternion rotationToPlayer = Quaternion.LookRotation(dirToPlayer);
+
+                m_EnemyMovementController.RotateCharacter(rotationToPlayer);
+                m_EnemyMovementController.OnRotationFinished += RotationToPlayerFinished;
+            }
+            else 
+                StartBattle();
+        }
+
+        private void RotationToPlayerFinished()
+        {
+            m_EnemyMovementController.OnRotationFinished -= RotationToPlayerFinished;
+            StartBattle();
+        }
+
+
+        private void StartBattle()
+        {
             OnBattleStarted?.Invoke();
         }
     }

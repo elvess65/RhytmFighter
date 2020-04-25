@@ -11,6 +11,7 @@ namespace RhytmFighter.Objects.View
     {
         public event System.Action<int> OnMovementFinished;
         public event System.Action<int> OnCellVisited;
+        public event System.Action OnRotationFinished;
 
         public Transform ProjectileSpawnParent;
         public Transform ProjectileHitParent;
@@ -41,6 +42,7 @@ namespace RhytmFighter.Objects.View
             m_MoveStrategy = new Bezier_MovementStrategy(transform, moveSpeed);
             m_MoveStrategy.OnMovementFinished += MovementFinishedHandler;
             m_MoveStrategy.OnCellVisited += CellVisitedHandler;
+            m_MoveStrategy.OnRotationFinished += RotationFinishedHandler;
 
             //Animation
             m_AnimationController = GetComponent<AbstractAnimationController>();
@@ -60,6 +62,11 @@ namespace RhytmFighter.Objects.View
             m_MoveStrategy.StopMove();
         }
 
+        public void NotifyView_StartRotate(Quaternion targetRotation)
+        {
+            m_MoveStrategy.RotateTo(targetRotation);
+        }
+
         //iUpdatable
         public virtual void PerformUpdate(float deltaTime)
         {
@@ -77,6 +84,11 @@ namespace RhytmFighter.Objects.View
         void CellVisitedHandler(int index)
         {
             OnCellVisited?.Invoke(index);
+        }
+
+        void RotationFinishedHandler()
+        {
+            OnRotationFinished?.Invoke();
         }
         #endregion
 
