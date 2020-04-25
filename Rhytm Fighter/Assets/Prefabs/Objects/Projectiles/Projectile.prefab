@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe9aac2a4edd5c4f968c7bbc40d3ff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CollisionEffectPrefab: {fileID: 107096, guid: 79b0a8abb1f641b4a8faa10b904758ea,
+    type: 3}
 --- !u!1001 &834704222028150117
 PrefabInstance:
   m_ObjectHideFlags: 0
