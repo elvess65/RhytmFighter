@@ -1,5 +1,6 @@
 ﻿using RhytmFighter.Characters.Animation;
 using RhytmFighter.Characters.Movement;
+using RhytmFighter.Core.Converters;
 using RhytmFighter.Core.Enums;
 using RhytmFighter.Objects.Model;
 using UnityEngine;
@@ -19,12 +20,13 @@ namespace RhytmFighter.Objects.View
         private AbstractAnimationController m_AnimationController;
 
         protected AbstractBattleNPCModel m_ModelAsBattleModel;
-
+       
         public bool IsMoving => m_MoveStrategy.IsMoving;
+        public float ActionEventExecutionTime => 0;
         public Vector3 ProjectileHitPosition => ProjectileHitParent.position;
         public Vector3 ProjectileSpawnPosition => ProjectileSpawnParent.position;
         public Vector3 DefenceSpawnPosition => DefenceSpawnParent.position;
-
+        
 
         public override void Show(AbstractGridObjectModel correspondingModel)
         {
@@ -67,7 +69,7 @@ namespace RhytmFighter.Objects.View
 
         void MovementFinishedHandler(int index)
         {
-            m_AnimationController.PlayAnimation(AnimationTypes.Idle);
+            m_AnimationController.PlayAnimation(AnimationTypes.StopMove);
 
             OnMovementFinished?.Invoke(index);
         }
@@ -81,8 +83,7 @@ namespace RhytmFighter.Objects.View
         #region Battle
         public virtual void NotifyView_ExecuteCommand(CommandTypes type)
         {
-            //TODO: Convert CommandType to AnimationActionType
-            m_AnimationController.PlayAnimation(AnimationTypes.Attack);
+            m_AnimationController.PlayAnimation(ConvertersCollection.Command2Animation(type));
         }
 
         public virtual void NotifyView_TakeDamage(int dmg)
@@ -101,6 +102,11 @@ namespace RhytmFighter.Objects.View
         {
             m_AnimationController.PlayAnimation(AnimationTypes.Destroy);
             HideUI();
+        }
+
+        public float GetActionEventExecuteTime(CommandTypes type)
+        {
+            return m_AnimationController.GetActionEventExecuteTime(ConvertersCollection.Command2Animation(type));
         }
         #endregion
 

@@ -6,24 +6,26 @@ namespace RhytmFighter.Battle.AI
     public class SimpleAI : AbstractAI
     {
         private double m_TimeToNextAction;
-        private PatternActionTypes m_NextAction;
+        private float m_NextCommandEventExecutionTime;
+        private CommandTypes m_NextCommandType;
 
         private int m_ActionIterator = 0;
-        private PatternActionTypes[] m_ActionPattern;
+        private AIActionTypes[] m_ActionPattern;
+
 
         public SimpleAI(iBattleObject controlledObject) : base(controlledObject)
         {
-            m_ActionPattern = new PatternActionTypes[]
+            m_ActionPattern = new AIActionTypes[]
             {
-                PatternActionTypes.Idle,
-                PatternActionTypes.SimpleAttack,
-                PatternActionTypes.Idle,
-                PatternActionTypes.SimpleAttack,
-                PatternActionTypes.Idle,
-                PatternActionTypes.Idle,
-                PatternActionTypes.Defence,
-                PatternActionTypes.Idle,
-                PatternActionTypes.Idle
+                AIActionTypes.Idle,
+                AIActionTypes.SimpleAttack,
+                AIActionTypes.Idle,
+                AIActionTypes.SimpleAttack,
+                AIActionTypes.Idle,
+                AIActionTypes.Idle,
+                AIActionTypes.Defence,
+                AIActionTypes.Idle,
+                AIActionTypes.Idle
             };
         }
 
@@ -33,11 +35,15 @@ namespace RhytmFighter.Battle.AI
             {
                 switch (m_ActionPattern[m_ActionIterator])
                 {
-                    case PatternActionTypes.SimpleAttack:
-                        m_ControlledObject.ActionBehaviour.ExecuteAction(CommandTypes.Attack);
+                    case AIActionTypes.SimpleAttack:
+                        CommandTypes type = CommandTypes.Attack;
+
+                        m_ControlledObject.ActionBehaviour.ExecuteAction(type);
                         break;
-                    case PatternActionTypes.Defence:
-                        m_ControlledObject.ActionBehaviour.ExecuteAction(CommandTypes.Defence);
+                    case AIActionTypes.Defence:
+                        type = CommandTypes.Defence;
+
+                        m_ControlledObject.ActionBehaviour.ExecuteAction(type);
                         break;
                 }
 
@@ -51,32 +57,38 @@ namespace RhytmFighter.Battle.AI
             {
                 m_TimeToNextAction -= deltaTime;
 
-                //TODO: Substract animation offset
-                //m_ControlledObject.AnimationController.GetEventExecutionTime(m_NextAction) = 0.25f
-                //if (m_timeToNextAction <= m_timeToNextAction - 0.25)
-                //{
-                //  m_ControlledObject.AnimationController(m_NextAction);
-                //  m_timeToNextAction = 0;
-                //}
+                if (m_TimeToNextAction - m_NextCommandEventExecutionTime <= 0)
+                {
+                    m_ControlledObject.NotifyViewAboutCommand(m_NextCommandType);
+                    m_TimeToNextAction = 0;
+                }
             }
         }
 
+
         private void IncrementIterator()
         {
+            //Increment iterator
             m_ActionIterator++;
 
             if (m_ActionIterator >= m_ActionPattern.Length)
                 m_ActionIterator = 0;
 
-            int curIndex = m_ActionIterator;
+            //Get next action
             int iterations = 0;
-            while(iterations++ < m_ActionPattern.Length)
-            {
-                m_NextAction = m_ActionPattern[curIndex];
+            int curIndex = m_ActionIterator;
+            AIActionTypes nextAction = AIActionTypes.Idle;
 
-                if (m_NextAction != PatternActionTypes.Idle)
+            while (iterations++ < m_ActionPattern.Length)
+            {
+                nextAction = m_ActionPattern[curIndex];
+
+                if (nextAction != AIActionTypes.Idle)
                 {
+                    m_NextCommandType = Core.Converters.ConvertersCollection.AIAction2Command(nextAction);
+                    m_NextCommandEventExecutionTime = m_ControlledObject.GetActionEventExecuteTime(m_NextCommandType);
                     m_TimeToNextAction = Rhytm.RhytmController.GetInstance().TimeToNextTick + (Rhytm.RhytmController.GetInstance().TickDurationSeconds * (iterations - 1));
+
                     break;
                 }
 

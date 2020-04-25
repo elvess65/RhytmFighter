@@ -20,26 +20,28 @@ namespace RhytmFighter.Objects.Model
         public event Action<int> OnMovementFinished;
         public event Action<int> OnCellVisited;
         public event Action<iBattleObject> OnDestroyed;
-
-        public bool IsEnemy { get; protected set; }
+        
         public bool IsMoving => m_BattleView.IsMoving;
+        public float ActionExecutionTime => m_BattleView.ActionEventExecutionTime;
         public Vector3 ViewPosition => View.transform.position;
         public Vector3 ProjectileHitPosition => m_BattleView.ProjectileHitPosition;
         public Vector3 ProjectileSpawnPosition => m_BattleView.ProjectileSpawnPosition;
         public Vector3 DefenceSpawnPosition => m_BattleView.DefenceSpawnPosition;
 
+
+        public bool IsEnemy { get; protected set; }
+        public AbstractAI AI { get; protected set; }
+        public BattleCommandsModificatorProcessor ModificatorsProcessor { get; private set; }
+        public iBattleActionBehaviour ActionBehaviour { get; private set; }
+        public iHealthBehaviour HealthBehaviour { get; private set; }
         public iBattleObject Target
         {
             get { return ActionBehaviour.Target; }
             set { ActionBehaviour.Target = value; }
         }
-        public iBattleActionBehaviour ActionBehaviour { get; private set; }
-        public iHealthBehaviour HealthBehaviour { get; private set; }
-        public BattleCommandsModificatorProcessor ModificatorsProcessor { get; private set; }
-        public AbstractAI AI { get; protected set; }
 
-        private AbstractBattleNPCView m_BattleView;
         private float m_MoveSpeed;
+        private AbstractBattleNPCView m_BattleView;
 
 
         public AbstractBattleNPCModel(int id, GridCellData correspondingCell, float moveSpeed,
@@ -113,11 +115,17 @@ namespace RhytmFighter.Objects.Model
             }   
         }
 
-        public void NotifyViewAboutCommand(AbstractCommandModel command)
+        public void NotifyViewAboutCommand(CommandTypes commandType)
         {
             //Notify view
-            m_BattleView.NotifyView_ExecuteCommand(command.Type);
+            m_BattleView.NotifyView_ExecuteCommand(commandType);
         }
+
+        public float GetActionEventExecuteTime(CommandTypes commandType)
+        {
+            return m_BattleView.GetActionEventExecuteTime(commandType);
+        }
+
 
         #region ActionBehaviour
         private void ActionBehaviour_OnActionExecutedHandler(AbstractCommandModel command)

@@ -4,6 +4,7 @@ using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.AI;
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;
+using RhytmFighter.Core.Enums;
 
 namespace RhytmFighter.Core
 {
@@ -13,6 +14,7 @@ namespace RhytmFighter.Core
 
         int ID { get; }
         bool IsEnemy { get; }
+        float ActionExecutionTime { get; }
         GridCellData CorrespondingCell { get; }
         UnityEngine.Vector3 ViewPosition { get; }
         UnityEngine.Vector3 ProjectileSpawnPosition { get; }
@@ -27,6 +29,7 @@ namespace RhytmFighter.Core
 
         void ApplyCommand(AbstractCommandModel command);
         void ReleaseCommand(AbstractCommandModel command);
-        void NotifyViewAboutCommand(AbstractCommandModel command);
+        void NotifyViewAboutCommand(CommandTypes commandType);
+        float GetActionEventExecuteTime(CommandTypes commandType);
     }
 }

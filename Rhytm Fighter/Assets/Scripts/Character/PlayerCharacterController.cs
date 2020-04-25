@@ -21,7 +21,6 @@ namespace RhytmFighter.Characters
 
         private ModelMovementController m_MovementController;
         
-
        
         public void CreateCharacter(PlayerModel playerModel, CellView startCellView, LevelController levelController)
         {
@@ -76,6 +75,7 @@ namespace RhytmFighter.Characters
         public void ExecuteAction(CommandTypes type)
         {
             PlayerModel.ActionBehaviour.ExecuteAction(type);
+            PlayerModel.NotifyViewAboutCommand(type);
         }
 
 

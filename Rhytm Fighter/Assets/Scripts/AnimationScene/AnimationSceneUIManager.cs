@@ -16,6 +16,7 @@ namespace RhytmFighter.AnimationScene
         {
             Button btn = Instantiate(AnimationButtonPrefab);
             btn.GetComponent<RectTransform>().SetParent(Parent);
+            btn.transform.localScale = Vector3.one;
             btn.onClick.AddListener(() => { m_AnimationController.PlayAnimation(type); });
 
             Text text = btn.GetComponentInChildren<Text>();

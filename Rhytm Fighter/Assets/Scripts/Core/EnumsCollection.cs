@@ -1,7 +1,7 @@
 ﻿namespace RhytmFighter.Core.Enums
 {
     //Commands
-    public enum CommandTypes { Attack, Defence }
+    public enum CommandTypes { None, Attack, Defence }
     public enum CommandExecutionLayers { PeriodicExecution, SingleExecution }
 
     //Grid
@@ -17,10 +17,17 @@
         TakeDamage,
         Destroy,
         StartMove,
+        StopMove,
         Idle,
         IncreaseHP
     }
 
     //AI
     public enum AITypes { None, Simple }
+    public enum AIActionTypes
+    {
+        SimpleAttack,
+        Defence,
+        Idle
+    }
 }

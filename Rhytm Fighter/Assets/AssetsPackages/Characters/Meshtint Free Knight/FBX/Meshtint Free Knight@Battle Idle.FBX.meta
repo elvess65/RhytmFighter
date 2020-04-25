@@ -1,80 +1,212 @@
 fileFormatVersion: 2
 guid: db4eaab5d375e8844851ce3cf2165adc
-timeCreated: 1542277281
-licenseType: Store
 ModelImporter:
-  serializedVersion: 21
-  fileIDToRecycleName:
-    100000: Meshtint Free Knight
-    100002: //RootNode
-    100004: Rig
-    100006: RigHead
-    100008: RigHeadBone001
-    100010: RigLCalf
-    100012: RigLCollarbone
-    100014: RigLFoot
-    100016: RigLForearm
-    100018: RigLPalm
-    100020: RigLPlatform
-    100022: RigLThigh
-    100024: RigLToe11
-    100026: RigLToe12
-    100028: RigLUpperarm
-    100030: RigNeck
-    100032: RigPelvis
-    100034: RigRCalf
-    100036: RigRCollarbone
-    100038: RigRFoot
-    100040: RigRForearm
-    100042: RigRibcage
-    100044: RigRPalm
-    100046: RigRPlatform
-    100048: RigRThigh
-    100050: RigRToe11
-    100052: RigRToe12
-    100054: RigRUpperarm
-    100056: RigSpine1
-    100058: RigSpine2
-    100060: RigSpine3
-    400000: Meshtint Free Knight
-    400002: //RootNode
-    400004: Rig
-    400006: RigHead
-    400008: RigHeadBone001
-    400010: RigLCalf
-    400012: RigLCollarbone
-    400014: RigLFoot
-    400016: RigLForearm
-    400018: RigLPalm
-    400020: RigLPlatform
-    400022: RigLThigh
-    400024: RigLToe11
-    400026: RigLToe12
-    400028: RigLUpperarm
-    400030: RigNeck
-    400032: RigPelvis
-    400034: RigRCalf
-    400036: RigRCollarbone
-    400038: RigRFoot
-    400040: RigRForearm
-    400042: RigRibcage
-    400044: RigRPalm
-    400046: RigRPlatform
-    400048: RigRThigh
-    400050: RigRToe11
-    400052: RigRToe12
-    400054: RigRUpperarm
-    400056: RigSpine1
-    400058: RigSpine2
-    400060: RigSpine3
-    4300000: Meshtint Free Knight
-    7400000: Battle Idle
-    9500000: //RootNode
-    13700000: Meshtint Free Knight
+  serializedVersion: 19300
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Meshtint Free Knight
+  - first:
+      1: 100002
+    second: //RootNode
+  - first:
+      1: 100004
+    second: Rig
+  - first:
+      1: 100006
+    second: RigHead
+  - first:
+      1: 100008
+    second: RigHeadBone001
+  - first:
+      1: 100010
+    second: RigLCalf
+  - first:
+      1: 100012
+    second: RigLCollarbone
+  - first:
+      1: 100014
+    second: RigLFoot
+  - first:
+      1: 100016
+    second: RigLForearm
+  - first:
+      1: 100018
+    second: RigLPalm
+  - first:
+      1: 100020
+    second: RigLPlatform
+  - first:
+      1: 100022
+    second: RigLThigh
+  - first:
+      1: 100024
+    second: RigLToe11
+  - first:
+      1: 100026
+    second: RigLToe12
+  - first:
+      1: 100028
+    second: RigLUpperarm
+  - first:
+      1: 100030
+    second: RigNeck
+  - first:
+      1: 100032
+    second: RigPelvis
+  - first:
+      1: 100034
+    second: RigRCalf
+  - first:
+      1: 100036
+    second: RigRCollarbone
+  - first:
+      1: 100038
+    second: RigRFoot
+  - first:
+      1: 100040
+    second: RigRForearm
+  - first:
+      1: 100042
+    second: RigRibcage
+  - first:
+      1: 100044
+    second: RigRPalm
+  - first:
+      1: 100046
+    second: RigRPlatform
+  - first:
+      1: 100048
+    second: RigRThigh
+  - first:
+      1: 100050
+    second: RigRToe11
+  - first:
+      1: 100052
+    second: RigRToe12
+  - first:
+      1: 100054
+    second: RigRUpperarm
+  - first:
+      1: 100056
+    second: RigSpine1
+  - first:
+      1: 100058
+    second: RigSpine2
+  - first:
+      1: 100060
+    second: RigSpine3
+  - first:
+      4: 400000
+    second: Meshtint Free Knight
+  - first:
+      4: 400002
+    second: //RootNode
+  - first:
+      4: 400004
+    second: Rig
+  - first:
+      4: 400006
+    second: RigHead
+  - first:
+      4: 400008
+    second: RigHeadBone001
+  - first:
+      4: 400010
+    second: RigLCalf
+  - first:
+      4: 400012
+    second: RigLCollarbone
+  - first:
+      4: 400014
+    second: RigLFoot
+  - first:
+      4: 400016
+    second: RigLForearm
+  - first:
+      4: 400018
+    second: RigLPalm
+  - first:
+      4: 400020
+    second: RigLPlatform
+  - first:
+      4: 400022
+    second: RigLThigh
+  - first:
+      4: 400024
+    second: RigLToe11
+  - first:
+      4: 400026
+    second: RigLToe12
+  - first:
+      4: 400028
+    second: RigLUpperarm
+  - first:
+      4: 400030
+    second: RigNeck
+  - first:
+      4: 400032
+    second: RigPelvis
+  - first:
+      4: 400034
+    second: RigRCalf
+  - first:
+      4: 400036
+    second: RigRCollarbone
+  - first:
+      4: 400038
+    second: RigRFoot
+  - first:
+      4: 400040
+    second: RigRForearm
+  - first:
+      4: 400042
+    second: RigRibcage
+  - first:
+      4: 400044
+    second: RigRPalm
+  - first:
+      4: 400046
+    second: RigRPlatform
+  - first:
+      4: 400048
+    second: RigRThigh
+  - first:
+      4: 400050
+    second: RigRToe11
+  - first:
+      4: 400052
+    second: RigRToe12
+  - first:
+      4: 400054
+    second: RigRUpperarm
+  - first:
+      4: 400056
+    second: RigSpine1
+  - first:
+      4: 400058
+    second: RigSpine2
+  - first:
+      4: 400060
+    second: RigSpine3
+  - first:
+      43: 4300000
+    second: Meshtint Free Knight
+  - first:
+      74: 7400000
+    second: Idle
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Meshtint Free Knight
+  externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -84,15 +216,17 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Inbetween bone
       rotation in copied configuration does not match rotation in animation file:\n\t'RigSpine3'
-      : rotation error = 5.793487 deg\n\t'RigNeck' : rotation error = 14.837049 deg\n"
+      : rotation error = 5.793487 deg\n\t'RigNeck' : rotation error = 10.980514 deg\n"
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
-      improve retargeting quality.\n\t'RigSpine3' is inbetween humanoid transforms
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'RigSpine3' is inbetween humanoid transforms
       and has rotation animation that will be discarded.\n\t'RigNeck' is inbetween
       humanoid transforms and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -102,8 +236,9 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Battle Idle
+      name: Idle
       takeName: Take 001
+      internalID: 0
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -135,6 +270,8 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -142,9 +279,14 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -155,10 +297,13 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 1
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human:
     - boneName: RigPelvis
       humanName: Hips
@@ -491,15 +636,17 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 445581dbfbbea06408d552fa1aca77fc,
     type: 3}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
+  avatarSetup: 2
   additionalBone: 0
   userData: 
   assetBundleName: 

@@ -10,40 +10,14 @@ namespace RhytmFighter.Characters.Animation
         public Animator Controller;
         public AnimationKeys[] ExposedAnimationKeys;
 
+        private int m_IdleHash;
         private Dictionary<AnimationTypes, string> m_AnimationKeys;
         private Dictionary<string, float> m_AnimationActionEventsExecuteTime;
 
+        private const string m_BASE_LAYER = "Base Layer";
 
-        public virtual void PlayAnimation(AnimationTypes animationType)
-        {
-            string key = GetAnimationName(animationType);
 
-            switch (animationType)
-            {
-                case AnimationTypes.Attack:
-                    SetTrigger(key);
-                    break;
-                case AnimationTypes.Defence:
-                    SetTrigger(key);
-                    break;
-                case AnimationTypes.Destroy:
-                    SetTrigger(key);
-                    break;
-                case AnimationTypes.Idle:
-                    Controller.SetBool(key, false);
-                    break;
-                case AnimationTypes.IncreaseHP:
-                    SetTrigger(key);
-                    break;
-                case AnimationTypes.StartMove:
-                    Controller.SetBool(key, true);
-                    break;
-                case AnimationTypes.TakeDamage:
-                    SetTrigger(key);
-                    break;
-            }
-        }
-
+        public abstract void PlayAnimation(AnimationTypes animationType);
 
         public virtual void Initialize()
         {
@@ -76,6 +50,17 @@ namespace RhytmFighter.Characters.Animation
                     }
                 }
             }
+
+            //Hash idle animation
+            m_IdleHash = Animator.StringToHash($"{m_BASE_LAYER}.{GetAnimationName(AnimationTypes.Idle)}");
+        }
+
+        public float GetActionEventExecuteTime(AnimationTypes animationType)
+        {
+            if (m_AnimationActionEventsExecuteTime.TryGetValue(GetAnimationName(animationType), out float eventExecuteTime))
+                return eventExecuteTime;
+
+            return 0;
         }
 
 
@@ -95,6 +80,11 @@ namespace RhytmFighter.Characters.Animation
                 return m_AnimationKeys[animationType];
 
             return string.Empty;
+        }
+
+        protected bool IsPlayingIdle()
+        {
+            return Controller.GetCurrentAnimatorStateInfo(0).fullPathHash.Equals(m_IdleHash);
         }
 
 

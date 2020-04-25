@@ -15,13 +15,5 @@ namespace RhytmFighter.Battle.AI
         public abstract void ExecuteAction(int currentTick);
 
         public abstract void PerformUpdate(float deltaTime);
-
-
-        protected enum PatternActionTypes
-        {
-            SimpleAttack,
-            Defence,
-            Idle
-        }
     }
 }
