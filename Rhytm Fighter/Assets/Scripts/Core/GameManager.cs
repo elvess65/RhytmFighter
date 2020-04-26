@@ -8,6 +8,7 @@ using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
 using RhytmFighter.Core.Enums;
+using UnityEngine.UI;
 
 namespace RhytmFighter.Core
 {
@@ -24,12 +25,16 @@ namespace RhytmFighter.Core
         [Header("Temp")]
         public GameObject BeatIndicatorTemp;
         public AudioSource Music;
+        public AudioSource Rhytm;
         public AudioSource AttackSound;
+        public AudioSource DefenceExecuteSound;
         public AudioSource HitSound;
         public AudioSource DestroySound;
         public AudioSource DefenceSound;
         public AudioSource BeatSound;
+        public AudioSource FinishBattleSound;
         public Metronome Metronome;
+        public Text BattleText;
         public UnityEngine.UI.Button Btn;
 
         private DataHolder m_DataHolder;
@@ -84,7 +89,7 @@ namespace RhytmFighter.Core
             int bpm = 130 / 2;
             double inputPrecious = 0.25;
 
-            Metronome.bpm = 130;
+            Metronome.bpm = bpm * 4;
 
             if (ManagersHolder.SettingsManager.GeneralSettings.MuteAudio)
                 AudioListener.volume = 0;
@@ -261,6 +266,11 @@ namespace RhytmFighter.Core
             Debug.LogError("Battle - Prepare");
 
             //Show battle UI
+            BeatIndicatorTemp.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+            BeatIndicatorTemp.GetComponent<Image>().color = Color.yellow;
+            BattleText.text = "Prepare for battle";
+            BattleText.color = Color.yellow;
+            StartCoroutine(c1());
 
             //No need to stop movement if players destination cell is the cell where enemy was detected
             if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
@@ -274,13 +284,33 @@ namespace RhytmFighter.Core
             Debug.LogError("Battle - Start");
 
             //Show Battle text
+            Rhytm.volume = 0.5f;
+            mtl = 2;
+            c = true;
 
+            BeatIndicatorTemp.GetComponent<Image>().color = Color.red;
+            BeatIndicatorTemp.transform.localScale = new Vector3(1f, 1f, 1f);
+            BattleText.text = "Fight";
+            BattleText.color = Color.red;
+            StartCoroutine(c1());
+
+
+            m_ControllersHolder.RhytmController.OnEventProcessingTick += EventProcessingTickHandler;
             m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;
             m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
 
+        System.Collections.IEnumerator c1 ()
+        {
+            BattleText.gameObject.SetActive(true);
+            yield return new WaitForSeconds((float)RhytmFighter.Rhytm.RhytmController.GetInstance().TickDurationSeconds);
+            BattleText.gameObject.SetActive(false);
+        }
+
+        private bool c = false;
+        private float mtl = 1;
         private void BattleEnemyDestroyedHandler()
         {
             Debug.LogError("Battle - Enemy destroyed");
@@ -296,6 +326,19 @@ namespace RhytmFighter.Core
             Debug.LogError("Battle - Finished");
 
             //Hide UI
+            BeatIndicatorTemp.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            BeatIndicatorTemp.GetComponent<Image>().color = Color.green;
+            BattleText.text = "Victory";
+            BattleText.color = Color.green;
+            StartCoroutine(c1());
+
+            //FinishBattleSound.Play();
+
+            Rhytm.volume = 0;
+            mtl = 1;
+            c = false;
+
+            m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
 
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
@@ -304,21 +347,33 @@ namespace RhytmFighter.Core
         private void TickingStartedHandler()
         {
             Music.Play();
+            Rhytm.Play();
+            Rhytm.volume = 0;
             //Metronome.StartMetronome();
         }
 
         private void TickHandler(int ticksSinceStart)
         {
-            //BeatSound.Play();
+            if (c)
+                BeatSound.Play();
+
+            StartCoroutine(BeatIndicatorTempCoroutine());
+        }
+
+        private void EventProcessingTickHandler(int ticksSinceStart)
+        {
+            if (c)
+                BeatSound.Play();
+
             StartCoroutine(BeatIndicatorTempCoroutine());
         }
 
         System.Collections.IEnumerator BeatIndicatorTempCoroutine()
         {
-            BeatIndicatorTemp.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+            BeatIndicatorTemp.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f) * mtl;
             for (int i = 0; i < 3; i++)
                 yield return null;
-            BeatIndicatorTemp.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
+            BeatIndicatorTemp.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f) * mtl;
         }
 
 

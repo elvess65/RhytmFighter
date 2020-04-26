@@ -62,9 +62,14 @@ namespace RhytmFighter.Rhytm
         /// </summary>
         public double DeltaInput { get; set; }
 
+        /// <summary>
+        /// Amount off seconds on how much command processing tick offsets normal tick
+        /// </summary>
+        public double ProcessTickDelta { get; private set; }
+
 
         private const float m_TICKS_PER_LOOP = 4;
-
+        private const double m_PROCESS_TICK_OFFSET = 0.25;
 
         public static RhytmController GetInstance()
         {
@@ -83,6 +88,7 @@ namespace RhytmFighter.Rhytm
         {
             m_BPM = bpm;
             TickDurationSeconds = 60.0 / m_BPM;
+            ProcessTickDelta = TickDurationSeconds * m_PROCESS_TICK_OFFSET;
         }
 
         public void StartTicking()
@@ -102,6 +108,7 @@ namespace RhytmFighter.Rhytm
             OnStopped?.Invoke();
         }
 
+        private double m_NextProcessTickTime;
         public void PerformUpdate(float deltaTime)
         {
             if (m_IsStarted)
@@ -120,6 +127,9 @@ namespace RhytmFighter.Rhytm
 
                 if (TimeToNextTick <= 0)
                     ExecuteTick();
+
+                if (m_NextProcessTickTime - AudioSettings.dspTime <= 0)
+                    ExecuteProcessTick();
             }
         }
 
@@ -140,9 +150,15 @@ namespace RhytmFighter.Rhytm
 
         private void ExecuteTick()
         {
+            m_NextProcessTickTime = m_NextTickTime + ProcessTickDelta;
             m_NextTickTime = m_NextTickTime + TickDurationSeconds;
 
             OnTick?.Invoke(CurrentTick);
+        }
+
+        private void ExecuteProcessTick()
+        {
+            m_NextProcessTickTime = double.MaxValue;
             OnEventProcessingTick?.Invoke(CurrentTick);
         }
     }

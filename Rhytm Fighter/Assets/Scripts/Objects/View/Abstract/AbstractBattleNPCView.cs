@@ -16,6 +16,7 @@ namespace RhytmFighter.Objects.View
         public Transform ProjectileSpawnParent;
         public Transform ProjectileHitParent;
         public Transform DefenceSpawnParent;
+        public Transform DefenceBreachParent;
 
         private iMovementStrategy m_MoveStrategy;
         private AbstractAnimationController m_AnimationController;

@@ -94,6 +94,12 @@ namespace RhytmFighter.Objects.Model
                     }
                     else
                     {
+                        if (ModificatorsProcessor.HasModificator(CommandTypes.Defence))
+                        {
+                            Battle.Command.View.SimpleDefenceView dView = GameObject.FindObjectOfType<Battle.Command.View.SimpleDefenceView>();
+                            dView.C(m_BattleView.DefenceBreachParent.position);
+                        }
+
                         GameManager.Instance.DefenceSound.Play();
                     }
 
@@ -134,6 +140,8 @@ namespace RhytmFighter.Objects.Model
         {
             if (command.Type == CommandTypes.Attack)
                 GameManager.Instance.AttackSound.Play();
+            else if (command.Type == CommandTypes.Defence)
+                GameManager.Instance.DefenceExecuteSound.Play();
 
             CommandsController.AddCommand(command);
         }

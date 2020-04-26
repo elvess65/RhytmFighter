@@ -27,6 +27,11 @@ namespace RhytmFighter.Battle
             TryRemoveModificator(inputCommandModel);
         }
 
+        public bool HasModificator(CommandTypes type)
+        {
+            return m_ActiveModificators.ContainsKey(type);
+        }
+
 
         private void TryAddModificator(AbstractCommandModel inputCommandModel)
         {
@@ -54,10 +59,6 @@ namespace RhytmFighter.Battle
             foreach(iCommandModificator commandModificator in m_ActiveModificators.Values)
                 commandModificator.TryModifyCommand(inputCommandModel);
         }
-
-        private bool HasModificator(CommandTypes type)
-        {
-            return m_ActiveModificators.ContainsKey(type);
-        }
     }
 }
+ 

@@ -4651,6 +4651,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a2ac38c5892c68459b4ffc4405ffbdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DefenceBreachEffectPrefab: {fileID: 111992, guid: 551a697f11711904ab3cbd953ff89f52,
+    type: 3}
 --- !u!1 &8044377314970782726
 GameObject:
   m_ObjectHideFlags: 0
