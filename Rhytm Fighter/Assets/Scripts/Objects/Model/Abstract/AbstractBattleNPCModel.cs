@@ -97,7 +97,8 @@ namespace RhytmFighter.Objects.Model
                         if (ModificatorsProcessor.HasModificator(CommandTypes.Defence))
                         {
                             Battle.Command.View.SimpleDefenceView dView = GameObject.FindObjectOfType<Battle.Command.View.SimpleDefenceView>();
-                            dView.C(m_BattleView.DefenceBreachParent.position);
+                            if (dView != null)
+                                dView.C(m_BattleView.DefenceBreachParent.position);
                         }
 
                         GameManager.Instance.DefenceSound.Play();
