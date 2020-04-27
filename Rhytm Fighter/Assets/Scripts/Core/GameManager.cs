@@ -135,10 +135,10 @@ namespace RhytmFighter.Core
             //Subscribe for events
             m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
 
-            m_ControllersHolder.BattleController.OnPrepareForBattle += PrepareForBattleHandler;
-            m_ControllersHolder.BattleController.OnBattleStarted += BattleStartedHandler;
-            m_ControllersHolder.BattleController.OnEnemyDestroyed += BattleEnemyDestroyedHandler;
-            m_ControllersHolder.BattleController.OnBattleFinished += BattleFinishedHandler;
+            //m_ControllersHolder.BattleController.OnPrepareForBattle += PrepareForBattleHandler;
+            //m_ControllersHolder.BattleController.OnBattleStarted += BattleStartedHandler;
+            //m_ControllersHolder.BattleController.OnEnemyDestroyed += BattleEnemyDestroyedHandler;
+            //m_ControllersHolder.BattleController.OnBattleFinished += BattleFinishedHandler;
 
             m_ControllersHolder.RhytmController.OnTick += TickHandler;
             m_ControllersHolder.RhytmController.OnStarted += TickingStartedHandler;
@@ -157,7 +157,7 @@ namespace RhytmFighter.Core
         private void InitializationFinished()
         {
             //Start beat
-            m_ControllersHolder.RhytmController.StartTicking();
+            //m_ControllersHolder.RhytmController.StartTicking();
 
             //Change state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
@@ -265,12 +265,12 @@ namespace RhytmFighter.Core
         {
             Debug.LogError("Battle - Prepare");
 
-            //Show battle UI
+            //Debug - Show battle UI
             BeatIndicatorTemp.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
             BeatIndicatorTemp.GetComponent<Image>().color = Color.yellow;
             BattleText.text = "Prepare for battle";
             BattleText.color = Color.yellow;
-            StartCoroutine(c1());
+            StartCoroutine(disable_battle_ui());
 
             //No need to stop movement if players destination cell is the cell where enemy was detected
             if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
@@ -283,17 +283,17 @@ namespace RhytmFighter.Core
         {
             Debug.LogError("Battle - Start");
 
-            //Show Battle text
+            //Debug - Sound
             Rhytm.volume = 0.5f;
-            mtl = 2;
-            c = true;
+            playBeat = true;
 
+            //Debug - Show Battle ui
             BeatIndicatorTemp.GetComponent<Image>().color = Color.red;
             BeatIndicatorTemp.transform.localScale = new Vector3(1f, 1f, 1f);
             BattleText.text = "Fight";
             BattleText.color = Color.red;
-            StartCoroutine(c1());
-
+            scaleMltp = 2;
+            StartCoroutine(disable_battle_ui());
 
             m_ControllersHolder.RhytmController.OnEventProcessingTick += EventProcessingTickHandler;
             m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;
@@ -302,15 +302,7 @@ namespace RhytmFighter.Core
             m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
 
-        System.Collections.IEnumerator c1 ()
-        {
-            BattleText.gameObject.SetActive(true);
-            yield return new WaitForSeconds((float)RhytmFighter.Rhytm.RhytmController.GetInstance().TickDurationSeconds);
-            BattleText.gameObject.SetActive(false);
-        }
 
-        private bool c = false;
-        private float mtl = 1;
         private void BattleEnemyDestroyedHandler()
         {
             Debug.LogError("Battle - Enemy destroyed");
@@ -330,31 +322,31 @@ namespace RhytmFighter.Core
             BeatIndicatorTemp.GetComponent<Image>().color = Color.green;
             BattleText.text = "Victory";
             BattleText.color = Color.green;
-            StartCoroutine(c1());
+            StartCoroutine(disable_battle_ui());
 
             //FinishBattleSound.Play();
 
             Rhytm.volume = 0;
-            mtl = 1;
-            c = false;
+            scaleMltp = 1;
+            playBeat = false;
 
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
 
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
 
-
+      
         private void TickingStartedHandler()
         {
-            Music.Play();
-            Rhytm.Play();
+            //Music.Play();
+            //Rhytm.Play();
             Rhytm.volume = 0;
-            //Metronome.StartMetronome();
+            Metronome.StartMetronome();
         }
 
         private void TickHandler(int ticksSinceStart)
         {
-            if (c)
+            if (playBeat)
                 BeatSound.Play();
 
             StartCoroutine(BeatIndicatorTempCoroutine());
@@ -362,7 +354,7 @@ namespace RhytmFighter.Core
 
         private void EventProcessingTickHandler(int ticksSinceStart)
         {
-            if (c)
+            if (playBeat)
                 BeatSound.Play();
 
             StartCoroutine(BeatIndicatorTempCoroutine());
@@ -370,10 +362,10 @@ namespace RhytmFighter.Core
 
         System.Collections.IEnumerator BeatIndicatorTempCoroutine()
         {
-            BeatIndicatorTemp.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f) * mtl;
+            BeatIndicatorTemp.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f) * scaleMltp;
             for (int i = 0; i < 3; i++)
                 yield return null;
-            BeatIndicatorTemp.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f) * mtl;
+            BeatIndicatorTemp.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f) * scaleMltp;
         }
 
 
@@ -395,6 +387,41 @@ namespace RhytmFighter.Core
             bool inputIsValid = m_ControllersHolder.RhytmInputProxy.IsInputTickValid();
             if (inputIsValid)
                 m_ControllersHolder.PlayerCharacterController.ExecuteAction(CommandTypes.Defence);
+        }
+
+        private bool playBeat = false;
+        private float scaleMltp = 1;
+
+        private void OnGUI()
+        {
+            if (GUI.Button(new Rect(10, 10, 250, 250), "Scheduled"))
+            {
+                //Music.volume = Music.volume == 0 ? 1 : 0;
+                //Rhytm.volume = Rhytm.volume == 0 ? 0.5f : 0f;
+                StartCoroutine(debug_tick());
+            }
+
+            if (GUI.Button(new Rect(300, 10, 250, 250), "Simple"))
+            {
+                //Music.volume = Music.volume == 0 ? 1 : 0;
+                //Rhytm.volume = Rhytm.volume == 0 ? 0.5f : 0f;
+                Music.Play();
+                m_ControllersHolder.RhytmController.StartTicking();
+            }
+        }
+
+        System.Collections.IEnumerator debug_tick()
+        {
+            Music.PlayScheduled(AudioSettings.dspTime + 1);
+            yield return new WaitForSeconds(1);
+            m_ControllersHolder.RhytmController.StartTicking();
+        }
+
+        System.Collections.IEnumerator disable_battle_ui()
+        {
+            BattleText.gameObject.SetActive(true);
+            yield return new WaitForSeconds((float)RhytmFighter.Rhytm.RhytmController.GetInstance().TickDurationSeconds);
+            BattleText.gameObject.SetActive(false);
         }
     }
 }
