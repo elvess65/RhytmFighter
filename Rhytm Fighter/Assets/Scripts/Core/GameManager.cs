@@ -70,26 +70,13 @@ namespace RhytmFighter.Core
                 m_Updateables[i].PerformUpdate(Time.deltaTime);
         }
 
-        /*private void OnGUI()
-        {
-            if (GUI.Button(new Rect(10, 10, 150, 50), "Show objects"))
-            {
-                m_ControllersHolder.LevelController.RoomViewBuilder.ShowAllCellsWithObjects_Debug(m_ControllersHolder.LevelController.Model.GetCurrenRoomData());
-            }
-
-            if (GUI.Button(new Rect(10, 100, 150, 50), "Show Player"))
-            {
-                m_ControllersHolder.LevelController.RoomViewBuilder.ShowCell_Debug(m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
-                    m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.X, m_ControllersHolder.PlayerCharacterController.PlayerModel.CorrespondingCell.Y));
-            }
-        }*/
-
         private void Initialize()
         {
             int bpm = 130 / 2;
             double inputPrecious = 0.25;
-
-            Metronome.bpm = bpm * 4;
+            Metronome.bpm = bpm * 2;
+            Music.clip.LoadAudioData();
+            Rhytm.clip.LoadAudioData();
 
             if (ManagersHolder.SettingsManager.GeneralSettings.MuteAudio)
                 AudioListener.volume = 0;
@@ -157,7 +144,8 @@ namespace RhytmFighter.Core
         private void InitializationFinished()
         {
             //Start beat
-            //m_ControllersHolder.RhytmController.StartTicking();
+            m_ControllersHolder.RhytmController.StartTicking();
+            //StartCoroutine(debug_tick());
 
             //Change state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
@@ -338,9 +326,9 @@ namespace RhytmFighter.Core
       
         private void TickingStartedHandler()
         {
-            //Music.Play();
+            Music.Play();
             //Rhytm.Play();
-            Rhytm.volume = 0;
+            //Rhytm.volume = 0;
             Metronome.StartMetronome();
         }
 
@@ -363,8 +351,7 @@ namespace RhytmFighter.Core
         System.Collections.IEnumerator BeatIndicatorTempCoroutine()
         {
             BeatIndicatorTemp.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f) * scaleMltp;
-            for (int i = 0; i < 3; i++)
-                yield return null;
+            yield return new WaitForSeconds((float)m_ControllersHolder.RhytmController.TickDurationSeconds / 2);
             BeatIndicatorTemp.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f) * scaleMltp;
         }
 
@@ -391,24 +378,6 @@ namespace RhytmFighter.Core
 
         private bool playBeat = false;
         private float scaleMltp = 1;
-
-        private void OnGUI()
-        {
-            if (GUI.Button(new Rect(10, 10, 250, 250), "Scheduled"))
-            {
-                //Music.volume = Music.volume == 0 ? 1 : 0;
-                //Rhytm.volume = Rhytm.volume == 0 ? 0.5f : 0f;
-                StartCoroutine(debug_tick());
-            }
-
-            if (GUI.Button(new Rect(300, 10, 250, 250), "Simple"))
-            {
-                //Music.volume = Music.volume == 0 ? 1 : 0;
-                //Rhytm.volume = Rhytm.volume == 0 ? 0.5f : 0f;
-                Music.Play();
-                m_ControllersHolder.RhytmController.StartTicking();
-            }
-        }
 
         System.Collections.IEnumerator debug_tick()
         {
