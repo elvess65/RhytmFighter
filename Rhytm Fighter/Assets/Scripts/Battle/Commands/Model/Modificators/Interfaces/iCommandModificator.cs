@@ -2,6 +2,6 @@
 {
     public interface iCommandModificator 
     {
-        void TryModifyCommand(AbstractCommandModel command);
+        bool TryModifyCommand(AbstractCommandModel command);
     }
 }

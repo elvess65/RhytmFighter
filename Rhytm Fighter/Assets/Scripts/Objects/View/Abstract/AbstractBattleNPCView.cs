@@ -48,8 +48,47 @@ namespace RhytmFighter.Objects.View
             //Animation
             m_AnimationController = GetComponent<AbstractAnimationController>();
             m_AnimationController.Initialize();
+
+            ActionEventsListener animationEventsListener = m_AnimationController.Controller.GetComponent<ActionEventsListener>();
+            animationEventsListener.OnEvent += AnimationEventHandler;
         }
 
+
+        #region Battle
+        public virtual void NotifyView_ExecuteCommand(CommandTypes type)
+        {
+            m_AnimationController.PlayAnimation(ConvertersCollection.Command2Animation(type));
+        }
+
+        public virtual void NotifyView_TakeDamage(int dmg)
+        {
+            m_AnimationController.PlayAnimation(AnimationTypes.TakeDamage);
+            UpdateHealthBar();
+        }
+
+        public virtual void NotifyView_IncreaseHP(int amount)
+        {
+            m_AnimationController.PlayAnimation(AnimationTypes.IncreaseHP);
+            UpdateHealthBar();
+        }
+
+        public virtual void NotifyView_Destroyed()
+        {
+            m_AnimationController.PlayAnimation(AnimationTypes.Destroy);
+            HideUI();
+        }
+
+        public float GetActionEventExecuteTime(CommandTypes type)
+        {
+            return m_AnimationController.GetActionEventExecuteTime(ConvertersCollection.Command2Animation(type));
+        }
+
+
+        private void AnimationEventHandler()
+        {
+            Debug.Log("Animation event " + m_ModelAsBattleModel.LastExecutedCommand);
+        }
+        #endregion
 
         #region Movement
         public void NotifyView_StartMove(Vector3[] path)
@@ -90,36 +129,6 @@ namespace RhytmFighter.Objects.View
         void RotationFinishedHandler()
         {
             OnRotationFinished?.Invoke();
-        }
-        #endregion
-
-        #region Battle
-        public virtual void NotifyView_ExecuteCommand(CommandTypes type)
-        {
-            m_AnimationController.PlayAnimation(ConvertersCollection.Command2Animation(type));
-        }
-
-        public virtual void NotifyView_TakeDamage(int dmg)
-        {
-            m_AnimationController.PlayAnimation(AnimationTypes.TakeDamage);
-            UpdateHealthBar();
-        }
-
-        public virtual void NotifyView_IncreaseHP(int amount)
-        {
-            m_AnimationController.PlayAnimation(AnimationTypes.IncreaseHP);
-            UpdateHealthBar();
-        }
-
-        public virtual void NotifyView_Destroyed()
-        {
-            m_AnimationController.PlayAnimation(AnimationTypes.Destroy);
-            HideUI();
-        }
-
-        public float GetActionEventExecuteTime(CommandTypes type)
-        {
-            return m_AnimationController.GetActionEventExecuteTime(ConvertersCollection.Command2Animation(type));
         }
         #endregion
 

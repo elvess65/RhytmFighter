@@ -25,8 +25,12 @@ namespace RhytmFighter.Battle.Health.Behaviours
             MaxHP = hp;
         }
 
+
         public void ReduceHP(int dmg)
         {
+            if (dmg <= 0)
+                return;
+
             HP -= dmg;
 
             if (HP <= 0)

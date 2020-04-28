@@ -21,17 +21,20 @@ namespace RhytmFighter.Battle.Command
             switch(command.Layer)
             {
                 case CommandExecutionLayers.PeriodicExecution:
-                    m_Instance.m_PeriodicCommands.Add(new PeriodicPendingCommand(command as AbstractPeriodicCommandModel,
-                                                                                 Rhytm.RhytmController.GetInstance().CurrentTick,
-                                                                                 m_Instance.GetCommandViewFactory(command),
-                                                                                 m_Instance.ViewCreatedHandler, m_Instance.ViewDestroyedHandler));
+                    m_Instance.m_PeriodicCommands.Add(new PeriodicPendingCommand(command as AbstractPeriodicCommandModel, Rhytm.RhytmController.GetInstance().CurrentTick));
                     break;
                 case CommandExecutionLayers.SingleExecution:
-                    m_Instance.m_SingleCommands.Add(new PendingCommand(command, Rhytm.RhytmController.GetInstance().CurrentTick,
-                                                                       m_Instance.GetCommandViewFactory(command),
-                                                                       m_Instance.ViewCreatedHandler, m_Instance.ViewDestroyedHandler));
+                    m_Instance.m_SingleCommands.Add(new PendingCommand(command, Rhytm.RhytmController.GetInstance().CurrentTick));
                     break;
             }
+        }
+
+        public static void CreateViewForCommand(AbstractCommandModel command)
+        {
+            //Create view
+            AbstractCommandView View = m_Instance.GetCommandViewFactory(command).CreateView(command);
+            View.OnViewDisposed += m_Instance.ViewDestroyedHandler;
+            m_Instance.ViewCreatedHandler(View);
         }
 
 
@@ -127,7 +130,7 @@ namespace RhytmFighter.Battle.Command
         }
 
 
-        class PendingCommand : iUpdatable
+        class PendingCommand
         {
             protected int m_ApplyTick;
             protected AbstractCommandView View;
@@ -135,31 +138,21 @@ namespace RhytmFighter.Battle.Command
             public AbstractCommandModel Command { get; private set; }
 
 
-            public PendingCommand(AbstractCommandModel command, int creationTick, AbstractCommandViewFactory viewFactory, 
-                                  System.Action<AbstractCommandView> onViewCreated, System.Action<AbstractCommandView> onViewDestroyed)
+            public PendingCommand(AbstractCommandModel command, int creationTick)
             {
                 //Initialize data
                 Command = command;
                 m_ApplyTick = creationTick + command.ApplyDelay;
-
-                //Create view
-                View = viewFactory.CreateView(command);
-                View.OnViewDisposed += onViewDestroyed;
-                onViewCreated.Invoke(View);
             }
 
             public bool CommandShouldBeApplied(int currentTick) => m_ApplyTick == currentTick;
-
-            public void PerformUpdate(float deltaTime) => View?.PerformUpdate(deltaTime);
         }
 
         class PeriodicPendingCommand : PendingCommand
         {
             protected int m_ReleaseTick;
 
-            public PeriodicPendingCommand(AbstractPeriodicCommandModel command, int creationTick, AbstractCommandViewFactory viewFactory,
-                                          System.Action<AbstractCommandView> onViewCreated, System.Action<AbstractCommandView> onViewDestroyed) :
-                                          base(command, creationTick, viewFactory, onViewCreated, onViewDestroyed)
+            public PeriodicPendingCommand(AbstractPeriodicCommandModel command, int creationTick) : base(command, creationTick)
             {
                 m_ReleaseTick = m_ApplyTick + command.ReleaseDelay;
             }

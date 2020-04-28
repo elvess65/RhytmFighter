@@ -11,6 +11,7 @@ using RhytmFighter.Core;
 using RhytmFighter.Core.Enums;
 using RhytmFighter.Objects.View;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RhytmFighter.Objects.Model
@@ -36,6 +37,7 @@ namespace RhytmFighter.Objects.Model
         public BattleCommandsModificatorProcessor ModificatorsProcessor { get; private set; }
         public iBattleActionBehaviour ActionBehaviour { get; private set; }
         public iHealthBehaviour HealthBehaviour { get; private set; }
+        public CommandTypes LastExecutedCommand { get; private set; }
         public iBattleObject Target
         {
             get { return ActionBehaviour.Target; }
@@ -80,34 +82,39 @@ namespace RhytmFighter.Objects.Model
             Initialize(m_MoveSpeed);
         }
 
+        public void Initialize(float moveSpeed)
+        {
+            m_BattleView.Initialize(moveSpeed);
+            m_BattleView.OnCellVisited += CellVisitedHandler;
+            m_BattleView.OnMovementFinished += MovementFinishedHandler;
+            m_BattleView.OnRotationFinished += RotationFinishedHandler;
+        }
+
+
+        #region Battle
         public void ApplyCommand(AbstractCommandModel command)
         {
-            ModificatorsProcessor.ProcessApplyCommand(command);
+            List<CommandTypes> commandTypesWhichModifiedApply = ModificatorsProcessor.ProcessApplyCommand(command);
 
             switch (command)
             {
                 case AttackCommandModel attackCommand:
 
-                    if (attackCommand.Damage > 0)
+                    HealthBehaviour.ReduceHP(attackCommand.Damage);
+
+                    if (commandTypesWhichModifiedApply.Contains(CommandTypes.Defence))
                     {
-                        HealthBehaviour.ReduceHP(attackCommand.Damage);
-                    }
-                    else
-                    {
-                        if (ModificatorsProcessor.HasModificator(CommandTypes.Defence))
-                        {
-                            Battle.Command.View.SimpleDefenceView dView = GameObject.FindObjectOfType<Battle.Command.View.SimpleDefenceView>();
-                            if (dView != null)
-                                dView.C(m_BattleView.DefenceBreachParent.position);
-                        }
+                        //TODO: Refactor
+                        Battle.Command.View.SimpleDefenceView dView = GameObject.FindObjectOfType<Battle.Command.View.SimpleDefenceView>();
+                        if (dView != null)
+                            dView.C(m_BattleView.DefenceBreachParent.position);
 
                         GameManager.Instance.DefenceSound.Play();
                     }
 
                     break;
 
-                case DefenceCommandModel defenceCommand: 
-
+                case DefenceCommandModel defenceCommand:
                     break;
             }
         }
@@ -116,12 +123,12 @@ namespace RhytmFighter.Objects.Model
         {
             ModificatorsProcessor.ProcessReleaseCommand(command);
 
-            switch(command)
+            switch (command)
             {
                 case DefenceCommandModel defenceCommand:
 
                     break;
-            }   
+            }
         }
 
         public void NotifyViewAboutCommand(CommandTypes commandType)
@@ -136,14 +143,19 @@ namespace RhytmFighter.Objects.Model
         }
 
 
-        #region ActionBehaviour
         private void ActionBehaviour_OnActionExecutedHandler(AbstractCommandModel command)
         {
-            if (command.Type == CommandTypes.Attack)
-                GameManager.Instance.AttackSound.Play();
-            else if (command.Type == CommandTypes.Defence)
-                GameManager.Instance.DefenceExecuteSound.Play();
+            switch(command)
+            {
+                case AttackCommandModel attackCommand:
+                    GameManager.Instance.AttackSound.Play();
+                    break;
+                case DefenceCommandModel defenceCommand:
+                    GameManager.Instance.DefenceExecuteSound.Play();
+                    break;
+            }
 
+            LastExecutedCommand = command.Type;
             CommandsController.AddCommand(command);
         }
         #endregion
@@ -180,14 +192,6 @@ namespace RhytmFighter.Objects.Model
         #endregion
 
         #region iMovableModel
-        public void Initialize(float moveSpeed)
-        {
-            m_BattleView.Initialize(moveSpeed);
-            m_BattleView.OnCellVisited += CellVisitedHandler;
-            m_BattleView.OnMovementFinished += MovementFinishedHandler;
-            m_BattleView.OnRotationFinished += RotationFinishedHandler;
-        }
-
         public void NotifyView_StartMove(Vector3[] path)
         {
             //Notify view

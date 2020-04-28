@@ -2,14 +2,18 @@
 {
     class DefenceCommandModificator : iCommandModificator
     {
-        public void TryModifyCommand(AbstractCommandModel command)
+        public bool TryModifyCommand(AbstractCommandModel command)
         {
+            bool result = false;
             switch (command)
             {
                 case AttackCommandModel attackCommand:
                     attackCommand.Damage = 0;
+                    result = true;
                     break;
             }
+
+            return result;
         }
     }
 }

@@ -25,6 +25,7 @@ namespace RhytmFighter.Core
         iBattleObject Target { get; set; }
         iBattleActionBehaviour ActionBehaviour { get; }
         iHealthBehaviour HealthBehaviour { get; }
+        CommandTypes LastExecutedCommand { get; }
         BattleCommandsModificatorProcessor ModificatorsProcessor { get; }
         AbstractAI AI { get; }
 

@@ -9,17 +9,20 @@ namespace RhytmFighter.Battle
     public class BattleCommandsModificatorProcessor
     {
         private Dictionary<CommandTypes, iCommandModificator> m_ActiveModificators;
-
+        private List<CommandTypes> m_ContainersForModificatorsLastApply;
 
         public BattleCommandsModificatorProcessor()
         {
             m_ActiveModificators = new Dictionary<CommandTypes, iCommandModificator>();
+            m_ContainersForModificatorsLastApply = new List<CommandTypes>();
         }
 
-        public void ProcessApplyCommand(AbstractCommandModel inputCommandModel)
+        public List<CommandTypes> ProcessApplyCommand(AbstractCommandModel inputCommandModel)
         {
             TryAddModificator(inputCommandModel);
             TryModifyCommand(inputCommandModel);
+
+            return m_ContainersForModificatorsLastApply;
         }
 
         public void ProcessReleaseCommand(AbstractCommandModel inputCommandModel)
@@ -27,12 +30,7 @@ namespace RhytmFighter.Battle
             TryRemoveModificator(inputCommandModel);
         }
 
-        public bool HasModificator(CommandTypes type)
-        {
-            return m_ActiveModificators.ContainsKey(type);
-        }
-
-
+        
         private void TryAddModificator(AbstractCommandModel inputCommandModel)
         {
             if (inputCommandModel is iModificator modificatorCommand)
@@ -56,8 +54,20 @@ namespace RhytmFighter.Battle
 
         private void TryModifyCommand(AbstractCommandModel inputCommandModel)
         {
-            foreach(iCommandModificator commandModificator in m_ActiveModificators.Values)
-                commandModificator.TryModifyCommand(inputCommandModel);
+            if (m_ContainersForModificatorsLastApply.Count > 0)
+                m_ContainersForModificatorsLastApply.Clear();
+
+            foreach (CommandTypes commandType in m_ActiveModificators.Keys)
+            {
+                bool modificationPerformed = m_ActiveModificators[commandType].TryModifyCommand(inputCommandModel);
+                if (modificationPerformed)
+                    m_ContainersForModificatorsLastApply.Add(commandType);
+            }
+        }
+
+        private bool HasModificator(CommandTypes type)
+        {
+            return m_ActiveModificators.ContainsKey(type);
         }
     }
 }
