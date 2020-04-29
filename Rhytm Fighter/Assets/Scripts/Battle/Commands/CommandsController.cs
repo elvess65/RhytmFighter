@@ -31,10 +31,14 @@ namespace RhytmFighter.Battle.Command
 
         public static void CreateViewForCommand(AbstractCommandModel command)
         {
-            //Create view
             AbstractCommandView View = m_Instance.GetCommandViewFactory(command).CreateView(command);
             View.OnViewDisposed += m_Instance.ViewDestroyedHandler;
             m_Instance.ViewCreatedHandler(View);
+        }
+
+        public static AbstractCommandView TryGetCommandView(int commandID)
+        {
+            return m_Instance.GetCommandView(commandID);
         }
 
 
@@ -98,6 +102,7 @@ namespace RhytmFighter.Battle.Command
             command.Target.ReleaseCommand(command);
         }
 
+
         private AbstractCommandViewFactory GetCommandViewFactory(AbstractCommandModel command)
         {
             if (!m_ViewFactories.ContainsKey(command.Type))
@@ -117,6 +122,16 @@ namespace RhytmFighter.Battle.Command
             return m_ViewFactories[command.Type];
         }
 
+        private AbstractCommandView GetCommandView(int commandID)
+        {
+            for (int i = 0; i < m_Views.Count; i++)
+            {
+                if (m_Views[i].CommandID.Equals(commandID))
+                    return m_Views[i];
+            }
+
+            return null;
+        }
 
         private void ViewCreatedHandler(AbstractCommandView view)
         {
@@ -133,7 +148,6 @@ namespace RhytmFighter.Battle.Command
         class PendingCommand
         {
             protected int m_ApplyTick;
-            protected AbstractCommandView View;
             
             public AbstractCommandModel Command { get; private set; }
 

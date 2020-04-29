@@ -5,6 +5,7 @@ using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.AI;
 using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Command.Model;
+using RhytmFighter.Battle.Command.Model.Modificator;
 using RhytmFighter.Battle.Health;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Core;
@@ -37,7 +38,6 @@ namespace RhytmFighter.Objects.Model
         public BattleCommandsModificatorProcessor ModificatorsProcessor { get; private set; }
         public iBattleActionBehaviour ActionBehaviour { get; private set; }
         public iHealthBehaviour HealthBehaviour { get; private set; }
-        public CommandTypes LastExecutedCommand { get; private set; }
         public iBattleObject Target
         {
             get { return ActionBehaviour.Target; }
@@ -46,6 +46,7 @@ namespace RhytmFighter.Objects.Model
 
         private float m_MoveSpeed;
         private AbstractBattleNPCView m_BattleView;
+        private AbstractCommandModel m_LastExecutedCommand;
 
 
         public AbstractBattleNPCModel(int id, GridCellData correspondingCell, float moveSpeed,
@@ -88,13 +89,14 @@ namespace RhytmFighter.Objects.Model
             m_BattleView.OnCellVisited += CellVisitedHandler;
             m_BattleView.OnMovementFinished += MovementFinishedHandler;
             m_BattleView.OnRotationFinished += RotationFinishedHandler;
+            m_BattleView.OnAnimationEvent += AnimationEventHandler;
         }
 
 
         #region Battle
         public void ApplyCommand(AbstractCommandModel command)
         {
-            List<CommandTypes> commandTypesWhichModifiedApply = ModificatorsProcessor.ProcessApplyCommand(command);
+            List<iCommandModificator> commandTypesWhichModifiedApply = ModificatorsProcessor.ProcessApplyCommand(command);
 
             switch (command)
             {
@@ -102,12 +104,12 @@ namespace RhytmFighter.Objects.Model
 
                     HealthBehaviour.ReduceHP(attackCommand.Damage);
 
-                    if (commandTypesWhichModifiedApply.Contains(CommandTypes.Defence))
+                    iCommandModificator defenceModificator = GetModificatorOfType(commandTypesWhichModifiedApply, CommandTypes.Defence);
+                    if (defenceModificator != null)
                     {
-                        //TODO: Refactor
-                        Battle.Command.View.SimpleDefenceView dView = GameObject.FindObjectOfType<Battle.Command.View.SimpleDefenceView>();
-                        if (dView != null)
-                            dView.C(m_BattleView.DefenceBreachParent.position);
+                        Battle.Command.View.SimpleDefenceView defenceView = CommandsController.TryGetCommandView(defenceModificator.CommandID) as Battle.Command.View.SimpleDefenceView;
+                        if (defenceView != null)
+                            defenceView.ExecuteDefence(m_BattleView.DefenceBreachParent.position);
 
                         GameManager.Instance.DefenceSound.Play();
                     }
@@ -155,8 +157,24 @@ namespace RhytmFighter.Objects.Model
                     break;
             }
 
-            LastExecutedCommand = command.Type;
+            m_LastExecutedCommand = command;
             CommandsController.AddCommand(command);
+        }
+
+        private void AnimationEventHandler()
+        {
+            CommandsController.CreateViewForCommand(m_LastExecutedCommand);
+        }
+
+        private iCommandModificator GetModificatorOfType(List<iCommandModificator> commandTypesWhichModifiedApply, CommandTypes targetType)
+        {
+            for (int i = 0; i < commandTypesWhichModifiedApply.Count; i++)
+            {
+                if (commandTypesWhichModifiedApply[i].CommandType.Equals(targetType))
+                    return commandTypesWhichModifiedApply[i];
+            }
+
+            return null;
         }
         #endregion
 

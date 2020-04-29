@@ -11,9 +11,13 @@ namespace RhytmFighter.Battle.Command.View
         protected float m_ExistTime;
         protected InterpolationData<Vector3> m_LerpData;
 
+        public int CommandID { get; private set; }
 
-        public virtual void Initialize(Vector3 senderPos, float existTime)
+
+        public virtual void Initialize(Vector3 senderPos, float existTime, int commandID)
         {
+            CommandID = commandID;
+
             transform.position = senderPos;
 
             m_LerpData.TotalTime = existTime;

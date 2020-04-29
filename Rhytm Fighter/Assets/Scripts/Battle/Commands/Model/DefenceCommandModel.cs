@@ -11,7 +11,7 @@ namespace RhytmFighter.Battle.Command.Model
         public DefenceCommandModel(iBattleObject sender) : base(sender, sender, 0, 0)
         {
             Type = CommandTypes.Defence;
-            m_Modificator = new DefenceCommandModificator();
+            m_Modificator = new DefenceCommandModificator(ID, Type);
         }
 
         public iCommandModificator GetModificator()

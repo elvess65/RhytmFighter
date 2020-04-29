@@ -1,7 +1,18 @@
-﻿namespace RhytmFighter.Battle.Command.Model.Modificator
+﻿using RhytmFighter.Core.Enums;
+
+namespace RhytmFighter.Battle.Command.Model.Modificator
 {
     class DefenceCommandModificator : iCommandModificator
     {
+        public int CommandID { get; private set; }
+        public CommandTypes CommandType { get; private set; }
+
+        public DefenceCommandModificator(int commandID, CommandTypes commandType)
+        {
+            CommandID = commandID;
+            CommandType = commandType;
+        }
+
         public bool TryModifyCommand(AbstractCommandModel command)
         {
             bool result = false;

@@ -10,11 +10,13 @@ namespace RhytmFighter.Battle.Command.View
         {
         }
 
-        public void C(Vector3 pos)
+        public void ExecuteDefence(Vector3 pos)
         {
+            //Create effect
             GameObject ob = Instantiate(DefenceBreachEffectPrefab, pos, Quaternion.identity);
             Destroy(ob, 2);
 
+            //Dispose view
             DisposeView();
         }
     }

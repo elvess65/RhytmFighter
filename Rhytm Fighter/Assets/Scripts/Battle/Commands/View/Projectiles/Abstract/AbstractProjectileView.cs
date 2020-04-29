@@ -6,11 +6,11 @@ namespace RhytmFighter.Battle.Command.View
     {
         public GameObject CollisionEffectPrefab;
 
-        public virtual void Initialize(Vector3 targetPos, Vector3 senderPos, float existTime)
+        public virtual void Initialize(Vector3 targetPos, Vector3 senderPos, float existTime, int commandID)
         {
             m_LerpData.To = targetPos;
 
-            base.Initialize(senderPos, existTime);
+            base.Initialize(senderPos, existTime, commandID);
         }
 
         protected override void FinalizeView()

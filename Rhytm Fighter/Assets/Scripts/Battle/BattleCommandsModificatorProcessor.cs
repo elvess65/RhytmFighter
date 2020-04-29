@@ -9,15 +9,16 @@ namespace RhytmFighter.Battle
     public class BattleCommandsModificatorProcessor
     {
         private Dictionary<CommandTypes, iCommandModificator> m_ActiveModificators;
-        private List<CommandTypes> m_ContainersForModificatorsLastApply;
+        private List<iCommandModificator> m_ContainersForModificatorsLastApply;
+
 
         public BattleCommandsModificatorProcessor()
         {
             m_ActiveModificators = new Dictionary<CommandTypes, iCommandModificator>();
-            m_ContainersForModificatorsLastApply = new List<CommandTypes>();
+            m_ContainersForModificatorsLastApply = new List<iCommandModificator>();
         }
 
-        public List<CommandTypes> ProcessApplyCommand(AbstractCommandModel inputCommandModel)
+        public List<iCommandModificator> ProcessApplyCommand(AbstractCommandModel inputCommandModel)
         {
             TryAddModificator(inputCommandModel);
             TryModifyCommand(inputCommandModel);
@@ -61,7 +62,7 @@ namespace RhytmFighter.Battle
             {
                 bool modificationPerformed = m_ActiveModificators[commandType].TryModifyCommand(inputCommandModel);
                 if (modificationPerformed)
-                    m_ContainersForModificatorsLastApply.Add(commandType);
+                    m_ContainersForModificatorsLastApply.Add(m_ActiveModificators[commandType]);
             }
         }
 

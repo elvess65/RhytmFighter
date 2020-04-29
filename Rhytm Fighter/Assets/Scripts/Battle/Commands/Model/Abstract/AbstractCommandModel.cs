@@ -5,6 +5,9 @@ namespace RhytmFighter.Battle.Command.Model
 {
     public abstract class AbstractCommandModel
     {
+        private static int m_ID_COUNTER = 0;
+
+        public int ID { get; private set; }
         public iBattleObject Sender { get; private set; }
         public iBattleObject Target { get; private set; }
         public CommandTypes Type { get; protected set; }
@@ -16,6 +19,7 @@ namespace RhytmFighter.Battle.Command.Model
       
         public AbstractCommandModel(iBattleObject sender, iBattleObject target, int applyDelay)
         {
+            ID = m_ID_COUNTER++;
             Sender = sender;
             Target = target;
             ApplyDelay = applyDelay;

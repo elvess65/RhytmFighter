@@ -12,6 +12,7 @@ namespace RhytmFighter.Objects.View
         public event System.Action<int> OnMovementFinished;
         public event System.Action<int> OnCellVisited;
         public event System.Action OnRotationFinished;
+        public event System.Action OnAnimationEvent;
 
         public Transform ProjectileSpawnParent;
         public Transform ProjectileHitParent;
@@ -86,7 +87,7 @@ namespace RhytmFighter.Objects.View
 
         private void AnimationEventHandler()
         {
-            Debug.Log("Animation event " + m_ModelAsBattleModel.LastExecutedCommand);
+            OnAnimationEvent?.Invoke();
         }
         #endregion
 
