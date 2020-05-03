@@ -22,8 +22,17 @@ namespace RhytmFighter.Battle.Command.View
 
         protected override float GetExistsTime(AbstractCommandModel command)
         {
-            double playerInputDelta = (!command.Sender.IsEnemy ? Rhytm.RhytmController.GetInstance().DeltaInput : 0);
-            double existTime = command.ApplyDelay * Rhytm.RhytmController.GetInstance().TickDurationSeconds + playerInputDelta + Rhytm.RhytmController.GetInstance().ProcessTickDelta;
+            double existTime = 0;
+
+            if (command.Sender.IsEnemy || Rhytm.RhytmController.GetInstance().InputTickResult == Core.Enums.InputTickResult.PostTick)
+                existTime = command.ApplyDelay * Rhytm.RhytmController.GetInstance().TimeToNextTick +
+                            Rhytm.RhytmController.GetInstance().ProcessTickDelta;
+            else
+            {
+                existTime = command.ApplyDelay * Rhytm.RhytmController.GetInstance().TickDurationSeconds +
+                            Rhytm.RhytmController.GetInstance().DeltaInput +
+                            Rhytm.RhytmController.GetInstance().ProcessTickDelta;
+            }
 
             return (float)existTime;
         }

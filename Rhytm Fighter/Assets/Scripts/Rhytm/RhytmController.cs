@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.Core;
+using RhytmFighter.Core.Enums;
 using System.Text;
 using UnityEngine;
 
@@ -61,6 +62,11 @@ namespace RhytmFighter.Rhytm
         /// Last stored delta input
         /// </summary>
         public double DeltaInput { get; set; }
+
+        /// <summary>
+        /// Last sored input tick result
+        /// </summary>
+        public InputTickResult InputTickResult { get; set; }
 
         /// <summary>
         /// Amount off seconds on how much command processing tick offsets normal tick

@@ -2,7 +2,6 @@
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Command.Model.Modificator;
 using RhytmFighter.Core.Enums;
-using UnityEngine;
 
 namespace RhytmFighter.Battle
 {
@@ -37,20 +36,14 @@ namespace RhytmFighter.Battle
             if (inputCommandModel is iModificator modificatorCommand)
             {
                 if (!HasModificator(inputCommandModel.Type))
-                {
                     m_ActiveModificators.Add(inputCommandModel.Type, modificatorCommand.GetModificator());
-                    Debug.Log("Modificator Processor: Add modificator " + inputCommandModel.Type);
-                }
             }
         }
 
         private void TryRemoveModificator(AbstractCommandModel inputCommandModel)
         {
             if (HasModificator(inputCommandModel.Type))
-            {
                 m_ActiveModificators.Remove(inputCommandModel.Type);
-                Debug.Log("Modificator Processor: Remove modificator: " + inputCommandModel.Type);
-            }
         }
 
         private void TryModifyCommand(AbstractCommandModel inputCommandModel)

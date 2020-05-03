@@ -1,4 +1,6 @@
-﻿namespace RhytmFighter.Rhytm
+﻿using RhytmFighter.Core.Enums;
+
+namespace RhytmFighter.Rhytm
 {
     public class RhytmInputProxy 
     {
@@ -32,7 +34,11 @@
             if (progressToNextTickAnalog >= 0.5f)
             {
                 RhytmController.GetInstance().DeltaInput = -RhytmController.GetInstance().TimeToNextTick;
+                RhytmController.GetInstance().InputTickResult = InputTickResult.PreTick;
+
+#if UNITY_EDITOR
                 UnityEngine.Debug.Log("RhytmInputProxy: Pre Tick: " + RhytmController.GetInstance().DeltaInput);
+#endif
 
                 return 1 - progressToNextTickAnalog <= m_InputPrecious;
             }
@@ -40,8 +46,12 @@
             else
             {
                 RhytmController.GetInstance().DeltaInput = RhytmController.GetInstance().TickDurationSeconds - RhytmController.GetInstance().TimeToNextTick;
+                RhytmController.GetInstance().InputTickResult = InputTickResult.PostTick;
+
+#if UNITY_EDITOR
                 UnityEngine.Debug.Log("RhytmInputProxy: Post Tick: " + RhytmController.GetInstance().DeltaInput);
 
+#endif
                 return progressToNextTickAnalog <= m_InputPrecious;
             }
         }

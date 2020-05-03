@@ -1,5 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
+using RhytmFighter.Assets;
 using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.AI;
@@ -47,6 +48,8 @@ namespace RhytmFighter.Objects.Model
         private float m_MoveSpeed;
         private AbstractBattleNPCView m_BattleView;
         private AbstractCommandModel m_LastExecutedCommand;
+        private Action m_InternalActionExecutedHandler;
+        private bool m_DefenceModificatorWasUsed = false;
 
 
         public AbstractBattleNPCModel(int id, GridCellData correspondingCell, float moveSpeed,
@@ -104,13 +107,22 @@ namespace RhytmFighter.Objects.Model
 
                     HealthBehaviour.ReduceHP(attackCommand.Damage);
 
+                    //If NPC has defence modificator
                     iCommandModificator defenceModificator = GetModificatorOfType(commandTypesWhichModifiedApply, CommandTypes.Defence);
                     if (defenceModificator != null)
                     {
-                        Battle.Command.View.SimpleDefenceView defenceView = CommandsController.TryGetCommandView(defenceModificator.CommandID) as Battle.Command.View.SimpleDefenceView;
-                        if (defenceView != null)
-                            defenceView.ExecuteDefence(m_BattleView.DefenceBreachParent.position);
+                        m_DefenceModificatorWasUsed = true;
 
+                        //Show defence effect
+                        MonoBehaviour ob = AssetsManager.GetPrefabAssets().InstantiatePrefab<MonoBehaviour>(AssetsManager.GetPrefabAssets().DefenceBreachEffectPrefab);
+                        ob.transform.position = m_BattleView.DefenceBreachParent.position;
+                        MonoBehaviour.Destroy(ob, 2);
+
+                        //Disable defence view
+                        Battle.Command.View.SimpleDefenceView defenceView = CommandsController.TryGetCommandView(defenceModificator.CommandID) as Battle.Command.View.SimpleDefenceView;
+                        defenceView?.HideView();
+
+                        //Play sound
                         GameManager.Instance.DefenceSound.Play();
                     }
 
@@ -159,11 +171,36 @@ namespace RhytmFighter.Objects.Model
 
             m_LastExecutedCommand = command;
             CommandsController.AddCommand(command);
+
+            m_InternalActionExecutedHandler?.Invoke();
+            m_InternalActionExecutedHandler = null;
         }
 
         private void AnimationEventHandler()
         {
+            if (m_LastExecutedCommand != null)
+                CreateViewForLastExecutedCommand();
+            else
+                m_InternalActionExecutedHandler += CreateViewForLastExecutedCommand;
+        }
+
+        private void CreateViewForLastExecutedCommand()
+        {
+            switch(m_LastExecutedCommand.Type)
+            {
+                case CommandTypes.Defence:
+                    if (m_DefenceModificatorWasUsed)
+                    {
+                        m_DefenceModificatorWasUsed = false;
+                        m_LastExecutedCommand = null;
+                        return;
+                    }
+
+                    break;
+            }
+
             CommandsController.CreateViewForCommand(m_LastExecutedCommand);
+            m_LastExecutedCommand = null;
         }
 
         private iCommandModificator GetModificatorOfType(List<iCommandModificator> commandTypesWhichModifiedApply, CommandTypes targetType)

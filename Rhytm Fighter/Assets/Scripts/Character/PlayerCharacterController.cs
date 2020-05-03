@@ -44,17 +44,8 @@ namespace RhytmFighter.Characters
             //Hide all cells except start cell
             levelController.RoomViewBuilder.HideCells(levelController.Model.GetCurrenRoomData());
 
-            m_OnFirstBattleForced += () => 
-            { 
-                //Extend view
-                levelController.RoomViewBuilder.ExtendView(levelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
-            };
-        }
-
-        private System.Action m_OnFirstBattleForced;
-        public void ForceFistBattle()
-        {
-            m_OnFirstBattleForced?.Invoke();
+            //Extend view
+            levelController.RoomViewBuilder.ExtendView(levelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
         }
 
         public void MoveCharacter(CellView targetCellView)

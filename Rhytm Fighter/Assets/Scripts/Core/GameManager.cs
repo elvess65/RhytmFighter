@@ -73,7 +73,7 @@ namespace RhytmFighter.Core
         private void Initialize()
         {
             //Temp
-            int bpm = 60 / 2;
+            int bpm = 130 / 2;
             double inputPrecious = 0.25;
             Metronome.bpm = bpm * 4;
 
@@ -150,10 +150,6 @@ namespace RhytmFighter.Core
 
             //Change state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
-
-            //TEMP
-            m_ControllersHolder.PlayerCharacterController.ForceFistBattle();
-            //StartCoroutine(debug_start_tick_coroutine());
         }
 
         private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)
@@ -255,6 +251,9 @@ namespace RhytmFighter.Core
         {
             Debug.LogError("Battle - Prepare");
 
+            //Debug - Sound
+            Rhytm.volume = 0.5f;
+
             //Debug - Show battle UI
             BeatIndicatorTemp.GetComponent<Image>().color = Color.yellow;
             BattleText.text = "Prepare for battle";
@@ -271,9 +270,6 @@ namespace RhytmFighter.Core
         private void BattleStartedHandler()
         {
             Debug.LogError("Battle - Start");
-
-            //Debug - Sound
-            Rhytm.volume = 0.5f;
 
             //Debug - Show Battle ui
             BeatIndicatorTemp.GetComponent<Image>().color = Color.red;
@@ -317,26 +313,22 @@ namespace RhytmFighter.Core
       
         private void TickingStartedHandler()
         {
-            //Music.Play();
-            //Rhytm.Play();
-            //Rhytm.volume = 0;
+            Music.Play();
+            Rhytm.Play();
+            Rhytm.volume = 0;
 
-            Metronome.StartMetronome();
+            //Metronome.StartMetronome();
         }
 
         private void TickHandler(int ticksSinceStart)
         {
-            //if (playBeat)
-            //    BeatSound.Play();
-
+            BeatSound.Play();
             StartCoroutine(BeatIndicatorTempCoroutine());
         }
 
         private void EventProcessingTickHandler(int ticksSinceStart)
         {
-            //if (playBeat)
-            //    BeatSound.Play();
-
+            BeatSound.Play();
             StartCoroutine(BeatIndicatorTempCoroutine());
         }
 

@@ -1,4 +1,5 @@
-﻿using RhytmFighter.Core;
+﻿using RhytmFighter.Battle.Command.Model;
+using RhytmFighter.Core;
 
 namespace RhytmFighter.Battle.AI
 {

@@ -13,7 +13,6 @@ namespace RhytmFighter.Level.Data
     {
         private int m_ENEMY_ID = 2;
         private List<GridCellData> m_EmptyCells;
-        private GridCellData enemyCell_debug;
 
         public LevelRoomData Build(LevelNodeData node, int minWidth, int maxWidth, int minHeight, int maxheight, float cellSize, int fillPercent)
         {
@@ -86,10 +85,6 @@ namespace RhytmFighter.Level.Data
 
                     if (grid.CellIsWalkable(cell))
                         m_EmptyCells.Add(cell);
-
-                    //TODO: Macros
-                    if (enemyCell_debug == null && i == grid.WidthInCells / 2 && j == grid.HeightInCells / 2 + 1)
-                        enemyCell_debug = cell;
                 }
             }
 
@@ -102,7 +97,7 @@ namespace RhytmFighter.Level.Data
             m_EmptyCells.RemoveAt(rndIndex);*/
 
             //TODO: Macros
-            //if (!node.IsStartNode)
+            if (!node.IsStartNode)
             //if (node.IsStartNode)
             {
                 rndIndex = Random.Range(0, m_EmptyCells.Count);
@@ -110,11 +105,13 @@ namespace RhytmFighter.Level.Data
                 float enemyMoveSpeed = GameManager.ENEMY_MOVE_SPEED;
                 int enemyHP = 10;
                 //TODO: Macros
-                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, enemyCell_debug, enemyMoveSpeed, new SimpleBattleActionBehaviour(1, 1, 1), 
+                GridCellData cell = grid.GetCellByCoord(grid.WidthInCells / 2, grid.HeightInCells - 1);
+                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, cell, enemyMoveSpeed, new SimpleBattleActionBehaviour(1, 1, 1), 
                                                                                                                           new SimpleHealthBehaviour(enemyHP),
                                                                                                                           AITypes.Simple);
-                enemyCell_debug.AddObject(enemyNPC);
-                enemyCell_debug = null;
+
+                cell.AddObject(enemyNPC);
+
                 //TODO: Macros
                 //m_EmptyCells[rndIndex].AddObject(enemyNPC);
                 //m_EmptyCells.RemoveAt(rndIndex);

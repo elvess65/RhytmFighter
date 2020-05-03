@@ -30,8 +30,8 @@ namespace RhytmFighter.Characters.Animation
                     Controller.SetBool(key, true);
                     break;
                 case AnimationTypes.TakeDamage:
-                    if (IsPlayingIdle())
-                        SetTrigger(key);
+                    //if (IsPlayingIdle())
+                    //    SetTrigger(key);
                     break;
             }
         }

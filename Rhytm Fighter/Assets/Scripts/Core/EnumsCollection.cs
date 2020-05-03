@@ -4,6 +4,9 @@
     public enum CommandTypes { None, Attack, Defence }
     public enum CommandExecutionLayers { PeriodicExecution, SingleExecution }
 
+    //Tick input
+    public enum InputTickResult { PreTick, PostTick }
+
     //Grid
     public enum GridObjectTypes { Item, NPC }
     public enum AddNoteResult { None, AddedToLeft, AddedToRight }

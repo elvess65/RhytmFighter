@@ -37,8 +37,16 @@ namespace RhytmFighter.Battle.Command.View
             }
         }
 
+        public void HideView()
+        {
+            FinalizeView();
+        }
 
-        protected abstract void ProcessUpdate();
+
+        protected virtual void ProcessUpdate()
+        {
+
+        }
 
         protected virtual void FinalizeView()
         {

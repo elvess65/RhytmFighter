@@ -35,6 +35,7 @@ namespace RhytmFighter.Assets
 
         [Header("Defence")]
         public AbstractDefenceView DefencePrefab;
+        public MonoBehaviour DefenceBreachEffectPrefab;
 
         private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
 
