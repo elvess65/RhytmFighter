@@ -5,8 +5,8 @@ namespace Frameworks.Grid.View.Cell
 {
     public class EnableDisable_CellAppearanceStrategy : iCellAppearanceStrategy
     {
-        public event Action<CellView> OnShowed;
-        public event Action<CellView> OnHided;
+        public event Action OnShowed;
+        public event Action OnHided;
 
         public bool IsShowed { get; private set; }
 

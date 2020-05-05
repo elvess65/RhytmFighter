@@ -11,6 +11,7 @@ namespace Frameworks.Grid.View
         public System.Action<AbstractGridObjectModel> OnObjectDetected;
 
         public Transform ConentParent;
+        public Collider ViewCollider;
         public AbstractAnimationController AnimationController;
 
         private Abstract_CellContentView m_CellContent;
@@ -31,7 +32,7 @@ namespace Frameworks.Grid.View
             m_CellContent.transform.localPosition = Vector3.zero;
 
             //Cell appearance
-            m_CellAppearanceStrategy = new Animation_CellAppearanceStrategy(AnimationController);
+            m_CellAppearanceStrategy = new Animation_CellAppearanceStrategy(AnimationController, ViewCollider);
         }
 
         public void ShowCell()

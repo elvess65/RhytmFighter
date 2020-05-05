@@ -2,8 +2,8 @@
 {
     public interface iCellAppearanceStrategy
     {
-        event System.Action<CellView> OnShowed;
-        event System.Action<CellView> OnHided;
+        event System.Action OnShowed;
+        event System.Action OnHided;
 
         bool IsShowed { get; }
 

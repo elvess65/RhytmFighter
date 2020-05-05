@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConentParent: {fileID: 1485336893721583166}
+  ViewCollider: {fileID: 8098207055278293625}
   AnimationController: {fileID: 4900960811785587966}
 --- !u!65 &8098207055278293625
 BoxCollider:
