@@ -1,6 +1,7 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View.Cell;
 using RhytmFighter.Assets;
+using RhytmFighter.Core;
 using RhytmFighter.Core.Enums;
 using RhytmFighter.Level.Data;
 using RhytmFighter.Objects.Model;
@@ -14,11 +15,16 @@ namespace Frameworks.Grid.View
         public System.Action<AbstractGridObjectModel> OnCellWithObjectDetected;
 
         private float m_CellOffset => 1f;
+
+        private WaitForSeconds m_ExtendViewWait;
         private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
+
+        private const float m_EXTEND_VIEW_DELAY = 0.1f;
 
         public GridViewBuilder()
         {
             m_GridViews = new Dictionary<int, GridViewData>();
+            m_ExtendViewWait = new WaitForSeconds(m_EXTEND_VIEW_DELAY);
         }
 
 
@@ -119,10 +125,10 @@ namespace Frameworks.Grid.View
         /// </summary>
         public void ExtendView(LevelRoomData roomData, GridCellData anchorCellData)
         {
-            ExtendViewVertical(roomData, anchorCellData, 1);
-            ExtendViewVertical(roomData, anchorCellData, -1);
-            ExtendViewHorizontal(roomData, anchorCellData, 1);
-            ExtendViewHorizontal(roomData, anchorCellData, -1);
+            GameManager.Instance.StartCoroutine(ExtendViewVertical(roomData, anchorCellData, 1));
+            GameManager.Instance.StartCoroutine(ExtendViewVertical(roomData, anchorCellData, -1));
+            GameManager.Instance.StartCoroutine(ExtendViewHorizontal(roomData, anchorCellData, 1));
+            GameManager.Instance.StartCoroutine(ExtendViewHorizontal(roomData, anchorCellData, -1));
         }
 
 
@@ -179,7 +185,7 @@ namespace Frameworks.Grid.View
         }
 
 
-        void ExtendViewVertical(LevelRoomData roomData, GridCellData anchorCellData, int verticalOffset)
+        System.Collections.IEnumerator ExtendViewVertical(LevelRoomData roomData, GridCellData anchorCellData, int verticalOffset)
         {
             //Move vertical by step until reach obstacle or end of the grid
 
@@ -187,6 +193,11 @@ namespace Frameworks.Grid.View
             CellView cellView = GetCellVisual(roomData.ID, anchorCellData.X, anchorCellData.Y + verticalOffset);
             while (iteration -- > 0 && cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
             {
+                //if (cellView.CorrespondingCellData.IsShowed)
+                //    continue;
+
+                yield return m_ExtendViewWait;
+
                 //Show cellView
                 cellView.ShowCell();
 
@@ -199,7 +210,7 @@ namespace Frameworks.Grid.View
                 cellView.ShowCell();
         }
 
-        void ExtendViewHorizontal(LevelRoomData roomData, GridCellData anchorCellData, int horizontalOffset)
+        System.Collections.IEnumerator ExtendViewHorizontal(LevelRoomData roomData, GridCellData anchorCellData, int horizontalOffset)
         {
             //Move horizontal by step until reach obstacle or end of the grid
 
@@ -208,8 +219,13 @@ namespace Frameworks.Grid.View
             while (iteration-- > 0 && cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
             {
                 //Moving step horizontal move all possible steps vertical
-                ExtendViewVertical(roomData, cellView.CorrespondingCellData, 1);
-                ExtendViewVertical(roomData, cellView.CorrespondingCellData, -1);
+                GameManager.Instance.StartCoroutine(ExtendViewVertical(roomData, cellView.CorrespondingCellData, 1));
+                GameManager.Instance.StartCoroutine(ExtendViewVertical(roomData, cellView.CorrespondingCellData, -1));
+
+                //if (cellView.CorrespondingCellData.IsShowed)
+                //    continue;
+
+                yield return m_ExtendViewWait;
 
                 //Show cellView
                 cellView.ShowCell();

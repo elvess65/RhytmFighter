@@ -156,6 +156,16 @@ namespace RhytmFighter.Objects.Model
             return m_BattleView.GetActionEventExecuteTime(commandType);
         }
 
+        public void NotifyViewAboutBattlePrepare()
+        {
+            m_BattleView.NotifyView_BattlePrepare();
+        }
+
+        public void NotifyViewAboutBattleFinish()
+        {
+            m_BattleView.NotifyView_BattleFinished();
+        }
+
 
         private void ActionBehaviour_OnActionExecutedHandler(AbstractCommandModel command)
         {

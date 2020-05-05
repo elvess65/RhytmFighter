@@ -84,6 +84,16 @@ namespace RhytmFighter.Objects.View
             return m_AnimationController.GetActionEventExecuteTime(ConvertersCollection.Command2Animation(type));
         }
 
+        public void NotifyView_BattlePrepare()
+        {
+            m_AnimationController.PlayAnimation(AnimationTypes.BattleIdle);
+        }
+
+        public void NotifyView_BattleFinished()
+        {
+            m_AnimationController.PlayAnimation(AnimationTypes.Idle);
+        }
+
 
         private void AnimationEventHandler()
         {

@@ -10,11 +10,10 @@ namespace RhytmFighter.Animation
         public Animator Controller;
         public AnimationKeys[] ExposedAnimationKeys;
 
-        private int m_IdleHash;
         private Dictionary<AnimationTypes, string> m_AnimationKeys;
         private Dictionary<string, float> m_AnimationActionEventsExecuteTime;
 
-        private const string m_BASE_LAYER = "Base Layer";
+        protected const string m_BASE_LAYER = "Base Layer";
 
 
         public abstract void PlayAnimation(AnimationTypes animationType);
@@ -50,9 +49,6 @@ namespace RhytmFighter.Animation
                     }
                 }
             }
-
-            //Hash idle animation
-            m_IdleHash = Animator.StringToHash($"{m_BASE_LAYER}.{GetAnimationName(AnimationTypes.Idle)}");
         }
 
         public float GetActionEventExecuteTime(AnimationTypes animationType)
@@ -80,11 +76,6 @@ namespace RhytmFighter.Animation
                 return m_AnimationKeys[animationType];
 
             return string.Empty;
-        }
-
-        protected bool IsPlayingIdle()
-        {
-            return Controller.GetCurrentAnimatorStateInfo(0).fullPathHash.Equals(m_IdleHash);
         }
 
 

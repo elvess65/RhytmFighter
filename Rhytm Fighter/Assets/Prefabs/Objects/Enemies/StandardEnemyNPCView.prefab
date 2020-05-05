@@ -120,8 +120,8 @@ MonoBehaviour:
     Key: Run Forward
   - Type: 5
     Key: Run Forward
-  - Type: 6
-    Key: Idle
+  - Type: 10
+    Key: BattleIdle
 --- !u!114 &1181045626910733427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,6 +248,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 870316522063103231, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 870316522063103231, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 870316522063103231, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1588591997607488284, guid: 480f1d0ab6779854ca35d5565e10ef5c,
         type: 3}
       propertyPath: m_Name

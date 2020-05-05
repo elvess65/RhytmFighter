@@ -270,6 +270,9 @@ namespace RhytmFighter.Core
             if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
                 m_ControllersHolder.PlayerCharacterController.StopMove();
 
+            //Prepare character to battle
+            m_ControllersHolder.PlayerCharacterController.PrepareForBattle();
+
             m_GameStateMachine.ChangeState(m_GameStateIdle);
         }
 
@@ -312,6 +315,9 @@ namespace RhytmFighter.Core
             Rhytm.volume = 0;
 
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
+
+            //Finish battle for player
+            m_ControllersHolder.PlayerCharacterController.FinishBattle();
 
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }

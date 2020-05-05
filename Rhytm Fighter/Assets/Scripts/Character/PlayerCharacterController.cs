@@ -69,6 +69,16 @@ namespace RhytmFighter.Characters
             PlayerModel.NotifyViewAboutCommand(type);
         }
 
+        public void PrepareForBattle()
+        {
+            PlayerModel.NotifyViewAboutBattlePrepare();
+        }
+
+        public void FinishBattle()
+        {
+            PlayerModel.NotifyViewAboutBattleFinish();
+        }
+
 
         private void MovementFinishedHandler(GridCellData cellData)
         {

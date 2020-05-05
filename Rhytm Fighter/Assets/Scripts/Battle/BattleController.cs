@@ -178,7 +178,7 @@ namespace RhytmFighter.Battle
             float distanceBetweenPlayerAndEnemy = curentGrid.GetDistanceBetweenCells(Player.CorrespondingCell, enemy.CorrespondingCell);
 
             //If distance is less than treshold - adjust movement or start battle
-            if (distanceBetweenPlayerAndEnemy > m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE)
+            if (distanceBetweenPlayerAndEnemy < m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE)
                 AdjustDistanceForObject(enemy);
             else
                 CheckRotationToPlayer(enemy);

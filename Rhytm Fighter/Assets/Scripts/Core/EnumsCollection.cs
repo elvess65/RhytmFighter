@@ -24,7 +24,8 @@
         Idle,
         IncreaseHP,
         Show,
-        Hide
+        Hide,
+        BattleIdle
     }
     public enum AnimationStates { None, Showing, Hiding }
 
