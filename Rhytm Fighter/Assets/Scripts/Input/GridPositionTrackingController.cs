@@ -45,6 +45,7 @@ namespace RhytmFighter.Input
                     if (cellData.IsEqualCoord(cellRoomData.GridData.ParentNodeGate))
                     {
                         Debug.Log("Parent node was visited");
+
                         bool isRightRoom = false;
 
                         //Add room 
@@ -53,41 +54,57 @@ namespace RhytmFighter.Input
                         //Cache created room id
                         m_CreatedOtherRoomID = cellRoomData.NodeData.ParentNode.ID;
 
-                        //Hide all cells of created room exept gate cell
+                        //Hide all cells of created room 
+                        GridCellData gateNode = null;
                         if (isRightRoom)
-                            m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true,
-                                                                        m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.RightNodeGate);
+                        {
+                            gateNode = m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.RightNodeGate;
+                            m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true, null, true);
+                        }
                         else
-                            m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true,
-                                                                        m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.LeftNodeGate);
+                        {
+                            gateNode = m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.LeftNodeGate;
+                            m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true, null, true);
+                        }
+
+                        //Show gate
+                        m_LevelController.RoomViewBuilder.GetCellVisual(m_CreatedOtherRoomID, gateNode.X, gateNode.Y).ShowCell();
                     }
                     //Visit right node check
                     else if (cellData.IsEqualCoord(cellRoomData.GridData.RightNodeGate))
                     {
                         Debug.Log("Right node was visited");
+
                         //Add room 
                         m_LevelController.AddNextRoom(cellRoomData.NodeData.RightNode, true);
 
                         //Cache created room id
                         m_CreatedOtherRoomID = cellRoomData.NodeData.RightNode.ID;
 
-                        //Hide all cells of created room exept parent gate cell
-                        m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true,
-                                                                    m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.ParentNodeGate);
+                        //Hide all cells of created room
+                        m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true, null, true);
+
+                        //Show parent gate
+                        GridCellData parentNodeGate = m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.ParentNodeGate;
+                        m_LevelController.RoomViewBuilder.GetCellVisual(m_CreatedOtherRoomID, parentNodeGate.X, parentNodeGate.Y).ShowCell();
                     }
                     //Visit left node check
                     else if (cellData.IsEqualCoord(cellRoomData.GridData.LeftNodeGate))
                     {
                         Debug.Log("Left node was visited");
+
                         //Add room 
                         m_LevelController.AddNextRoom(cellRoomData.NodeData.LeftNode, false);
 
                         //Cache created room id
                         m_CreatedOtherRoomID = cellRoomData.NodeData.LeftNode.ID;
 
-                        //Hide all cells of created room exept parent gate cell
-                        m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true,
-                                                                    m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.ParentNodeGate);
+                        //Hide all cells of created room
+                        m_LevelController.RoomViewBuilder.HideCells(m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID), true, null, true);
+
+                        //Show parent gate
+                        GridCellData parentNodeGate = m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).GridData.ParentNodeGate;
+                        m_LevelController.RoomViewBuilder.GetCellVisual(m_CreatedOtherRoomID, parentNodeGate.X, parentNodeGate.Y).ShowCell();
                     }
                 }
                 //Click the cell in other room

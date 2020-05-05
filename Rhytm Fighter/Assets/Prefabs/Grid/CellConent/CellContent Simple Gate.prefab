@@ -137,6 +137,11 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.25760317
       objectReference: {fileID: 0}
+    - target: {fileID: 198423621492567686, guid: 19c412f8f5af8fa4dbe5adbf58d317e6,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19c412f8f5af8fa4dbe5adbf58d317e6, type: 3}
 --- !u!1001 &8816590341282702121
@@ -149,7 +154,7 @@ PrefabInstance:
     - target: {fileID: 153836575011604561, guid: a6362d27df8aea3479a6bd0cbfaa8b4e,
         type: 3}
       propertyPath: m_Name
-      value: CellContent Simple Gate Next
+      value: CellContent Simple Gate
       objectReference: {fileID: 0}
     - target: {fileID: 719610897011521548, guid: a6362d27df8aea3479a6bd0cbfaa8b4e,
         type: 3}

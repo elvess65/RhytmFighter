@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Characters.Animation;
+﻿using RhytmFighter.Animation;
 using RhytmFighter.Core.Enums;
 using UnityEngine;
 using UnityEngine.UI;

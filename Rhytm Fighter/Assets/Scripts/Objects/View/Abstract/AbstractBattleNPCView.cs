@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Characters.Animation;
+﻿using RhytmFighter.Animation;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Core.Converters;
 using RhytmFighter.Core.Enums;
@@ -50,7 +50,7 @@ namespace RhytmFighter.Objects.View
             m_AnimationController = GetComponent<AbstractAnimationController>();
             m_AnimationController.Initialize();
 
-            ActionEventsListener animationEventsListener = m_AnimationController.Controller.GetComponent<ActionEventsListener>();
+            AnimationEventsListener animationEventsListener = m_AnimationController.Controller.GetComponent<AnimationEventsListener>();
             animationEventsListener.OnEvent += AnimationEventHandler;
         }
 

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Frameworks.Grid.View.Cell
+﻿namespace Frameworks.Grid.View.Cell
 {
     public interface iCellAppearanceStrategy
     {
@@ -12,8 +8,6 @@ namespace Frameworks.Grid.View.Cell
         bool IsShowed { get; }
 
         void Show();
-        void Hide();
-
-        
+        void Hide(bool hideImmdeiate);        
     }
 }

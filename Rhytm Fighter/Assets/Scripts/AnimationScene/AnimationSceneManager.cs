@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Characters.Animation;
+﻿using RhytmFighter.Animation;
 using UnityEngine;
 
 namespace RhytmFighter.AnimationScene

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RhytmFighter.Characters.Animation
+namespace RhytmFighter.Animation
 {
     [System.Serializable]
     public abstract class AbstractAnimationController : MonoBehaviour

@@ -1,5 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View.Cell;
+using RhytmFighter.Animation;
 using RhytmFighter.Objects.Model;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Frameworks.Grid.View
         public System.Action<AbstractGridObjectModel> OnObjectDetected;
 
         public Transform ConentParent;
+        public AbstractAnimationController AnimationController;
 
         private Abstract_CellContentView m_CellContent;
         private iCellAppearanceStrategy m_CellAppearanceStrategy;
@@ -29,7 +31,7 @@ namespace Frameworks.Grid.View
             m_CellContent.transform.localPosition = Vector3.zero;
 
             //Cell appearance
-            m_CellAppearanceStrategy = new ScaleUp_CellAppearanceStrategy(transform);
+            m_CellAppearanceStrategy = new Animation_CellAppearanceStrategy(AnimationController);
         }
 
         public void ShowCell()
@@ -37,13 +39,14 @@ namespace Frameworks.Grid.View
             if (IsShowed)
                 return;
 
-            //Show cell
+            //Affect visual
             m_CellAppearanceStrategy.Show();
 
-            //Make cell visited
+            //Make data visited
             if (!CorrespondingCellData.IsVisited)
                 CorrespondingCellData.IsVisited = true;
 
+            //Mark data as showed (for correct pathfinding)
             CorrespondingCellData.IsShowed = true;
 
             //If cell contains object
@@ -57,13 +60,15 @@ namespace Frameworks.Grid.View
             }
         }
 
-        public void HideCell()
+        public void HideCell(bool hideImmdeiate)
         {
             if (!IsShowed)
                 return;
 
-            m_CellAppearanceStrategy.Hide();
+            //Affect visual
+            m_CellAppearanceStrategy.Hide(hideImmdeiate);
 
+            //Mark data as hided (for correct pathfinding)
             CorrespondingCellData.IsShowed = false;
 
             //If cell contains object

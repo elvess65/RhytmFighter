@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Frameworks.Grid.View.Cell
 {
-    public class ScaleUp_CellAppearanceStrategy : iCellAppearanceStrategy
+    public class EnableDisable_CellAppearanceStrategy : iCellAppearanceStrategy
     {
         public event Action<CellView> OnShowed;
         public event Action<CellView> OnHided;
@@ -13,7 +13,7 @@ namespace Frameworks.Grid.View.Cell
         private Transform m_ControlledObject;
         
 
-        public ScaleUp_CellAppearanceStrategy(Transform controlledObject)
+        public EnableDisable_CellAppearanceStrategy(Transform controlledObject)
         {
             m_ControlledObject = controlledObject;
             IsShowed = true;
@@ -25,7 +25,7 @@ namespace Frameworks.Grid.View.Cell
             IsShowed = true;
         }
 
-        public void Hide()
+        public void Hide(bool hideImmediate)
         {
             m_ControlledObject.gameObject.SetActive(false);
             IsShowed = false;

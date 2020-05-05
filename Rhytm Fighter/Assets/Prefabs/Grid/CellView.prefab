@@ -9,6 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1485336893721583166}
+  - component: {fileID: 7924192108719509869}
+  - component: {fileID: 6562938661964404428}
+  - component: {fileID: 4900960811785587966}
   m_Layer: 0
   m_Name: ConentParent
   m_TagString: Untagged
@@ -30,6 +33,55 @@ Transform:
   m_Father: {fileID: 4394888036021418469}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7924192108719509869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2420837583424080665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d50d0341aed9274ead4383dd4074336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &6562938661964404428
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2420837583424080665}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a70feb032a450144cb54811a085e3fce, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4900960811785587966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2420837583424080665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d6229218feebea4e8fe04b27dde883c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Controller: {fileID: 6562938661964404428}
+  ExposedAnimationKeys:
+  - Type: 8
+    Key: Show
+  - Type: 9
+    Key: Hide
 --- !u!1 &7825372408875580569
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConentParent: {fileID: 1485336893721583166}
+  AnimationController: {fileID: 4900960811785587966}
 --- !u!65 &8098207055278293625
 BoxCollider:
   m_ObjectHideFlags: 0

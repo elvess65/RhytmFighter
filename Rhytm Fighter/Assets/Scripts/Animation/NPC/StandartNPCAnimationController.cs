@@ -1,6 +1,6 @@
 ﻿using RhytmFighter.Core.Enums;
 
-namespace RhytmFighter.Characters.Animation
+namespace RhytmFighter.Animation.NPC
 {
     public class StandartNPCAnimationController : AbstractAnimationController
     {

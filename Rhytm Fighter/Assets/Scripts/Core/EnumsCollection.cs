@@ -22,8 +22,11 @@
         StartMove,
         StopMove,
         Idle,
-        IncreaseHP
+        IncreaseHP,
+        Show,
+        Hide
     }
+    public enum AnimationStates { None, Showing, Hiding }
 
     //AI
     public enum AITypes { None, Simple }

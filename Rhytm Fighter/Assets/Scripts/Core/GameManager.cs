@@ -21,6 +21,7 @@ namespace RhytmFighter.Core
         public ManagersHolder ManagersHolder;
         public Transform CameraRoot;
         public UnityEngine.Camera WorldCamera;
+        public Cinemachine.CinemachineVirtualCamera VirtualCameraMain;
 
         [Header("Temp")]
         public GameObject BeatIndicatorTemp;
@@ -180,6 +181,7 @@ namespace RhytmFighter.Core
             //TODO Get from data
             int playerID = 0;
 
+            //Temp
             SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(20);
             SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(1, 1, 2);
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
@@ -195,6 +197,10 @@ namespace RhytmFighter.Core
 
             //Focus camera on character
             m_ControllersHolder.CameraController.InitializeCamera(CameraRoot, m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
+
+            //VCam
+            VirtualCameraMain.Follow = m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform;
+            VirtualCameraMain.LookAt = m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform;
 
             //Finish initialization
             InitializationFinished();

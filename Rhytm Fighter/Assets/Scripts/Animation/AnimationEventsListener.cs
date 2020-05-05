@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace RhytmFighter.Characters.Animation
+namespace RhytmFighter.Animation
 {
-    public class ActionEventsListener : MonoBehaviour
+    public class AnimationEventsListener : MonoBehaviour
     {
         public event System.Action OnEvent;
 

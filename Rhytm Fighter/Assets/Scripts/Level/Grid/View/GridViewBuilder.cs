@@ -64,8 +64,18 @@ namespace Frameworks.Grid.View
         {
             if (m_GridViews.ContainsKey(roomData.ID))
             {
+                for (int i = 0; i < roomData.GridData.WidthInCells; i++)
+                {
+                    for (int j = 0; j < roomData.GridData.HeightInCells; j++)
+                    {
+                        CellView cellView = GetCellVisual(roomData.ID, i, j);
+                        if (cellView.IsShowed)
+                            cellView.HideCell(false);
+                    }
+                }
+
                 //Remove parent - remove all grids
-                MonoBehaviour.Destroy(m_GridViews[roomData.ID].GridParent.gameObject);
+                MonoBehaviour.Destroy(m_GridViews[roomData.ID].GridParent.gameObject, 2);
 
                 //Remove data
                 m_GridViews.Remove(roomData.ID);
@@ -85,32 +95,10 @@ namespace Frameworks.Grid.View
         }
 
 
-        public void ShowAllCellsWithObjects_Debug(LevelRoomData roomData)
-        {
-            for (int i = 0; i < roomData.GridData.WidthInCells; i++)
-            {
-                for (int j = 0; j < roomData.GridData.HeightInCells; j++)
-                {
-                    //Get cell view
-                    CellView cellView = GetCellVisual(roomData.ID, i, j);
-                    if (cellView.CorrespondingCellData.HasObject)
-                    {
-                        ShowCell_Debug(cellView);
-                    }
-                }
-            }
-        }
-
-        public void ShowCell_Debug(CellView cellView)
-        {
-            GameObject.CreatePrimitive(PrimitiveType.Cube).transform.position = cellView.transform.position;
-        }
-
-
         /// <summary>
-        /// Hide all cells of the room with exception and with ignore visited options
+        /// Hide all cells of the room with exception and with ignore visited options (not ignore visited by default)
         /// </summary>
-        public void HideCells(LevelRoomData roomData, bool ignoreVisited = false, GridCellData exceptionalCell = null)
+        public void HideCells(LevelRoomData roomData, bool ignoreVisited = false, GridCellData exceptionalCell = null, bool hideImmediate = false)
         {
             for (int i = 0; i < roomData.GridData.WidthInCells; i++)
             {
@@ -119,9 +107,9 @@ namespace Frameworks.Grid.View
                     //Get cell view
                     CellView cellView = GetCellVisual(roomData.ID, i, j);
 
-                    //If cell view is not exceptional - try hide if is not visited
+                    //If cell view is not exceptional and if should ignore visited and current cell is not visited - hide
                     if (!cellView.CorrespondingCellData.IsEqualCoord(exceptionalCell) && (ignoreVisited || !cellView.CorrespondingCellData.IsVisited))
-                        cellView.HideCell();
+                        cellView.HideCell(hideImmediate);
                 }
             }
         }
@@ -158,6 +146,36 @@ namespace Frameworks.Grid.View
         {
             CellView gateCellView = GetCellVisual(parentCellData.CorrespondingRoomID, parentCellData.X, parentCellData.Y);
             return new Vector3(gateCellView.transform.position.x + gateCellData.X * m_CellOffset * nodeDirectionOffset - m_CellOffset / 2, 0, gateCellView.transform.position.z - gateCellData.Y * m_CellOffset - m_CellOffset - m_CellOffset / 2);
+        }
+
+
+        /// <summary>
+        /// Debug
+        /// </summary>
+        /// <param name="roomData"></param>
+        public void ShowAllCellsWithObjects_Debug(LevelRoomData roomData)
+        {
+            for (int i = 0; i < roomData.GridData.WidthInCells; i++)
+            {
+                for (int j = 0; j < roomData.GridData.HeightInCells; j++)
+                {
+                    //Get cell view
+                    CellView cellView = GetCellVisual(roomData.ID, i, j);
+                    if (cellView.CorrespondingCellData.HasObject)
+                    {
+                        ShowCell_Debug(cellView);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Debug
+        /// </summary>
+        /// <param name="cellView"></param>
+        public void ShowCell_Debug(CellView cellView)
+        {
+            GameObject.CreatePrimitive(PrimitiveType.Cube).transform.position = cellView.transform.position;
         }
 
 
