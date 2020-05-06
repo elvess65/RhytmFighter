@@ -70,6 +70,11 @@ namespace RhytmFighter.Animation
             Controller.SetBool(name, state);
         }
 
+        protected bool GetBool(string name)
+        {
+            return Controller.GetBool(name);
+        }
+
         protected string GetAnimationName(AnimationTypes animationType)
         {
             if (m_AnimationKeys.ContainsKey(animationType))

@@ -186,6 +186,10 @@ MonoBehaviour:
     Key: Idle
   - Type: 10
     Key: BattleIdle
+  - Type: 11
+    Key: StrafeLeft
+  - Type: 12
+    Key: StrafeRight
 --- !u!1 &6495413218780708708
 GameObject:
   m_ObjectHideFlags: 0

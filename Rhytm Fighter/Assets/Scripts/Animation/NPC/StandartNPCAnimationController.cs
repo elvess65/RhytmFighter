@@ -27,38 +27,61 @@ namespace RhytmFighter.Animation.NPC
                     if (IsPlayingBattleIdle())
                         SetTrigger(key);
                     break;
+
                 case AnimationTypes.Defence:
                     if (IsPlayingBattleIdle())
                         SetTrigger(key);
                     break;
+
                 case AnimationTypes.Destroy:
-                    if (IsPlayingBattleIdle())
-                        SetTrigger(key);
+                    SetTrigger(key);
                     break;
-                case AnimationTypes.StopMove:
-                    key = GetAnimationName(AnimationTypes.StartMove);
-                    Controller.SetBool(key, false);
+
+                case AnimationTypes.TakeDamage:
+                    //if (IsPlayingBattleIdle())
+                    //    SetTrigger(key);
                     break;
+
                 case AnimationTypes.IncreaseHP:
                     SetTrigger(key);
                     break;
+
                 case AnimationTypes.StartMove:
-                    Controller.SetBool(key, true);
-                    break;
-                case AnimationTypes.TakeDamage:
-                    //if (IsPlayingIdle())
-                    //    SetTrigger(key);
-                    break;
-                case AnimationTypes.BattleIdle:
-                    Controller.SetBool(key, true);
-                    break;
-                case AnimationTypes.Idle:
-                    key = GetAnimationName(AnimationTypes.BattleIdle);
-                    Controller.SetBool(key, false);
+                    SetBool(key, true);
                     break;
 
+                case AnimationTypes.StopMove:
+                    key = GetAnimationName(AnimationTypes.StartMove);
+                    SetBool(key, false);
+                    break;
+
+
+                case AnimationTypes.Idle:
+                    SetBool(GetAnimationName(AnimationTypes.BattleIdle), false);
+                    break;
+
+                case AnimationTypes.BattleIdle:
+                
+                    if (GetBool(GetAnimationName(AnimationTypes.StrafeLeft)))
+                        SetBool(GetAnimationName(AnimationTypes.StrafeLeft), false);
+
+                    if (GetBool(GetAnimationName(AnimationTypes.StrafeRight)))
+                        SetBool(GetAnimationName(AnimationTypes.StrafeRight), false);
+
+                    SetBool(key, true);
+                    break;
+               
+
+                case AnimationTypes.StrafeLeft:
+                    SetBool(key, true);
+                    break;
+
+                case AnimationTypes.StrafeRight:
+                    SetBool(key, true);
+                    break;
             }
         }
+
 
         bool IsPlayingIdle()
         {

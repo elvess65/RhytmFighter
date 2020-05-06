@@ -249,9 +249,7 @@ namespace RhytmFighter.Battle
 
             if (Vector3.Angle(dirToPlayer, Player.Target.ViewForwardDir) > m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_ROTATION)
             {
-                Quaternion rotationToPlayer = Quaternion.LookRotation(dirToPlayer);
-
-                m_EnemyMovementController.RotateCharacter(rotationToPlayer);
+                m_EnemyMovementController.RotateCharacter(Quaternion.LookRotation(dirToPlayer));
                 m_EnemyMovementController.OnRotationFinished += RotationToPlayerFinished;
             }
             else 

@@ -116,6 +116,7 @@ namespace RhytmFighter.Objects.View
         public void NotifyView_StartRotate(Quaternion targetRotation)
         {
             m_MoveStrategy.RotateTo(targetRotation);
+            m_AnimationController.PlayAnimation(transform.eulerAngles.y > targetRotation.eulerAngles.y ? AnimationTypes.StrafeLeft : AnimationTypes.StrafeRight);
         }
 
         //iUpdatable
@@ -139,6 +140,7 @@ namespace RhytmFighter.Objects.View
 
         void RotationFinishedHandler()
         {
+            m_AnimationController.PlayAnimation(AnimationTypes.BattleIdle);
             OnRotationFinished?.Invoke();
         }
         #endregion

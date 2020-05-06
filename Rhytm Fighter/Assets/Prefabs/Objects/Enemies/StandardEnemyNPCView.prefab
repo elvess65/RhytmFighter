@@ -122,6 +122,10 @@ MonoBehaviour:
     Key: Run Forward
   - Type: 10
     Key: BattleIdle
+  - Type: 11
+    Key: StrafeLeft
+  - Type: 12
+    Key: StrafeRight
 --- !u!114 &1181045626910733427
 MonoBehaviour:
   m_ObjectHideFlags: 0
