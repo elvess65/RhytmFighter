@@ -269,10 +269,16 @@ namespace RhytmFighter.Objects.Model
             m_BattleView.NotifyView_StopMove();
         }
 
-        public void NotifyView_StartRotate(Quaternion targetRotation)
+        public void NotifyView_StartRotate(Quaternion targetRotation, bool onlyAnimation)
         {
             //Notify view
-            m_BattleView.NotifyView_StartRotate(targetRotation);
+            m_BattleView.NotifyView_StartRotate(targetRotation, onlyAnimation);
+        }
+
+        public void NotifyView_FinishRotate()
+        {
+            //Notify view
+            m_BattleView.NotifyView_FinishRotate();
         }
 
         public void MovementFinishedReverseCallback(GridCellData cellData)

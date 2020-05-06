@@ -5,6 +5,7 @@ using RhytmFighter.Core;
 using RhytmFighter.Core.Enums;
 using RhytmFighter.Level;
 using RhytmFighter.Objects.Model;
+using UnityEngine;
 
 namespace RhytmFighter.Characters
 {
@@ -20,7 +21,10 @@ namespace RhytmFighter.Characters
         public PlayerModel PlayerModel { get; private set; }
 
         private ModelMovementController m_MovementController;
-        
+        private iBattleObject m_FocusingTarget = null;
+
+        private const float m_FOCUSING_SPEED = 10;
+
        
         public void CreateCharacter(PlayerModel playerModel, CellView startCellView, LevelController levelController)
         {
@@ -58,9 +62,22 @@ namespace RhytmFighter.Characters
             m_MovementController.StopMove();
         }
 
+        public void Focus(iBattleObject target)
+        {
+            m_FocusingTarget = target;
+        }
+
+        public void StopFocusing()
+        {
+            PlayerModel.NotifyView_FinishRotate();
+            m_FocusingTarget = null;
+        }
+
         public void PerformUpdate(float deltaTime)
         {
             m_MovementController?.PerformUpdate(deltaTime);
+
+            ProcessFocusing();
         }
 
         public void ExecuteAction(CommandTypes type)
@@ -79,6 +96,17 @@ namespace RhytmFighter.Characters
             PlayerModel.NotifyViewAboutBattleFinish();
         }
 
+
+        private void ProcessFocusing()
+        {
+            if (m_FocusingTarget == null)
+                return;
+
+            Quaternion targetRotation = Quaternion.LookRotation(m_FocusingTarget.ViewPosition - PlayerModel.ViewPosition);
+
+            PlayerModel.View.transform.rotation = Quaternion.Slerp(PlayerModel.View.transform.rotation, targetRotation, Time.deltaTime * m_FOCUSING_SPEED);
+            PlayerModel.NotifyView_StartRotate(targetRotation, true);
+        }
 
         private void MovementFinishedHandler(GridCellData cellData)
         {

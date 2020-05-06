@@ -14,6 +14,6 @@ namespace RhytmFighter.Characters.Movement
         void Initialize(float moveSpeed);
         void NotifyView_StartMove(Vector3[] path);
         void NotifyView_StopMove();
-        void NotifyView_StartRotate(Quaternion targetRotation);
+        void NotifyView_StartRotate(Quaternion targetRotation, bool onlyAnimation);
     }
 }

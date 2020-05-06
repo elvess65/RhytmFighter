@@ -22,7 +22,6 @@ namespace RhytmFighter.Core
         public CameraController CameraController { get; private set; }
         public BattleController BattleController { get; private set; }
         public CommandsController CommandsController { get; private set; }
-
         public PlayerCharacterController PlayerCharacterController { get; private set; }
         
 
@@ -34,11 +33,12 @@ namespace RhytmFighter.Core
             InputController = new InputController();
             RhytmController = new RhytmController();
             CameraController = new CameraController();
-            BattleController = new BattleController(LevelController, CameraController);
+            PlayerCharacterController = new PlayerCharacterController();
+            BattleController = new BattleController(LevelController, CameraController, PlayerCharacterController);
             CommandsController = new CommandsController();
             RhytmInputProxy = new RhytmInputProxy();
 
-            PlayerCharacterController = new PlayerCharacterController();
+            
         }
     }
 }

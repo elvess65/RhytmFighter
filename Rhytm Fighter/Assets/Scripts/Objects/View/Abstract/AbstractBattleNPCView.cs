@@ -113,10 +113,17 @@ namespace RhytmFighter.Objects.View
             m_MoveStrategy.StopMove();
         }
 
-        public void NotifyView_StartRotate(Quaternion targetRotation)
+        public void NotifyView_StartRotate(Quaternion targetRotation, bool onlyAnimation)
         {
-            m_MoveStrategy.RotateTo(targetRotation);
+            if (!onlyAnimation)
+                m_MoveStrategy.RotateTo(targetRotation);
+
             m_AnimationController.PlayAnimation(transform.eulerAngles.y > targetRotation.eulerAngles.y ? AnimationTypes.StrafeLeft : AnimationTypes.StrafeRight);
+        }
+
+        public void NotifyView_FinishRotate()
+        {
+            m_AnimationController.PlayAnimation(AnimationTypes.BattleIdle);
         }
 
         //iUpdatable
@@ -140,7 +147,8 @@ namespace RhytmFighter.Objects.View
 
         void RotationFinishedHandler()
         {
-            m_AnimationController.PlayAnimation(AnimationTypes.BattleIdle);
+            NotifyView_FinishRotate();
+
             OnRotationFinished?.Invoke();
         }
         #endregion

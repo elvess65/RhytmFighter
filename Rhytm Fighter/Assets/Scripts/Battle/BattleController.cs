@@ -1,5 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
+using RhytmFighter.Characters;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Core;
 using System.Collections.Generic;
@@ -19,7 +20,8 @@ namespace RhytmFighter.Battle
         private Level.LevelController m_LevelController;
         private Camera.CameraController m_CameraController;
         private ModelMovementController m_EnemyMovementController;
-        
+        private PlayerCharacterController m_PlayerCharacterController;
+
         private Dictionary<int, iBattleObject> m_PendingEnemies;
         
         public iBattleObject Player { get; set; }
@@ -31,12 +33,13 @@ namespace RhytmFighter.Battle
         private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_ROTATION = 5;
 
 
-        public BattleController(Level.LevelController levelController, Camera.CameraController cameraController)
+        public BattleController(Level.LevelController levelController, Camera.CameraController cameraController, PlayerCharacterController playerCharacterController)
         {
             m_ForceCameraFollowPoint = false;
 
             m_LevelController = levelController;
             m_CameraController = cameraController;
+            m_PlayerCharacterController = playerCharacterController;
 
             m_PendingEnemies = new Dictionary<int, iBattleObject>();
             m_EnemyMovementController = new ModelMovementController(levelController);
@@ -165,6 +168,7 @@ namespace RhytmFighter.Battle
         {
             //Start follow focus point
             m_ForceCameraFollowPoint = true;
+            m_PlayerCharacterController.Focus(enemy);
 
             //Remove target from pending
             if (m_PendingEnemies.ContainsKey(enemy.ID))
@@ -265,6 +269,7 @@ namespace RhytmFighter.Battle
 
         private void StartBattle()
         {
+            m_PlayerCharacterController.StopFocusing();
             OnBattleStarted?.Invoke();
         }
     }

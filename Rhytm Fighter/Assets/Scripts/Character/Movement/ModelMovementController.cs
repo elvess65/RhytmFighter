@@ -114,7 +114,7 @@ namespace RhytmFighter.Characters.Movement
 
         public void RotateCharacter(Quaternion targetRotation)
         {
-            Model.NotifyView_StartRotate(targetRotation);
+            Model.NotifyView_StartRotate(targetRotation, false);
         }
 
         public void PerformUpdate(float deltaTime)
