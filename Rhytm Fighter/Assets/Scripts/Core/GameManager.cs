@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RhytmFighter.Core.Enums;
 using UnityEngine.UI;
+using RhytmFighter.CameraSystem;
 
 namespace RhytmFighter.Core
 {
@@ -19,10 +20,8 @@ namespace RhytmFighter.Core
 
         [Header("Links")]
         public ManagersHolder ManagersHolder;
-        public Transform CameraRoot;
-        public UnityEngine.Camera WorldCamera;
-        public Cinemachine.CinemachineVirtualCamera VirtualCameraMain;
-
+        public CamerasHolder CamerasHolder;
+  
         [Header("Temp")]
         public GameObject BeatIndicatorTemp;
         public AudioSource Music;
@@ -195,12 +194,10 @@ namespace RhytmFighter.Core
             //Set player to battle controller
             m_ControllersHolder.BattleController.Player = m_ControllersHolder.PlayerCharacterController.PlayerModel;
 
-            //Focus camera on character
-            m_ControllersHolder.CameraController.InitializeCamera(CameraRoot, m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
-
-            //VCam
-            VirtualCameraMain.Follow = m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform;
-            VirtualCameraMain.LookAt = m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform;
+            //Initialize camera
+            m_ControllersHolder.CameraController.InitializeCamera(CamerasHolder.VCStateDriven, m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform);
+            CamerasHolder.BattleTargetGroup.AddMember(m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform, 1, 1);
+            //, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
 
             //Finish initialization
             InitializationFinished();

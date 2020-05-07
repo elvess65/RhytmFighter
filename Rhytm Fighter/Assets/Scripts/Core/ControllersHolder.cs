@@ -1,6 +1,6 @@
 ﻿using RhytmFighter.Battle;
 using RhytmFighter.Battle.Command;
-using RhytmFighter.Camera;
+using RhytmFighter.CameraSystem;
 using RhytmFighter.Characters;
 using RhytmFighter.Input;
 using RhytmFighter.Level;

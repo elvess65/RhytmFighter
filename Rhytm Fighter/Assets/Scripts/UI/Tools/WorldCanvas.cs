@@ -10,7 +10,7 @@ namespace RhytmFighter.UI.Tools
         private void Start()
         {
             m_Canvas = GetComponent<Canvas>();
-            m_Canvas.worldCamera = GameManager.Instance.WorldCamera;
+            m_Canvas.worldCamera = GameManager.Instance.CamerasHolder.WorldCamera;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace RhytmFighter.Battle
         private int m_TargetTick;
         private bool m_ForceCameraFollowPoint;
         private Level.LevelController m_LevelController;
-        private Camera.CameraController m_CameraController;
+        private CameraSystem.CameraController m_CameraController;
         private ModelMovementController m_EnemyMovementController;
         private PlayerCharacterController m_PlayerCharacterController;
 
@@ -33,7 +33,7 @@ namespace RhytmFighter.Battle
         private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_ROTATION = 5;
 
 
-        public BattleController(Level.LevelController levelController, Camera.CameraController cameraController, PlayerCharacterController playerCharacterController)
+        public BattleController(Level.LevelController levelController, CameraSystem.CameraController cameraController, PlayerCharacterController playerCharacterController)
         {
             m_ForceCameraFollowPoint = false;
 

@@ -5,11 +5,11 @@ namespace RhytmFighter.UI.Tools
 {
     public class LookAtCamera : MonoBehaviour
     {
-        private UnityEngine.Camera m_Camera;
+        private Camera m_Camera;
 
         void Start()
         {
-            m_Camera = GameManager.Instance.WorldCamera;
+            m_Camera = GameManager.Instance.CamerasHolder.WorldCamera;
         }
 
         void Update()
