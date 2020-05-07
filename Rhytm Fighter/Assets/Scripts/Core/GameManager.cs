@@ -195,8 +195,7 @@ namespace RhytmFighter.Core
             m_ControllersHolder.BattleController.Player = m_ControllersHolder.PlayerCharacterController.PlayerModel;
 
             //Initialize camera
-            m_ControllersHolder.CameraController.InitializeCamera(CamerasHolder.VCStateDriven, m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform);
-            CamerasHolder.BattleTargetGroup.AddMember(m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform, 1, 1);
+            m_ControllersHolder.CameraController.InitializeCamera(m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform);
             //, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
 
             //Finish initialization

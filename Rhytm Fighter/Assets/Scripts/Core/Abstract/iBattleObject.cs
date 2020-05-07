@@ -16,6 +16,7 @@ namespace RhytmFighter.Core
         bool IsEnemy { get; }
         float ActionExecutionTime { get; }
         GridCellData CorrespondingCell { get; }
+        UnityEngine.Transform ViewTransform { get; }
         UnityEngine.Vector3 ViewPosition { get; }
         UnityEngine.Vector3 ViewForwardDir { get; }
         UnityEngine.Vector3 ProjectileSpawnPosition { get; }

@@ -1,4 +1,5 @@
 ﻿using Cinemachine;
+using RhytmFighter.Animation;
 using RhytmFighter.Core;
 using RhytmFighter.UI.Tools;
 using UnityEngine;
@@ -8,22 +9,37 @@ namespace RhytmFighter.CameraSystem
     public class CameraController : iUpdatable
     {
         private FollowObject m_FollowObject;
-        private CinemachineVirtualCameraBase m_VCam;
+        private CinemachineStateDrivenCamera m_MainVCam;
 
-        public void InitializeCamera(CinemachineVirtualCameraBase vcam, Transform target)
+        public void InitializeCamera(Transform target)
         {
             //m_FollowObject = new FollowObject();
             //m_FollowObject.SetRoot(root);
             //m_FollowObject.SetTarget(target);
             //m_FollowObject.SetSpeed(followSpeed);
 
-            m_VCam = vcam;
-            m_VCam.Follow = target;
-            m_VCam.LookAt = target;
+            //Disable default vcam
+            GameManager.Instance.CamerasHolder.DefaultCamMain.Priority = 0;
 
-            CinemachineStateDrivenCamera stateDrivenCamera = (CinemachineStateDrivenCamera)vcam;
-            stateDrivenCamera.m_AnimatedTarget = target.GetComponentInChildren<Animator>();
+            //Initialize state driven vcam
+            GameManager.Instance.CamerasHolder.VCStateDriven.Follow = target;
+            GameManager.Instance.CamerasHolder.VCStateDriven.LookAt = target;
+            GameManager.Instance.CamerasHolder.VCStateDriven.m_AnimatedTarget = target.GetComponent<AbstractAnimationController>().Controller;
+
+            //Itinialize group vcam
+            PushMemberToTargetGroup(target);
         }
+
+        public void PushMemberToTargetGroup(Transform target)
+        {
+            GameManager.Instance.CamerasHolder.BattleTargetGroup.AddMember(target, 1, 1);
+        }
+
+        public void PeekMemberFromTargetGroup(Transform target)
+        {
+            GameManager.Instance.CamerasHolder.BattleTargetGroup.RemoveMember(target);
+        }
+
 
         public void SetTarget(Transform target) => m_FollowObject?.SetTarget(target);
 

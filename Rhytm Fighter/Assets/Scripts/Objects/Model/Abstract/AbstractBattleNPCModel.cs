@@ -27,6 +27,7 @@ namespace RhytmFighter.Objects.Model
         
         public bool IsMoving => m_BattleView.IsMoving;
         public float ActionExecutionTime => m_BattleView.ActionEventExecutionTime;
+        public Transform ViewTransform => View.transform;
         public Vector3 ViewPosition => View.transform.position;
         public Vector3 ViewForwardDir => View.transform.forward;
         public Vector3 ProjectileHitPosition => m_BattleView.ProjectileHitPosition;

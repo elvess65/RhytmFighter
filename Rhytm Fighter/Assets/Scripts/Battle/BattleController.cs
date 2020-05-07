@@ -105,11 +105,13 @@ namespace RhytmFighter.Battle
         }
 
         
-        private void EnemyDestroyedHandler(iBattleObject sender)
+        private void EnemyDestroyedHandler(iBattleObject enemy)
         {
             //Clear players target
-            if (Player.Target.ID == sender.ID)
+            if (Player.Target.ID == enemy.ID)
                 Player.Target = null;
+
+            m_CameraController.PeekMemberFromTargetGroup(enemy.ViewTransform);
 
             OnEnemyDestroyed?.Invoke();
         }
@@ -169,6 +171,7 @@ namespace RhytmFighter.Battle
             //Start follow focus point
             m_ForceCameraFollowPoint = true;
             m_PlayerCharacterController.Focus(enemy);
+            m_CameraController.PushMemberToTargetGroup(enemy.ViewTransform);
 
             //Remove target from pending
             if (m_PendingEnemies.ContainsKey(enemy.ID))
