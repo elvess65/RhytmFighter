@@ -24,13 +24,13 @@ namespace RhytmFighter.Objects.Model
             if (View == null)
                 View = CreateView(cellView);
 
-            View.Show(this);
+            View.ShowView(this);
         }
 
         public virtual void HideView()
         {
             if (View != null)
-                View.Hide();
+                View.HideView();
         }
 
 

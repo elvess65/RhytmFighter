@@ -27,6 +27,8 @@ namespace RhytmFighter.Input
             //Cell was changed
             if (!cellData.IsEqualCoord(m_LastVisitedCell))
             {
+                bool showAllVisitedCells = false;
+
                 //Click the cell in the same room
                 if (cellData.CorrespondingRoomID.Equals(m_LevelController.Model.CurrentRoomID))
                 {
@@ -118,6 +120,9 @@ namespace RhytmFighter.Input
                     //Cache current room id
                     int currentRoomID = m_LevelController.Model.CurrentRoomID;
 
+                    //Shaw all visited cells if created room was already visited
+                    showAllVisitedCells = m_LevelController.Model.GetRoomDataByID(m_CreatedOtherRoomID).RoomIsVisited;
+
                     //Set transitioned room as current
                     m_LevelController.Model.SetRoomAsCurrent(m_CreatedOtherRoomID);
 
@@ -130,7 +135,10 @@ namespace RhytmFighter.Input
                 m_LastVisitedCell = cellData;
 
                 //Extend view
-                m_LevelController.RoomViewBuilder.ExtendView(m_LevelController.Model.GetCurrenRoomData(), m_LastVisitedCell);
+                if (showAllVisitedCells)
+                    m_LevelController.RoomViewBuilder.ShowAllVisitedCells(m_LevelController.Model.GetCurrenRoomData());
+                else
+                    m_LevelController.RoomViewBuilder.ExtendView(m_LevelController.Model.GetCurrenRoomData(), m_LastVisitedCell);
             }
         }
     }

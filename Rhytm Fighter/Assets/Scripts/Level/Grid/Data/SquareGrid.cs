@@ -286,7 +286,7 @@ namespace Frameworks.Grid.Data
         /// <summary>
         /// Является ли ячейка недоступной для перемещения
         /// </summary>
-        public bool CellIsNotWalkable(GridCellData cell) => cell.CellType != CellTypes.Normal || cell.HasObject;
+        public bool CellIsNotWalkable(GridCellData cell) => cell.CellType != CellTypes.Normal || cell.HasObject || !cell.IsShowed;
 
         /// <summary>
         /// Является ли ячейка доступной для перемещения

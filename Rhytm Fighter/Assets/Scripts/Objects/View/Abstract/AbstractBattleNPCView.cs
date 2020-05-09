@@ -30,9 +30,9 @@ namespace RhytmFighter.Objects.View
         public Vector3 DefenceSpawnPosition => DefenceSpawnParent.position;
         
 
-        public override void Show(AbstractGridObjectModel correspondingModel)
+        public override void ShowView(AbstractGridObjectModel correspondingModel)
         {
-            base.Show(correspondingModel);
+            base.ShowView(correspondingModel);
 
             m_ModelAsBattleModel = CorrespondingModel as AbstractBattleNPCModel;
         }
@@ -75,7 +75,7 @@ namespace RhytmFighter.Objects.View
         public virtual void NotifyView_Destroyed()
         {
             m_AnimationController.PlayAnimation(AnimationTypes.Destroy);
-            OnAnimationEvent += DisableGraphics;
+            OnAnimationEvent += DisableGraphicsOnDestroy;
             HideUI();
         }
 
@@ -100,9 +100,9 @@ namespace RhytmFighter.Objects.View
             OnAnimationEvent?.Invoke();
         }
 
-        private void DisableGraphics()
+        private void DisableGraphicsOnDestroy()
         {
-            m_AnimationController.gameObject.SetActive(false);
+            HideView();
         }
         #endregion
 

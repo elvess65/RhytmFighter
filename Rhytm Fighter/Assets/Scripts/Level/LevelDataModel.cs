@@ -57,7 +57,11 @@ namespace RhytmFighter.Level
         /// <summary>
         /// Set room as current
         /// </summary>
-        public void SetRoomAsCurrent(int id) => CurrentRoomID = id;
+        public void SetRoomAsCurrent(int id)
+        {
+            CurrentRoomID = id;
+            GetCurrenRoomData().RoomIsVisited = true;
+        }
 
         /// <summary>
         /// Get room daya by id

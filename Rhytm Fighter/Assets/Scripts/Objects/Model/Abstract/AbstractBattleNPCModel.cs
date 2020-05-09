@@ -225,6 +225,14 @@ namespace RhytmFighter.Objects.Model
         {
             GameManager.Instance.DestroySound.Play();
 
+            //Remove last executed command view
+            if (m_LastExecutedCommand != null)
+            {
+                Battle.Command.View.AbstractCommandView view = CommandsController.TryGetCommandView(m_LastExecutedCommand.ID);
+                if (view != null)
+                    MonoBehaviour.Destroy(view.gameObject);
+            }
+
             //Unscribe from battle animation events
             m_BattleView.OnAnimationEvent -= BattleAnimationEventHandler;
 

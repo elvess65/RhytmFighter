@@ -8,14 +8,15 @@ namespace RhytmFighter.Objects.View
         public AbstractGridObjectModel CorrespondingModel { get; protected set; }
 
 
-        public virtual void Show(AbstractGridObjectModel correspondingModel)
+        public virtual void ShowView(AbstractGridObjectModel correspondingModel)
         {
             CorrespondingModel = correspondingModel;
         }
 
-        public virtual void Hide()
+        public virtual void HideView()
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            Destroy(gameObject, 2);
         }
     }
 }

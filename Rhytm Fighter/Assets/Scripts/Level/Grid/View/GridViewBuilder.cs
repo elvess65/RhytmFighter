@@ -19,6 +19,7 @@ namespace Frameworks.Grid.View
         private WaitForSeconds m_ExtendViewWait;
         private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
 
+        private const int m_ITERATIONS = 3;
         private const float m_EXTEND_VIEW_DELAY = 0.1f;
 
         public GridViewBuilder()
@@ -131,13 +132,29 @@ namespace Frameworks.Grid.View
             GameManager.Instance.StartCoroutine(ExtendViewHorizontal(roomData, anchorCellData, -1));
         }
 
+        public void ShowAllVisitedCells(LevelRoomData roomData)
+        {
+            if (m_GridViews.ContainsKey(roomData.ID))
+            {
+                for (int i = 0; i < roomData.GridData.WidthInCells; i++)
+                {
+                    for (int j = 0; j < roomData.GridData.HeightInCells; j++)
+                    {
+                        CellView cellView = GetCellVisual(roomData.ID, i, j);
+                        if (cellView.CorrespondingCellData.IsVisited)
+                            cellView.ShowCell();
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
-        /// Get start position for next grid view
-        /// </summary>
-        /// <param name="gateCellData"></param>
-        /// <param name="inputNodeX"></param>
-        /// <returns></returns>
+            /// Get start position for next grid view
+            /// </summary>
+            /// <param name="gateCellData"></param>
+            /// <param name="inputNodeX"></param>
+            /// <returns></returns>
         public Vector3 GetStartPositionForNextView(GridCellData gateCellData, int inputNodeX)
         {
             CellView gateCellView = GetCellVisual(gateCellData.CorrespondingRoomID, gateCellData.X, gateCellData.Y);
@@ -189,7 +206,7 @@ namespace Frameworks.Grid.View
         {
             //Move vertical by step until reach obstacle or end of the grid
 
-            int iteration = 3;
+            int iteration = m_ITERATIONS;
             CellView cellView = GetCellVisual(roomData.ID, anchorCellData.X, anchorCellData.Y + verticalOffset);
             while (iteration -- > 0 && cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
             {
@@ -214,7 +231,7 @@ namespace Frameworks.Grid.View
         {
             //Move horizontal by step until reach obstacle or end of the grid
 
-            int iteration = 3;
+            int iteration = m_ITERATIONS;
             CellView cellView = GetCellVisual(roomData.ID, anchorCellData.X + horizontalOffset, anchorCellData.Y);
             while (iteration-- > 0 && cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
             {
