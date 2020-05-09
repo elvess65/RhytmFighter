@@ -6,6 +6,7 @@ using RhytmFighter.Input;
 using RhytmFighter.Level;
 using RhytmFighter.Objects.Model;
 using RhytmFighter.Rhytm;
+using RhytmFighter.StateMachines.GameState;
 using UnityEngine;
 
 namespace RhytmFighter.GameState

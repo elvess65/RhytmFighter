@@ -1,5 +1,6 @@
 ﻿using RhytmFighter.Characters;
 using RhytmFighter.Rhytm;
+using RhytmFighter.StateMachines.GameState;
 using UnityEngine;
 
 namespace RhytmFighter.GameState

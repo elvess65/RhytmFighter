@@ -10,6 +10,7 @@ using UnityEngine;
 using RhytmFighter.Core.Enums;
 using UnityEngine.UI;
 using RhytmFighter.CameraSystem;
+using RhytmFighter.StateMachines.GameState;
 
 namespace RhytmFighter.Core
 {

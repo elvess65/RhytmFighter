@@ -1,11 +1,10 @@
 ﻿using RhytmFighter.Characters;
-using RhytmFighter.Core;
 using RhytmFighter.Rhytm;
 using UnityEngine;
 
-namespace RhytmFighter.GameState
+namespace RhytmFighter.StateMachines.GameState
 {
-    public abstract class GameState_Abstract : iUpdatable
+    public abstract class GameState_Abstract : AbstractState
     {
         protected PlayerCharacterController m_PlayerCharacterController;
         protected RhytmInputProxy m_RhytmInputProxy;
@@ -16,17 +15,12 @@ namespace RhytmFighter.GameState
             m_RhytmInputProxy = rhytmInputProxy;
         }
 
-
-        public abstract void EnterState();
-        public abstract void ExitState();
-
         public virtual void HandleTouch(Vector3 mouseScreenPos)
         {
             m_RhytmInputProxy.RegisterInput();
         }
 
-
-        public void PerformUpdate(float deltaTime)
+        public override void PerformUpdate(float deltaTime)
         {
             m_PlayerCharacterController.PerformUpdate(deltaTime);
         }
