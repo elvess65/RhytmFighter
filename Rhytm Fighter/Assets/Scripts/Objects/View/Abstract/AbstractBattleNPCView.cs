@@ -25,7 +25,6 @@ namespace RhytmFighter.Objects.View
         protected AbstractBattleNPCModel m_ModelAsBattleModel;
        
         public bool IsMoving => m_MoveStrategy.IsMoving;
-        public float ActionEventExecutionTime => 0;
         public Vector3 ProjectileHitPosition => ProjectileHitParent.position;
         public Vector3 ProjectileSpawnPosition => ProjectileSpawnParent.position;
         public Vector3 DefenceSpawnPosition => DefenceSpawnParent.position;
@@ -76,6 +75,7 @@ namespace RhytmFighter.Objects.View
         public virtual void NotifyView_Destroyed()
         {
             m_AnimationController.PlayAnimation(AnimationTypes.Destroy);
+            OnAnimationEvent += DisableGraphics;
             HideUI();
         }
 
@@ -98,6 +98,11 @@ namespace RhytmFighter.Objects.View
         private void AnimationEventHandler()
         {
             OnAnimationEvent?.Invoke();
+        }
+
+        private void DisableGraphics()
+        {
+            m_AnimationController.gameObject.SetActive(false);
         }
         #endregion
 

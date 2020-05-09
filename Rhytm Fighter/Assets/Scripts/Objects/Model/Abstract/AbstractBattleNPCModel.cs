@@ -26,7 +26,6 @@ namespace RhytmFighter.Objects.Model
         public event Action<iBattleObject> OnDestroyed;
         
         public bool IsMoving => m_BattleView.IsMoving;
-        public float ActionExecutionTime => m_BattleView.ActionEventExecutionTime;
         public Transform ViewTransform => View.transform;
         public Vector3 ViewPosition => View.transform.position;
         public Vector3 ViewForwardDir => View.transform.forward;
@@ -50,7 +49,6 @@ namespace RhytmFighter.Objects.Model
         private AbstractBattleNPCView m_BattleView;
         private AbstractCommandModel m_LastExecutedCommand;
         private Action m_InternalActionExecutedHandler;
-        private bool m_DefenceModificatorWasUsed = false;
 
 
         public AbstractBattleNPCModel(int id, GridCellData correspondingCell, float moveSpeed,
@@ -93,7 +91,7 @@ namespace RhytmFighter.Objects.Model
             m_BattleView.OnCellVisited += CellVisitedHandler;
             m_BattleView.OnMovementFinished += MovementFinishedHandler;
             m_BattleView.OnRotationFinished += RotationFinishedHandler;
-            m_BattleView.OnAnimationEvent += AnimationEventHandler;
+            m_BattleView.OnAnimationEvent += BattleAnimationEventHandler;
         }
 
 
@@ -112,16 +110,11 @@ namespace RhytmFighter.Objects.Model
                     iCommandModificator defenceModificator = GetModificatorOfType(commandTypesWhichModifiedApply, CommandTypes.Defence);
                     if (defenceModificator != null)
                     {
-                        m_DefenceModificatorWasUsed = true;
-
                         //Show defence effect
-                        MonoBehaviour ob = AssetsManager.GetPrefabAssets().InstantiatePrefab<MonoBehaviour>(AssetsManager.GetPrefabAssets().DefenceBreachEffectPrefab);
+                        GameObject ob = AssetsManager.GetPrefabAssets().InstantiateGameObject(AssetsManager.GetPrefabAssets().DefenceBreachEffectPrefab);
+                        ob.transform.localScale = Vector3.one * 1.5f;
                         ob.transform.position = m_BattleView.DefenceBreachParent.position;
                         MonoBehaviour.Destroy(ob, 2);
-
-                        //Disable defence view
-                        Battle.Command.View.SimpleDefenceView defenceView = CommandsController.TryGetCommandView(defenceModificator.CommandID) as Battle.Command.View.SimpleDefenceView;
-                        defenceView?.HideView();
 
                         //Play sound
                         GameManager.Instance.DefenceSound.Play();
@@ -187,7 +180,7 @@ namespace RhytmFighter.Objects.Model
             m_InternalActionExecutedHandler = null;
         }
 
-        private void AnimationEventHandler()
+        private void BattleAnimationEventHandler()
         {
             if (m_LastExecutedCommand != null)
                 CreateViewForLastExecutedCommand();
@@ -197,19 +190,6 @@ namespace RhytmFighter.Objects.Model
 
         private void CreateViewForLastExecutedCommand()
         {
-            switch(m_LastExecutedCommand.Type)
-            {
-                case CommandTypes.Defence:
-                    if (m_DefenceModificatorWasUsed)
-                    {
-                        m_DefenceModificatorWasUsed = false;
-                        m_LastExecutedCommand = null;
-                        return;
-                    }
-
-                    break;
-            }
-
             CommandsController.CreateViewForCommand(m_LastExecutedCommand);
             m_LastExecutedCommand = null;
         }
@@ -244,6 +224,9 @@ namespace RhytmFighter.Objects.Model
         private void HealthBehaviour_OnDestroyed()
         {
             GameManager.Instance.DestroySound.Play();
+
+            //Unscribe from battle animation events
+            m_BattleView.OnAnimationEvent -= BattleAnimationEventHandler;
 
             //Notify view
             m_BattleView.NotifyView_Destroyed();

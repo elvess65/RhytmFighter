@@ -36,5 +36,7 @@ MonoBehaviour:
     type: 3}
   DefencePrefab: {fileID: 8717700199969591527, guid: 57528a7304250ca4daf67e5a5a621817,
     type: 3}
-  DefenceBreachEffectPrefab: {fileID: 11479708, guid: 551a697f11711904ab3cbd953ff89f52,
+  DefenceBreachEffectPrefab: {fileID: 1510452662759636, guid: a17347c42dfc98c4b861a7e41a444d6f,
+    type: 3}
+  PointerPrefab: {fileID: 1243861341673150, guid: 3f26293dfafa1e447ab052cf7502a03e,
     type: 3}

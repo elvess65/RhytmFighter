@@ -35,7 +35,10 @@ namespace RhytmFighter.Assets
 
         [Header("Defence")]
         public AbstractDefenceView DefencePrefab;
-        public MonoBehaviour DefenceBreachEffectPrefab;
+        public GameObject DefenceBreachEffectPrefab;
+
+        [Header("Enviroment")]
+        public GameObject PointerPrefab;
 
         private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
 
@@ -59,6 +62,22 @@ namespace RhytmFighter.Assets
         public T InstantiatePrefab<T>(T source, Vector3 pos, Quaternion rotation) where T : MonoBehaviour
         {
             return Instantiate(source, pos, rotation) as T;
+        }
+
+
+        public GameObject InstantiateGameObject(GameObject source)
+        {
+            return Instantiate(source, new Vector3(1000, 1000, 1000), Quaternion.identity);
+        }
+
+        public GameObject InstantiateGameObject(GameObject source, Vector3 pos)
+        {
+            return Instantiate(source, pos, Quaternion.identity);
+        }
+
+        public GameObject InstantiateGameObject(GameObject source, Vector3 pos, Quaternion rotation)
+        {
+            return Instantiate(source, pos, rotation);
         }
 
 

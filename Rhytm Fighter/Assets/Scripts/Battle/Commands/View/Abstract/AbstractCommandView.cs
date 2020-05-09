@@ -37,11 +37,6 @@ namespace RhytmFighter.Battle.Command.View
             }
         }
 
-        public void HideView()
-        {
-            FinalizeView();
-        }
-
 
         protected virtual void ProcessUpdate()
         {
@@ -58,7 +53,7 @@ namespace RhytmFighter.Battle.Command.View
             OnViewDisposed?.Invoke(this);
             OnViewDisposed = null;
 
-            Destroy(gameObject);
+            Destroy(gameObject, 1);
         }
     }
 }

@@ -57,6 +57,10 @@ namespace RhytmFighter.GameState
 
         private void CellInputHandler(CellView cellView)
         {
+            GameObject pointer = Assets.AssetsManager.GetPrefabAssets().InstantiateGameObject(Assets.AssetsManager.GetPrefabAssets().PointerPrefab, cellView.transform.position,
+                 Assets.AssetsManager.GetPrefabAssets().PointerPrefab.transform.rotation);
+            MonoBehaviour.Destroy(pointer.gameObject, 1);
+
             m_PlayerCharacterController.MoveCharacter(cellView);
         }
 
