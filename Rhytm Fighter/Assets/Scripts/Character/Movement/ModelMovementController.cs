@@ -122,6 +122,14 @@ namespace RhytmFighter.Characters.Movement
             Model?.PerformUpdate(deltaTime);
         }
 
+        public void TeleportCharacter(CellView targetCellView)
+        {
+            m_PathCells = new GridCellData[] { targetCellView.CorrespondingCellData };
+
+            //Start teleport character
+            Model.NotifyView_Teleport(targetCellView.transform.position);
+        }
+
 
         private void MovementFinishedHandler(int index)
         {

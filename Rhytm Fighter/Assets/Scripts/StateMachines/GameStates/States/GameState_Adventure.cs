@@ -17,12 +17,15 @@ namespace RhytmFighter.GameState
         public System.Action<AbstractNPCModel> OnPlayerInteractWithNPC;
 
         private GridInputProxy m_GridInputProxy;
+        private LevelController m_LevelController;
         private GridPositionTrackingController m_GridPositionTrackingController;
 
 
         public GameState_Adventure(LevelController levelController, PlayerCharacterController playerCharacterController, RhytmInputProxy rhytmInputProxy) :
             base(playerCharacterController, rhytmInputProxy)
         {
+            m_LevelController = levelController;
+
             m_GridInputProxy = new GridInputProxy();
             m_GridInputProxy.OnCellInput += CellInputHandler;
 
@@ -61,7 +64,11 @@ namespace RhytmFighter.GameState
                  Assets.AssetsManager.GetPrefabAssets().PointerPrefab.transform.rotation);
             MonoBehaviour.Destroy(pointer.gameObject, 1);
 
-            m_PlayerCharacterController.MoveCharacter(cellView);
+            //If transition to other - teleport 
+            if (cellView.CorrespondingCellData.CorrespondingRoomID == m_LevelController.Model.GetCurrenRoomData().ID)
+                m_PlayerCharacterController.MoveCharacter(cellView);
+            else
+                m_PlayerCharacterController.TeleportCharacter(cellView);
         }
 
 

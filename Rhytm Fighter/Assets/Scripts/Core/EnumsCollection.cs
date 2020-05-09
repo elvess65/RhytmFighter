@@ -27,7 +27,8 @@
         Hide,
         BattleIdle,
         StrafeLeft,
-        StrafeRight
+        StrafeRight,
+        Teleport
     }
     public enum AnimationStates { None, Showing, Hiding }
 

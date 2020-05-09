@@ -14,6 +14,8 @@ namespace RhytmFighter.Characters.Movement
 
         void StopMove();
 
+        void StartTeleport(Vector3 pos);
+
         void RotateTo(Quaternion targetRotation);
 
         void Update(float deltaTime);

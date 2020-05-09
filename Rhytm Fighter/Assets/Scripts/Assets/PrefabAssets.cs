@@ -39,6 +39,7 @@ namespace RhytmFighter.Assets
 
         [Header("Enviroment")]
         public GameObject PointerPrefab;
+        public GameObject TeleportEffectPrefab;
 
         private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
 

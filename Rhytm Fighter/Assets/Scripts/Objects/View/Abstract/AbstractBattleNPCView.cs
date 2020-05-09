@@ -113,6 +113,18 @@ namespace RhytmFighter.Objects.View
             m_AnimationController.PlayAnimation(AnimationTypes.StartMove);
         }
 
+        public void NotifyView_Teleport(Vector3 pos)
+        {
+            transform.rotation = Quaternion.LookRotation(pos - transform.position);
+            m_AnimationController.PlayAnimation(AnimationTypes.Teleport);
+
+            m_MoveStrategy.StartTeleport(pos);
+
+            GameObject teleportEffect = Assets.AssetsManager.GetPrefabAssets().InstantiateGameObject(Assets.AssetsManager.GetPrefabAssets().TeleportEffectPrefab,
+                                            DefenceSpawnParent.position, transform.rotation * Quaternion.Euler(0, 180, 0));
+            Destroy(teleportEffect, 2);
+        }
+
         public void NotifyView_StopMove()
         {
             m_MoveStrategy.StopMove();

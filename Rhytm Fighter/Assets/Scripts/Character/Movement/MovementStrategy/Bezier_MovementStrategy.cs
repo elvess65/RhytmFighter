@@ -73,6 +73,12 @@ namespace RhytmFighter.Characters.Movement
             m_MovePathController.StopMovement();
         }
 
+        public void StartTeleport(Vector3 pos)
+        {
+            m_MovePathController.ControlledTransform.transform.position = pos;
+            OnMovementFinished?.Invoke(0);
+        }
+
         public void RotateTo(Quaternion targetRotation)
         {
             m_RotationLerpData.TotalTime = 1;

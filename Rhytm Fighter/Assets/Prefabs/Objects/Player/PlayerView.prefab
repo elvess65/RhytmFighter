@@ -190,6 +190,8 @@ MonoBehaviour:
     Key: StrafeLeft
   - Type: 12
     Key: StrafeRight
+  - Type: 13
+    Key: Teleport
 --- !u!1 &6495413218780708708
 GameObject:
   m_ObjectHideFlags: 0

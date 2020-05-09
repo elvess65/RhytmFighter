@@ -40,3 +40,5 @@ MonoBehaviour:
     type: 3}
   PointerPrefab: {fileID: 1243861341673150, guid: 3f26293dfafa1e447ab052cf7502a03e,
     type: 3}
+  TeleportEffectPrefab: {fileID: 1854854489728914, guid: e9e9e8a8860bb5b4bb27e1c0106eae03,
+    type: 3}

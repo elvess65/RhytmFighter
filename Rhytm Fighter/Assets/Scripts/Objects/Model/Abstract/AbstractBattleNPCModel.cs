@@ -247,6 +247,12 @@ namespace RhytmFighter.Objects.Model
             m_BattleView.NotifyView_StartMove(path);
         }
 
+        public void NotifyView_Teleport(Vector3 pos)
+        {
+            //Notify view
+            m_BattleView.NotifyView_Teleport(pos);
+        }
+
         public void NotifyView_StopMove()
         {
             //Notify view

@@ -79,6 +79,10 @@ namespace RhytmFighter.Animation.NPC
                 case AnimationTypes.StrafeRight:
                     SetBool(key, true);
                     break;
+
+                case AnimationTypes.Teleport:
+                    SetTrigger(key);
+                    break;
             }
         }
 

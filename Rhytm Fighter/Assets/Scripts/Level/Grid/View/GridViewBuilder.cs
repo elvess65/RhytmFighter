@@ -141,7 +141,7 @@ namespace Frameworks.Grid.View
         public Vector3 GetStartPositionForNextView(GridCellData gateCellData, int inputNodeX)
         {
             CellView gateCellView = GetCellVisual(gateCellData.CorrespondingRoomID, gateCellData.X, gateCellData.Y);
-            return new Vector3(gateCellView.transform.position.x - inputNodeX * m_CellOffset - m_CellOffset / 2, 0, gateCellView.transform.position.z + m_CellOffset / 2);
+            return new Vector3(gateCellView.transform.position.x - inputNodeX * m_CellOffset - m_CellOffset / 2, 0, gateCellView.transform.position.z + m_CellOffset / 2 + m_CellOffset * 2);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Frameworks.Grid.View
         public Vector3 GetStartPositionForParentView(GridCellData parentCellData, GridCellData gateCellData, int nodeDirectionOffset)
         {
             CellView gateCellView = GetCellVisual(parentCellData.CorrespondingRoomID, parentCellData.X, parentCellData.Y);
-            return new Vector3(gateCellView.transform.position.x + gateCellData.X * m_CellOffset * nodeDirectionOffset - m_CellOffset / 2, 0, gateCellView.transform.position.z - gateCellData.Y * m_CellOffset - m_CellOffset - m_CellOffset / 2);
+            return new Vector3(gateCellView.transform.position.x + gateCellData.X * m_CellOffset * nodeDirectionOffset - m_CellOffset / 2, 0, gateCellView.transform.position.z - gateCellData.Y * m_CellOffset - m_CellOffset - m_CellOffset / 2 - m_CellOffset * 2);
         }
 
 
