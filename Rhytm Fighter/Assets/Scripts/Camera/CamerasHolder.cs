@@ -9,14 +9,12 @@ namespace RhytmFighter.CameraSystem
         public Camera WorldCamera;
 
         [Header("Cinemachine Virtual Cameras")]
-        public CinemachineVirtualCamera DefaultCamMain;
-        [Header(" - State Driven")]
-        public CinemachineStateDrivenCamera VCStateDriven;
+        public CinemachineVirtualCamera VCDefault;
         public CinemachineVirtualCamera VCamMain;
         public CinemachineVirtualCamera VCamBattle;
-        public CinemachineVirtualCamera VCamFront;
 
         [Header("Cinemachine Additional")]
+        public CinemachineBrain CMBrain;
         public CinemachineTargetGroup BattleTargetGroup;
     }
 }

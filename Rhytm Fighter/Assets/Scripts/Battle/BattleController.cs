@@ -3,6 +3,7 @@ using Frameworks.Grid.View;
 using RhytmFighter.Characters;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Core;
+using RhytmFighter.Core.Enums;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,6 @@ namespace RhytmFighter.Battle
         public System.Action OnBattleFinished;
 
         private int m_TargetTick;
-        private bool m_ForceCameraFollowPoint;
         private Level.LevelController m_LevelController;
         private CameraSystem.CameraController m_CameraController;
         private ModelMovementController m_EnemyMovementController;
@@ -26,17 +26,15 @@ namespace RhytmFighter.Battle
         
         public iBattleObject Player { get; set; }
 
-        private const int m_DISTANCE_ADJUSTEMENT_RANGE = 2;
-        private const int m_TICKS_BEFORE_ACTIVATING_ENEMY = 1;
-        private const int m_TICKS_BEFORE_FINISHING_BATTLE = 2;
-        private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE = 5;
-        private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_ROTATION = 5;
+        private const int m_DISTANCE_ADJUSTEMENT_RANGE = 4;     //Max range (in cells) to find adjust disatnce cell
+        private const int m_TICKS_BEFORE_ACTIVATING_ENEMY = 1;  //Delay (in ticks) after first enemy found and start battle
+        private const int m_TICKS_BEFORE_FINISHING_BATTLE = 2;  //Delay (in ticks) after last enemy destroyed and finish battle
+        private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE = 5;    //Min distance between cells to start adjust distance 
+        private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_ROTATION = 5;    //Min rotation between player and enemy to adjust rotation
 
 
         public BattleController(Level.LevelController levelController, CameraSystem.CameraController cameraController, PlayerCharacterController playerCharacterController)
         {
-            m_ForceCameraFollowPoint = false;
-
             m_LevelController = levelController;
             m_CameraController = cameraController;
             m_PlayerCharacterController = playerCharacterController;
@@ -73,10 +71,6 @@ namespace RhytmFighter.Battle
         {
             m_EnemyMovementController?.PerformUpdate(deltaTime);
             Player?.Target?.AI?.PerformUpdate(deltaTime);
-
-            //Makes camera focus battle
-            if (m_ForceCameraFollowPoint)
-                m_CameraController.SetFollowPoint((Player.Target.ViewPosition + Player.ViewPosition) / 2);
         }
 
         public iBattleObject GetClosestEnemy(iBattleObject relativeToBattleObject)
@@ -111,8 +105,6 @@ namespace RhytmFighter.Battle
             if (Player.Target.ID == enemy.ID)
                 Player.Target = null;
 
-            m_CameraController.PeekMemberFromTargetGroup(enemy.ViewTransform);
-
             OnEnemyDestroyed?.Invoke();
         }
 
@@ -129,7 +121,9 @@ namespace RhytmFighter.Battle
             {
                 Rhytm.RhytmController.GetInstance().OnTick -= FinishBattleOnTick;
 
-                m_CameraController.ClearFollowPoint();
+                m_CameraController.ActivateCamera(CameraTypes.Main);
+                m_CameraController.SubscribeForBlendingFinishedEvent(() => m_CameraController.PeekMemberFromTargetGroup());
+
                 OnBattleFinished?.Invoke();
             }
         }
@@ -146,10 +140,6 @@ namespace RhytmFighter.Battle
 
         private void TryActivateNextEnemy()
         {
-            //Stop follow focus point
-            if (m_ForceCameraFollowPoint)
-                m_ForceCameraFollowPoint = false;
-
             //Get closest enemy to player
             iBattleObject closestEnemy = GetClosestEnemy(Player);
 
@@ -168,10 +158,11 @@ namespace RhytmFighter.Battle
 
         private void ActivateEnemy(iBattleObject enemy)
         {
-            //Start follow focus point
-            m_ForceCameraFollowPoint = true;
+            //Start focusing player
             m_PlayerCharacterController.Focus(enemy);
-            m_CameraController.PushMemberToTargetGroup(enemy.ViewTransform);
+
+            //Push enemy to camera target group
+            m_CameraController.PeekMemberFromTargetGroup();
 
             //Remove target from pending
             if (m_PendingEnemies.ContainsKey(enemy.ID))
@@ -188,7 +179,10 @@ namespace RhytmFighter.Battle
             if (distanceBetweenPlayerAndEnemy < m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE)
                 AdjustDistanceForObject(enemy);
             else
+            {
                 CheckRotationToPlayer(enemy);
+                FocusBattleCamera(enemy.ViewTransform);
+            }
         }
 
 
@@ -238,9 +232,14 @@ namespace RhytmFighter.Battle
 
                 m_EnemyMovementController.OnMovementFinished += EnemyAdjustementMovementFinished;
                 m_EnemyMovementController.MoveCharacter(view);
+
+                FocusBattleCamera(view.transform);
             }
             else
+            {
                 CheckRotationToPlayer(battleObject);
+                FocusBattleCamera(battleObject.ViewTransform);
+            }
         }
 
         private void EnemyAdjustementMovementFinished(GridCellData cell)
@@ -248,7 +247,6 @@ namespace RhytmFighter.Battle
             m_EnemyMovementController.OnMovementFinished -= EnemyAdjustementMovementFinished;
             CheckRotationToPlayer(Player.Target);
         }
-
 
         private void CheckRotationToPlayer(iBattleObject battleObject)
         {
@@ -272,8 +270,24 @@ namespace RhytmFighter.Battle
 
         private void StartBattle()
         {
+            //Stop focusing
             m_PlayerCharacterController.StopFocusing();
+
             OnBattleStarted?.Invoke();
         }
+
+        private void FocusBattleCamera(Transform target)
+        {
+            m_CameraController.PushMemberToTargetGroup(target, 1.25f);
+
+            Quaternion targetCameraRotation = Quaternion.LookRotation(target.position - Player.ViewPosition);
+            Vector3 cameraEuler = GameManager.Instance.CamerasHolder.VCamBattle.transform.localEulerAngles;
+            cameraEuler.y = targetCameraRotation.eulerAngles.y + m_CameraController.GetNoiseForBattleCamera();
+            targetCameraRotation.eulerAngles = cameraEuler;
+
+            GameManager.Instance.CamerasHolder.VCamBattle.transform.localEulerAngles = targetCameraRotation.eulerAngles;
+            m_CameraController.ActivateCamera(CameraTypes.Battle);
+        }
+
     }
 }

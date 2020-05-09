@@ -39,4 +39,7 @@
         Defence,
         Idle
     }
+
+    //Camera
+    public enum CameraTypes { Default, Main, Battle }
 }

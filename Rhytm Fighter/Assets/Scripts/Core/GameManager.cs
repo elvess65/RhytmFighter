@@ -112,7 +112,6 @@ namespace RhytmFighter.Core
             {
                 m_ControllersHolder.InputController,
                 m_ControllersHolder.RhytmController,
-                m_ControllersHolder.CameraController,
                 m_ControllersHolder.CommandsController,
                 m_ControllersHolder.BattleController,
                 m_GameStateMachine
@@ -196,7 +195,6 @@ namespace RhytmFighter.Core
 
             //Initialize camera
             m_ControllersHolder.CameraController.InitializeCamera(m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform);
-            //, ManagersHolder.SettingsManager.CameraSettings.NormalMoveSpeed);
 
             //Finish initialization
             InitializationFinished();
@@ -269,6 +267,7 @@ namespace RhytmFighter.Core
             //Prepare character to battle
             m_ControllersHolder.PlayerCharacterController.PrepareForBattle();
 
+            //Change state
             m_GameStateMachine.ChangeState(m_GameStateIdle);
         }
 
@@ -282,10 +281,12 @@ namespace RhytmFighter.Core
             BattleText.color = Color.red;
             StartCoroutine(debug_disable_battle_ui());
 
+            //Subscribe for events
             m_ControllersHolder.RhytmController.OnEventProcessingTick += EventProcessingTickHandler;
             m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;
             m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
+            //Change state
             m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
 
@@ -293,9 +294,11 @@ namespace RhytmFighter.Core
         {
             Debug.LogError("Battle - Enemy destroyed");
 
+            //Unscribe from events
             m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.BattleController.ProcessEnemyActions;
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
+            //Change state
             m_GameStateMachine.ChangeState(m_GameStateIdle);
         }
 
@@ -310,11 +313,13 @@ namespace RhytmFighter.Core
             StartCoroutine(debug_disable_battle_ui());
             Rhytm.volume = 0;
 
+            //Unscribe from events
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
 
             //Finish battle for player
             m_ControllersHolder.PlayerCharacterController.FinishBattle();
 
+            //Change state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
 
