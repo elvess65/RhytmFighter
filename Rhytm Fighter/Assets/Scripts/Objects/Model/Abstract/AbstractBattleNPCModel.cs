@@ -62,7 +62,7 @@ namespace RhytmFighter.Objects.Model
             //Battle behaviour
             ActionBehaviour = actionBehaviour;
             ActionBehaviour.SetControlledObject(this);
-            ActionBehaviour.OnActionExecuted += ActionBehaviour_OnActionExecutedHandler;
+            ActionBehaviour.OnActionExecuted += ActionExecutedHandler;
 
             //Health behaviour
             HealthBehaviour = healthBehaviour;
@@ -91,7 +91,7 @@ namespace RhytmFighter.Objects.Model
             m_BattleView.OnCellVisited += CellVisitedHandler;
             m_BattleView.OnMovementFinished += MovementFinishedHandler;
             m_BattleView.OnRotationFinished += RotationFinishedHandler;
-            m_BattleView.OnAnimationEvent += BattleAnimationEventHandler;
+            m_BattleView.OnActionAnimationEvent += ActionAnimationEventHandler;
         }
 
 
@@ -145,11 +145,6 @@ namespace RhytmFighter.Objects.Model
             m_BattleView.NotifyView_ExecuteCommand(commandType);
         }
 
-        public float GetActionEventExecuteTime(CommandTypes commandType)
-        {
-            return m_BattleView.GetActionEventExecuteTime(commandType);
-        }
-
         public void NotifyViewAboutBattlePrepare()
         {
             m_BattleView.NotifyView_BattlePrepare();
@@ -160,8 +155,13 @@ namespace RhytmFighter.Objects.Model
             m_BattleView.NotifyView_BattleFinished();
         }
 
+        public float GetActionEventExecuteTime(CommandTypes commandType)
+        {
+            return m_BattleView.GetActionEventExecuteTime(commandType);
+        }
 
-        private void ActionBehaviour_OnActionExecutedHandler(AbstractCommandModel command)
+
+        private void ActionExecutedHandler(AbstractCommandModel command)
         {
             switch(command)
             {
@@ -180,13 +180,14 @@ namespace RhytmFighter.Objects.Model
             m_InternalActionExecutedHandler = null;
         }
 
-        private void BattleAnimationEventHandler()
+        private void ActionAnimationEventHandler()
         {
             if (m_LastExecutedCommand != null)
                 CreateViewForLastExecutedCommand();
             else
                 m_InternalActionExecutedHandler += CreateViewForLastExecutedCommand;
         }
+
 
         private void CreateViewForLastExecutedCommand()
         {
@@ -234,7 +235,7 @@ namespace RhytmFighter.Objects.Model
             }
 
             //Unscribe from battle animation events
-            m_BattleView.OnAnimationEvent -= BattleAnimationEventHandler;
+            m_BattleView.OnActionAnimationEvent -= ActionAnimationEventHandler;
 
             //Notify view
             m_BattleView.NotifyView_Destroyed();
@@ -255,12 +256,6 @@ namespace RhytmFighter.Objects.Model
             m_BattleView.NotifyView_StartMove(path);
         }
 
-        public void NotifyView_Teleport(Vector3 pos)
-        {
-            //Notify view
-            m_BattleView.NotifyView_Teleport(pos);
-        }
-
         public void NotifyView_StopMove()
         {
             //Notify view
@@ -271,12 +266,6 @@ namespace RhytmFighter.Objects.Model
         {
             //Notify view
             m_BattleView.NotifyView_StartRotate(targetRotation, onlyAnimation);
-        }
-
-        public void NotifyView_FinishRotate()
-        {
-            //Notify view
-            m_BattleView.NotifyView_FinishRotate();
         }
 
         public void MovementFinishedReverseCallback(GridCellData cellData)

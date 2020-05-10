@@ -117,17 +117,17 @@ namespace RhytmFighter.Characters.Movement
             Model.NotifyView_StartRotate(targetRotation, false);
         }
 
-        public void PerformUpdate(float deltaTime)
-        {
-            Model?.PerformUpdate(deltaTime);
-        }
-
         public void TeleportCharacter(CellView targetCellView)
         {
             m_PathCells = new GridCellData[] { targetCellView.CorrespondingCellData };
 
             //Start teleport character
-            Model.NotifyView_Teleport(targetCellView.transform.position);
+            Model.NotifyView_StartMove(new Vector3[] { targetCellView.transform.position });
+        }
+
+        public void PerformUpdate(float deltaTime)
+        {
+            Model?.PerformUpdate(deltaTime);
         }
 
 

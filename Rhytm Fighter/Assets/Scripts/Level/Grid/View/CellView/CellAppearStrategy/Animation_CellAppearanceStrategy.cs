@@ -27,7 +27,7 @@ namespace Frameworks.Grid.View.Cell
             m_AnimationController.Initialize();
 
             m_EventsListener = m_AnimationController.GetComponent<AnimationEventsListener>();
-            m_EventsListener.OnEvent += EventsListener_OnEvent;
+            m_EventsListener.OnActionEvent += EventsListener_OnEvent;
 
             OnShowed += ShowedHandler;
 

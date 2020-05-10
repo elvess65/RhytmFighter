@@ -43,4 +43,7 @@
 
     //Camera
     public enum CameraTypes { Default, Main, Battle }
+
+    //Movement
+    public enum MovementStrategyTypes { Bezier, Teleport }
 }

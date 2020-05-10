@@ -159,7 +159,7 @@ namespace RhytmFighter.Battle
         private void ActivateEnemy(iBattleObject enemy)
         {
             //Start focusing player
-            m_PlayerCharacterController.Focus(enemy);
+            m_PlayerCharacterController.StartFocusing(enemy);
 
             //Push enemy to camera target group
             m_CameraController.PeekMemberFromTargetGroup();

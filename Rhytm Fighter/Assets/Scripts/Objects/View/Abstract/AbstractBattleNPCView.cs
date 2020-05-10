@@ -12,18 +12,17 @@ namespace RhytmFighter.Objects.View
         public event System.Action<int> OnMovementFinished;
         public event System.Action<int> OnCellVisited;
         public event System.Action OnRotationFinished;
-        public event System.Action OnAnimationEvent;
+        public event System.Action OnActionAnimationEvent;
 
         public Transform ProjectileSpawnParent;
         public Transform ProjectileHitParent;
         public Transform DefenceSpawnParent;
         public Transform DefenceBreachParent;
 
-        private iMovementStrategy m_MoveStrategy;
-        private AbstractAnimationController m_AnimationController;
-
+        protected iMovementStrategy m_MoveStrategy;
         protected AbstractBattleNPCModel m_ModelAsBattleModel;
-       
+        protected AbstractAnimationController m_AnimationController;
+
         public bool IsMoving => m_MoveStrategy.IsMoving;
         public Vector3 ProjectileHitPosition => ProjectileHitParent.position;
         public Vector3 ProjectileSpawnPosition => ProjectileSpawnParent.position;
@@ -37,7 +36,7 @@ namespace RhytmFighter.Objects.View
             m_ModelAsBattleModel = CorrespondingModel as AbstractBattleNPCModel;
         }
 
-        public void Initialize(float moveSpeed)
+        public virtual void Initialize(float moveSpeed)
         {
             //Movement
             m_MoveStrategy = new Bezier_MovementStrategy(transform, moveSpeed);
@@ -50,7 +49,8 @@ namespace RhytmFighter.Objects.View
             m_AnimationController.Initialize();
 
             AnimationEventsListener animationEventsListener = m_AnimationController.Controller.GetComponent<AnimationEventsListener>();
-            animationEventsListener.OnEvent += AnimationEventHandler;
+            animationEventsListener.OnActionEvent += ActionAnimationEventHandler;
+            animationEventsListener.OnDestroyEvent += DestroyAnimationEventHandler;
         }
 
 
@@ -75,13 +75,7 @@ namespace RhytmFighter.Objects.View
         public virtual void NotifyView_Destroyed()
         {
             m_AnimationController.PlayAnimation(AnimationTypes.Destroy);
-            OnAnimationEvent += DisableGraphicsOnDestroy;
             HideUI();
-        }
-
-        public float GetActionEventExecuteTime(CommandTypes type)
-        {
-            return m_AnimationController.GetActionEventExecuteTime(ConvertersCollection.Command2Animation(type));
         }
 
         public void NotifyView_BattlePrepare()
@@ -94,35 +88,28 @@ namespace RhytmFighter.Objects.View
             m_AnimationController.PlayAnimation(AnimationTypes.Idle);
         }
 
-
-        private void AnimationEventHandler()
+        public float GetActionEventExecuteTime(CommandTypes type)
         {
-            OnAnimationEvent?.Invoke();
+            return m_AnimationController.GetActionEventExecuteTime(ConvertersCollection.Command2Animation(type));
         }
 
-        private void DisableGraphicsOnDestroy()
+
+        private void ActionAnimationEventHandler()
+        {
+            OnActionAnimationEvent?.Invoke();
+        }
+
+        private void DestroyAnimationEventHandler()
         {
             HideView();
         }
         #endregion
 
         #region Movement
-        public void NotifyView_StartMove(Vector3[] path)
+        public virtual void NotifyView_StartMove(Vector3[] path)
         {
             m_MoveStrategy.StartMove(path);
             m_AnimationController.PlayAnimation(AnimationTypes.StartMove);
-        }
-
-        public void NotifyView_Teleport(Vector3 pos)
-        {
-            transform.rotation = Quaternion.LookRotation(pos - transform.position);
-            m_AnimationController.PlayAnimation(AnimationTypes.Teleport);
-
-            m_MoveStrategy.StartTeleport(pos);
-
-            GameObject teleportEffect = Assets.AssetsManager.GetPrefabAssets().InstantiateGameObject(Assets.AssetsManager.GetPrefabAssets().TeleportEffectPrefab,
-                                            DefenceSpawnParent.position, transform.rotation * Quaternion.Euler(0, 180, 0));
-            Destroy(teleportEffect, 2);
         }
 
         public void NotifyView_StopMove()
@@ -138,19 +125,19 @@ namespace RhytmFighter.Objects.View
             m_AnimationController.PlayAnimation(transform.eulerAngles.y > targetRotation.eulerAngles.y ? AnimationTypes.StrafeLeft : AnimationTypes.StrafeRight);
         }
 
-        public void NotifyView_FinishRotate()
-        {
-            m_AnimationController.PlayAnimation(AnimationTypes.BattleIdle);
-        }
-
         //iUpdatable
         public virtual void PerformUpdate(float deltaTime)
         {
             m_MoveStrategy.Update(deltaTime);
         }
 
+        public void NotifyView_FinishRotate()
+        {
+            m_AnimationController.PlayAnimation(AnimationTypes.BattleIdle);
+        }
 
-        void MovementFinishedHandler(int index)
+
+        protected void MovementFinishedHandler(int index)
         {
             m_AnimationController.PlayAnimation(AnimationTypes.StopMove);
 

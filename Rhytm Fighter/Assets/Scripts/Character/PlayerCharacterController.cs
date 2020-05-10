@@ -52,6 +52,7 @@ namespace RhytmFighter.Characters
             levelController.RoomViewBuilder.ExtendView(levelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
         }
 
+
         public void MoveCharacter(CellView targetCellView)
         {
             m_MovementController.MoveCharacter(targetCellView);
@@ -59,7 +60,11 @@ namespace RhytmFighter.Characters
 
         public void TeleportCharacter(CellView targetCellView)
         {
+            PlayerModel.NotifyView_SwitchMoveStrategy(MovementStrategyTypes.Teleport);
+
+            m_MovementController.OnMovementFinished += TeleportFinishedHandler;
             m_MovementController.TeleportCharacter(targetCellView);
+            
         }
 
         public void StopMove()
@@ -67,22 +72,15 @@ namespace RhytmFighter.Characters
             m_MovementController.StopMove();
         }
 
-        public void Focus(iBattleObject target)
+        public void StartFocusing(iBattleObject target)
         {
             m_FocusingTarget = target;
         }
 
         public void StopFocusing()
         {
-            PlayerModel.NotifyView_FinishRotate();
+            PlayerModel.NotifyView_FinishFocusing();
             m_FocusingTarget = null;
-        }
-
-        public void PerformUpdate(float deltaTime)
-        {
-            m_MovementController?.PerformUpdate(deltaTime);
-
-            ProcessFocusing();
         }
 
         public void ExecuteAction(CommandTypes type)
@@ -101,17 +99,13 @@ namespace RhytmFighter.Characters
             PlayerModel.NotifyViewAboutBattleFinish();
         }
 
-
-        private void ProcessFocusing()
+        public void PerformUpdate(float deltaTime)
         {
-            if (m_FocusingTarget == null)
-                return;
+            m_MovementController?.PerformUpdate(deltaTime);
 
-            Quaternion targetRotation = Quaternion.LookRotation(m_FocusingTarget.ViewPosition - PlayerModel.ViewPosition);
-
-            PlayerModel.View.transform.rotation = Quaternion.Slerp(PlayerModel.View.transform.rotation, targetRotation, Time.deltaTime * m_FOCUSING_SPEED);
-            PlayerModel.NotifyView_StartRotate(targetRotation, true);
+            ProcessFocusing();
         }
+
 
         private void MovementFinishedHandler(GridCellData cellData)
         {
@@ -126,6 +120,26 @@ namespace RhytmFighter.Characters
         private void PlayerInteractsWithObjectHandler(AbstractInteractableObjectModel interactableObject)
         {
             OnPlayerInteractsWithObject?.Invoke(interactableObject);
+        }
+
+
+        private void TeleportFinishedHandler(GridCellData cellData)
+        {
+            m_MovementController.OnMovementFinished -= TeleportFinishedHandler;
+
+            PlayerModel.NotifyView_SwitchMoveStrategy(MovementStrategyTypes.Bezier);
+        }
+
+
+        private void ProcessFocusing()
+        {
+            if (m_FocusingTarget == null)
+                return;
+
+            Quaternion targetRotation = Quaternion.LookRotation(m_FocusingTarget.ViewPosition - PlayerModel.ViewPosition);
+
+            PlayerModel.View.transform.rotation = Quaternion.Slerp(PlayerModel.View.transform.rotation, targetRotation, Time.deltaTime * m_FOCUSING_SPEED);
+            PlayerModel.NotifyView_StartRotate(targetRotation, true);
         }
     }
 }

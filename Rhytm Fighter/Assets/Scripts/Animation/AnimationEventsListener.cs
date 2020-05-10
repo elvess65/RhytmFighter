@@ -4,11 +4,17 @@ namespace RhytmFighter.Animation
 {
     public class AnimationEventsListener : MonoBehaviour
     {
-        public event System.Action OnEvent;
+        public event System.Action OnActionEvent; 
+        public event System.Action OnDestroyEvent;
 
         public void EventHandler()
         {
-            OnEvent?.Invoke();
+            OnActionEvent?.Invoke();
+        }
+
+        public void DestroyEventHandler()
+        {
+            OnActionEvent?.Invoke();
         }
     }
 }
