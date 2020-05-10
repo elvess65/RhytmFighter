@@ -115,7 +115,7 @@ namespace Frameworks.Grid.View
                     CellView cellView = GetCellVisual(roomData.ID, i, j);
 
                     //If cell view is not exceptional and if should ignore visited and current cell is not visited - hide
-                    if (!cellView.CorrespondingCellData.IsEqualCoord(exceptionalCell) && (ignoreVisited || !cellView.CorrespondingCellData.IsVisited))
+                    if (!cellView.CorrespondingCellData.IsEqualCoord(exceptionalCell) && (ignoreVisited || !cellView.CorrespondingCellData.IsDiscovered))
                         cellView.HideCell(hideImmediate);
                 }
             }
@@ -141,7 +141,7 @@ namespace Frameworks.Grid.View
                     for (int j = 0; j < roomData.GridData.HeightInCells; j++)
                     {
                         CellView cellView = GetCellVisual(roomData.ID, i, j);
-                        if (cellView.CorrespondingCellData.IsVisited)
+                        if (cellView.CorrespondingCellData.IsDiscovered)
                             cellView.ShowCell();
                     }
                 }

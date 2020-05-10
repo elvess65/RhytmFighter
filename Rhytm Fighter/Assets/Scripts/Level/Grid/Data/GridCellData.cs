@@ -16,7 +16,7 @@ namespace Frameworks.Grid.Data
         public GridCellProperty CellProperty { get; private set; }
         public bool HasProperty => CellProperty != null;
         public int CorrespondingRoomID { get; private set; }
-        public bool IsVisited { get; set; }
+        public bool IsDiscovered { get; set; }
         public bool IsShowed { get; set; }
 
         //Object
@@ -37,7 +37,7 @@ namespace Frameworks.Grid.Data
             Y = yCoord;
             CellSize = cellSize;
 
-            IsVisited = false;
+            IsDiscovered = false;
 
             SetCellType(type);
         }

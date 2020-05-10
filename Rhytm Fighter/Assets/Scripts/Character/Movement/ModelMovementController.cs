@@ -104,17 +104,17 @@ namespace RhytmFighter.Characters.Movement
                 pathPos.Insert(1, (pathPos[0] + pathPos[1]) / 2);
 
             //Start move character
-            Model.NotifyView_StartMove(pathPos.ToArray());
+            Model.StartMove(pathPos.ToArray());
         }
 
         public void StopMove()
         {
-            Model.NotifyView_StopMove();
+            Model.StopMove();
         }
 
         public void RotateCharacter(Quaternion targetRotation)
         {
-            Model.NotifyView_StartRotate(targetRotation, false);
+            Model.StartRotate(targetRotation, false);
         }
 
         public void TeleportCharacter(CellView targetCellView)
@@ -122,7 +122,7 @@ namespace RhytmFighter.Characters.Movement
             m_PathCells = new GridCellData[] { targetCellView.CorrespondingCellData };
 
             //Start teleport character
-            Model.NotifyView_StartMove(new Vector3[] { targetCellView.transform.position });
+            Model.StartMove(new Vector3[] { targetCellView.transform.position });
         }
 
         public void PerformUpdate(float deltaTime)

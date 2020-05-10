@@ -17,6 +17,8 @@ namespace RhytmFighter.Characters
         public event System.Action<GridCellData> OnMovementFinished;
         public event System.Action<GridCellData> OnCellVisited;
         public event System.Action<AbstractInteractableObjectModel> OnPlayerInteractsWithObject;
+        public event System.Action OnTeleportStarted;
+        public event System.Action OnTeleportFinished;
 
         public PlayerModel PlayerModel { get; private set; }
 
@@ -39,7 +41,8 @@ namespace RhytmFighter.Characters
             m_MovementController.OnInteractsWithObject += PlayerInteractsWithObjectHandler;
 
             //Init start cell
-            startCellView.CorrespondingCellData.IsVisited = true;
+            startCellView.CorrespondingCellData.IsShowed = true;
+            startCellView.CorrespondingCellData.IsDiscovered = true;
             startCellView.CorrespondingCellData.AddObject(playerModel);
 
             //Show player view
@@ -60,11 +63,12 @@ namespace RhytmFighter.Characters
 
         public void TeleportCharacter(CellView targetCellView)
         {
+            OnTeleportStarted?.Invoke();
+
             PlayerModel.NotifyView_SwitchMoveStrategy(MovementStrategyTypes.Teleport);
 
             m_MovementController.OnMovementFinished += TeleportFinishedHandler;
             m_MovementController.TeleportCharacter(targetCellView);
-            
         }
 
         public void StopMove()
@@ -79,7 +83,7 @@ namespace RhytmFighter.Characters
 
         public void StopFocusing()
         {
-            PlayerModel.NotifyView_FinishFocusing();
+            PlayerModel.FinishFocusing();
             m_FocusingTarget = null;
         }
 
@@ -128,6 +132,7 @@ namespace RhytmFighter.Characters
             m_MovementController.OnMovementFinished -= TeleportFinishedHandler;
 
             PlayerModel.NotifyView_SwitchMoveStrategy(MovementStrategyTypes.Bezier);
+            OnTeleportFinished?.Invoke();
         }
 
 
@@ -139,7 +144,7 @@ namespace RhytmFighter.Characters
             Quaternion targetRotation = Quaternion.LookRotation(m_FocusingTarget.ViewPosition - PlayerModel.ViewPosition);
 
             PlayerModel.View.transform.rotation = Quaternion.Slerp(PlayerModel.View.transform.rotation, targetRotation, Time.deltaTime * m_FOCUSING_SPEED);
-            PlayerModel.NotifyView_StartRotate(targetRotation, true);
+            PlayerModel.StartRotate(targetRotation, true);
         }
     }
 }

@@ -71,6 +71,8 @@ namespace RhytmFighter.Core
                 m_Updateables[i].PerformUpdate(Time.deltaTime);
         }
 
+
+        #region Initialization
         private void Initialize()
         {
             //Temp
@@ -121,6 +123,10 @@ namespace RhytmFighter.Core
             //Subscribe for events
             // - Input
             m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
+
+            // - Player controller 
+            m_ControllersHolder.PlayerCharacterController.OnTeleportStarted += TeleportStartedHandler;
+            m_ControllersHolder.PlayerCharacterController.OnTeleportFinished += TeleportFinishedHandler;
 
             // - Battle
             m_ControllersHolder.BattleController.OnPrepareForBattle += PrepareForBattleHandler;
@@ -200,8 +206,43 @@ namespace RhytmFighter.Core
             //Finish initialization
             InitializationFinished();
         }
+        #endregion
 
+        #region Player controller
+        private void TeleportStartedHandler()
+        {
+            m_ControllersHolder.InputController.OnTouch -= m_GameStateMachine.HandleTouch;
+        }
 
+        private void TeleportFinishedHandler()
+        {
+            m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
+        }
+        #endregion
+
+        #region Player
+        private void PlayerDestroyedHandler(iBattleObject sender)
+        {
+            Debug.LogError("DESTROY PLAYER");
+
+            BattleFinishedHandler();
+            m_GameStateMachine.ChangeState(m_GameStateIdle);
+        }
+
+        private void PlayerInteractWithObject(AbstractInteractableObjectModel interactableObject)
+        {
+            interactableObject.Interact();
+        }
+
+        System.Collections.IEnumerator TEMP_INTERATCION_COROUTINE(float animationDelay)
+        {
+            yield return new WaitForSeconds(animationDelay);
+
+            m_GameStateMachine.ChangeState(m_GameStateAdventure);
+        }
+        #endregion
+
+        #region Grid
         private void CellWithObjectDetectedHandler(AbstractGridObjectModel gridObject)
         {
             //Detect NPC
@@ -237,17 +278,9 @@ namespace RhytmFighter.Core
 
             Debug.Log("INTERACT WITH NPC: " + interactableNPC.View.gameObject.name + " " + interactableNPC.ID + " " + interactableNPC.Type);
         }
+        #endregion
 
-
-        private void PlayerDestroyedHandler(iBattleObject sender)
-        {
-            Debug.LogError("DESTROY PLAYER");
-
-            BattleFinishedHandler();
-            m_GameStateMachine.ChangeState(m_GameStateIdle);
-        }
-
-
+        #region Battle
         private void PrepareForBattleHandler()
         {
             Debug.LogError("Battle - Prepare");
@@ -323,8 +356,9 @@ namespace RhytmFighter.Core
             //Change state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
+        #endregion
 
-      
+        #region Rhytm
         private void TickingStartedHandler()
         {
             Music.Play();
@@ -352,22 +386,9 @@ namespace RhytmFighter.Core
             yield return new WaitForSeconds((float)m_ControllersHolder.RhytmController.TickDurationSeconds / 8);
             BeatIndicatorTemp.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
         }
+        #endregion
 
-
-        private void PlayerInteractWithObject(AbstractInteractableObjectModel interactableObject)
-        {
-            interactableObject.Interact();
-        }
-
-        System.Collections.IEnumerator TEMP_INTERATCION_COROUTINE(float animationDelay)
-        {
-            yield return new WaitForSeconds(animationDelay);
-
-            m_GameStateMachine.ChangeState(m_GameStateAdventure);
-        }
-
-
-        //Temp
+        #region Temp
         public void BtnPressHandler()
         {
             bool inputIsValid = m_ControllersHolder.RhytmInputProxy.IsInputTickValid();
@@ -393,5 +414,6 @@ namespace RhytmFighter.Core
             yield return new WaitForSeconds((float)RhytmFighter.Rhytm.RhytmController.GetInstance().TickDurationSeconds);
             BattleText.gameObject.SetActive(false);
         }
+        #endregion
     }
 }

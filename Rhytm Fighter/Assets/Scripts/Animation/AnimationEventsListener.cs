@@ -6,6 +6,7 @@ namespace RhytmFighter.Animation
     {
         public event System.Action OnActionEvent; 
         public event System.Action OnDestroyEvent;
+        public event System.Action OnOtherEvent;
 
         public void EventHandler()
         {
@@ -14,7 +15,12 @@ namespace RhytmFighter.Animation
 
         public void DestroyEventHandler()
         {
-            OnActionEvent?.Invoke();
+            OnDestroyEvent?.Invoke();
+        }
+
+        public void OtherEventHandler()
+        {
+            OnOtherEvent?.Invoke();
         }
     }
 }

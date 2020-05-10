@@ -26,15 +26,14 @@ namespace RhytmFighter.Objects.Model
         }
 
 
-        public void NotifyView_FinishFocusing()
+        public void FinishFocusing()
         {
-            //Notify view
-            m_PlayerView.NotifyView_FinishRotate();
+            m_PlayerView.FinishFocusing();
         }
 
         public void NotifyView_SwitchMoveStrategy(MovementStrategyTypes strategyType)
         {
-            m_PlayerView.NotifyView_SwitchMoveStrategy(strategyType);
+            m_PlayerView.SwitchMoveStrategy(strategyType);
         }
 
 

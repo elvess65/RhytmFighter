@@ -249,23 +249,23 @@ namespace RhytmFighter.Objects.Model
         }
         #endregion
 
-        #region iMovableModel
-        public void NotifyView_StartMove(Vector3[] path)
+        #region Movement
+        public void StartMove(Vector3[] path)
         {
             //Notify view
-            m_BattleView.NotifyView_StartMove(path);
+            m_BattleView.StartMove(path);
         }
 
-        public void NotifyView_StopMove()
+        public void StopMove()
         {
             //Notify view
-            m_BattleView.NotifyView_StopMove();
+            m_BattleView.StopMove();
         }
 
-        public void NotifyView_StartRotate(Quaternion targetRotation, bool onlyAnimation)
+        public void StartRotate(Quaternion targetRotation, bool onlyAnimation)
         {
             //Notify view
-            m_BattleView.NotifyView_StartRotate(targetRotation, onlyAnimation);
+            m_BattleView.StartRotate(targetRotation, onlyAnimation);
         }
 
         public void MovementFinishedReverseCallback(GridCellData cellData)

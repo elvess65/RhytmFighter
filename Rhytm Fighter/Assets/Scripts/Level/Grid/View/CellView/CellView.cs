@@ -44,8 +44,8 @@ namespace Frameworks.Grid.View
             m_CellAppearanceStrategy.Show();
 
             //Make data visited
-            if (!CorrespondingCellData.IsVisited)
-                CorrespondingCellData.IsVisited = true;
+            if (!CorrespondingCellData.IsDiscovered)
+                CorrespondingCellData.IsDiscovered = true;
 
             //Mark data as showed (for correct pathfinding)
             CorrespondingCellData.IsShowed = true;

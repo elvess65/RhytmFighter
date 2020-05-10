@@ -22,7 +22,7 @@ namespace RhytmFighter.Objects.View
             m_HealthBarFollow?.PerformUpdate(deltaTime);
         }
 
-
+        #region UI
         protected override void CreateHealthBar()
         {
             //Create health bar
@@ -48,5 +48,6 @@ namespace RhytmFighter.Objects.View
 
             Destroy(m_HealthBarBehaviour.gameObject, 1);
         }
+        #endregion
     }
 }

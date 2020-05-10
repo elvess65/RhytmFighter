@@ -22,6 +22,7 @@ namespace RhytmFighter.Objects.View
         protected iMovementStrategy m_MoveStrategy;
         protected AbstractBattleNPCModel m_ModelAsBattleModel;
         protected AbstractAnimationController m_AnimationController;
+        protected System.Action m_OnInternalOtherAnimationEvent;
 
         public bool IsMoving => m_MoveStrategy.IsMoving;
         public Vector3 ProjectileHitPosition => ProjectileHitParent.position;
@@ -51,6 +52,7 @@ namespace RhytmFighter.Objects.View
             AnimationEventsListener animationEventsListener = m_AnimationController.Controller.GetComponent<AnimationEventsListener>();
             animationEventsListener.OnActionEvent += ActionAnimationEventHandler;
             animationEventsListener.OnDestroyEvent += DestroyAnimationEventHandler;
+            animationEventsListener.OnOtherEvent += OtherAnimationEventHandler;
         }
 
 
@@ -103,21 +105,26 @@ namespace RhytmFighter.Objects.View
         {
             HideView();
         }
+
+        private void OtherAnimationEventHandler()
+        {
+            m_OnInternalOtherAnimationEvent?.Invoke();
+        }
         #endregion
 
         #region Movement
-        public virtual void NotifyView_StartMove(Vector3[] path)
+        public virtual void StartMove(Vector3[] path)
         {
             m_MoveStrategy.StartMove(path);
             m_AnimationController.PlayAnimation(AnimationTypes.StartMove);
         }
 
-        public void NotifyView_StopMove()
+        public void StopMove()
         {
             m_MoveStrategy.StopMove();
         }
 
-        public void NotifyView_StartRotate(Quaternion targetRotation, bool onlyAnimation)
+        public void StartRotate(Quaternion targetRotation, bool onlyAnimation)
         {
             if (!onlyAnimation)
                 m_MoveStrategy.RotateTo(targetRotation);
@@ -131,7 +138,8 @@ namespace RhytmFighter.Objects.View
             m_MoveStrategy.Update(deltaTime);
         }
 
-        public void NotifyView_FinishRotate()
+
+        protected void FinishRotate()
         {
             m_AnimationController.PlayAnimation(AnimationTypes.BattleIdle);
         }
@@ -151,7 +159,7 @@ namespace RhytmFighter.Objects.View
 
         void RotationFinishedHandler()
         {
-            NotifyView_FinishRotate();
+            FinishRotate();
 
             OnRotationFinished?.Invoke();
         }

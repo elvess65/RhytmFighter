@@ -8,6 +8,7 @@ namespace RhytmFighter.Objects.View
 {
     public class PlayerView : AbstractBattleNPCView
     {
+        private System.Action m_InternalTeleportEvent;
         private DoubleBarBehaviour m_HealthBarBehaviour;
         private iMovementStrategy m_TeleportStrategy;
         private MovementStrategyTypes m_CurrentMoveStrategyType = MovementStrategyTypes.Bezier;
@@ -21,12 +22,13 @@ namespace RhytmFighter.Objects.View
             m_TeleportStrategy.OnMovementFinished += MovementFinishedHandler;
         }
 
-        public override void NotifyView_StartMove(Vector3[] path)
+        #region Movement
+        public override void StartMove(Vector3[] path)
         {
             switch (m_CurrentMoveStrategyType)
             {
                 case MovementStrategyTypes.Bezier:
-                    base.NotifyView_StartMove(path);
+                    base.StartMove(path);
                     break;
                 case MovementStrategyTypes.Teleport:
                     Teleport(path);
@@ -34,24 +36,40 @@ namespace RhytmFighter.Objects.View
             }
         }
 
-        public void NotifyView_SwitchMoveStrategy(MovementStrategyTypes strategyType)
+        public void SwitchMoveStrategy(MovementStrategyTypes strategyType)
         {
             m_CurrentMoveStrategyType = strategyType;
         }
 
-
-        void Teleport(Vector3[] pos)
+        public void FinishFocusing()
         {
-            m_AnimationController.PlayAnimation(AnimationTypes.Teleport);
-
-            //Start teleport
-            m_TeleportStrategy.StartMove(pos);
-
-            //Show effect
-            GameObject teleportEffect = AssetsManager.GetPrefabAssets().InstantiateGameObject(AssetsManager.GetPrefabAssets().TeleportEffectPrefab,
-                                            DefenceSpawnParent.position, transform.rotation * Quaternion.Euler(0, 180, 0));
-            Destroy(teleportEffect, 2);
+            FinishRotate();
         }
+
+
+        void Teleport(Vector3[] path)
+        {
+            //Rotate in move direction
+            m_TeleportStrategy.RotateTo(Quaternion.LookRotation(path[0] - transform.position));
+
+            //Create teleport event
+            m_InternalTeleportEvent = delegate ()
+            {
+                m_OnInternalOtherAnimationEvent -= m_InternalTeleportEvent;
+
+                //Start teleport
+                m_TeleportStrategy.StartMove(path);
+
+                //Show effect
+                GameObject teleportEffect = AssetsManager.GetPrefabAssets().InstantiateGameObject(AssetsManager.GetPrefabAssets().TeleportEffectPrefab,
+                                                DefenceSpawnParent.position, transform.rotation * Quaternion.Euler(0, 180, 0));
+                Destroy(teleportEffect, 2);
+            };
+
+            m_OnInternalOtherAnimationEvent += m_InternalTeleportEvent;
+            m_AnimationController.PlayAnimation(AnimationTypes.Teleport);
+        }
+        #endregion
 
         #region UI
         protected override void CreateHealthBar()

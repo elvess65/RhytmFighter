@@ -21,9 +21,6 @@ namespace RhytmFighter.Characters.Movement
 
         public void StartMove(Vector3[] path)
         {
-            //Rotate in move direction
-            RotateTo(Quaternion.LookRotation(path[0] - m_ControlledTransform.position));
-
             //Move
             m_ControlledTransform.transform.position = path[0];
 
