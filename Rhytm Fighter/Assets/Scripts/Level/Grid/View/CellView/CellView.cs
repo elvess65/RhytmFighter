@@ -27,9 +27,10 @@ namespace Frameworks.Grid.View
             CorrespondingCellData = correspondingCellData;
 
             //Cell content
-            m_CellContent = cellContent; 
+            m_CellContent = cellContent;
             m_CellContent.transform.parent = ConentParent;
             m_CellContent.transform.localPosition = Vector3.zero;
+            m_CellContent.Initialize();
 
             //Cell appearance
             m_CellAppearanceStrategy = new Animation_CellAppearanceStrategy(AnimationController, ViewCollider, m_CellContent);

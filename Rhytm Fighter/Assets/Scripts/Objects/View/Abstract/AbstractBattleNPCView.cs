@@ -15,9 +15,10 @@ namespace RhytmFighter.Objects.View
         public event System.Action OnActionAnimationEvent;
 
         public Transform ProjectileSpawnParent;
-        public Transform ProjectileHitParent;
+        public Transform ProjectileImpactParent;
         public Transform DefenceSpawnParent;
-        public Transform DefenceBreachParent;
+        public Transform DefenceImpactParent;
+        public Transform DestroySpawnParent;
 
         protected iMovementStrategy m_MoveStrategy;
         protected AbstractBattleNPCModel m_ModelAsBattleModel;
@@ -25,7 +26,7 @@ namespace RhytmFighter.Objects.View
         protected System.Action m_OnInternalOtherAnimationEvent;
 
         public bool IsMoving => m_MoveStrategy.IsMoving;
-        public Vector3 ProjectileHitPosition => ProjectileHitParent.position;
+        public Vector3 ProjectileImpactPosition => ProjectileImpactParent.position;
         public Vector3 ProjectileSpawnPosition => ProjectileSpawnParent.position;
         public Vector3 DefenceSpawnPosition => DefenceSpawnParent.position;
         

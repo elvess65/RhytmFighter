@@ -3,7 +3,6 @@ using Frameworks.Grid.View;
 using RhytmFighter.Assets;
 using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.AI;
-using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;
 using RhytmFighter.Core.Enums;
 using RhytmFighter.Objects.View;

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5007740994292896653}
   m_Layer: 0
-  m_Name: ProjectileHit Parent
+  m_Name: ProjectileImpact Parent
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -91,6 +91,7 @@ Transform:
   - {fileID: 5007740994292896653}
   - {fileID: 8122367314607706597}
   - {fileID: 3610241168732254745}
+  - {fileID: 5311725749906019941}
   m_Father: {fileID: 1106674804363076215}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -139,9 +140,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpawnParent: {fileID: 8287174089280881687}
-  ProjectileHitParent: {fileID: 5007740994292896653}
+  ProjectileImpactParent: {fileID: 5007740994292896653}
   DefenceSpawnParent: {fileID: 8122367314607706597}
-  DefenceBreachParent: {fileID: 3610241168732254745}
+  DefenceImpactParent: {fileID: 3610241168732254745}
+  DestroySpawnParent: {fileID: 5311725749906019941}
   HealthBarParent: {fileID: 5495036468578866758}
 --- !u!1 &5212164267981293336
 GameObject:
@@ -153,7 +155,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3610241168732254745}
   m_Layer: 0
-  m_Name: DefenceBreachSpawn Parent
+  m_Name: DefenceImpact Parent
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -167,11 +169,41 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5212164267981293336}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.496, z: 0.481}
+  m_LocalPosition: {x: 0, y: 0.496, z: 0.964}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7966208497476266955}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5718500907484139628
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5311725749906019941}
+  m_Layer: 0
+  m_Name: DestroySpawn Parent
+  m_TagString: Untagged
+  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5311725749906019941
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5718500907484139628}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.599, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7966208497476266955}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6471749484040664440
 GameObject:

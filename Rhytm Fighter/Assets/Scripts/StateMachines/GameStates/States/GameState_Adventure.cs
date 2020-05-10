@@ -2,6 +2,7 @@
 using Frameworks.Grid.View;
 using RhytmFighter.Characters;
 using RhytmFighter.Core.Enums;
+using RhytmFighter.Enviroment.Effects;
 using RhytmFighter.Input;
 using RhytmFighter.Level;
 using RhytmFighter.Objects.Model;
@@ -60,9 +61,8 @@ namespace RhytmFighter.GameState
 
         private void CellInputHandler(CellView cellView)
         {
-            GameObject pointer = Assets.AssetsManager.GetPrefabAssets().InstantiateGameObject(Assets.AssetsManager.GetPrefabAssets().PointerPrefab, cellView.transform.position,
-                 Assets.AssetsManager.GetPrefabAssets().PointerPrefab.transform.rotation);
-            MonoBehaviour.Destroy(pointer.gameObject, 1);
+            Assets.AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(Assets.AssetsManager.GetPrefabAssets().PointerPrefab, cellView.transform.position,
+                                                                                           Assets.AssetsManager.GetPrefabAssets().PointerPrefab.transform.rotation).ScheduleHideView();
 
             //If transition to other - teleport 
             if (cellView.CorrespondingCellData.CorrespondingRoomID == m_LevelController.Model.GetCurrenRoomData().ID)

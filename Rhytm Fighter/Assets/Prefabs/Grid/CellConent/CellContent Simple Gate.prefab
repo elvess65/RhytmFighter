@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5162803646903297167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8680789158614805368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e11a8c695faa1b74483928faf10db3a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SQRDistanceToTarget: 0.5
+--- !u!114 &4335458104592876128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8680789158614805368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cafbf27792ab03a42b740c9d0a238db6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Particles:
+  - {fileID: 1901767419014949685}
+  - {fileID: 1902532969915457133}
+  - {fileID: 1901765907810541069}
+  - {fileID: 1901702154370946611}
+  - {fileID: 1902292389523677649}
+--- !u!114 &4751451852878031872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8680789158614805368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce9f717fb361979439c863fb8ee38852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Graphics: {fileID: 8060560135691291302}
 --- !u!1001 &210403923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -200,6 +244,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2940c2810344ebd4bad38aa313486551, type: 3}
+--- !u!198 &1901767419014949685 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198978598020641272, guid: 2940c2810344ebd4bad38aa313486551,
+    type: 3}
+  m_PrefabInstance: {fileID: 1776255121359952589}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1902532969915457133 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198617123799909536, guid: 2940c2810344ebd4bad38aa313486551,
+    type: 3}
+  m_PrefabInstance: {fileID: 1776255121359952589}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1901765907810541069 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198977087449466048, guid: 2940c2810344ebd4bad38aa313486551,
+    type: 3}
+  m_PrefabInstance: {fileID: 1776255121359952589}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1901702154370946611 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198917697596083454, guid: 2940c2810344ebd4bad38aa313486551,
+    type: 3}
+  m_PrefabInstance: {fileID: 1776255121359952589}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1902292389523677649 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198380786865158940, guid: 2940c2810344ebd4bad38aa313486551,
+    type: 3}
+  m_PrefabInstance: {fileID: 1776255121359952589}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8816590341282702121
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -272,8 +346,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -4355126245208102837, guid: a6362d27df8aea3479a6bd0cbfaa8b4e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a6362d27df8aea3479a6bd0cbfaa8b4e, type: 3}
+--- !u!1 &8680789158614805368 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 153836575011604561, guid: a6362d27df8aea3479a6bd0cbfaa8b4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8816590341282702121}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8060560135691291302 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1550943130709551503, guid: a6362d27df8aea3479a6bd0cbfaa8b4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8816590341282702121}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6908328981592685829 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2703710812141624876, guid: a6362d27df8aea3479a6bd0cbfaa8b4e,

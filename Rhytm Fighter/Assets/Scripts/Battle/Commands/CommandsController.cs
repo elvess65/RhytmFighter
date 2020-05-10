@@ -32,7 +32,7 @@ namespace RhytmFighter.Battle.Command
         public static void CreateViewForCommand(AbstractCommandModel command)
         {
             AbstractCommandView View = m_Instance.GetCommandViewFactory(command).CreateView(command);
-            View.OnViewDisposed += m_Instance.ViewDestroyedHandler;
+            View.OnCommandViewDisposed += m_Instance.ViewDestroyedHandler;
             m_Instance.ViewCreatedHandler(View);
         }
 

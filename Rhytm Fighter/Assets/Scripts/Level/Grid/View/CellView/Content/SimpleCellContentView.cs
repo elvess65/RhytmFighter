@@ -2,6 +2,5 @@
 {
     public class SimpleCellContentView : Abstract_CellContentView
     {
-
     }
 }

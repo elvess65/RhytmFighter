@@ -51,6 +51,8 @@ namespace RhytmFighter.Core
         public static float ENEMY_MOVE_SPEED;
         public static float PLAYER_MOVE_SPEED;
 
+        public PlayerModel PlayerModel => m_ControllersHolder.PlayerCharacterController.PlayerModel;
+
 
         private void Awake()
         {

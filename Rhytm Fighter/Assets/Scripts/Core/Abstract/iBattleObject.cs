@@ -19,7 +19,7 @@ namespace RhytmFighter.Core
         UnityEngine.Vector3 ViewPosition { get; }
         UnityEngine.Vector3 ViewForwardDir { get; }
         UnityEngine.Vector3 ProjectileSpawnPosition { get; }
-        UnityEngine.Vector3 ProjectileHitPosition { get; }
+        UnityEngine.Vector3 ProjectileImpactPosition { get; }
         UnityEngine.Vector3 DefenceSpawnPosition { get; }
 
         iBattleObject Target { get; set; }

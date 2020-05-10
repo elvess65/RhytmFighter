@@ -15,7 +15,7 @@ namespace RhytmFighter.Battle.Command.View
         public override AbstractCommandView CreateView(AbstractCommandModel command)
         {
             AbstractProjectileView result = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().ProjectilePrefab);
-            result.Initialize(command.Target.ProjectileHitPosition, command.Sender.ProjectileSpawnPosition, GetExistsTime(command), command.ID);
+            result.Initialize(command.Target.ProjectileImpactPosition, command.Sender.ProjectileSpawnPosition, GetExistsTime(command), command.ID);
 
             return result;
         }

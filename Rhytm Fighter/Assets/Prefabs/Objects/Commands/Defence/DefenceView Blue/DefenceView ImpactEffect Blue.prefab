@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &4695420451954146742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6605047910848485103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da248b8c00e13d344bbeb6c93e85477b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &5295108263204848163
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4733833313135556876}
+    m_Modifications:
+    - target: {fileID: 1510452662759636, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_Name
+      value: IceExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534549780799418, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534549780799418, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534549780799418, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534549780799418, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534549780799418, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534549780799418, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534549780799418, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534549780799418, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534549780799418, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534549780799418, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534549780799418, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a17347c42dfc98c4b861a7e41a444d6f, type: 3}
+--- !u!1001 &5594042574456454643
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1588591997607488284, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_Name
+      value: DefenceView CollisionEffect Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925089746572997861, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925089746572997861, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925089746572997861, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925089746572997861, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925089746572997861, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925089746572997861, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925089746572997861, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925089746572997861, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925089746572997861, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925089746572997861, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925089746572997861, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 480f1d0ab6779854ca35d5565e10ef5c, type: 3}
+--- !u!1 &6605047910848485103 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1588591997607488284, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+    type: 3}
+  m_PrefabInstance: {fileID: 5594042574456454643}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4733833313135556876 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 870316522063103231, guid: 480f1d0ab6779854ca35d5565e10ef5c,
+    type: 3}
+  m_PrefabInstance: {fileID: 5594042574456454643}
+  m_PrefabAsset: {fileID: 0}

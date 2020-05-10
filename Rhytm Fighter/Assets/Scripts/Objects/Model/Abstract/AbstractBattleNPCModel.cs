@@ -11,6 +11,7 @@ using RhytmFighter.Battle.Health;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Core;
 using RhytmFighter.Core.Enums;
+using RhytmFighter.Enviroment.Effects;
 using RhytmFighter.Objects.View;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace RhytmFighter.Objects.Model
         public Transform ViewTransform => View.transform;
         public Vector3 ViewPosition => View.transform.position;
         public Vector3 ViewForwardDir => View.transform.forward;
-        public Vector3 ProjectileHitPosition => m_BattleView.ProjectileHitPosition;
+        public Vector3 ProjectileImpactPosition => m_BattleView.ProjectileImpactPosition;
         public Vector3 ProjectileSpawnPosition => m_BattleView.ProjectileSpawnPosition;
         public Vector3 DefenceSpawnPosition => m_BattleView.DefenceSpawnPosition;
 
@@ -111,10 +112,8 @@ namespace RhytmFighter.Objects.Model
                     if (defenceModificator != null)
                     {
                         //Show defence effect
-                        GameObject ob = AssetsManager.GetPrefabAssets().InstantiateGameObject(AssetsManager.GetPrefabAssets().DefenceBreachEffectPrefab);
-                        ob.transform.localScale = Vector3.one * 1.5f;
-                        ob.transform.position = m_BattleView.DefenceBreachParent.position;
-                        MonoBehaviour.Destroy(ob, 2);
+                        AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().DefenceImpactEffectPrefab,
+                                                                                                m_BattleView.DefenceImpactParent.position).ScheduleHideView();
 
                         //Play sound
                         GameManager.Instance.DefenceSound.Play();

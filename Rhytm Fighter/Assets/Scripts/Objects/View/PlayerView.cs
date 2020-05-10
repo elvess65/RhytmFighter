@@ -1,6 +1,7 @@
 ﻿using RhytmFighter.Assets;
 using RhytmFighter.Characters.Movement;
 using RhytmFighter.Core.Enums;
+using RhytmFighter.Enviroment.Effects;
 using RhytmFighter.UI.Bar;
 using UnityEngine;
 
@@ -61,9 +62,9 @@ namespace RhytmFighter.Objects.View
                 m_TeleportStrategy.StartMove(path);
 
                 //Show effect
-                GameObject teleportEffect = AssetsManager.GetPrefabAssets().InstantiateGameObject(AssetsManager.GetPrefabAssets().TeleportEffectPrefab,
-                                                DefenceSpawnParent.position, transform.rotation * Quaternion.Euler(0, 180, 0));
-                Destroy(teleportEffect, 2);
+                AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().TeleportEffectPrefab,
+                                                                                        DefenceSpawnParent.position, 
+                                                                                        transform.rotation * Quaternion.Euler(0, 180, 0)).ScheduleHideView();
             };
 
             m_OnInternalOtherAnimationEvent += m_InternalTeleportEvent;

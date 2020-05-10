@@ -3,6 +3,7 @@ using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
 using Frameworks.Grid.View.Cell;
 using RhytmFighter.Battle.Command.View;
+using RhytmFighter.Enviroment.Effects;
 using RhytmFighter.Objects.View;
 using RhytmFighter.UI.Bar;
 using UnityEngine;
@@ -32,14 +33,16 @@ namespace RhytmFighter.Assets
 
         [Header("Projectile")]
         public AbstractProjectileView ProjectilePrefab;
+        public AbstractVisualEffect ProjectileImpactEffectPrefab;
 
         [Header("Defence")]
         public AbstractDefenceView DefencePrefab;
-        public GameObject DefenceBreachEffectPrefab;
+        public AbstractVisualEffect DefenceImpactEffectPrefab;
 
         [Header("Enviroment")]
-        public GameObject PointerPrefab;
-        public GameObject TeleportEffectPrefab;
+        public AbstractVisualEffect PointerPrefab;
+        public AbstractVisualEffect TeleportEffectPrefab;
+        public AbstractVisualEffect DestroyEffectPrefab;
 
         private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
 

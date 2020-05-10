@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CellView_Prefab: {fileID: 1216514164877100161, guid: a079dadca1bc8cd488a60aa151794187,
     type: 3}
-  CellContent_Gate_Next_Prefab: {fileID: 4167423890742070114, guid: 56313807c244f67479f24ff7ddae53aa,
+  CellContent_Gate_Next_Prefab: {fileID: 4751451852878031872, guid: 56313807c244f67479f24ff7ddae53aa,
     type: 3}
-  CellContent_Gate_Parent_Prefab: {fileID: 4167423890742070114, guid: 56313807c244f67479f24ff7ddae53aa,
+  CellContent_Gate_Parent_Prefab: {fileID: 4751451852878031872, guid: 56313807c244f67479f24ff7ddae53aa,
     type: 3}
   CellContent_Normal_Prefabs:
   - {fileID: 4167423890742070114, guid: 46b60e2210cf6694bbde986b193febaf, type: 3}
@@ -32,13 +32,17 @@ MonoBehaviour:
     type: 3}
   PlayerHealthBarPrefab: {fileID: -3937909374599639112, guid: 4d020cef8800d4f30ad0ea2fc7edeefa,
     type: 3}
-  ProjectilePrefab: {fileID: 3292289427469453457, guid: aaea7aad911f64bbb892afbe155a3661,
+  ProjectilePrefab: {fileID: 773455792894638350, guid: 84fcafd665cecf945a630cda053161d4,
     type: 3}
-  DefencePrefab: {fileID: 8717700199969591527, guid: 57528a7304250ca4daf67e5a5a621817,
+  ProjectileImpactEffectPrefab: {fileID: 2045784551111966260, guid: f43364acb27ff9245a3023a7aa188b6e,
     type: 3}
-  DefenceBreachEffectPrefab: {fileID: 1510452662759636, guid: a17347c42dfc98c4b861a7e41a444d6f,
+  DefencePrefab: {fileID: 2265607893657833054, guid: 8d6d4cfcca372794899d0f9dbf28a5f5,
     type: 3}
-  PointerPrefab: {fileID: 1243861341673150, guid: 3f26293dfafa1e447ab052cf7502a03e,
+  DefenceImpactEffectPrefab: {fileID: 4695420451954146742, guid: 7dbb04a058543bf409d93938c47a84d3,
     type: 3}
-  TeleportEffectPrefab: {fileID: 1854854489728914, guid: e9e9e8a8860bb5b4bb27e1c0106eae03,
+  PointerPrefab: {fileID: 6626715298376944019, guid: 755e9b79b1a22d245b1e254e496e00d3,
+    type: 3}
+  TeleportEffectPrefab: {fileID: 8008426449159988523, guid: 5d3b6b0f42d81e04589506dd248f5858,
+    type: 3}
+  DestroyEffectPrefab: {fileID: 8026443033847954545, guid: 43ce15fc8d638e741b0c239379433369,
     type: 3}

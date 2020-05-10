@@ -1,12 +1,13 @@
 ﻿using FrameworkPackage.Utils;
 using RhytmFighter.Core;
+using RhytmFighter.Enviroment;
 using UnityEngine;
 
 namespace RhytmFighter.Battle.Command.View
 {
-    public abstract class AbstractCommandView : MonoBehaviour, iUpdatable
+    public abstract class AbstractCommandView : AbstractWorldObjectView, iUpdatable
     {
-        public System.Action<AbstractCommandView> OnViewDisposed;
+        public System.Action<AbstractCommandView> OnCommandViewDisposed;
 
         protected float m_ExistTime;
         protected InterpolationData<Vector3> m_LerpData;
@@ -33,27 +34,29 @@ namespace RhytmFighter.Battle.Command.View
                 ProcessUpdate();
 
                 if (m_LerpData.Overtime())
-                    FinalizeView();
+                    DisposeView();
             }
         }
 
 
         protected virtual void ProcessUpdate()
         {
-
         }
 
-        protected virtual void FinalizeView()
+        protected override void DisposeView(float delay)
         {
-            DisposeView();
+            OnCommandViewDisposed?.Invoke(this);
+            OnCommandViewDisposed = null;
+
+            base.DisposeView(delay);
         }
 
-        protected void DisposeView()
+        protected override void DisposeView()
         {
-            OnViewDisposed?.Invoke(this);
-            OnViewDisposed = null;
+            OnCommandViewDisposed?.Invoke(this);
+            OnCommandViewDisposed = null;
 
-            Destroy(gameObject, 1);
+            base.DisposeView();
         }
     }
 }

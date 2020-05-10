@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.Assets;
+using RhytmFighter.Enviroment.Effects;
 using RhytmFighter.UI.Bar;
 using RhytmFighter.UI.Tools;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace RhytmFighter.Objects.View
 {
     public class StandardEnemyNPCView : AbstractBattleNPCView
     {
+        [Header("Standart Enemy NPC View")]
         public Transform HealthBarParent;
 
         private SingleBarBehaviour m_HealthBarBehaviour;
@@ -20,6 +22,15 @@ namespace RhytmFighter.Objects.View
             base.PerformUpdate(deltaTime);
 
             m_HealthBarFollow?.PerformUpdate(deltaTime);
+        }
+
+        public override void HideView()
+        {
+            AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().DestroyEffectPrefab,
+                                                                                    DestroySpawnParent.position,
+                                                                                    transform.rotation * Quaternion.Euler(0, 180, 0)).ScheduleHideView();
+
+            base.HideView();
         }
 
         #region UI
