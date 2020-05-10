@@ -32,7 +32,7 @@ namespace Frameworks.Grid.View
             m_CellContent.transform.localPosition = Vector3.zero;
 
             //Cell appearance
-            m_CellAppearanceStrategy = new Animation_CellAppearanceStrategy(AnimationController, ViewCollider);
+            m_CellAppearanceStrategy = new Animation_CellAppearanceStrategy(AnimationController, ViewCollider, m_CellContent);
         }
 
         public void ShowCell()

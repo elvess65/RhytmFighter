@@ -14,14 +14,16 @@ namespace Frameworks.Grid.View.Cell
 
         private AnimationStates m_AnimationState;
         private Collider m_ViewCollider;
+        private Abstract_CellContentView m_ContentView;
         private AnimationEventsListener m_EventsListener;
         private AbstractAnimationController m_AnimationController;
 
 
-        public Animation_CellAppearanceStrategy(AbstractAnimationController animationController, Collider viewCollider)
+        public Animation_CellAppearanceStrategy(AbstractAnimationController animationController, Collider viewCollider, Abstract_CellContentView contentView)
         {
             m_AnimationState = AnimationStates.None;
             m_ViewCollider = viewCollider;
+            m_ContentView = contentView;
 
             m_AnimationController = animationController;
             m_AnimationController.Initialize();
@@ -36,8 +38,8 @@ namespace Frameworks.Grid.View.Cell
 
         public void Show()
         {
-            if (!m_AnimationController.gameObject.activeSelf)
-                m_AnimationController.gameObject.SetActive(true);
+            if (!m_ContentView.Graphics.activeSelf)
+                m_AnimationController.StartCoroutine(WaitEndOfFrameBeforeActivateContent());
 
             m_AnimationState = AnimationStates.Showing;
             m_AnimationController.PlayAnimation(AnimationTypes.Show);
@@ -54,7 +56,7 @@ namespace Frameworks.Grid.View.Cell
             }
             else
             {
-                m_AnimationController.gameObject.SetActive(false);
+                m_ContentView.Graphics.SetActive(false);
                 m_AnimationState = AnimationStates.None;
             }
 
@@ -81,6 +83,12 @@ namespace Frameworks.Grid.View.Cell
             }
 
             m_AnimationState = AnimationStates.None;
+        }
+
+        private System.Collections.IEnumerator WaitEndOfFrameBeforeActivateContent()
+        {
+            yield return null;
+            m_ContentView.Graphics.SetActive(true);
         }
     }
 }
