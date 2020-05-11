@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Graphics: {fileID: 1550943130709551503}
+  Effects: {fileID: 7041503462766990309}
 --- !u!1001 &7841395775670897227
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -91,6 +92,12 @@ GameObject:
 --- !u!1 &1550943130709551503 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8742671493078098884, guid: b151e58666313bc4fa96609f5653c794,
+    type: 3}
+  m_PrefabInstance: {fileID: 7841395775670897227}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7041503462766990309 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 966666425814227374, guid: b151e58666313bc4fa96609f5653c794,
     type: 3}
   m_PrefabInstance: {fileID: 7841395775670897227}
   m_PrefabAsset: {fileID: 0}

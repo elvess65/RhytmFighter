@@ -29,7 +29,7 @@ namespace Frameworks.Grid.View.Cell
             m_AnimationController.Initialize();
 
             m_EventsListener = m_AnimationController.GetComponent<AnimationEventsListener>();
-            m_EventsListener.OnActionEvent += EventsListener_OnEvent;
+            m_EventsListener.OnActionEvent += AnimationEventsListener_EventHandler;
 
             OnShowed += ShowedHandler;
 
@@ -38,7 +38,7 @@ namespace Frameworks.Grid.View.Cell
 
         public void Show()
         {
-            if (!m_ContentView.Graphics.activeSelf)
+            if (!m_ContentView.Graphics.activeSelf && !m_ContentView.Effects.activeSelf)
                 m_AnimationController.StartCoroutine(WaitEndOfFrameBeforeActivateContent());
 
             m_AnimationState = AnimationStates.Showing;
@@ -56,7 +56,8 @@ namespace Frameworks.Grid.View.Cell
             }
             else
             {
-                m_ContentView.Graphics.SetActive(false);
+                ShowGraphics(false);
+
                 m_AnimationState = AnimationStates.None;
             }
 
@@ -70,7 +71,7 @@ namespace Frameworks.Grid.View.Cell
             m_ViewCollider.enabled = true;
         }
 
-        private void EventsListener_OnEvent()
+        private void AnimationEventsListener_EventHandler()
         {
             switch(m_AnimationState)
             {
@@ -85,10 +86,18 @@ namespace Frameworks.Grid.View.Cell
             m_AnimationState = AnimationStates.None;
         }
 
+
+        private void ShowGraphics(bool show)
+        {
+            m_ContentView.Graphics.SetActive(show);
+            m_ContentView.Effects.SetActive(show);
+        }
+
+
         private System.Collections.IEnumerator WaitEndOfFrameBeforeActivateContent()
         {
             yield return null;
-            m_ContentView.Graphics.SetActive(true);
+            ShowGraphics(true);
         }
     }
 }
