@@ -49,10 +49,10 @@ namespace RhytmFighter.Characters
             playerModel.ShowView(startCellView);
 
             //Hide all cells except start cell
-            //levelController.RoomViewBuilder.HideCells(levelController.Model.GetCurrenRoomData(), false, null, true);
+            levelController.RoomViewBuilder.HideCells(levelController.Model.GetCurrenRoomData(), false, null, true);
 
             //Extend view
-            //levelController.RoomViewBuilder.ExtendView(levelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
+            levelController.RoomViewBuilder.ExtendView(levelController.Model.GetCurrenRoomData(), startCellView.CorrespondingCellData);
         }
 
 
