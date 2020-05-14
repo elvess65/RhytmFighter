@@ -206,7 +206,16 @@ namespace RhytmFighter.Core
             m_ControllersHolder.CameraController.InitializeCamera(m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform);
 
             //Finish initialization
-            InitializationFinished();
+            //InitializationFinished();
+
+            m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.sc.GetVisible(startCellView.CorrespondingCellData.X, startCellView.CorrespondingCellData.Y);
+            Debug.Log(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.sc.VisiblePoints.Count);
+
+            foreach(Frameworks.Grid.Data.GridCellData data in m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.sc.VisiblePoints)
+            {
+                GameObject.CreatePrimitive(PrimitiveType.Capsule).transform.position = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(
+                    m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, data.X, data.Y).transform.position;
+            }
         }
         #endregion
 

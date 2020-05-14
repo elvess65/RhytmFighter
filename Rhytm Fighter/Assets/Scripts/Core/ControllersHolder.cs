@@ -37,8 +37,6 @@ namespace RhytmFighter.Core
             BattleController = new BattleController(LevelController, CameraController, PlayerCharacterController);
             CommandsController = new CommandsController();
             RhytmInputProxy = new RhytmInputProxy();
-
-            
         }
     }
 }

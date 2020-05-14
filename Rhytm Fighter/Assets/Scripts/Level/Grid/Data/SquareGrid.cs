@@ -26,6 +26,7 @@ namespace Frameworks.Grid.Data
 
         private const bool m_ALLOW_DIAGONAL_PATHFINDING = false;
 
+        public FOVShadowcasting sc;
 
         public SquareGrid(int widthInCells, int heightInCells, float cellSize, Vector2 _offset)
         {
@@ -45,6 +46,8 @@ namespace Frameworks.Grid.Data
                     m_Grid[i, j] = gridCell;
                 }
             }
+
+            sc = new FOVShadowcasting(WidthInCells, HeightInCells, this);
         }
 
         public GridCellData[] FindPathCells(GridCellData from, GridCellData to)
@@ -286,7 +289,7 @@ namespace Frameworks.Grid.Data
         /// <summary>
         /// Является ли ячейка недоступной для перемещения
         /// </summary>
-        public bool CellIsNotWalkable(GridCellData cell) => cell.CellType != CellTypes.Normal || cell.HasObject || !cell.IsShowed;
+        public bool CellIsNotWalkable(GridCellData cell) => cell.CellType != CellTypes.Normal || cell.HasObject; //|| !cell.IsShowed;
 
         /// <summary>
         /// Является ли ячейка доступной для перемещения
