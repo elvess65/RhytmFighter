@@ -17,6 +17,7 @@ namespace RhytmFighter.Core
         public void Initialize()
         {
             AssetsManager.Initialize();
+            UIManager.Initialize();
         }
     }
 }

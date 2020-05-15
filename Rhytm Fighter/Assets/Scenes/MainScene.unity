@@ -535,7 +535,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GeneralSettings: {fileID: 11400000, guid: 6c82021ecd32ef54db3a7bea846e012a, type: 2}
-  CameraSettings: {fileID: 11400000, guid: 364fe36ff7a8af444ac6139bf2b5cb26, type: 2}
 --- !u!1 &327966457
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,7 +731,7 @@ GameObject:
   - component: {fileID: 510244933}
   - component: {fileID: 510244932}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BeatIndicatorTemp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1591,7 +1590,7 @@ GameObject:
   - component: {fileID: 1093778256}
   - component: {fileID: 1093778259}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Button - Defence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1714,8 +1713,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1655152184}
-          m_MethodName: BtnPressHandler
+        - m_Target: {fileID: 1483325746}
+          m_MethodName: ButtonDefence_PressHandler
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1781,7 +1780,7 @@ GameObject:
   - component: {fileID: 1142746042}
   - component: {fileID: 1142746041}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Text - BattleStatus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2352,7 +2351,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1404236960}
   m_LocalRotation: {x: 0.42261827, y: -0, z: -0, w: 0.9063079}
-  m_LocalPosition: {x: 0, y: 7.660445, z: -3.2178752}
+  m_LocalPosition: {x: 0, y: 28.295277, z: -23.742554}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 494351765}
@@ -2402,6 +2401,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ea70a130a8fd84683b5bc693377b8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BeatIndicator: {fileID: 510244930}
+  Button_Defence: {fileID: 1093778256}
+  Text_BattleStatus: {fileID: 1142746041}
 --- !u!1 &1518130501
 GameObject:
   m_ObjectHideFlags: 0
@@ -2560,7 +2562,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ManagersHolder: {fileID: 88609300}
   CamerasHolder: {fileID: 370748606}
-  BeatIndicatorTemp: {fileID: 510244930}
   Music: {fileID: 1518130502}
   Rhytm: {fileID: 739303193}
   AttackSound: {fileID: 1669360310}
@@ -2571,8 +2572,6 @@ MonoBehaviour:
   BeatSound: {fileID: 1269744322}
   FinishBattleSound: {fileID: 70666071}
   Metronome: {fileID: 971653468}
-  BattleText: {fileID: 1142746041}
-  Btn: {fileID: 1093778256}
 --- !u!4 &1655152185
 Transform:
   m_ObjectHideFlags: 0

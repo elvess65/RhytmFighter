@@ -1,5 +1,4 @@
-﻿using RhytmFighter.Settings.Proxy;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RhytmFighter.Settings
 {
@@ -10,8 +9,5 @@ namespace RhytmFighter.Settings
     {
         [Header("General")]
         public GeneralSettings GeneralSettings;
-
-        [Header("Other settings")]
-        public CameraSettings CameraSettings;
     }
 }
