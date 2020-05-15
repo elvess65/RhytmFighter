@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace RhytmFighter.UI.Bar
+namespace RhytmFighter.UI.Abstract
 {
     public abstract class AbstractUIObject : MonoBehaviour
     {

@@ -1,5 +1,6 @@
 ﻿using RhytmFighter.Assets;
 using RhytmFighter.Settings;
+using RhytmFighter.UI;
 using UnityEngine;
 
 namespace RhytmFighter.Core
@@ -11,6 +12,7 @@ namespace RhytmFighter.Core
     {
         public AssetsManager AssetsManager;
         public SettingsManager SettingsManager;
+        public UIManager UIManager;
 
         public void Initialize()
         {

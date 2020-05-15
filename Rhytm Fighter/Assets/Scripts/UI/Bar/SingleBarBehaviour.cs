@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RhytmFighter.UI.Abstract;
+using UnityEngine;
 
 namespace RhytmFighter.UI.Bar
 {
