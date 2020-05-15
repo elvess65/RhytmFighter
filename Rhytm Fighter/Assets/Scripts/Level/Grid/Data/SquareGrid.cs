@@ -18,6 +18,7 @@ namespace Frameworks.Grid.Data
         private float m_CellSize;
         private Vector3 m_Offset;
         private GridCellData[,] m_Grid;
+        private FOVShadowcasting m_FOVController;
         private GridPathFindController m_GridPathFindController;
         //Gates
         private GridCellData m_ParentNodeGate { get; set; }
@@ -26,7 +27,6 @@ namespace Frameworks.Grid.Data
 
         private const bool m_ALLOW_DIAGONAL_PATHFINDING = false;
 
-        public FOVShadowcasting sc;
 
         public SquareGrid(int widthInCells, int heightInCells, float cellSize, Vector2 _offset)
         {
@@ -36,6 +36,7 @@ namespace Frameworks.Grid.Data
             m_Offset = new Vector3(_offset.x, 0, _offset.y);
 
             m_Grid = new GridCellData[WidthInCells, HeightInCells];
+            m_FOVController = new FOVShadowcasting(WidthInCells, HeightInCells, 5, this);
             m_GridPathFindController = new GridPathFindController(this, m_ALLOW_DIAGONAL_PATHFINDING);
 
             for (int i = 0; i < WidthInCells; i++)
@@ -46,8 +47,6 @@ namespace Frameworks.Grid.Data
                     m_Grid[i, j] = gridCell;
                 }
             }
-
-            sc = new FOVShadowcasting(WidthInCells, HeightInCells, this);
         }
 
         public GridCellData[] FindPathCells(GridCellData from, GridCellData to)
@@ -90,6 +89,11 @@ namespace Frameworks.Grid.Data
             }
 
             return null;
+        }
+
+        public GridCellData[] GetFOVCells(GridCellData anchor)
+        {
+            return m_FOVController.GetFOV(anchor.X, anchor.Y);
         }
 
 

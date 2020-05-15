@@ -206,29 +206,8 @@ namespace RhytmFighter.Core
             m_ControllersHolder.CameraController.InitializeCamera(m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform);
 
             //Finish initialization
-            InitializationFinished();
-            
-
-            m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.sc.GetVisiblePonts(startCellView.CorrespondingCellData.X,
-                                                                                                      startCellView.CorrespondingCellData.Y);
-
-            Debug.Log(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.sc.VisiblePoints.Count);
-
-            foreach (GameObject obj in obs)
-                Destroy(obj);
-
-            foreach (Frameworks.Grid.Data.GridCellData data in m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.sc.VisiblePoints)
-            {                
-                GameObject ob = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-                ob.transform.position = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(
-                    m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID, data.X, data.Y).transform.position;
-                ob.GetComponent<Collider>().enabled = false;
-
-                obs.Add(ob);
-            }
+            InitializationFinished(); 
         }
-
-        public List<GameObject> obs = new List<GameObject>();
         #endregion
 
         #region Player controller

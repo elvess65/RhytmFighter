@@ -20,7 +20,7 @@ namespace Frameworks.Grid.View
         private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
 
         private const int m_ITERATIONS = 3;
-        private const float m_EXTEND_VIEW_DELAY = 0.1f;
+        private const float m_EXTEND_VIEW_DELAY = 0.03f;
 
         public GridViewBuilder()
         {
@@ -126,35 +126,22 @@ namespace Frameworks.Grid.View
         /// </summary>
         public void ExtendView(LevelRoomData roomData, GridCellData anchorCellData)
         {
-            GameManager.Instance.StartCoroutine(ExtendViewVertical(roomData, anchorCellData, 1));
-            GameManager.Instance.StartCoroutine(ExtendViewVertical(roomData, anchorCellData, -1));
-            GameManager.Instance.StartCoroutine(ExtendViewHorizontal(roomData, anchorCellData, 1));
-            GameManager.Instance.StartCoroutine(ExtendViewHorizontal(roomData, anchorCellData, -1));
+            GameManager.Instance.StartCoroutine(ShowCellsWithDelay(roomData.ID, roomData.GridData.GetFOVCells(anchorCellData)));
         }
 
-        public void ShowAllVisitedCells(LevelRoomData roomData)
+        /// <summary>
+        /// Show all discovered cells
+        /// </summary>
+        public void ShowAllDiscoveredCells(LevelRoomData roomData)
         {
             if (m_GridViews.ContainsKey(roomData.ID))
-            {
-                for (int i = 0; i < roomData.GridData.WidthInCells; i++)
-                {
-                    for (int j = 0; j < roomData.GridData.HeightInCells; j++)
-                    {
-                        CellView cellView = GetCellVisual(roomData.ID, i, j);
-                        if (cellView.CorrespondingCellData.IsDiscovered)
-                            cellView.ShowCell();
-                    }
-                }
-            }
+                GameManager.Instance.StartCoroutine(ShowAllDiscoveredCellsWithDelay(roomData));
         }
 
 
         /// <summary>
-            /// Get start position for next grid view
-            /// </summary>
-            /// <param name="gateCellData"></param>
-            /// <param name="inputNodeX"></param>
-            /// <returns></returns>
+        /// Get start position for next grid view
+        /// </summary>
         public Vector3 GetStartPositionForNextView(GridCellData gateCellData, int inputNodeX)
         {
             CellView gateCellView = GetCellVisual(gateCellData.CorrespondingRoomID, gateCellData.X, gateCellData.Y);
@@ -164,7 +151,6 @@ namespace Frameworks.Grid.View
         /// <summary>
         /// Get start position for parent grid view
         /// </summary>
-        /// <returns></returns>
         public Vector3 GetStartPositionForParentView(GridCellData parentCellData, GridCellData gateCellData, int nodeDirectionOffset)
         {
             CellView gateCellView = GetCellVisual(parentCellData.CorrespondingRoomID, parentCellData.X, parentCellData.Y);
@@ -175,7 +161,6 @@ namespace Frameworks.Grid.View
         /// <summary>
         /// Debug
         /// </summary>
-        /// <param name="roomData"></param>
         public void ShowAllCellsWithObjects_Debug(LevelRoomData roomData)
         {
             for (int i = 0; i < roomData.GridData.WidthInCells; i++)
@@ -185,9 +170,7 @@ namespace Frameworks.Grid.View
                     //Get cell view
                     CellView cellView = GetCellVisual(roomData.ID, i, j);
                     if (cellView.CorrespondingCellData.HasObject)
-                    {
                         ShowCell_Debug(cellView);
-                    }
                 }
             }
         }
@@ -195,69 +178,18 @@ namespace Frameworks.Grid.View
         /// <summary>
         /// Debug
         /// </summary>
-        /// <param name="cellView"></param>
         public void ShowCell_Debug(CellView cellView)
         {
             GameObject.CreatePrimitive(PrimitiveType.Cube).transform.position = cellView.transform.position;
         }
 
 
-        System.Collections.IEnumerator ExtendViewVertical(LevelRoomData roomData, GridCellData anchorCellData, int verticalOffset)
+        private void CellWithObjectDetectedHandler(AbstractGridObjectModel objectInCell)
         {
-            //Move vertical by step until reach obstacle or end of the grid
-
-            int iteration = m_ITERATIONS;
-            CellView cellView = GetCellVisual(roomData.ID, anchorCellData.X, anchorCellData.Y + verticalOffset);
-            while (iteration -- > 0 && cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
-            {
-                //if (cellView.CorrespondingCellData.IsShowed)
-                //    continue;
-
-                yield return m_ExtendViewWait;
-
-                //Show cellView
-                cellView.ShowCell();
-
-                //Get next cellView
-                cellView = GetCellVisual(roomData.ID, cellView.CorrespondingCellData.X, cellView.CorrespondingCellData.Y + verticalOffset);
-            }
-
-            //If obstacle was reached - show it also
-            if (cellView != null)
-                cellView.ShowCell();
+            OnCellWithObjectDetected?.Invoke(objectInCell);
         }
 
-        System.Collections.IEnumerator ExtendViewHorizontal(LevelRoomData roomData, GridCellData anchorCellData, int horizontalOffset)
-        {
-            //Move horizontal by step until reach obstacle or end of the grid
-
-            int iteration = m_ITERATIONS;
-            CellView cellView = GetCellVisual(roomData.ID, anchorCellData.X + horizontalOffset, anchorCellData.Y);
-            while (iteration-- > 0 && cellView != null && cellView.CorrespondingCellData.CellType != CellTypes.Obstacle)
-            {
-                //Moving step horizontal move all possible steps vertical
-                GameManager.Instance.StartCoroutine(ExtendViewVertical(roomData, cellView.CorrespondingCellData, 1));
-                GameManager.Instance.StartCoroutine(ExtendViewVertical(roomData, cellView.CorrespondingCellData, -1));
-
-                //if (cellView.CorrespondingCellData.IsShowed)
-                //    continue;
-
-                yield return m_ExtendViewWait;
-
-                //Show cellView
-                cellView.ShowCell();
-
-                //Get next cellView
-                cellView = GetCellVisual(roomData.ID, cellView.CorrespondingCellData.X + horizontalOffset, cellView.CorrespondingCellData.Y);
-            }
-
-            //If obstacle was reached - show it also
-            if (cellView != null)
-                cellView.ShowCell();
-        }
-
-
-        CellView CreateCellView(GridCellData cellData, Vector3 startPos, Transform gridParent)
+        private CellView CreateCellView(GridCellData cellData, Vector3 startPos, Transform gridParent)
         {
             //Create view
             Vector3 viewPos = new Vector3(startPos.x + m_CellOffset / 2 + cellData.X * m_CellOffset, 0, startPos.z + m_CellOffset / 2 + cellData.Y * m_CellOffset);
@@ -275,7 +207,7 @@ namespace Frameworks.Grid.View
             return cellView;
         }
 
-        Abstract_CellContentView GetCellContentPrefab(GridCellData cellData)
+        private Abstract_CellContentView GetCellContentPrefab(GridCellData cellData)
         {
             Abstract_CellContentView cellContent = null;
 
@@ -305,7 +237,39 @@ namespace Frameworks.Grid.View
             return cellContent;
         }
 
-        void CellWithObjectDetectedHandler(AbstractGridObjectModel objectInCell) => OnCellWithObjectDetected?.Invoke(objectInCell);
+        private System.Collections.IEnumerator ShowCellsWithDelay(int roomDataID, GridCellData[] cells)
+        {
+            foreach (GridCellData cellData in cells)
+            {
+                //Skip showed cell
+                if (cellData.IsShowed)
+                    continue;
+
+                CellView cellView = GetCellVisual(roomDataID, cellData.X, cellData.Y);
+                cellView.ShowCell();
+
+                yield return m_ExtendViewWait;
+            }
+        }
+
+        private System.Collections.IEnumerator ShowAllDiscoveredCellsWithDelay(LevelRoomData roomData)
+        {
+            for (int i = 0; i < roomData.GridData.WidthInCells; i++)
+            {
+                for (int j = 0; j < roomData.GridData.HeightInCells; j++)
+                {
+                    CellView cellView = GetCellVisual(roomData.ID, i, j);
+
+                    //Skip not discovered cell
+                    if (!cellView.CorrespondingCellData.IsDiscovered)
+                        continue;
+
+                    cellView.ShowCell();
+
+                    yield return null;
+                }
+            }
+        }
     }
 
 

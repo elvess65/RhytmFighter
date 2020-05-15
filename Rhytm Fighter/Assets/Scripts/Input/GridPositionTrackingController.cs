@@ -138,7 +138,7 @@ namespace RhytmFighter.Input
                 if (showAllVisitedCells)
                 {
                     Debug.Log("Show all visited cells");
-                    m_LevelController.RoomViewBuilder.ShowAllVisitedCells(m_LevelController.Model.GetCurrenRoomData());
+                    m_LevelController.RoomViewBuilder.ShowAllDiscoveredCells(m_LevelController.Model.GetCurrenRoomData());
                 }
                 else
                     m_LevelController.RoomViewBuilder.ExtendView(m_LevelController.Model.GetCurrenRoomData(), m_LastVisitedCell);
