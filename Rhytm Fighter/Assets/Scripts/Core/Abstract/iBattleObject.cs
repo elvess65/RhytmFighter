@@ -14,6 +14,7 @@ namespace RhytmFighter.Core
 
         int ID { get; }
         bool IsEnemy { get; }
+        bool IsDestroyed { get; }
         GridCellData CorrespondingCell { get; }
         UnityEngine.Transform ViewTransform { get; }
         UnityEngine.Vector3 ViewPosition { get; }

@@ -45,8 +45,8 @@ namespace RhytmFighter.StateMachines.UIState
             //UI
             m_ButtonDefence.gameObject.SetActive(false);
 
-            m_TextBattleStatus.text = "Victory";
-            m_TextBattleStatus.color = Color.green;
+            m_TextBattleStatus.text = Core.GameManager.Instance.PlayerModel.IsDestroyed ? "Game Over" : "Victory";
+            m_TextBattleStatus.color = Core.GameManager.Instance.PlayerModel.IsDestroyed ? Color.red : Color.green;
 
             m_BeatIndicatorImage.color = Color.green;
             Core.GameManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());

@@ -102,10 +102,17 @@ namespace RhytmFighter.Level.Data
                 //int rndIndex = Random.Range(0, m_EmptyCells.Count);
 
                 float enemyMoveSpeed = GameManager.ENEMY_MOVE_SPEED;
-                int enemyHP = 10;
+                int enemyHP = 1;
                
                 GridCellData cell = grid.GetCellByCoord(grid.WidthInCells / 2, grid.HeightInCells - 1);
                 StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, cell, enemyMoveSpeed, new SimpleBattleActionBehaviour(1, 1, 1), 
+                                                                                                               new SimpleHealthBehaviour(enemyHP),
+                                                                                                               AITypes.Simple);
+
+                cell.AddObject(enemyNPC);
+
+                cell = grid.GetCellByCoord(grid.WidthInCells / 2 - 1, grid.HeightInCells - 1);
+                enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, cell, enemyMoveSpeed, new SimpleBattleActionBehaviour(1, 1, 1),
                                                                                                                new SimpleHealthBehaviour(enemyHP),
                                                                                                                AITypes.Simple);
 

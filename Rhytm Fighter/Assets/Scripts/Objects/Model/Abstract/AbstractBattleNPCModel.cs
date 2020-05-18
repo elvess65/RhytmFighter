@@ -27,6 +27,7 @@ namespace RhytmFighter.Objects.Model
         public event Action<iBattleObject> OnDestroyed;
         
         public bool IsMoving => m_BattleView.IsMoving;
+        public bool IsDestroyed { get; private set; }
         public Transform ViewTransform => View.transform;
         public Vector3 ViewPosition => View.transform.position;
         public Vector3 ViewForwardDir => View.transform.forward;
@@ -224,6 +225,8 @@ namespace RhytmFighter.Objects.Model
         private void HealthBehaviour_OnDestroyed()
         {
             GameManager.Instance.DestroySound.Play();
+
+            IsDestroyed = true;
 
             //Remove last executed command view
             if (m_LastExecutedCommand != null)

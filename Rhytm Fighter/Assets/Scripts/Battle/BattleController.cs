@@ -26,9 +26,10 @@ namespace RhytmFighter.Battle
         
         public iBattleObject Player { get; set; }
 
-        private const int m_DISTANCE_ADJUSTEMENT_RANGE = 4;     //Max range (in cells) to find adjust disatnce cell
-        private const int m_TICKS_BEFORE_ACTIVATING_ENEMY = 1;  //Delay (in ticks) after first enemy found and start battle
-        private const int m_TICKS_BEFORE_FINISHING_BATTLE = 2;  //Delay (in ticks) after last enemy destroyed and finish battle
+        private const int m_DISTANCE_ADJUSTEMENT_RANGE = 4;                                 //Max range (in cells) to find adjust disatnce cell
+        private const int m_TICKS_BEFORE_BEFORE_ACTIVATING_FIRST_ENEMY = 1;                 //Delay (in ticks) after first enemy found and start battle
+        private const int m_TICKS_BEFORE_ACTICATING_NEXT_ENEMY_BATTLE = 2;                  //Delay (in ticks) after last enemy destroyed and finish battle
+        private const int m_TICKS_BEFORE_FINISHING_BATTLE = 2;                              //Delay (in ticks) after last enemy destroyed and finish battle
         private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE = 5;    //Min distance between cells to start adjust distance 
         private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_ROTATION = 5;    //Min rotation between player and enemy to adjust rotation
 
@@ -110,8 +111,8 @@ namespace RhytmFighter.Battle
 
         private void PrepareForBattleEventHandler()
         {
-            m_TargetTick = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_ACTIVATING_ENEMY;
-            Rhytm.RhytmController.GetInstance().OnTick += ActivateFirstEnemyOnTick;
+            m_TargetTick = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_BEFORE_ACTIVATING_FIRST_ENEMY;
+            Rhytm.RhytmController.GetInstance().OnTick += ActivateEnemyOnTick;
         }
 
 
@@ -128,16 +129,16 @@ namespace RhytmFighter.Battle
             }
         }
 
-        private void ActivateFirstEnemyOnTick(int currentTick)
+        private void ActivateEnemyOnTick(int currentTick)
         {
             if (currentTick >= m_TargetTick)
             {
-                Rhytm.RhytmController.GetInstance().OnTick -= ActivateFirstEnemyOnTick;
+                Rhytm.RhytmController.GetInstance().OnTick -= ActivateEnemyOnTick;
                 TryActivateNextEnemy();
             }
         }
 
-
+        private bool c = false;
         private void TryActivateNextEnemy()
         {
             //Get closest enemy to player
@@ -146,6 +147,18 @@ namespace RhytmFighter.Battle
             //If enemy exists
             if (closestEnemy != null)
             {
+                if (c)
+                {
+                    Debug.Log("Try activate next enemt");
+                    //
+                    m_TargetTick = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_ACTICATING_NEXT_ENEMY_BATTLE;
+                    Rhytm.RhytmController.GetInstance().OnTick += ActivateEnemyOnTick;
+
+                    return;
+                }
+
+                c = true;
+
                 Player.Target = closestEnemy;
                 ActivateEnemy(closestEnemy);
             }
@@ -198,16 +211,7 @@ namespace RhytmFighter.Battle
                                                                                               battleObject.CorrespondingCell.Y,
                                                                                               m_DISTANCE_ADJUSTEMENT_RANGE);
 
-            foreach(GridCellData nc in neighbourCells)
-            {
-                CellView view = m_LevelController.RoomViewBuilder.GetCellVisual(m_LevelController.Model.GetCurrenRoomData().ID,
-                                                                               nc.X,
-                                                                               nc.Y);
-                m_LevelController.RoomViewBuilder.ShowCell_Debug(view);
-            }
-
-
-
+            //Find adjusted cell
             while (neighbourCells.Count > 0 && pathToAdjustedCell == null)
             {
                 for (int i = 0; i < neighbourCells.Count; i++)
@@ -234,13 +238,12 @@ namespace RhytmFighter.Battle
                     neighbourCells.Remove(adjustedCell);
             }
 
+            //If adjusted cell exists
             if (adjustedCell != null)
             {
                 CellView view = m_LevelController.RoomViewBuilder.GetCellVisual(m_LevelController.Model.GetCurrenRoomData().ID,
                                                                                 adjustedCell.X,
                                                                                 adjustedCell.Y);
-
-                m_LevelController.RoomViewBuilder.ShowCell_Debug(view, PrimitiveType.Capsule);
 
                 m_EnemyMovementController.OnMovementFinished += EnemyAdjustementMovementFinished;
                 m_EnemyMovementController.MoveCharacter(view);
