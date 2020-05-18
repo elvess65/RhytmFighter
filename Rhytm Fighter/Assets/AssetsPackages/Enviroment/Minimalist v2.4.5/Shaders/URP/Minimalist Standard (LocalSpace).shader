@@ -137,7 +137,7 @@ Shader "Minimalist/URP/Standard Localspace"
 	{
 		Tags { "RenderType"="Opaque" "Queue"="Geometry" "RenderPipeline" = "UniversalPipeline" "IgnoreProjector" = "True" "DisableBatching" = "True"}
 		
-		UsePass "Minimalist/Standard/StandardPass"
+		UsePass "Minimalist/URP/Standard/StandardPass"
 		
 		UsePass "Universal Render Pipeline/Lit/ShadowCaster"
 		UsePass "Universal Render Pipeline/Lit/DepthOnly"

@@ -1,6 +1,6 @@
 ﻿namespace RhytmFighter.StateMachines.UIState
 {
-    public class UIStatesMachine : AbstractStateMachine
+    public class UIStateMachine : AbstractStateMachine
     {
         private UIState_Abstract m_CurrentUIState;
 

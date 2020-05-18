@@ -152,6 +152,7 @@ shader "Minimalist/BRP/Standard"
             #pragma multi_compile_fwdbase_fullshadows
             #pragma multi_compile_fog
             #pragma fragmentoption ARB_precision_hint_fastest
+            #pragma multi_compile_instancing
             //shader_feature_locals
             #pragma shader_feature_local _ TEXTUREMODULE_ON
             #pragma shader_feature_local _ FRONTSOLID FRONTGRADIENT
@@ -292,6 +293,7 @@ shader "Minimalist/BRP/Standard"
                 half3 vColor: COLOR;
                 float4 uv0: TEXCOORD0;
                 float4 uv1: TEXCOORD1;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
             };
             
             struct vertexOutput
@@ -325,6 +327,7 @@ shader "Minimalist/BRP/Standard"
             vertexOutput vert(vertexInput v)
             {
                 vertexOutput o;
+                UNITY_SETUP_INSTANCE_ID(v);
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.worldPos = mul(unity_ObjectToWorld, v.vertex);
                 half3 normal = normalize(mul(unity_ObjectToWorld, half4(v.normal, 0))).xyz;

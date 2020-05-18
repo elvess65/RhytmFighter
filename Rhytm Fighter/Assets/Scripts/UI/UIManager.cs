@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RhytmFighter.StateMachines.UIState;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace RhytmFighter.UI
@@ -13,73 +14,64 @@ namespace RhytmFighter.UI
         public Button Button_Defence;
         public Text Text_BattleStatus;
 
-        private WaitForSeconds m_WaitDisableBattleUIDelay;
-        private WaitForSeconds m_WaitBeatIndicatorDelay;
+        [Header("General")]
+        public Transform PlayerUIParent;
 
+        private UIStateMachine m_StateMachine;
 
+        //States
+        private UIState_NoUI m_UIStateNoUI;
+        private UIState_Battle m_UIStateBattle;
+        private UIState_Adventure m_UIStateAdventure;
+
+       
         public void Initialize()
         {
-            m_WaitDisableBattleUIDelay = new WaitForSeconds((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds);
-            m_WaitBeatIndicatorDelay = new WaitForSeconds((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
+            //UI States
+            m_StateMachine = new UIStateMachine();
+
+            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, BeatIndicator, PlayerUIParent);
+            m_UIStateBattle = new UIState_Battle(Button_Defence, Text_BattleStatus, BeatIndicator, PlayerUIParent);
+            m_UIStateAdventure = new UIState_Adventure(Button_Defence, Text_BattleStatus, BeatIndicator, PlayerUIParent);
+
+            m_StateMachine.Initialize(m_UIStateNoUI);
         }
+
+
+        public void ToNoUIState()
+        {
+            m_StateMachine.ChangeState(m_UIStateNoUI);
+        }
+
+        public void ToAdventureUIState()
+        {
+            m_StateMachine.ChangeState(m_UIStateAdventure);
+        }
+
+        public void ToBattleUIState()
+        {
+            m_StateMachine.ChangeState(m_UIStateBattle);
+        }
+
 
         public void PrepareForBattle()
         {
-            BeatIndicator.GetComponent<Image>().color = Color.yellow;
-
-            Text_BattleStatus.text = "Prepare for battle";
-            Text_BattleStatus.color = Color.yellow;
-
-            StartCoroutine(DisableBattleUICoroutine());
+            m_StateMachine.ChangeState(m_UIStateBattle);
         }
 
         public void BattleStart()
         {
-            BeatIndicator.GetComponent<Image>().color = Color.red;
-
-            Text_BattleStatus.text = "Fight";
-            Text_BattleStatus.color = Color.red;
-
-            StartCoroutine(DisableBattleUICoroutine());
+            m_UIStateBattle.BattleStarted();
         }
 
         public void BattleFinish()
         {
-            BeatIndicator.GetComponent<Image>().color = Color.green;
-
-            Text_BattleStatus.text = "Victory";
-            Text_BattleStatus.color = Color.green;
-
-            StartCoroutine(DisableBattleUICoroutine());
-        }
-
-        public void NotifyAboutTick()
-        {
-            StartCoroutine(BeatIndicatorAnimationCoroutine());
+            m_StateMachine.ChangeState(m_UIStateAdventure);
         }
 
         public void ButtonDefence_PressHandler()
         {
             OnButtonDefencePressed?.Invoke();
-        }
-
-
-        private System.Collections.IEnumerator DisableBattleUICoroutine()
-        {
-            Text_BattleStatus.gameObject.SetActive(true);
-
-            yield return m_WaitDisableBattleUIDelay;
-
-            Text_BattleStatus.gameObject.SetActive(false);
-        }
-
-        private System.Collections.IEnumerator BeatIndicatorAnimationCoroutine()
-        {
-            BeatIndicator.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
-
-            yield return m_WaitBeatIndicatorDelay;
-
-            BeatIndicator.transform.localScale -= new Vector3(0.1f, 0.1f, 0.1f);
         }
     }
 }

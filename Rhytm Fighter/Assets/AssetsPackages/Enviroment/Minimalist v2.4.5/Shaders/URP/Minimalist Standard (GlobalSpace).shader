@@ -189,12 +189,15 @@
 			#pragma shader_feature DONTMIX
 			
 			
-			//LWRP keywords
+			//URP keywords
 			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS
 			
 			//Unity Defined
 			#pragma multi_compile _ LIGHTMAP_ON
 			#pragma multi_compile_fog
+
+			//GPU Instancing
+			#pragma multi_compile_instancing
 			
 			//Library includes
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"

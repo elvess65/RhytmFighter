@@ -3,12 +3,10 @@ using Frameworks.Grid.View;
 using RhytmFighter.Battle.Action.Behaviours;
 using RhytmFighter.Battle.Health.Behaviours;
 using RhytmFighter.Data;
-using RhytmFighter.GameState;
 using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
 using RhytmFighter.Core.Enums;
-using UnityEngine.UI;
 using RhytmFighter.CameraSystem;
 using RhytmFighter.StateMachines.GameState;
 
@@ -158,6 +156,7 @@ namespace RhytmFighter.Core
 
             //Change state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
+            ManagersHolder.UIManager.ToAdventureUIState();
         }
 
         private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)
@@ -287,18 +286,18 @@ namespace RhytmFighter.Core
         {
             Debug.LogError("Battle - Prepare");
 
-            //Debug - Sound
-            Rhytm.volume = 0.5f;
-
-            //Show battle UI
-            ManagersHolder.UIManager.PrepareForBattle();
-
             //No need to stop movement if players destination cell is the cell where enemy was detected
             if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
                 m_ControllersHolder.PlayerCharacterController.StopMove();
 
-            //Prepare character to battle
+            //Prepare character for battle
             m_ControllersHolder.PlayerCharacterController.PrepareForBattle();
+
+            //Prepare UI for battle
+            ManagersHolder.UIManager.PrepareForBattle();
+
+            //Debug - Prepare sound for battle
+            Rhytm.volume = 0.5f;
 
             //Change state
             m_GameStateMachine.ChangeState(m_GameStateIdle);
@@ -308,13 +307,13 @@ namespace RhytmFighter.Core
         {
             Debug.LogError("Battle - Start");
 
-            //Show Battle UI
-            ManagersHolder.UIManager.BattleStart();
-
             //Subscribe for events
             m_ControllersHolder.RhytmController.OnEventProcessingTick += EventProcessingTickHandler;
             m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;
             m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
+
+            //Show Battle UI
+            ManagersHolder.UIManager.BattleStart();
 
             //Change state
             m_GameStateMachine.ChangeState(m_GameStateBattle);
@@ -336,17 +335,17 @@ namespace RhytmFighter.Core
         {
             Debug.LogError("Battle - Finished");
 
-            //Debug - Sound
-            Rhytm.volume = 0;
-
-            //Hide UI
-            ManagersHolder.UIManager.BattleFinish();
-
             //Unscribe from events
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
 
             //Finish battle for player
             m_ControllersHolder.PlayerCharacterController.FinishBattle();
+
+            //Finish battle for UI
+            ManagersHolder.UIManager.BattleFinish();
+
+            //Debug - Finish battle for sound
+            Rhytm.volume = 0;
 
             //Change state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
@@ -366,13 +365,11 @@ namespace RhytmFighter.Core
         private void TickHandler(int ticksSinceStart)
         {
             BeatSound.Play();
-            ManagersHolder.UIManager.NotifyAboutTick();
         }
 
         private void EventProcessingTickHandler(int ticksSinceStart)
         {
             BeatSound.Play();
-            ManagersHolder.UIManager.NotifyAboutTick();
         }
         #endregion
 
@@ -380,7 +377,10 @@ namespace RhytmFighter.Core
         private void ButtonDefence_PressHandler()
         {
             if (m_ControllersHolder.RhytmInputProxy.IsInputTickValid() && m_ControllersHolder.RhytmInputProxy.IsInputAllowed())
+            {
                 m_ControllersHolder.PlayerCharacterController.ExecuteAction(CommandTypes.Defence);
+                m_ControllersHolder.RhytmInputProxy.RegisterInput();
+            }
         }
         #endregion
 

@@ -117,6 +117,7 @@
         half3   vColor: COLOR;
         half4  uv0: TEXCOORD0;
         half4  uv1: TEXCOORD1;
+        UNITY_VERTEX_INPUT_INSTANCE_ID
     };
     
     struct vertexOutput
@@ -163,6 +164,7 @@
     vertexOutput vert(vertexInput input)
     {
         vertexOutput output;
+        UNITY_SETUP_INSTANCE_ID(input);
         VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
         VertexNormalInputs vertexNormalInput = GetVertexNormalInputs(input.normalOS, input.tangentOS);
         

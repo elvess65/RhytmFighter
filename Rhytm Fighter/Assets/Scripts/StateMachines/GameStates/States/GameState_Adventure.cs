@@ -7,10 +7,9 @@ using RhytmFighter.Input;
 using RhytmFighter.Level;
 using RhytmFighter.Objects.Model;
 using RhytmFighter.Rhytm;
-using RhytmFighter.StateMachines.GameState;
 using UnityEngine;
 
-namespace RhytmFighter.GameState
+namespace RhytmFighter.StateMachines.GameState
 {
     public class GameState_Adventure : GameState_Abstract
     {
@@ -38,12 +37,16 @@ namespace RhytmFighter.GameState
 
         public override void EnterState()
         {
+            base.EnterState();
+
             m_PlayerCharacterController.OnCellVisited += CellVisitedHandler;
             m_PlayerCharacterController.OnMovementFinished += MovementFinishedHandler;
         }
 
         public override void ExitState()
         {
+            base.ExitState();
+
             m_PlayerCharacterController.OnCellVisited -= CellVisitedHandler;
             m_PlayerCharacterController.OnMovementFinished -= MovementFinishedHandler;
         }

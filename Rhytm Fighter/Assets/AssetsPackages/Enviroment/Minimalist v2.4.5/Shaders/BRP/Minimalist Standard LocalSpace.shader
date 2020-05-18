@@ -164,6 +164,8 @@ shader "Minimalist/BRP/Standard LocalSpace" {
             #pragma shader_feature_local _ USERIM
             #pragma shader_feature_local _ DONTMIX
 			
+			#pragma multi_compile_instancing
+
 			#include "UnityCG.cginc"
 			#include "AutoLight.cginc"
 			
@@ -288,6 +290,8 @@ shader "Minimalist/BRP/Standard LocalSpace" {
 				half3 vColor : COLOR;
 				float4 uv0 : TEXCOORD0;
 				float4 uv1 : TEXCOORD1;
+
+				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 			
 			struct vertexOutput{
@@ -320,6 +324,7 @@ shader "Minimalist/BRP/Standard LocalSpace" {
 			vertexOutput vert(vertexInput v)
 			{
 				vertexOutput o;
+				UNITY_SETUP_INSTANCE_ID(v)
 				o.pos = UnityObjectToClipPos(v.vertex);
 				o.worldPos = mul(unity_ObjectToWorld, v.vertex);
 				half3 normal = normalize(v.normal).xyz;
