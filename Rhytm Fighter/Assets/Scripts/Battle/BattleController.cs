@@ -188,7 +188,7 @@ namespace RhytmFighter.Battle
 
         private void AdjustDistanceForObject(iBattleObject battleObject)
         {
-            float distanceToEnemy = float.MinValue;
+            //float distanceToEnemy = float.MaxValue;
             float distanceToPlayer = float.MinValue;
 
             GridCellData adjustedCell = null;
@@ -197,6 +197,16 @@ namespace RhytmFighter.Battle
             List<GridCellData> neighbourCells = currentGrid.GetWalkableAndVisibleCellsInRange(battleObject.CorrespondingCell.X,
                                                                                               battleObject.CorrespondingCell.Y,
                                                                                               m_DISTANCE_ADJUSTEMENT_RANGE);
+
+            foreach(GridCellData nc in neighbourCells)
+            {
+                CellView view = m_LevelController.RoomViewBuilder.GetCellVisual(m_LevelController.Model.GetCurrenRoomData().ID,
+                                                                               nc.X,
+                                                                               nc.Y);
+                m_LevelController.RoomViewBuilder.ShowCell_Debug(view);
+            }
+
+
 
             while (neighbourCells.Count > 0 && pathToAdjustedCell == null)
             {
@@ -208,11 +218,11 @@ namespace RhytmFighter.Battle
                     float distToEnemy = currentGrid.GetDistanceBetweenCells(battleObject.CorrespondingCell, currentCell);
 
                     //Find the most distant cell from player and enemy
-                    if (distToPlayer >= distanceToPlayer && distToEnemy >= distanceToEnemy)
+                    if (distToPlayer >= distanceToPlayer)// && distToEnemy < distanceToEnemy)
                     {
                         adjustedCell = currentCell;
                         distanceToPlayer = distToPlayer;
-                        distanceToEnemy = distToEnemy;
+                        //distanceToEnemy = distToEnemy;
                     }
                 }
 
@@ -229,6 +239,8 @@ namespace RhytmFighter.Battle
                 CellView view = m_LevelController.RoomViewBuilder.GetCellVisual(m_LevelController.Model.GetCurrenRoomData().ID,
                                                                                 adjustedCell.X,
                                                                                 adjustedCell.Y);
+
+                m_LevelController.RoomViewBuilder.ShowCell_Debug(view, PrimitiveType.Capsule);
 
                 m_EnemyMovementController.OnMovementFinished += EnemyAdjustementMovementFinished;
                 m_EnemyMovementController.MoveCharacter(view);

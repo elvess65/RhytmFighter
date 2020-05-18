@@ -202,12 +202,15 @@ namespace Frameworks.Grid.Data
             {
                 for (int j = y - r; j <= y + r; j++)
                 {
-                    GridCellData currecntCell = GetCellByCoord(i, j);
-                    if (currecntCell != null && !(currecntCell.X.Equals(x) && currecntCell.Y.Equals(y)) &&
-                        CellIsWalkable(m_Grid[currecntCell.X, currecntCell.Y]) &&
-                        m_Grid[currecntCell.X, currecntCell.Y].IsShowed)
+                    GridCellData currentCell = GetCellByCoord(i, j);
+
+                    if (currentCell != null &&                                      //Cell exists
+                        m_Grid[currentCell.X, currentCell.Y].IsShowed &&            //Cell is showed
+                        !(currentCell.X.Equals(x) && currentCell.Y.Equals(y)) &&    //Cell is not anchor cell
+                        CellIsWalkable(m_Grid[currentCell.X, currentCell.Y]) &&     //Cell is walkable
+                        !IsGate(currentCell))                                       //Cell not a gate
                     {
-                        cellNeighbours.Add(currecntCell);
+                        cellNeighbours.Add(currentCell);
                     }
                 }
             }
@@ -300,7 +303,15 @@ namespace Frameworks.Grid.Data
         /// </summary>
         public bool CellIsWalkable(GridCellData cell) => !CellIsNotWalkable(cell);
 
-        void CreateDummyObstacle(PrimitiveType type, Vector3 pos)
+        /// <summary>
+        /// Является ли ячейка Гейтом
+        /// </summary>
+        private bool IsGate(GridCellData cell)
+        {
+            return cell.HasProperty && cell.CellProperty is GridCellProperty_GateToNode;
+        }
+
+        private void CreateDummyObstacle(PrimitiveType type, Vector3 pos)
         {
             GameObject cube = GameObject.CreatePrimitive(type);
             cube.transform.position = pos;

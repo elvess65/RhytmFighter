@@ -178,9 +178,9 @@ namespace Frameworks.Grid.View
         /// <summary>
         /// Debug
         /// </summary>
-        public void ShowCell_Debug(CellView cellView)
+        public void ShowCell_Debug(CellView cellView, PrimitiveType type = PrimitiveType.Cube)
         {
-            GameObject.CreatePrimitive(PrimitiveType.Cube).transform.position = cellView.transform.position;
+            GameObject.CreatePrimitive(type).transform.position = cellView.transform.position;
         }
 
 
