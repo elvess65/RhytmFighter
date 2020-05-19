@@ -20,10 +20,6 @@ namespace RhytmFighter.StateMachines.UIState
 
             //Events
             Rhytm.RhytmController.GetInstance().OnTick += TickHandler;
-
-            //UI
-            m_BeatIndicator.gameObject.SetActive(true);
-            m_PlayerUIParent.gameObject.SetActive(true);
         }
 
         public override void ExitState()

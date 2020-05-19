@@ -14,6 +14,11 @@ namespace RhytmFighter.UI
         public Button Button_Defence;
         public Text Text_BattleStatus;
 
+        [Header("Inventory")]
+        public Button Button_Potion;
+        public Transform InventoryUIParent;
+        public Text Text_PotionAmount;
+
         [Header("General")]
         public Transform PlayerUIParent;
 
@@ -30,11 +35,14 @@ namespace RhytmFighter.UI
             //UI States
             m_StateMachine = new UIStateMachine();
 
-            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, BeatIndicator, PlayerUIParent);
+            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, BeatIndicator, PlayerUIParent, InventoryUIParent);
             m_UIStateBattle = new UIState_Battle(Button_Defence, Text_BattleStatus, BeatIndicator, PlayerUIParent);
             m_UIStateAdventure = new UIState_Adventure(Button_Defence, Text_BattleStatus, BeatIndicator, PlayerUIParent);
 
             m_StateMachine.Initialize(m_UIStateNoUI);
+
+            //Buttons
+            Button_Potion.onClick.AddListener(ButtonPotion_PressHandler);
         }
 
 
@@ -69,9 +77,15 @@ namespace RhytmFighter.UI
             m_StateMachine.ChangeState(m_UIStateAdventure);
         }
 
+
         public void ButtonDefence_PressHandler()
         {
             OnButtonDefencePressed?.Invoke();
+        }
+
+        public void ButtonPotion_PressHandler()
+        {
+            Debug.Log("ButtonPotion_PressHandler");
         }
     }
 }
