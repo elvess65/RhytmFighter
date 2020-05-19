@@ -72,6 +72,11 @@ namespace RhytmFighter.UI
             m_UIStateBattle.BattleStarted();
         }
 
+        public void NextEnemy()
+        {
+            m_UIStateBattle.NextEnemy();
+        }
+
         public void BattleFinish()
         {
             m_StateMachine.ChangeState(m_UIStateAdventure);

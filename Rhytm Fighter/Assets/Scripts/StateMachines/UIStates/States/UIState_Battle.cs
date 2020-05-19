@@ -63,6 +63,15 @@ namespace RhytmFighter.StateMachines.UIState
             Core.GameManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
         }
 
+        public void NextEnemy()
+        {
+            //UI
+            m_TextBattleStatus.text = "Its not finished yet";
+            m_TextBattleStatus.color = Color.yellow;
+
+            Core.GameManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
+        }
+
 
         private void TickHandler(int ticksSinceStart)
         {

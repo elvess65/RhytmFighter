@@ -29,7 +29,7 @@ namespace RhytmFighter.Battle
 
         private const int m_DISTANCE_ADJUSTEMENT_RANGE = 4;                                 //Max range (in cells) to find adjust disatnce cell
         private const int m_TICKS_BEFORE_BEFORE_ACTIVATING_FIRST_ENEMY = 1;                 //Delay (in ticks) after first enemy found and start battle
-        private const int m_TICKS_BEFORE_ACTIVATING_NEXT_ENEMY_BATTLE = 4;                  //Delay (in ticks) after last enemy destroyed and finish battle
+        private const int m_TICKS_BEFORE_ACTIVATING_NEXT_ENEMY_BATTLE = 2;                  //Delay (in ticks) after last enemy destroyed and finish battle
         private const int m_TICKS_BEFORE_FINISHING_BATTLE = 2;                              //Delay (in ticks) after last enemy destroyed and finish battle
         private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE = 5;    //Min distance between cells to start adjust distance 
         private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_ROTATION = 5;    //Min rotation between player and enemy to adjust rotation

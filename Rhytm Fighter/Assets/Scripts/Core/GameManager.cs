@@ -324,6 +324,9 @@ namespace RhytmFighter.Core
         {
             Debug.LogError("Battle - Enemy destroyed " + lastEnemyDestroyed);
 
+            if (!lastEnemyDestroyed)
+                ManagersHolder.UIManager.NextEnemy();
+
             //Unscribe from events
             m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.BattleController.ProcessEnemyActions;
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
