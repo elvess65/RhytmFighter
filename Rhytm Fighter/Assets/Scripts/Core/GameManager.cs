@@ -32,7 +32,6 @@ namespace RhytmFighter.Core
         public AudioSource BeatSound;
         public AudioSource FinishBattleSound;
         public Metronome Metronome;
-        public TestBattleCam TestCam;
 
         private DataHolder m_DataHolder;
         private GameStateMachine m_GameStateMachine;
@@ -149,8 +148,6 @@ namespace RhytmFighter.Core
             m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
             m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
             m_DataHolder.DBProxy.Initialize();
-
-            TestCam.Init(m_ControllersHolder.CameraController);
         }
 
         private void InitializationFinished()
@@ -323,9 +320,9 @@ namespace RhytmFighter.Core
             m_GameStateMachine.ChangeState(m_GameStateBattle);
         }
 
-        private void BattleEnemyDestroyedHandler()
+        private void BattleEnemyDestroyedHandler(bool lastEnemyDestroyed)
         {
-            Debug.LogError("Battle - Enemy destroyed");
+            Debug.LogError("Battle - Enemy destroyed " + lastEnemyDestroyed);
 
             //Unscribe from events
             m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.BattleController.ProcessEnemyActions;

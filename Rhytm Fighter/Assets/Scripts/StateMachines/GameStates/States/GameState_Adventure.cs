@@ -64,6 +64,12 @@ namespace RhytmFighter.StateMachines.GameState
 
         private void CellInputHandler(CellView cellView)
         {
+            if (cellView.CorrespondingCellData.CellType == CellTypes.Obstacle)
+            {
+                Debug.LogError("Cant move to obstacle");
+                return;
+            }
+
             Assets.AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(Assets.AssetsManager.GetPrefabAssets().PointerPrefab, cellView.transform.position,
                                                                                            Assets.AssetsManager.GetPrefabAssets().PointerPrefab.transform.rotation).ScheduleHideView();
 

@@ -46,8 +46,6 @@ namespace RhytmFighter.Input
                     //Visit parent node check
                     if (cellData.IsEqualCoord(cellRoomData.GridData.ParentNodeGate))
                     {
-                        Debug.Log("Parent node was visited");
-
                         bool isRightRoom = false;
 
                         //Add room 
@@ -75,8 +73,6 @@ namespace RhytmFighter.Input
                     //Visit right node check
                     else if (cellData.IsEqualCoord(cellRoomData.GridData.RightNodeGate))
                     {
-                        Debug.Log("Right node was visited");
-
                         //Add room 
                         m_LevelController.AddNextRoom(cellRoomData.NodeData.RightNode, true);
 
@@ -93,8 +89,6 @@ namespace RhytmFighter.Input
                     //Visit left node check
                     else if (cellData.IsEqualCoord(cellRoomData.GridData.LeftNodeGate))
                     {
-                        Debug.Log("Left node was visited");
-
                         //Add room 
                         m_LevelController.AddNextRoom(cellRoomData.NodeData.LeftNode, false);
 

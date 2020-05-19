@@ -12,9 +12,9 @@ namespace RhytmFighter.Battle
     public class BattleController : iUpdatable
     {
         public System.Action OnPrepareForBattle;
-        public System.Action OnEnemyDestroyed;
         public System.Action OnBattleStarted;
         public System.Action OnBattleFinished;
+        public System.Action<bool> OnEnemyDestroyed;
 
         private int m_TargetTick;
         private bool m_CameraWasFocusedDuringBattle = false;
@@ -107,7 +107,7 @@ namespace RhytmFighter.Battle
             if (Player.Target.ID == enemy.ID)
                 Player.Target = null;
 
-            OnEnemyDestroyed?.Invoke();
+            OnEnemyDestroyed?.Invoke(m_PendingEnemies.Count == 0);
         }
 
         private void PrepareForBattleEventHandler()
@@ -116,9 +116,9 @@ namespace RhytmFighter.Battle
             Rhytm.RhytmController.GetInstance().OnTick += ActivateEnemyOnTick;
         }
 
-        private void TryActivateNextEnemyOnEnemyDestroyedHandler()
+        private void TryActivateNextEnemyOnEnemyDestroyedHandler(bool lastEnemyDestroyed)
         {
-            if (m_PendingEnemies.Count > 0)
+            if (!lastEnemyDestroyed)
             {
                 m_TargetTick = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_ACTIVATING_NEXT_ENEMY_BATTLE;
                 Rhytm.RhytmController.GetInstance().OnTick += ActivateEnemyOnTick;
