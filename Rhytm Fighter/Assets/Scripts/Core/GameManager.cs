@@ -32,6 +32,7 @@ namespace RhytmFighter.Core
         public AudioSource BeatSound;
         public AudioSource FinishBattleSound;
         public Metronome Metronome;
+        public TestBattleCam TestCam;
 
         private DataHolder m_DataHolder;
         private GameStateMachine m_GameStateMachine;
@@ -114,6 +115,7 @@ namespace RhytmFighter.Core
                 m_ControllersHolder.RhytmController,
                 m_ControllersHolder.CommandsController,
                 m_ControllersHolder.BattleController,
+                m_ControllersHolder.CameraController,
                 m_GameStateMachine
             };
 
@@ -147,6 +149,8 @@ namespace RhytmFighter.Core
             m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
             m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
             m_DataHolder.DBProxy.Initialize();
+
+            TestCam.Init(m_ControllersHolder.CameraController);
         }
 
         private void InitializationFinished()

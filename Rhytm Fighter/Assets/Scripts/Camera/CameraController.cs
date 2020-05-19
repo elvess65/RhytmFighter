@@ -1,4 +1,5 @@
 ﻿using Cinemachine;
+using FrameworkPackage.Utils;
 using RhytmFighter.Core;
 using RhytmFighter.Core.Enums;
 using System.Collections.Generic;
@@ -6,8 +7,10 @@ using UnityEngine;
 
 namespace RhytmFighter.CameraSystem
 {
-    public class CameraController
+    public class CameraController : iUpdatable
     {
+        private InterpolationData<Quaternion> m_LerpData;
+        private Transform m_SmoothingCameraTransform;
         private WaitForSeconds m_WaitBlendingFinishedEvent;
         private CinemachineVirtualCameraBase m_CurrentCamera;
         private Dictionary<CameraTypes, CinemachineVirtualCameraBase> m_Cameras;
@@ -20,6 +23,7 @@ namespace RhytmFighter.CameraSystem
         public void InitializeCamera(Transform target)
         {
             m_Cameras = new Dictionary<CameraTypes, CinemachineVirtualCameraBase>();
+            m_LerpData = new InterpolationData<Quaternion>(GameManager.Instance.CamerasHolder.CMBrain.m_DefaultBlend.m_Time);
             m_WaitBlendingFinishedEvent = new WaitForSeconds(GameManager.Instance.CamerasHolder.CMBrain.m_DefaultBlend.m_Time);
 
             //Initialize vcam list
@@ -36,6 +40,18 @@ namespace RhytmFighter.CameraSystem
 
             //Activate mmain camera
             ActivateCamera(CameraTypes.Main);
+        }
+
+        public void PerformUpdate(float deltaTime)
+        {
+            if (m_LerpData.IsStarted)
+            {
+                m_LerpData.Increment();
+                m_SmoothingCameraTransform.rotation = Quaternion.Slerp(m_LerpData.From, m_LerpData.To, m_LerpData.Progress);
+
+                if (m_LerpData.Overtime())
+                    m_LerpData.Stop();
+            }
         }
 
 
@@ -71,12 +87,21 @@ namespace RhytmFighter.CameraSystem
             GameManager.Instance.StartCoroutine(BlendingFinishedEventCoroutine(onBlendingFinished));
         }
 
+        public void StartSmoothRotation(CameraTypes cameraType, Quaternion targetRotation)
+        {
+            m_SmoothingCameraTransform = m_Cameras[cameraType].transform;
+
+            m_LerpData.From = m_SmoothingCameraTransform.transform.rotation;
+            m_LerpData.To = targetRotation;
+            m_LerpData.Start();
+        }
+
 
         private System.Collections.IEnumerator BlendingFinishedEventCoroutine(System.Action onBlendingFinished)
         {
             yield return m_WaitBlendingFinishedEvent;
 
             onBlendingFinished?.Invoke();
-        }
+        }  
     }
 }

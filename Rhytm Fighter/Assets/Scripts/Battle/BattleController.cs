@@ -17,6 +17,7 @@ namespace RhytmFighter.Battle
         public System.Action OnBattleFinished;
 
         private int m_TargetTick;
+        private bool m_CameraWasFocusedDuringBattle = false;
         private Level.LevelController m_LevelController;
         private CameraSystem.CameraController m_CameraController;
         private ModelMovementController m_EnemyMovementController;
@@ -28,7 +29,7 @@ namespace RhytmFighter.Battle
 
         private const int m_DISTANCE_ADJUSTEMENT_RANGE = 4;                                 //Max range (in cells) to find adjust disatnce cell
         private const int m_TICKS_BEFORE_BEFORE_ACTIVATING_FIRST_ENEMY = 1;                 //Delay (in ticks) after first enemy found and start battle
-        private const int m_TICKS_BEFORE_ACTICATING_NEXT_ENEMY_BATTLE = 2;                  //Delay (in ticks) after last enemy destroyed and finish battle
+        private const int m_TICKS_BEFORE_ACTIVATING_NEXT_ENEMY_BATTLE = 4;                  //Delay (in ticks) after last enemy destroyed and finish battle
         private const int m_TICKS_BEFORE_FINISHING_BATTLE = 2;                              //Delay (in ticks) after last enemy destroyed and finish battle
         private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_DISTANCE = 5;    //Min distance between cells to start adjust distance 
         private const float m_TRESHHOLD_BETWEEN_PLAYER_AND_ENEMY_TO_ADJUST_ROTATION = 5;    //Min rotation between player and enemy to adjust rotation
@@ -44,7 +45,7 @@ namespace RhytmFighter.Battle
             m_EnemyMovementController = new ModelMovementController(levelController);
 
             OnPrepareForBattle += PrepareForBattleEventHandler;
-            OnEnemyDestroyed += TryActivateNextEnemy;
+            OnEnemyDestroyed += TryActivateNextEnemyOnEnemyDestroyedHandler;
         }
 
         public void AddEnemy(iBattleObject battleObject)
@@ -115,19 +116,17 @@ namespace RhytmFighter.Battle
             Rhytm.RhytmController.GetInstance().OnTick += ActivateEnemyOnTick;
         }
 
-
-        private void FinishBattleOnTick(int currentTick)
+        private void TryActivateNextEnemyOnEnemyDestroyedHandler()
         {
-            if (currentTick >= m_TargetTick)
+            if (m_PendingEnemies.Count > 0)
             {
-                Rhytm.RhytmController.GetInstance().OnTick -= FinishBattleOnTick;
-
-                m_CameraController.ActivateCamera(CameraTypes.Main);
-                m_CameraController.SubscribeForBlendingFinishedEvent(() => m_CameraController.PeekMemberFromTargetGroup());
-
-                OnBattleFinished?.Invoke();
+                m_TargetTick = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_ACTIVATING_NEXT_ENEMY_BATTLE;
+                Rhytm.RhytmController.GetInstance().OnTick += ActivateEnemyOnTick;
             }
+            else
+                TryActivateNextEnemy();
         }
+
 
         private void ActivateEnemyOnTick(int currentTick)
         {
@@ -138,7 +137,6 @@ namespace RhytmFighter.Battle
             }
         }
 
-        private bool c = false;
         private void TryActivateNextEnemy()
         {
             //Get closest enemy to player
@@ -147,18 +145,6 @@ namespace RhytmFighter.Battle
             //If enemy exists
             if (closestEnemy != null)
             {
-                if (c)
-                {
-                    Debug.Log("Try activate next enemt");
-                    //
-                    m_TargetTick = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_ACTICATING_NEXT_ENEMY_BATTLE;
-                    Rhytm.RhytmController.GetInstance().OnTick += ActivateEnemyOnTick;
-
-                    return;
-                }
-
-                c = true;
-
                 Player.Target = closestEnemy;
                 ActivateEnemy(closestEnemy);
             }
@@ -168,7 +154,7 @@ namespace RhytmFighter.Battle
                 Rhytm.RhytmController.GetInstance().OnTick += FinishBattleOnTick;
             }
         }
-
+        
         private void ActivateEnemy(iBattleObject enemy)
         {
             //Start focusing player
@@ -300,9 +286,29 @@ namespace RhytmFighter.Battle
             cameraEuler.y = targetCameraRotation.eulerAngles.y + m_CameraController.GetNoiseForBattleCamera();
             targetCameraRotation.eulerAngles = cameraEuler;
 
-            GameManager.Instance.CamerasHolder.VCamBattle.transform.localEulerAngles = targetCameraRotation.eulerAngles;
+            //Immediate rotation if focusing first time
+            if (!m_CameraWasFocusedDuringBattle)
+                GameManager.Instance.CamerasHolder.VCamBattle.transform.localEulerAngles = targetCameraRotation.eulerAngles;
+            else
+                m_CameraController.StartSmoothRotation(CameraTypes.Battle, targetCameraRotation);
+
             m_CameraController.ActivateCamera(CameraTypes.Battle);
+
+            //Allow camera to focus only once per battle
+            m_CameraWasFocusedDuringBattle = true;
         }
 
+        private void FinishBattleOnTick(int currentTick)
+        {
+            if (currentTick >= m_TargetTick)
+            {
+                Rhytm.RhytmController.GetInstance().OnTick -= FinishBattleOnTick;
+
+                m_CameraController.ActivateCamera(CameraTypes.Main);
+                m_CameraController.SubscribeForBlendingFinishedEvent(() => m_CameraController.PeekMemberFromTargetGroup());
+
+                OnBattleFinished?.Invoke();
+            }
+        }
     }
 }
