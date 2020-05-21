@@ -25,7 +25,7 @@ namespace Frameworks.Grid.View
         public GridViewBuilder()
         {
             m_GridViews = new Dictionary<int, GridViewData>();
-            m_ExtendViewWait = new WaitForSeconds(m_EXTEND_VIEW_DELAY);
+            m_ExtendViewWait = null;//WaitForSeconds(m_EXTEND_VIEW_DELAY);
         }
 
 

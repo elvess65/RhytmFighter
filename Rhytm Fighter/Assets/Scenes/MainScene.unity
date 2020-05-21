@@ -2806,7 +2806,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1404236960}
   m_LocalRotation: {x: 0.42261827, y: -0, z: -0, w: 0.9063079}
-  m_LocalPosition: {x: 0, y: 7.660445, z: -3.2178752}
+  m_LocalPosition: {x: 0, y: 9.910065, z: -8.31553}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 494351765}
@@ -3160,7 +3160,7 @@ MonoBehaviour:
   FinishBattleSound: {fileID: 70666071}
   SipSound: {fileID: 1599924227}
   Metronome: {fileID: 971653468}
-  m_Poitions: 2
+  m_Poitions: 0
 --- !u!4 &1655152185
 Transform:
   m_ObjectHideFlags: 0

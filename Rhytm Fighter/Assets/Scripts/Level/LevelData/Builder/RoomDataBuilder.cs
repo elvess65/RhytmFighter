@@ -12,12 +12,9 @@ namespace RhytmFighter.Level.Data
     public class RoomDataBuilder
     {
         private int m_ENEMY_ID = 2;
-        private List<GridCellData> m_EmptyCells;
 
         public LevelRoomData Build(LevelNodeData node, int minWidth, int maxWidth, int minHeight, int maxheight, float cellSize, int fillPercent)
         {
-            m_EmptyCells = new List<GridCellData>();
-
             Random.InitState(node.NodeSeed);
 
             int width = Random.Range(minWidth, maxWidth);
@@ -32,6 +29,8 @@ namespace RhytmFighter.Level.Data
 
         void ApplyDataToGrid(SquareGrid grid, LevelNodeData node, int fillPercent)
         {
+            List<GridCellData> emptyCells = new List<GridCellData>();
+
             //Properties
             //GateToParentNode
             int parentGateCellX = grid.WidthInCells / 2;
@@ -85,22 +84,17 @@ namespace RhytmFighter.Level.Data
                     cell.SetCellType(cellType);
                     cell.SetRoomID(node.ID);
 
-                    if (grid.CellIsWalkable(cell))
-                        m_EmptyCells.Add(cell);
+                    if (cellType == CellTypes.Normal && cell.X != grid.WidthInCells / 2 && cell.Y != 2)
+                        emptyCells.Add(cell);
                 }
             }
 
-            //TODO: Macros
-            /*int rndIndex = Random.Range(0, m_EmptyCells.Count);
-            StandardItemModel item = new StandardItemModel(1, m_EmptyCells[rndIndex]);
-            m_EmptyCells[rndIndex].AddObject(item);
-            m_EmptyCells.RemoveAt(rndIndex);*/
+            int rndIndex = Random.Range(0, emptyCells.Count);
+            StandardItemModel item = new StandardItemModel(1, emptyCells[rndIndex]);
+            emptyCells[rndIndex].AddObject(item);
 
             if (!node.IsStartNode)
             {
-                //TODO: Macros
-                //int rndIndex = Random.Range(0, m_EmptyCells.Count);
-
                 float enemyMoveSpeed = GameManager.ENEMY_MOVE_SPEED;
                 int enemyHP = 1;
                
@@ -117,13 +111,8 @@ namespace RhytmFighter.Level.Data
                                                                                                                AITypes.Simple);
 
                 cell.AddObject(enemyNPC);
-
-                //TODO: Macros
-                //m_EmptyCells[rndIndex].AddObject(enemyNPC);
-                //m_EmptyCells.RemoveAt(rndIndex);
             }
 
-            //TODO: Macros
             GridCellData cellObstacle = grid.GetCellByCoord(grid.WidthInCells / 2, 2);
             cellObstacle.SetCellType(CellTypes.Obstacle);
         }

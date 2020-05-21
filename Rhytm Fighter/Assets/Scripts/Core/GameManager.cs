@@ -52,7 +52,7 @@ namespace RhytmFighter.Core
         public PlayerModel PlayerModel => m_ControllersHolder.PlayerCharacterController.PlayerModel;
 
 
-        public int m_Poitions = 2;
+        public int m_Poitions = 0;
 
         private void Awake()
         {
@@ -253,6 +253,8 @@ namespace RhytmFighter.Core
         {
             yield return new WaitForSeconds(animationDelay);
 
+            m_Poitions++;
+            UpdatePoitionAmount();
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
         #endregion
