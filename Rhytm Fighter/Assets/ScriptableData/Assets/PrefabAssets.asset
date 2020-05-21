@@ -132,3 +132,5 @@ MonoBehaviour:
     type: 3}
   DestroyEffectPrefab: {fileID: 8026443033847954545, guid: 43ce15fc8d638e741b0c239379433369,
     type: 3}
+  HealEffectPrefab: {fileID: 8710667288388255072, guid: 44b474b85ba9f9f4eb8ba6e72fd1f5ec,
+    type: 3}

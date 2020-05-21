@@ -43,6 +43,7 @@ namespace RhytmFighter.Assets
         public AbstractVisualEffect PointerPrefab;
         public AbstractVisualEffect TeleportEffectPrefab;
         public AbstractVisualEffect DestroyEffectPrefab;
+        public AbstractVisualEffect HealEffectPrefab;
 
         private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
 

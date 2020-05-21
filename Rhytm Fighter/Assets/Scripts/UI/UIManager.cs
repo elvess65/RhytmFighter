@@ -1,12 +1,15 @@
-﻿using RhytmFighter.StateMachines.UIState;
+﻿using RhytmFighter.Core;
+using RhytmFighter.StateMachines.UIState;
+using RhytmFighter.UI.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RhytmFighter.UI
 {
-    public class UIManager : MonoBehaviour
+    public class UIManager : MonoBehaviour, iUpdatable
     {
         public System.Action OnButtonDefencePressed;
+        public System.Action OnButtonPotionPressed;
 
         public GameObject BeatIndicator;
 
@@ -18,6 +21,7 @@ namespace RhytmFighter.UI
         public Button Button_Potion;
         public Transform InventoryUIParent;
         public Text Text_PotionAmount;
+        public UIComponent_Cooldown UIComponent_PotionCooldown;
 
         [Header("General")]
         public Transform PlayerUIParent;
@@ -43,6 +47,8 @@ namespace RhytmFighter.UI
 
             //Buttons
             Button_Potion.onClick.AddListener(ButtonPotion_PressHandler);
+
+            UIComponent_PotionCooldown.Initialize(5);
         }
 
 
@@ -90,7 +96,16 @@ namespace RhytmFighter.UI
 
         public void ButtonPotion_PressHandler()
         {
-            Debug.Log("ButtonPotion_PressHandler");
+            if (!UIComponent_PotionCooldown.IsInCooldown && GameManager.Instance.m_Poitions > 0 && GameManager.Instance.PlayerModel.HealthBehaviour.HP < GameManager.Instance.PlayerModel.HealthBehaviour.MaxHP)
+            {
+                OnButtonPotionPressed?.Invoke();
+                UIComponent_PotionCooldown.Cooldown();
+            }
+        }
+
+        public void PerformUpdate(float deltaTime)
+        {
+            UIComponent_PotionCooldown.PerformUpdate(deltaTime);
         }
     }
 }

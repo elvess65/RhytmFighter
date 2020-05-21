@@ -9,6 +9,8 @@ using UnityEngine;
 using RhytmFighter.Core.Enums;
 using RhytmFighter.CameraSystem;
 using RhytmFighter.StateMachines.GameState;
+using RhytmFighter.Enviroment.Effects;
+using RhytmFighter.Assets;
 
 namespace RhytmFighter.Core
 {
@@ -31,6 +33,7 @@ namespace RhytmFighter.Core
         public AudioSource DefenceSound;
         public AudioSource BeatSound;
         public AudioSource FinishBattleSound;
+        public AudioSource SipSound;
         public Metronome Metronome;
 
         private DataHolder m_DataHolder;
@@ -48,6 +51,8 @@ namespace RhytmFighter.Core
 
         public PlayerModel PlayerModel => m_ControllersHolder.PlayerCharacterController.PlayerModel;
 
+
+        public int m_Poitions = 2;
 
         private void Awake()
         {
@@ -107,16 +112,7 @@ namespace RhytmFighter.Core
             m_GameStateAdventure.OnPlayerInteractWithNPC += PlayerInteractWithNPCHandler;
             m_GameStateMachine.Initialize(m_GameStateIdle);
 
-            //Initialize updatables
-            m_Updateables = new List<iUpdatable>
-            {
-                m_ControllersHolder.InputController,
-                m_ControllersHolder.RhytmController,
-                m_ControllersHolder.CommandsController,
-                m_ControllersHolder.BattleController,
-                m_ControllersHolder.CameraController,
-                m_GameStateMachine
-            };
+            InitializeUpdatables();
 
             //Subscribe for events
             // - Input
@@ -138,16 +134,33 @@ namespace RhytmFighter.Core
 
             // - UI
             ManagersHolder.UIManager.OnButtonDefencePressed += ButtonDefence_PressHandler;
+            ManagersHolder.UIManager.OnButtonPotionPressed += ButtonPoition_PressHandler;
 
             //Temp
             //Btn.onClick.AddListener(BtnPressHandler);
             PLAYER_MOVE_SPEED = (float)m_ControllersHolder.RhytmController.TickDurationSeconds * 4f;
             ENEMY_MOVE_SPEED = PLAYER_MOVE_SPEED;
+            UpdatePoitionAmount();
 
             //Initialize connection
             m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
             m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
             m_DataHolder.DBProxy.Initialize();
+        }
+
+        private void InitializeUpdatables()
+        {
+            //Initialize updatables
+            m_Updateables = new List<iUpdatable>
+            {
+                m_ControllersHolder.InputController,
+                m_ControllersHolder.RhytmController,
+                m_ControllersHolder.CommandsController,
+                m_ControllersHolder.BattleController,
+                m_ControllersHolder.CameraController,
+                m_GameStateMachine,
+                ManagersHolder.UIManager
+            };
         }
 
         private void InitializationFinished()
@@ -189,7 +202,7 @@ namespace RhytmFighter.Core
             int playerID = 0;
 
             //Temp
-            SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(20);
+            SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(10, 20);
             SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(1, 1, 2);
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
                 m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.WidthInCells / 2, 0);
@@ -385,6 +398,29 @@ namespace RhytmFighter.Core
                 m_ControllersHolder.PlayerCharacterController.ExecuteAction(CommandTypes.Defence);
                 m_ControllersHolder.RhytmInputProxy.RegisterInput();
             }
+        }
+
+        private void ButtonPoition_PressHandler()
+        {
+            m_Poitions--;
+            UpdatePoitionAmount();
+            SipSound.Play();
+            AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().HealEffectPrefab,
+                                                                                PlayerModel.ViewPosition,
+                                                                                Quaternion.Euler(-90, 0, 0)).ScheduleHideView();
+
+            PlayerModel.HealthBehaviour.IncreaseHP(5);
+        }
+
+        private void UpdatePoitionAmount()
+        {
+            ManagersHolder.UIManager.Text_PotionAmount.text = $"x{m_Poitions}";
+
+            ManagersHolder.UIManager.Text_PotionAmount.GetComponent<CanvasGroup>().alpha = m_Poitions > 0 ? 1 : 0.5f;
+
+            Color color = ManagersHolder.UIManager.Button_Potion.image.color;
+            color.a = m_Poitions > 0 ? 1 : 0.5f;
+            ManagersHolder.UIManager.Button_Potion.image.color = color;
         }
         #endregion
 
