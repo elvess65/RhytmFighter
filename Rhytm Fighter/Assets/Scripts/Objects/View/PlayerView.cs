@@ -67,8 +67,9 @@ namespace RhytmFighter.Objects.View
                                                                                         transform.rotation * Quaternion.Euler(0, 180, 0)).ScheduleHideView();
             };
 
-            m_OnInternalOtherAnimationEvent += m_InternalTeleportEvent;
+            //m_OnInternalOtherAnimationEvent += m_InternalTeleportEvent;
             m_AnimationController.PlayAnimation(AnimationTypes.Teleport);
+            m_InternalTeleportEvent.Invoke();
         }
         #endregion
 

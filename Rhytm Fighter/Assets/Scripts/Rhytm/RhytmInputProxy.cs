@@ -4,6 +4,10 @@ namespace RhytmFighter.Rhytm
 {
     public class RhytmInputProxy 
     {
+        private static RhytmInputProxy m_Instance;
+
+        public static double InputPrecious => m_Instance.m_InputPrecious;
+
         private double m_InputPrecious;
         private float m_LastInputTime;
         private const float m_TICK_DURATION_REDUCE = 0.4f;
@@ -11,6 +15,8 @@ namespace RhytmFighter.Rhytm
 
         public void SetInputPrecious(double inputPrecious)
         {
+            m_Instance = this;
+
             m_InputPrecious = inputPrecious;
         }
 

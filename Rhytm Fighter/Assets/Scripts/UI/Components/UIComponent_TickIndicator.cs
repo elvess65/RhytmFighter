@@ -13,6 +13,7 @@ namespace RhytmFighter.UI.Components
         private WaitForSeconds m_WaitBeatIndicatorDelay;
         private InterpolationData<float> m_LerpData;
 
+
         public void Initialize(float tickDuration)
         {
             m_LerpData = new InterpolationData<float>(tickDuration * 8);
@@ -25,7 +26,9 @@ namespace RhytmFighter.UI.Components
         public void ToNormalState()
         {
             m_SourceImage.color = Color.green;
-            m_LerpData.Start();
+
+            for (int i = 0; i < m_SingleTickFlyingIndicator.Length; i++)
+                m_SingleTickFlyingIndicator[i].gameObject.SetActive(false);
         }
 
         public void ToPrepareState()
@@ -36,9 +39,20 @@ namespace RhytmFighter.UI.Components
         public void ToBattleState()
         {
             m_SourceImage.color = Color.red;
+
+            for (int i = 0; i < m_SingleTickFlyingIndicator.Length; i++)
+                m_SingleTickFlyingIndicator[i].gameObject.SetActive(true);
         }
 
         public void HandleTick()
+        {
+            StartCoroutine(TickAnimationCoroutine());
+            m_LerpData.TotalTime = (float)Rhytm.RhytmController.GetInstance().TimeToNextTick;
+
+            m_LerpData.Start();
+        }
+
+        public void HandleProcessTick()
         {
             StartCoroutine(TickAnimationCoroutine());
         }
@@ -50,16 +64,20 @@ namespace RhytmFighter.UI.Components
             {
                 m_LerpData.Increment();
 
+                bool isInUseRange = 1 - Rhytm.RhytmController.GetInstance().ProgressToNextTickAnalog < Rhytm.RhytmInputProxy.InputPrecious;
+
                 for (int i = 0; i < m_SingleTickFlyingIndicator.Length; i++)
                 {
                     Vector3 anchoredPos = m_SingleTickFlyingIndicator[i].anchoredPosition;
                     anchoredPos.x = Mathf.Lerp(m_LerpData.From * (i % 2 == 1 ? -1 : 1), m_LerpData.To, m_LerpData.Progress);
                     m_SingleTickFlyingIndicator[i].anchoredPosition = anchoredPos;
+
+                    m_SingleTickFlyingIndicator[i].GetComponent<Image>().color = isInUseRange ? Color.green : Color.white;
                 }
 
                 if (m_LerpData.Overtime())
                 {
-                    m_LerpData.Start();
+                    m_LerpData.Stop();
                 }
             }
         }

@@ -12,22 +12,25 @@ namespace RhytmFighter.StateMachines.UIState
             m_TickIndicator.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
         }
 
+
         public override void EnterState()
         {
             base.EnterState();
 
             //Events
             Rhytm.RhytmController.GetInstance().OnTick += TickHandler;
-            Rhytm.RhytmController.GetInstance().OnEventProcessingTick += TickHandler;
+            Rhytm.RhytmController.GetInstance().OnEventProcessingTick += ProcessTickHandler;
 
             //UI
             m_ButtonDefence.gameObject.SetActive(true);
 
+            // - Text
             m_TextBattleStatus.text = "Prepare for battle";
             m_TextBattleStatus.color = Color.yellow;
-
-            m_TickIndicator.ToPrepareState();
             Core.GameManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
+
+            // - Tick indicator
+            m_TickIndicator.ToPrepareState();
         }
 
         public override void ExitState()
@@ -36,17 +39,20 @@ namespace RhytmFighter.StateMachines.UIState
 
             //Event
             Rhytm.RhytmController.GetInstance().OnTick -= TickHandler;
-            Rhytm.RhytmController.GetInstance().OnEventProcessingTick -= TickHandler;
+            Rhytm.RhytmController.GetInstance().OnEventProcessingTick -= ProcessTickHandler;
 
             //UI
             m_ButtonDefence.gameObject.SetActive(false);
 
+            // - Text
             m_TextBattleStatus.text = Core.GameManager.Instance.PlayerModel.IsDestroyed ? "Game Over" : "Victory";
             m_TextBattleStatus.color = Core.GameManager.Instance.PlayerModel.IsDestroyed ? Color.red : Color.green;
-
-            m_TickIndicator.ToNormalState();
             Core.GameManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
+
+            // - Tick indicator
+            m_TickIndicator.ToNormalState();
         }
+
 
         public void BattleStarted()
         {
@@ -72,6 +78,11 @@ namespace RhytmFighter.StateMachines.UIState
         private void TickHandler(int ticksSinceStart)
         {
             m_TickIndicator.HandleTick();
+        }
+
+        private void ProcessTickHandler(int ticksSinceStart)
+        {
+            m_TickIndicator.HandleProcessTick();
         }
     }
 }
