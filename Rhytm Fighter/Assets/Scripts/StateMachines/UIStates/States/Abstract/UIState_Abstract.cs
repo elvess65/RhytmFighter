@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RhytmFighter.UI.Components;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace RhytmFighter.StateMachines.UIState
@@ -7,18 +8,18 @@ namespace RhytmFighter.StateMachines.UIState
     {
         protected Button m_ButtonDefence;
         protected Text m_TextBattleStatus;
-        protected GameObject m_BeatIndicator;
         protected Transform m_PlayerUIParent;
+        protected UIComponent_TickIndicator m_TickIndicator;
 
         private WaitForSeconds m_WaitDisableBattleUIDelay;
 
 
-        public UIState_Abstract(Button buttonDefence, Text textBattleStatus, GameObject beatIndicator, Transform playerUIParent)
+        public UIState_Abstract(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent)
         {
             //UI Objects
             m_ButtonDefence = buttonDefence;
             m_TextBattleStatus = textBattleStatus;
-            m_BeatIndicator = beatIndicator;
+            m_TickIndicator = tickIndicator;
             m_PlayerUIParent = playerUIParent;
 
             //Coroutine

@@ -11,7 +11,7 @@ namespace RhytmFighter.UI
         public System.Action OnButtonDefencePressed;
         public System.Action OnButtonPotionPressed;
 
-        public GameObject BeatIndicator;
+        public UIComponent_TickIndicator TickIndicatorComponent;
 
         [Header("Battle")]
         public Button Button_Defence;
@@ -39,9 +39,9 @@ namespace RhytmFighter.UI
             //UI States
             m_StateMachine = new UIStateMachine();
 
-            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, BeatIndicator, PlayerUIParent, InventoryUIParent);
-            m_UIStateBattle = new UIState_Battle(Button_Defence, Text_BattleStatus, BeatIndicator, PlayerUIParent);
-            m_UIStateAdventure = new UIState_Adventure(Button_Defence, Text_BattleStatus, BeatIndicator, PlayerUIParent);
+            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, TickIndicatorComponent, PlayerUIParent, InventoryUIParent);
+            m_UIStateBattle = new UIState_Battle(Button_Defence, Text_BattleStatus, TickIndicatorComponent, PlayerUIParent);
+            m_UIStateAdventure = new UIState_Adventure(Button_Defence, Text_BattleStatus, TickIndicatorComponent, PlayerUIParent);
 
             m_StateMachine.Initialize(m_UIStateNoUI);
 
