@@ -11,7 +11,7 @@ namespace RhytmFighter.UI
         public System.Action OnButtonDefencePressed;
         public System.Action OnButtonPotionPressed;
 
-        public UIComponent_TickIndicator TickIndicatorComponent;
+        public UIComponent_TickIndicator UIComponent_TickIndicator;
 
         [Header("Battle")]
         public Button Button_Defence;
@@ -36,19 +36,21 @@ namespace RhytmFighter.UI
        
         public void Initialize()
         {
+            //Components
+            UIComponent_TickIndicator.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
+            UIComponent_PotionCooldown.Initialize(5);
+
             //UI States
             m_StateMachine = new UIStateMachine();
 
-            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, TickIndicatorComponent, PlayerUIParent, InventoryUIParent);
-            m_UIStateBattle = new UIState_Battle(Button_Defence, Text_BattleStatus, TickIndicatorComponent, PlayerUIParent);
-            m_UIStateAdventure = new UIState_Adventure(Button_Defence, Text_BattleStatus, TickIndicatorComponent, PlayerUIParent);
+            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
+            m_UIStateBattle = new UIState_Battle(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
+            m_UIStateAdventure = new UIState_Adventure(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
 
             m_StateMachine.Initialize(m_UIStateNoUI);
 
             //Buttons
             Button_Potion.onClick.AddListener(ButtonPotion_PressHandler);
-
-            UIComponent_PotionCooldown.Initialize(5);
         }
 
 

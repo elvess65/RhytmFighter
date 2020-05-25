@@ -16,7 +16,7 @@ namespace RhytmFighter.UI.Components
 
         public void Initialize(float tickDuration)
         {
-            m_LerpData = new InterpolationData<float>(tickDuration * 8);
+            m_LerpData = new InterpolationData<float>();
             m_LerpData.From = 300;
             m_LerpData.To = 0;
 
@@ -44,17 +44,19 @@ namespace RhytmFighter.UI.Components
                 m_SingleTickFlyingIndicator[i].gameObject.SetActive(true);
         }
 
-        public void HandleTick()
+
+        public void PlayTickAnimation()
         {
             StartCoroutine(TickAnimationCoroutine());
-            m_LerpData.TotalTime = (float)Rhytm.RhytmController.GetInstance().TimeToNextTick;
-
-            m_LerpData.Start();
         }
 
-        public void HandleProcessTick()
+        public void StartBeforeTickAnimation()
         {
-            StartCoroutine(TickAnimationCoroutine());
+            for (int i = 0; i < m_SingleTickFlyingIndicator.Length; i++)
+                m_SingleTickFlyingIndicator[i].gameObject.SetActive(true);
+
+            m_LerpData.TotalTime = (float)Rhytm.RhytmController.GetInstance().TimeToNextTick;
+            m_LerpData.Start();
         }
 
 
@@ -70,7 +72,10 @@ namespace RhytmFighter.UI.Components
                 {
                     Vector3 anchoredPos = m_SingleTickFlyingIndicator[i].anchoredPosition;
                     anchoredPos.x = Mathf.Lerp(m_LerpData.From * (i % 2 == 1 ? -1 : 1), m_LerpData.To, m_LerpData.Progress);
+
                     m_SingleTickFlyingIndicator[i].anchoredPosition = anchoredPos;
+
+                    m_SingleTickFlyingIndicator[i].transform.localScale = Vector3.one * Mathf.Lerp(0, 1, m_LerpData.Progress);
 
                     m_SingleTickFlyingIndicator[i].GetComponent<Image>().color = isInUseRange ? Color.green : Color.white;
                 }
@@ -78,6 +83,9 @@ namespace RhytmFighter.UI.Components
                 if (m_LerpData.Overtime())
                 {
                     m_LerpData.Stop();
+
+                    for (int i = 0; i < m_SingleTickFlyingIndicator.Length; i++)
+                        m_SingleTickFlyingIndicator[i].gameObject.SetActive(false);
                 }
             }
         }

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645d4ba0ca118034dac7c25d838cb198, type: 3}
   m_Name: GeneralSettings
   m_EditorClassIdentifier: 
-  MuteAudio: 0
+  MuteAudio: 1

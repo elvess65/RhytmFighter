@@ -9,7 +9,6 @@ namespace RhytmFighter.StateMachines.UIState
         public UIState_Adventure(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent) :
             base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent)
         {
-            m_TickIndicator.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
         }
 
         public override void EnterState()
@@ -33,7 +32,7 @@ namespace RhytmFighter.StateMachines.UIState
 
         private void TickHandler(int ticksSinceStart)
         {
-            m_TickIndicator.HandleTick();
+            m_TickIndicator.PlayTickAnimation();
         }
     }
 }

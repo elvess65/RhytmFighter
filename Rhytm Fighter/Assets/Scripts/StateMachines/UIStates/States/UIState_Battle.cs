@@ -9,7 +9,6 @@ namespace RhytmFighter.StateMachines.UIState
         public UIState_Battle(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent) :
             base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent)
         {
-            m_TickIndicator.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
         }
 
 
@@ -77,12 +76,14 @@ namespace RhytmFighter.StateMachines.UIState
 
         private void TickHandler(int ticksSinceStart)
         {
-            m_TickIndicator.HandleTick();
+            m_TickIndicator.PlayTickAnimation();
+
         }
 
         private void ProcessTickHandler(int ticksSinceStart)
         {
-            m_TickIndicator.HandleProcessTick();
+            m_TickIndicator.PlayTickAnimation();
+            m_TickIndicator.StartBeforeTickAnimation();
         }
     }
 }
