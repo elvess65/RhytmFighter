@@ -65,6 +65,8 @@ namespace RhytmFighter.Objects.View
                 AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().TeleportEffectPrefab,
                                                                                         DefenceSpawnParent.position, 
                                                                                         transform.rotation * Quaternion.Euler(0, 180, 0)).ScheduleHideView();
+
+                Core.GameManager.Instance.DashSound.Play();
             };
 
             //m_OnInternalOtherAnimationEvent += m_InternalTeleportEvent;

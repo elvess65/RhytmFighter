@@ -108,6 +108,7 @@ namespace RhytmFighter.UI
         public void PerformUpdate(float deltaTime)
         {
             UIComponent_PotionCooldown.PerformUpdate(deltaTime);
+            UIComponent_TickIndicator.PerformUpdate(deltaTime);
         }
     }
 }

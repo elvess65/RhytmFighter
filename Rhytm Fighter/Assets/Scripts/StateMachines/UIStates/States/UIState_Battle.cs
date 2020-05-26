@@ -77,13 +77,12 @@ namespace RhytmFighter.StateMachines.UIState
         private void TickHandler(int ticksSinceStart)
         {
             m_TickIndicator.PlayTickAnimation();
-
         }
 
         private void ProcessTickHandler(int ticksSinceStart)
         {
             m_TickIndicator.PlayTickAnimation();
-            m_TickIndicator.StartBeforeTickAnimation();
+            m_TickIndicator.PlayArrowsAnimation();
         }
     }
 }

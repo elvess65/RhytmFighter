@@ -6,12 +6,20 @@ namespace RhytmFighter.Rhytm
     {
         private static RhytmInputProxy m_Instance;
 
-        public static double InputPrecious => m_Instance.m_InputPrecious;
-
         private double m_InputPrecious;
         private float m_LastInputTime;
         private const float m_TICK_DURATION_REDUCE = 0.4f;
 
+
+        public static bool IsInUseRange => 1 - RhytmController.GetInstance().ProgressToNextTickAnalog < m_Instance.m_InputPrecious ||
+                                               RhytmController.GetInstance().ProgressToNextTickAnalog < m_Instance.m_InputPrecious;
+
+
+        public RhytmInputProxy()
+        {
+            if (m_Instance == null)
+                m_Instance = this;
+        }
 
         public void SetInputPrecious(double inputPrecious)
         {

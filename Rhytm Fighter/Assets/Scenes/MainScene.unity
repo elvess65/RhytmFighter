@@ -946,11 +946,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0454c8fb88c8a2743ac8c9f3bf567ffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SourceObject: {fileID: 510244931}
-  m_SourceImage: {fileID: 1336708604}
-  m_SingleTickFlyingIndicator:
-  - {fileID: 1830181604}
-  - {fileID: 636827207}
+  m_Tick: {fileID: 1336708607}
+  m_TickArrows:
+  - {fileID: 1830181607}
+  - {fileID: 636827210}
 --- !u!1 &618708540
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,8 +1088,9 @@ GameObject:
   - component: {fileID: 636827207}
   - component: {fileID: 636827209}
   - component: {fileID: 636827208}
+  - component: {fileID: 636827210}
   m_Layer: 5
-  m_Name: Image - Triangle L
+  m_Name: Component - Arrow L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1152,6 +1152,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 636827206}
   m_CullTransparentMesh: 0
+--- !u!114 &636827210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636827206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f65cf22589df8b498cf646a82e01869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ControlledTransform: {fileID: 636827207}
+  m_ArrowImage: {fileID: 636827208}
 --- !u!1 &666494818
 GameObject:
   m_ObjectHideFlags: 0
@@ -1587,6 +1601,133 @@ Transform:
   m_Father: {fileID: 370748607}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &884838804
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 884838805}
+  - component: {fileID: 884838806}
+  m_Layer: 0
+  m_Name: Dash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &884838805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884838804}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1267227842}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &884838806
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884838804}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c1d144a6cc7807e4eb05f550537a57a9, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &906658856
 GameObject:
   m_ObjectHideFlags: 0
@@ -2645,6 +2786,7 @@ Transform:
   - {fileID: 70666070}
   - {fileID: 618708541}
   - {fileID: 1599924226}
+  - {fileID: 884838805}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2786,8 +2928,9 @@ GameObject:
   - component: {fileID: 1336708606}
   - component: {fileID: 1336708605}
   - component: {fileID: 1336708604}
+  - component: {fileID: 1336708607}
   m_Layer: 5
-  m_Name: Image - Tick
+  m_Name: Component - Tick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2849,6 +2992,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 115.31, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1336708607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336708603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d93d0b11a6596248a5f08058704fd03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ControlledImage: {fileID: 1336708604}
 --- !u!1 &1386316418
 GameObject:
   m_ObjectHideFlags: 0
@@ -3329,6 +3485,7 @@ MonoBehaviour:
   BeatSound: {fileID: 1269744322}
   FinishBattleSound: {fileID: 70666071}
   SipSound: {fileID: 1599924227}
+  DashSound: {fileID: 884838806}
   Metronome: {fileID: 971653468}
   m_Poitions: 0
 --- !u!4 &1655152185
@@ -3495,8 +3652,9 @@ GameObject:
   - component: {fileID: 1830181604}
   - component: {fileID: 1830181606}
   - component: {fileID: 1830181605}
+  - component: {fileID: 1830181607}
   m_Layer: 5
-  m_Name: Image - Triangle R
+  m_Name: Component - Arrow R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3558,6 +3716,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1830181603}
   m_CullTransparentMesh: 0
+--- !u!114 &1830181607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830181603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f65cf22589df8b498cf646a82e01869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ControlledTransform: {fileID: 1830181604}
+  m_ArrowImage: {fileID: 1830181605}
 --- !u!1 &1921842301
 GameObject:
   m_ObjectHideFlags: 0

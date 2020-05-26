@@ -34,6 +34,7 @@ namespace RhytmFighter.Core
         public AudioSource BeatSound;
         public AudioSource FinishBattleSound;
         public AudioSource SipSound;
+        public AudioSource DashSound;
         public Metronome Metronome;
 
         private DataHolder m_DataHolder;
