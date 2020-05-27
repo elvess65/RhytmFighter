@@ -34,6 +34,7 @@ namespace RhytmFighter.UI.Components
             m_Tick.ToNormalState();
 
             //Arrows
+            m_LerpData.Stop();
             for (int i = 0; i < m_TickArrows.Length; i++)
                 m_TickArrows[i].FinishInterpolation();
         }
@@ -46,6 +47,7 @@ namespace RhytmFighter.UI.Components
             m_Tick.ToPrepareState();
 
             //Arrows
+            m_LerpData.Stop();
             for (int i = 0; i < m_TickArrows.Length; i++)
                 m_TickArrows[i].FinishInterpolation();
         }
