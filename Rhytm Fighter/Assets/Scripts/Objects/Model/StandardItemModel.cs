@@ -2,7 +2,6 @@
 using Frameworks.Grid.View;
 using RhytmFighter.Assets;
 using RhytmFighter.Objects.View;
-using UnityEngine;
 
 namespace RhytmFighter.Objects.Model
 {

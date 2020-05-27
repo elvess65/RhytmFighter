@@ -19,7 +19,10 @@ namespace RhytmFighter.Data.DataBase.Simulation
             public int MinHeight = 4;
             public int Maxheight = 7;
             public float CellSize = 1;
+            [Range(0, 100)]
             public int FillPercent = 90;
+            [Range(0, 100)]
+            public int EnviromentFillPercent = 20;
         }
     }
 }

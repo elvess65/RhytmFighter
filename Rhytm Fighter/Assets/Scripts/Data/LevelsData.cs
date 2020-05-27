@@ -50,6 +50,7 @@ namespace RhytmFighter.Data
             public int Maxheight = 7;
             public float CellSize = 1;
             public int FillPercent = 90;
+            public int EnviromentFillPercent = 90;
         }
     }
 }
