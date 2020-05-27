@@ -11,6 +11,7 @@ using RhytmFighter.CameraSystem;
 using RhytmFighter.StateMachines.GameState;
 using RhytmFighter.Enviroment.Effects;
 using RhytmFighter.Assets;
+using UnityEngine.SceneManagement;
 
 namespace RhytmFighter.Core
 {
@@ -66,14 +67,17 @@ namespace RhytmFighter.Core
         private void Start()
         {
             Initialize();
-        }
 
+            //DontDestroyOnLoad(gameObject);
+            //LoadLevel("PolygonDemo01");
+        }
+        
         private void Update()
         {
             for (int i = 0; i < m_Updateables.Count; i++)
                 m_Updateables[i].PerformUpdate(Time.deltaTime);
         }
-
+        
 
         #region Initialization
         private void Initialize()
@@ -416,12 +420,56 @@ namespace RhytmFighter.Core
         {
             GUI.Label(new Rect(10, 10, 150, 100), m_ControllersHolder.RhytmController.DeltaInput.ToString());
         }
-
+        
         System.Collections.IEnumerator debug_start_tick_coroutine()
         {
             Music.PlayDelayed(1);
             yield return new WaitForSeconds(1);
             m_ControllersHolder.RhytmController.StartTicking();
+        }
+        #endregion
+
+
+        private string m_CurrentLevelName = string.Empty;
+        private List<AsyncOperation> m_LoadOperations = new List<AsyncOperation>();
+
+        #region SceneLoading
+        public void LoadLevel(string levelName)
+        {
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
+            if (asyncOperation != null)
+            {
+                m_LoadOperations.Add(asyncOperation);
+                asyncOperation.completed += LoadOperationComplete;
+
+                m_CurrentLevelName = levelName;
+            }
+            else
+                Debug.LogError($"Unable to load level {levelName}");
+        }
+
+        public void UnloadLevel(string levelName)
+        {
+            AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(levelName);
+            if (asyncOperation != null)
+            {
+                asyncOperation.completed += UnloadOperationComplete;
+            }
+            else
+                Debug.LogError($"Unable to unload level {levelName}");
+        }
+
+        private void LoadOperationComplete(AsyncOperation asyncOperation)
+        {
+            if (m_LoadOperations.Contains(asyncOperation))
+                m_LoadOperations.Remove(asyncOperation);
+
+            Debug.Log("Load complete");
+        }
+
+        private void UnloadOperationComplete(AsyncOperation asyncOperation)
+        {
+            Debug.Log("Unload complete");
         }
         #endregion
     }

@@ -14,19 +14,21 @@ namespace RhytmFighter.StateMachines.UIState
             m_InventoryUIParent = inventoryUIParent;
         }
 
+
         public override void EnterState()
         {
             base.EnterState();
+
+            //Events
+            Rhytm.RhytmController.GetInstance().OnTick += TickHandler;
 
             //UI
             m_TickIndicator.gameObject.SetActive(true);
             m_PlayerUIParent.gameObject.SetActive(true);
             m_InventoryUIParent.gameObject.SetActive(true);
 
+            //Tick indicator
             m_TickIndicator.ToNormalState();
-
-            //Events
-            Rhytm.RhytmController.GetInstance().OnTick += TickHandler;
         }
 
         public override void ExitState()

@@ -22,14 +22,6 @@ namespace RhytmFighter.StateMachines.UIState
 
             //UI
             m_ButtonDefence.gameObject.SetActive(true);
-
-            // - Text
-            m_TextBattleStatus.text = "Prepare for battle";
-            m_TextBattleStatus.color = Color.yellow;
-            Core.GameManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
-
-            // - Tick indicator
-            m_TickIndicator.ToPrepareState();
         }
 
         public override void ExitState()
@@ -42,47 +34,27 @@ namespace RhytmFighter.StateMachines.UIState
 
             //UI
             m_ButtonDefence.gameObject.SetActive(false);
-
-            // - Text
+            /*
+            //Text
             m_TextBattleStatus.text = Core.GameManager.Instance.PlayerModel.IsDestroyed ? "Game Over" : "Victory";
             m_TextBattleStatus.color = Core.GameManager.Instance.PlayerModel.IsDestroyed ? Color.red : Color.green;
             Core.GameManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
 
-            // - Tick indicator
+            //Tick indicator
             m_TickIndicator.ToNormalState();
+            */
+            Debug.Log("Exit battle state");
         }
 
 
-        public void BattleStarted()
-        {
-            //UI
-            m_TickIndicator.ToBattleState();
-
-            m_TextBattleStatus.text = "Fight";
-            m_TextBattleStatus.color = Color.red;
-
-            Core.GameManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
-        }
-
-        public void NextEnemy()
-        {
-            //UI
-            m_TextBattleStatus.text = "Its not finished yet";
-            m_TextBattleStatus.color = Color.yellow;
-
-            Core.GameManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
-        }
-
-
-        private void TickHandler(int ticksSinceStart)
+        protected virtual void TickHandler(int ticksSinceStart)
         {
             m_TickIndicator.PlayTickAnimation();
         }
 
-        private void ProcessTickHandler(int ticksSinceStart)
+        protected virtual void ProcessTickHandler(int ticksSinceStart)
         {
             m_TickIndicator.PlayTickAnimation();
-            m_TickIndicator.PlayArrowsAnimation();
         }
     }
 }

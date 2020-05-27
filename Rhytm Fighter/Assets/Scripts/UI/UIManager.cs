@@ -32,7 +32,9 @@ namespace RhytmFighter.UI
         private UIState_NoUI m_UIStateNoUI;
         private UIState_Battle m_UIStateBattle;
         private UIState_Adventure m_UIStateAdventure;
-
+        private UIState_PrepareForBattle m_UIState_PrepareForBattle;
+        private UIState_BattleStart m_UIState_BattleStart;
+        private UIState_WaitNextEnemy m_UIState_WaitNextEnemy;
        
         public void Initialize()
         {
@@ -43,10 +45,12 @@ namespace RhytmFighter.UI
             //UI States
             m_StateMachine = new UIStateMachine();
 
-            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
-            m_UIStateBattle = new UIState_Battle(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
-            m_UIStateAdventure = new UIState_Adventure(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
-
+            m_UIStateNoUI =                 new UIState_NoUI                (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
+            m_UIStateAdventure =            new UIState_Adventure           (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
+            m_UIState_PrepareForBattle =    new UIState_PrepareForBattle    (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
+            m_UIState_BattleStart =         new UIState_BattleStart         (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
+            m_UIState_WaitNextEnemy =       new UIState_WaitNextEnemy       (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
+            
             m_StateMachine.Initialize(m_UIStateNoUI);
 
             //Buttons
@@ -61,17 +65,17 @@ namespace RhytmFighter.UI
 
         public void ToPrepareForBattleUIState()
         {
-            m_StateMachine.ChangeState(m_UIStateBattle);
+            m_StateMachine.ChangeState(m_UIState_PrepareForBattle);
         }
 
         public void ToBattleStartUIState()
         {
-            m_UIStateBattle.BattleStarted();
+            m_StateMachine.ChangeState(m_UIState_BattleStart);
         }
 
         public void ToWaitingForNextEnemyActivationUIState()
         {
-            m_UIStateBattle.NextEnemy();
+            m_StateMachine.ChangeState(m_UIState_WaitNextEnemy);
         }
 
 
