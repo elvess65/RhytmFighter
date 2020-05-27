@@ -96,7 +96,7 @@ namespace RhytmFighter.Level.Data
             if (!node.IsStartNode)
             {
                 float enemyMoveSpeed = GameManager.ENEMY_MOVE_SPEED;
-                int enemyHP = 20;
+                int enemyHP = 1;
                
                 GridCellData cell = grid.GetCellByCoord(grid.WidthInCells / 2, grid.HeightInCells - 1);
                 StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, cell, enemyMoveSpeed, new SimpleBattleActionBehaviour(1, 1, 1), 

@@ -6,14 +6,22 @@ namespace RhytmFighter.StateMachines.UIState
 {
     public class UIState_Adventure : UIState_Abstract
     {
-        public UIState_Adventure(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent) :
+        private Transform m_InventoryUIParent;
+
+        public UIState_Adventure(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent, Transform inventoryUIParent) :
             base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent)
         {
+            m_InventoryUIParent = inventoryUIParent;
         }
 
         public override void EnterState()
         {
             base.EnterState();
+
+            //UI
+            m_TickIndicator.gameObject.SetActive(true);
+            m_PlayerUIParent.gameObject.SetActive(true);
+            m_InventoryUIParent.gameObject.SetActive(true);
 
             m_TickIndicator.ToNormalState();
 

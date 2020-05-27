@@ -45,7 +45,7 @@ namespace RhytmFighter.UI
 
             m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
             m_UIStateBattle = new UIState_Battle(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
-            m_UIStateAdventure = new UIState_Adventure(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
+            m_UIStateAdventure = new UIState_Adventure(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
 
             m_StateMachine.Initialize(m_UIStateNoUI);
 
@@ -54,40 +54,24 @@ namespace RhytmFighter.UI
         }
 
 
-        public void ToNoUIState()
-        {
-            m_StateMachine.ChangeState(m_UIStateNoUI);
-        }
-
         public void ToAdventureUIState()
         {
             m_StateMachine.ChangeState(m_UIStateAdventure);
         }
 
-        public void ToBattleUIState()
+        public void ToPrepareForBattleUIState()
         {
             m_StateMachine.ChangeState(m_UIStateBattle);
         }
 
-
-        public void PrepareForBattle()
-        {
-            m_StateMachine.ChangeState(m_UIStateBattle);
-        }
-
-        public void BattleStart()
+        public void ToBattleStartUIState()
         {
             m_UIStateBattle.BattleStarted();
         }
 
-        public void NextEnemy()
+        public void ToWaitingForNextEnemyActivationUIState()
         {
             m_UIStateBattle.NextEnemy();
-        }
-
-        public void BattleFinish()
-        {
-            m_StateMachine.ChangeState(m_UIStateAdventure);
         }
 
 

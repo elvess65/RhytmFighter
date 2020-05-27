@@ -307,17 +307,12 @@ namespace RhytmFighter.Core
             if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
                 m_ControllersHolder.PlayerCharacterController.StopMove();
 
-            //Prepare character for battle
-            m_ControllersHolder.PlayerCharacterController.PrepareForBattle();
-
-            //Prepare UI for battle
-            ManagersHolder.UIManager.PrepareForBattle();
+            m_ControllersHolder.PlayerCharacterController.PrepareForBattle();   //Prepare character for battle
+            m_GameStateMachine.ChangeState(m_GameStateIdle);                    //Change state
+            ManagersHolder.UIManager.ToPrepareForBattleUIState();               //Prepare UI for battle      
 
             //Debug - Prepare sound for battle
             Rhytm.volume = 0.5f;
-
-            //Change state
-            m_GameStateMachine.ChangeState(m_GameStateIdle);
         }
 
         private void BattleStartedHandler()
@@ -325,50 +320,39 @@ namespace RhytmFighter.Core
             Debug.LogError("Battle - Start");
 
             //Subscribe for events
-            m_ControllersHolder.RhytmController.OnEventProcessingTick += EventProcessingTickHandler;
             m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;
+            m_ControllersHolder.RhytmController.OnEventProcessingTick += EventProcessingTickHandler;
             m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
-            //Show Battle UI
-            ManagersHolder.UIManager.BattleStart();
-
-            //Change state
-            m_GameStateMachine.ChangeState(m_GameStateBattle);
+            m_GameStateMachine.ChangeState(m_GameStateBattle);      //Change state
+            ManagersHolder.UIManager.ToBattleStartUIState();        //Show Battle UI
         }
 
         private void BattleEnemyDestroyedHandler(bool lastEnemyDestroyed)
         {
             Debug.LogError("Battle - Enemy destroyed " + lastEnemyDestroyed);
 
-            if (!lastEnemyDestroyed)
-                ManagersHolder.UIManager.NextEnemy();
-
             //Unscribe from events
             m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.BattleController.ProcessEnemyActions;
+            m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
-            //Change state
-            m_GameStateMachine.ChangeState(m_GameStateIdle);
+            //UI
+            if (!lastEnemyDestroyed)
+                ManagersHolder.UIManager.ToWaitingForNextEnemyActivationUIState();
+
+            m_GameStateMachine.ChangeState(m_GameStateIdle);            //Change state
         }
 
         private void BattleFinishedHandler()
         {
             Debug.LogError("Battle - Finished");
 
-            //Unscribe from events
-            m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
+            m_ControllersHolder.PlayerCharacterController.FinishBattle();       //Finish battle for player
+            m_GameStateMachine.ChangeState(m_GameStateAdventure);               //Change state
+            ManagersHolder.UIManager.ToAdventureUIState();                      //Finish battle for UI    
 
-            //Finish battle for player
-            m_ControllersHolder.PlayerCharacterController.FinishBattle();
-
-            //Finish battle for UI
-            ManagersHolder.UIManager.BattleFinish();
-
-            //Debug - Finish battle for sound
-            Rhytm.volume = 0;
-
-            //Change state
-            m_GameStateMachine.ChangeState(m_GameStateAdventure);
+            Rhytm.volume = 0;   //Debug - Finish battle for sound
         }
         #endregion
 

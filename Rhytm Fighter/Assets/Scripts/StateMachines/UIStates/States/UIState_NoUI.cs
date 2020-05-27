@@ -7,15 +7,11 @@ namespace RhytmFighter.StateMachines.UIState
 {
     public class UIState_NoUI : UIState_Abstract
     {
-        private Transform m_InventoryUIParent;
-
         protected List<Transform> m_UIObjects;
 
         public UIState_NoUI(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent, Transform inventoryUIParent) :
             base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent)
         {
-            m_InventoryUIParent = inventoryUIParent;
-
             m_UIObjects = new List<Transform>()
             {
                 buttonDefence.transform,
@@ -33,16 +29,6 @@ namespace RhytmFighter.StateMachines.UIState
             //UI
             foreach (Transform uiObject in m_UIObjects)
                 uiObject.gameObject.SetActive(false);
-        }
-
-        public override void ExitState()
-        {
-            base.ExitState();
-
-            //UI
-            m_TickIndicator.gameObject.SetActive(true);
-            m_PlayerUIParent.gameObject.SetActive(true);
-            m_InventoryUIParent.gameObject.SetActive(true);
         }
     }
 }
