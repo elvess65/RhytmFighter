@@ -18,7 +18,9 @@ namespace RhytmFighter.StateMachines.UIState
             m_TextBattleStatus.text = "Its not finished yet";
             m_TextBattleStatus.color = Color.yellow;
             Core.GameManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
-            Debug.Log("Enter wait state " + m_TextBattleStatus.color);
+
+            //Tick indicator
+            m_TickIndicator.ToPrepareState();
         }
     }
 }

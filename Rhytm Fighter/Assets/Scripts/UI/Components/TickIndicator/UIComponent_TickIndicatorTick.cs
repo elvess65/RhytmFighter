@@ -32,7 +32,7 @@ namespace RhytmFighter.UI.Components
 
         public void PlayTickAnimation()
         {
-            StartCoroutine(TickAnimationCoroutine());
+            Core.GameManager.Instance.StartCoroutine(TickAnimationCoroutine());
         }
 
 

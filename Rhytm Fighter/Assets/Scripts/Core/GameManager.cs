@@ -243,10 +243,15 @@ namespace RhytmFighter.Core
         #region Player
         private void PlayerDestroyedHandler(iBattleObject sender)
         {
-            Debug.LogError("DESTROY PLAYER");
+            //Unscribe from events
+            m_ControllersHolder.RhytmController.OnTick = null;
+            m_ControllersHolder.RhytmController.OnEventProcessingTick = null;
 
-            BattleFinishedHandler();
             m_GameStateMachine.ChangeState(m_GameStateIdle);
+            ManagersHolder.UIManager.ToGameOverUIState();
+
+            Rhytm.Stop();   //Debug - Finish battle for sound
+            Music.Stop();  
         }
 
         private void PlayerInteractWithObject(AbstractInteractableObjectModel interactableObject)
@@ -305,11 +310,11 @@ namespace RhytmFighter.Core
         #region Battle
         private void PrepareForBattleHandler()
         {
-            Debug.LogError("Battle - Prepare");
-
             //No need to stop movement if players destination cell is the cell where enemy was detected
             if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
                 m_ControllersHolder.PlayerCharacterController.StopMove();
+
+            m_ControllersHolder.RhytmController.OnEventProcessingTick += EventProcessingTickHandler;
 
             m_ControllersHolder.PlayerCharacterController.PrepareForBattle();   //Prepare character for battle
             m_GameStateMachine.ChangeState(m_GameStateIdle);                    //Change state
@@ -321,11 +326,8 @@ namespace RhytmFighter.Core
 
         private void BattleStartedHandler()
         {
-            Debug.LogError("Battle - Start");
-
             //Subscribe for events
-            m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;
-            m_ControllersHolder.RhytmController.OnEventProcessingTick += EventProcessingTickHandler;
+            m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;   
             m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             m_GameStateMachine.ChangeState(m_GameStateBattle);      //Change state
@@ -334,23 +336,22 @@ namespace RhytmFighter.Core
 
         private void BattleEnemyDestroyedHandler(bool lastEnemyDestroyed)
         {
-            Debug.LogError("Battle - Enemy destroyed " + lastEnemyDestroyed);
-
             //Unscribe from events
             m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.BattleController.ProcessEnemyActions;
-            m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             //UI
             if (!lastEnemyDestroyed)
                 ManagersHolder.UIManager.ToWaitingForNextEnemyActivationUIState();
+            else
+                ManagersHolder.UIManager.ToBattleFinishedUIState();
 
             m_GameStateMachine.ChangeState(m_GameStateIdle);            //Change state
         }
 
         private void BattleFinishedHandler()
         {
-            Debug.LogError("Battle - Finished");
+            m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
 
             m_ControllersHolder.PlayerCharacterController.FinishBattle();       //Finish battle for player
             m_GameStateMachine.ChangeState(m_GameStateAdventure);               //Change state
@@ -358,16 +359,30 @@ namespace RhytmFighter.Core
 
             Rhytm.volume = 0;   //Debug - Finish battle for sound
         }
+
+        private void LevelComplete()
+        {
+            //Unscribe from events
+            m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.BattleController.ProcessEnemyActions;
+            m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
+            m_ControllersHolder.RhytmController.OnEventProcessingTick -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
+
+            m_GameStateMachine.ChangeState(m_GameStateIdle);
+            ManagersHolder.UIManager.ToLevelComleteUIState();
+
+            Rhytm.Stop();   //Debug - Finish battle for sound
+            Music.Stop();
+        }
         #endregion
 
         #region Rhytm
         private void TickingStartedHandler()
         {
-            Music.Play();
-            Rhytm.Play();
+            //Music.Play();
+            //Rhytm.Play();
             Rhytm.volume = 0;
 
-            //Metronome.StartMetronome();
+            Metronome.StartMetronome();
         }
 
         private void TickHandler(int ticksSinceStart)

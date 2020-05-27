@@ -35,7 +35,10 @@ namespace RhytmFighter.UI
         private UIState_PrepareForBattle m_UIState_PrepareForBattle;
         private UIState_BattleStart m_UIState_BattleStart;
         private UIState_WaitNextEnemy m_UIState_WaitNextEnemy;
-       
+        private UIState_BattleFinished m_UIState_BattleFinished;
+        private UIState_GameOverState m_UIState_GameOver;
+        private UIState_LevelComplete m_UIState_LevelComplete;
+
         public void Initialize()
         {
             //Components
@@ -50,7 +53,10 @@ namespace RhytmFighter.UI
             m_UIState_PrepareForBattle =    new UIState_PrepareForBattle    (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
             m_UIState_BattleStart =         new UIState_BattleStart         (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
             m_UIState_WaitNextEnemy =       new UIState_WaitNextEnemy       (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
-            
+            m_UIState_BattleFinished =      new UIState_BattleFinished      (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
+            m_UIState_GameOver =            new UIState_GameOverState       (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
+            m_UIState_LevelComplete =       new UIState_LevelComplete       (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
+
             m_StateMachine.Initialize(m_UIStateNoUI);
 
             //Buttons
@@ -76,6 +82,21 @@ namespace RhytmFighter.UI
         public void ToWaitingForNextEnemyActivationUIState()
         {
             m_StateMachine.ChangeState(m_UIState_WaitNextEnemy);
+        }
+
+        public void ToBattleFinishedUIState()
+        {
+            m_StateMachine.ChangeState(m_UIState_BattleFinished);
+        }
+
+        public void ToGameOverUIState()
+        {
+            m_StateMachine.ChangeState(m_UIState_GameOver);
+        }
+
+        public void ToLevelComleteUIState()
+        {
+            m_StateMachine.ChangeState(m_UIState_LevelComplete);
         }
 
 
