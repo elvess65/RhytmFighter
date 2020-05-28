@@ -11,5 +11,6 @@
 
         public int CurrentLevelID;
         public int Experiance;
+        public int PotionsAmount = 0;
     }
 }

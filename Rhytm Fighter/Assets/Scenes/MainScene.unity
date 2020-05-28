@@ -3220,7 +3220,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -3487,7 +3487,6 @@ MonoBehaviour:
   SipSound: {fileID: 1599924227}
   DashSound: {fileID: 884838806}
   Metronome: {fileID: 971653468}
-  m_Poitions: 0
 --- !u!4 &1655152185
 Transform:
   m_ObjectHideFlags: 0

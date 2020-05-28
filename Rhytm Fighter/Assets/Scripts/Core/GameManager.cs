@@ -49,12 +49,11 @@ namespace RhytmFighter.Core
         private GameState_Adventure m_GameStateAdventure;
 
 
+        public PlayerData PlayerDataModel => m_DataHolder.PlayerDataModel;
         public PlayerModel PlayerModel => m_ControllersHolder.PlayerCharacterController.PlayerModel;
         public float NPCMoveSpeed => (float)m_ControllersHolder.RhytmController.TickDurationSeconds * 
                                      ManagersHolder.SettingsManager.GeneralSettings.MoveSpeedTickDurationMultiplayer;
 
-
-        public int m_Poitions = 0;
 
         private void Awake()
         {
@@ -66,6 +65,9 @@ namespace RhytmFighter.Core
 
         private void Start()
         {
+            if (ManagersHolder.SettingsManager.GeneralSettings.MuteAudio)
+                AudioListener.volume = 0;
+
             Initialize();
 
             //DontDestroyOnLoad(gameObject);
@@ -82,58 +84,77 @@ namespace RhytmFighter.Core
         #region Initialization
         private void Initialize()
         {
-            if (ManagersHolder.SettingsManager.GeneralSettings.MuteAudio)
-                AudioListener.volume = 0;
-
-            //Initialize core objects
-            m_DataHolder = new DataHolder();
-            m_GameStateMachine = new GameStateMachine();
-            m_ControllersHolder = new ControllersHolder();
-
-
-            //Initialize managers
+            InitializeCore();
             ManagersHolder.Initialize();
-
-            //Initialize state machine
-            m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController,
-                                                 m_ControllersHolder.RhytmInputProxy);
-
-            m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController,
-                                                     m_ControllersHolder.RhytmInputProxy);
-
-            m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.LevelController,
-                                                           m_ControllersHolder.PlayerCharacterController,
-                                                           m_ControllersHolder.RhytmInputProxy);
-
-            m_GameStateAdventure.OnPlayerInteractWithItem += PlayerInteractWithItemHandler;
-            m_GameStateAdventure.OnPlayerInteractWithNPC += PlayerInteractWithNPCHandler;
-            m_GameStateMachine.Initialize(m_GameStateIdle);
-
+            InitializeStateMachine();
             InitializeUpdatables();
+            SubscribeForEvents();
+            InitializeConnection();
+        }
 
-            //Subscribe for events
-            // - Input
+        private void SubscribeForEvents()
+        {
+            //Input
             m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
 
-            // - Player controller 
+            //Player controller 
             m_ControllersHolder.PlayerCharacterController.OnTeleportStarted += TeleportStartedHandler;
             m_ControllersHolder.PlayerCharacterController.OnTeleportFinished += TeleportFinishedHandler;
 
-            // - Battle
+            //Battle
             m_ControllersHolder.BattleController.OnPrepareForBattle += PrepareForBattleHandler;
             m_ControllersHolder.BattleController.OnBattleStarted += BattleStartedHandler;
             m_ControllersHolder.BattleController.OnEnemyDestroyed += BattleEnemyDestroyedHandler;
             m_ControllersHolder.BattleController.OnBattleFinished += BattleFinishedHandler;
 
-            // - Rhytm
-            m_ControllersHolder.RhytmController.OnTick += TickHandler;
+            //Rhytm
             m_ControllersHolder.RhytmController.OnStarted += TickingStartedHandler;
+            m_ControllersHolder.RhytmController.OnTick += TickHandler;
 
-            // - UI
+            //UI
             ManagersHolder.UIManager.OnButtonDefencePressed += ButtonDefence_PressHandler;
             ManagersHolder.UIManager.OnButtonPotionPressed += ButtonPoition_PressHandler;
+        }
 
-            //Initialize connection
+        private void InitializeStateMachine()
+        {
+            //Create states
+            m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
+            m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
+            m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.LevelController, m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
+
+            //Subscribe for events
+            m_GameStateAdventure.OnPlayerInteractWithItem += PlayerInteractWithItemHandler;
+            m_GameStateAdventure.OnPlayerInteractWithNPC += PlayerInteractWithNPCHandler;
+
+            //Initialize state machine with default state
+            m_GameStateMachine.Initialize(m_GameStateIdle);
+        }
+
+        private void InitializeCore()
+        {
+            m_DataHolder = new DataHolder();
+            m_GameStateMachine = new GameStateMachine();
+            m_ControllersHolder = new ControllersHolder();
+        }
+
+        private void InitializeUpdatables()
+        {
+            //Initialize updatables
+            m_Updateables = new List<iUpdatable>
+            {
+                m_ControllersHolder.InputController,
+                m_ControllersHolder.RhytmController,
+                m_ControllersHolder.CommandsController,
+                m_ControllersHolder.BattleController,
+                m_ControllersHolder.CameraController,
+                m_GameStateMachine,
+                ManagersHolder.UIManager
+            };
+        }
+
+        private void InitializeConnection()
+        {
             m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
             m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
             m_DataHolder.DBProxy.Initialize();
@@ -153,21 +174,6 @@ namespace RhytmFighter.Core
 
             //Metronome
             Metronome.bpm = levelParams.BPM * 4;
-        }
-
-        private void InitializeUpdatables()
-        {
-            //Initialize updatables
-            m_Updateables = new List<iUpdatable>
-            {
-                m_ControllersHolder.InputController,
-                m_ControllersHolder.RhytmController,
-                m_ControllersHolder.CommandsController,
-                m_ControllersHolder.BattleController,
-                m_ControllersHolder.CameraController,
-                m_GameStateMachine,
-                ManagersHolder.UIManager
-            };
         }
 
         private void InitializationFinished()
@@ -263,7 +269,7 @@ namespace RhytmFighter.Core
         {
             yield return new WaitForSeconds(animationDelay);
 
-            m_Poitions++;
+            PlayerDataModel.PotionsAmount++;
             UpdatePoitionAmount();
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
@@ -380,14 +386,18 @@ namespace RhytmFighter.Core
         {
             //Music.Play();
             //Rhytm.Play();
-            Rhytm.volume = 0;
+            //Rhytm.volume = 0;
 
             Metronome.StartMetronome();
         }
 
         private void TickHandler(int ticksSinceStart)
         {
-            BeatSound.Play();
+            if (ticksSinceStart % 8 == 0)
+            {
+                Music.Play();
+                Rhytm.Play();
+            }
         }
 
         private void EventProcessingTickHandler(int ticksSinceStart)
@@ -408,24 +418,27 @@ namespace RhytmFighter.Core
 
         private void ButtonPoition_PressHandler()
         {
-            m_Poitions--;
-            UpdatePoitionAmount();
-            SipSound.Play();
-            AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().HealEffectPrefab,
-                                                                                PlayerModel.ViewPosition,
-                                                                                Quaternion.Euler(-90, 0, 0)).ScheduleHideView();
+            if (m_ControllersHolder.RhytmInputProxy.IsInputTickValid() && m_ControllersHolder.RhytmInputProxy.IsInputAllowed())
+            {
+                PlayerDataModel.PotionsAmount--;
+                UpdatePoitionAmount();
+                SipSound.Play();
+                AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().HealEffectPrefab,
+                                                                                        PlayerModel.ViewPosition,
+                                                                                        Quaternion.Euler(-90, 0, 0)).ScheduleHideView();
 
-            PlayerModel.HealthBehaviour.IncreaseHP(5);
+                PlayerModel.HealthBehaviour.IncreaseHP(5);
+            }
         }
 
         private void UpdatePoitionAmount()
         {
-            ManagersHolder.UIManager.Text_PotionAmount.text = $"x{m_Poitions}";
+            ManagersHolder.UIManager.Text_PotionAmount.text = $"x{PlayerDataModel.PotionsAmount}";
 
-            ManagersHolder.UIManager.Text_PotionAmount.GetComponent<CanvasGroup>().alpha = m_Poitions > 0 ? 1 : 0.5f;
+            ManagersHolder.UIManager.Text_PotionAmount.GetComponent<CanvasGroup>().alpha = PlayerDataModel.PotionsAmount > 0 ? 1 : 0.5f;
 
             Color color = ManagersHolder.UIManager.Button_Potion.image.color;
-            color.a = m_Poitions > 0 ? 1 : 0.5f;
+            color.a = PlayerDataModel.PotionsAmount > 0 ? 1 : 0.5f;
             ManagersHolder.UIManager.Button_Potion.image.color = color;
         }
         #endregion

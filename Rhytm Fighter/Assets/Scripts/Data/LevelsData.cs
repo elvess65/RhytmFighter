@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace RhytmFighter.Data
 {
@@ -52,6 +53,7 @@ namespace RhytmFighter.Data
             public int FillPercent = 90;
             public int EnviromentFillPercent = 90;
             public int BPM = 130;
+            public AnimationCurve curve;
         }
     }
 }
