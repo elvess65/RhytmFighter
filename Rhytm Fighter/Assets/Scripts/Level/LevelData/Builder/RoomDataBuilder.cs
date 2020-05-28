@@ -48,7 +48,7 @@ namespace RhytmFighter.Level.Data
             {
                 for (int j = 0; j < grid.HeightInCells; j++)
                 {
-                    bool isPlayerSpawnCell = false;
+                    bool cellCanBeUsedAsEmpty = true;
                     GridCellData cell = grid.GetCellByCoord(i, j);
                     CellTypes cellType = Random.Range(0, 100) < obstacleFillPercent ? CellTypes.Normal : CellTypes.Obstacle;
 
@@ -62,6 +62,7 @@ namespace RhytmFighter.Level.Data
 
                         cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.ParentNode.ID, GateTypes.ToParentNode));
                         grid.ParentNodeGate = cell;
+                        cellCanBeUsedAsEmpty = false;
                     }
                     //Add property GateToLeftNode
                     else if (node.LeftNode != null && i == leftGateCellX && j == leftGateCellY)
@@ -71,6 +72,7 @@ namespace RhytmFighter.Level.Data
 
                         cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.LeftNode.ID, GateTypes.ToNextNode));
                         grid.LeftNodeGate = cell;
+                        cellCanBeUsedAsEmpty = false;
                     }
                     //Add property GateToRightNode
                     else if (node.RightNode != null && i == rightGateCellX && j == rightGateCellY)
@@ -80,6 +82,7 @@ namespace RhytmFighter.Level.Data
 
                         cell.SetCellProperty(GridCellProperty_GateToNode.CreateProperty(node.RightNode.ID, GateTypes.ToNextNode));
                         grid.RightNodeGate = cell;
+                        cellCanBeUsedAsEmpty = false;
                     }
                     //Player spawn cell
                     else if (i == grid.WidthInCells / 2 && j == 0)
@@ -87,13 +90,13 @@ namespace RhytmFighter.Level.Data
                         if (cellType != CellTypes.Normal)
                             cellType = CellTypes.Normal;
 
-                        isPlayerSpawnCell = true;
+                        cellCanBeUsedAsEmpty = false;
                     }
 
                     cell.SetCellType(cellType);
                     cell.SetRoomID(node.ID);
 
-                    if (cellType == CellTypes.Normal && !isPlayerSpawnCell)
+                    if (cellType == CellTypes.Normal && cellCanBeUsedAsEmpty)
                         emptyCells.Add(cell);
                 }
             }
@@ -110,15 +113,23 @@ namespace RhytmFighter.Level.Data
 
         void GenerateItem(ref List<GridCellData> emptyCells)
         {
-            //TODO: Amount of items per room
-            //TODO: Available items per room
-
             if (emptyCells.Count == 0)
                 return;
 
-            GridCellData rndCell = GetRandomCell(ref emptyCells);
-            StandardItemModel item = new StandardItemModel(m_ITEM_ID++, rndCell);
-            rndCell.AddObject(item);
+            //TODO: Amount of items per room
+            int amountOfItems = Random.Range(1, 3);
+
+            //TODO: Available content per room
+            int[] availableContent = new int[] { 1, 2 };
+
+            for (int i = 0; i < amountOfItems; i++)
+            {
+                int rndItemContentID = availableContent[Random.Range(0, availableContent.Length)];
+
+                GridCellData rndCell = GetRandomCell(ref emptyCells);
+                StandardItemModel item = new StandardItemModel(m_ITEM_ID++, rndItemContentID, rndCell);
+                rndCell.AddObject(item);
+            }
         }
 
         void GenerateEnemy(SquareGrid grid, LevelNodeData node, ref List<GridCellData> emptyCells)
@@ -127,38 +138,45 @@ namespace RhytmFighter.Level.Data
                 return;
 
             //TODO: Amount of enemies per room
-            //TODO: Available enemies per room
+            int amountOfEnemies = Random.Range(1, 3);
+
+            //TODO: Available views per room
+            int[] availableViews = new int[] { 1, 2 };
+
             //TODO: Enemy params:
             //  - HP per room
+            int enemyHP = Random.Range(1, 10);
             //  - Damage per room
+            int enemyDmg = Random.Range(1, 5);
+
+            //TODO:Boss params
+            int bossHP = Random.Range(15, 25);
+            int bossDmg = Random.Range(7, 15);
 
             if (!node.IsStartNode)
             {
-                int enemyHP = 1;
-                int enemyDmg = 1;
-                float enemyMoveSpeed = GameManager.ENEMY_MOVE_SPEED;
-
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < amountOfEnemies; i++)
                 {
+                    int rndViewID = availableViews[Random.Range(0, availableViews.Length)];
+
                     GridCellData rndCell = GetRandomCell(ref emptyCells);
-                    StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndCell, enemyMoveSpeed, new SimpleBattleActionBehaviour(1, 1, enemyDmg),
-                                                                                                                      new SimpleHealthBehaviour(enemyHP),
-                                                                                                                      AITypes.Simple);
+                    StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, GameManager.Instance.NPCMoveSpeed, 
+                                                                               new SimpleBattleActionBehaviour(enemyDmg),
+                                                                               new SimpleHealthBehaviour(enemyHP),
+                                                                               AITypes.Simple);
 
                     rndCell.AddObject(enemyNPC);
                 }
             }
             else if (node.IsFinishNode)
             {
-                int enemyHP = 5;
-                int enemyDmg = 5;
-                float enemyMoveSpeed = GameManager.ENEMY_MOVE_SPEED;
-
+                int rndViewID = availableViews[Random.Range(0, availableViews.Length)];
 
                 GridCellData rndCell = GetRandomCell(ref emptyCells);
-                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndCell, enemyMoveSpeed, new SimpleBattleActionBehaviour(1, 1, enemyDmg),
-                                                                                                                  new SimpleHealthBehaviour(enemyHP),
-                                                                                                                  AITypes.Simple);
+                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, GameManager.Instance.NPCMoveSpeed, 
+                                                                           new SimpleBattleActionBehaviour(bossDmg),
+                                                                           new SimpleHealthBehaviour(bossHP),
+                                                                           AITypes.Simple);
 
                 rndCell.AddObject(enemyNPC);
             }

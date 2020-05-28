@@ -27,6 +27,7 @@ namespace RhytmFighter.Level.Data
         /// </summary>
         public bool RoomIsVisited { get; set; }
 
+
         public LevelRoomData(SquareGrid gridData, LevelNodeData nodeData)
         {
             GridData = gridData;

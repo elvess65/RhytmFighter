@@ -12,7 +12,6 @@ namespace RhytmFighter.Objects.Model
 
         public override void Interact()
         {
-            UnityEngine.Debug.Log($"Interact: {ID}");
             CorrespondingCell.RemoveObject();
             HideView();
         }

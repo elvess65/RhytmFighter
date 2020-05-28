@@ -23,6 +23,7 @@ namespace RhytmFighter.Data.DataBase.Simulation
             public int FillPercent = 90;
             [Range(0, 100)]
             public int EnviromentFillPercent = 20;
+            public int BPM = 130;
         }
     }
 }

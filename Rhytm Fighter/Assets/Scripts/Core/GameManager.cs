@@ -48,10 +48,10 @@ namespace RhytmFighter.Core
         private GameState_Battle m_GameStateBattle;
         private GameState_Adventure m_GameStateAdventure;
 
-        public static float ENEMY_MOVE_SPEED;
-        public static float PLAYER_MOVE_SPEED;
 
         public PlayerModel PlayerModel => m_ControllersHolder.PlayerCharacterController.PlayerModel;
+        public float NPCMoveSpeed => (float)m_ControllersHolder.RhytmController.TickDurationSeconds * 
+                                     ManagersHolder.SettingsManager.GeneralSettings.MoveSpeedTickDurationMultiplayer;
 
 
         public int m_Poitions = 0;
@@ -82,22 +82,14 @@ namespace RhytmFighter.Core
         #region Initialization
         private void Initialize()
         {
-            //Temp
-            int bpm = 130 / 2;
-            double inputPrecious = 0.25;
-            Metronome.bpm = bpm * 4;
-
             if (ManagersHolder.SettingsManager.GeneralSettings.MuteAudio)
                 AudioListener.volume = 0;
 
-            //Initialize objects
+            //Initialize core objects
             m_DataHolder = new DataHolder();
             m_GameStateMachine = new GameStateMachine();
             m_ControllersHolder = new ControllersHolder();
 
-            //Set object params
-            m_ControllersHolder.RhytmController.SetBPM(bpm);
-            m_ControllersHolder.RhytmInputProxy.SetInputPrecious(inputPrecious);
 
             //Initialize managers
             ManagersHolder.Initialize();
@@ -141,16 +133,26 @@ namespace RhytmFighter.Core
             ManagersHolder.UIManager.OnButtonDefencePressed += ButtonDefence_PressHandler;
             ManagersHolder.UIManager.OnButtonPotionPressed += ButtonPoition_PressHandler;
 
-            //Temp
-            //Btn.onClick.AddListener(BtnPressHandler);
-            PLAYER_MOVE_SPEED = (float)m_ControllersHolder.RhytmController.TickDurationSeconds * 4f;
-            ENEMY_MOVE_SPEED = PLAYER_MOVE_SPEED;
-            UpdatePoitionAmount();
-
             //Initialize connection
             m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
             m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
             m_DataHolder.DBProxy.Initialize();
+        }
+
+        private void InitializeDataDependents(LevelsData.LevelParams levelParams)
+        {
+            //Set object params
+            m_ControllersHolder.RhytmController.SetBPM(levelParams.BPM);
+            m_ControllersHolder.RhytmInputProxy.SetInputPrecious(ManagersHolder.SettingsManager.GeneralSettings.InputPrecious);
+
+            //Build level
+            BuildLevel(levelParams);
+
+            //Create player
+            CreatePlayer();
+
+            //Metronome
+            Metronome.bpm = levelParams.BPM * 4;
         }
 
         private void InitializeUpdatables()
@@ -184,47 +186,45 @@ namespace RhytmFighter.Core
             m_DataHolder.PlayerDataModel = PlayerData.DeserializeData(serializedPlayerData);
             m_DataHolder.InfoData = new InfoData(serializedLevelsData);
 
-            //Build level
-            BuildLevel();
+            //Initialize data dependend objects
+            InitializeDataDependents(m_DataHolder.InfoData.LevelsData.GetLevelParams(m_DataHolder.PlayerDataModel.CurrentLevelID));
 
-            //Create player
-            CreatePlayer();
+            //Finish initialization
+            InitializationFinished();
         }
 
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");
 
 
-        private void BuildLevel()
+        private void BuildLevel(LevelsData.LevelParams levelParams)
         {
-            m_ControllersHolder.LevelController.GenerateLevel(m_DataHolder.InfoData.LevelsData.GetLevelParams(m_DataHolder.PlayerDataModel.CurrentLevelID), false, true);
+            m_ControllersHolder.LevelController.GenerateLevel(levelParams, false, true);
             m_ControllersHolder.LevelController.RoomViewBuilder.OnCellWithObjectDetected += CellWithObjectDetectedHandler;
         }
 
         private void CreatePlayer()
         {
-            //Temp 
-            //TODO Get from data
-            int playerID = 0;
-
             //Temp
             SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(10, 20);
-            SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(1, 1, 2);
+            SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(2);
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
                 m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.WidthInCells / 2, 0);
 
             //Create player model
-            PlayerModel playerModel = new PlayerModel(playerID, startCellView.CorrespondingCellData, PLAYER_MOVE_SPEED, battleBehaviour, healthBehaviour);
-            m_ControllersHolder.PlayerCharacterController.CreateCharacter(playerModel, startCellView, m_ControllersHolder.LevelController);
+            PlayerModel playerModel = new PlayerModel(0, startCellView.CorrespondingCellData, NPCMoveSpeed, battleBehaviour, healthBehaviour);
             playerModel.OnDestroyed += PlayerDestroyedHandler;
 
-            //Set player to battle controller
+            //Create player view
+            m_ControllersHolder.PlayerCharacterController.CreateCharacter(playerModel, startCellView, m_ControllersHolder.LevelController);
+            
+            //Attach player to battle controller
             m_ControllersHolder.BattleController.Player = m_ControllersHolder.PlayerCharacterController.PlayerModel;
 
             //Initialize camera
             m_ControllersHolder.CameraController.InitializeCamera(m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform);
 
-            //Finish initialization
-            InitializationFinished(); 
+            //TEMP
+            UpdatePoitionAmount();
         }
         #endregion
 

@@ -51,6 +51,7 @@ namespace RhytmFighter.Data
             public float CellSize = 1;
             public int FillPercent = 90;
             public int EnviromentFillPercent = 90;
+            public int BPM = 130;
         }
     }
 }

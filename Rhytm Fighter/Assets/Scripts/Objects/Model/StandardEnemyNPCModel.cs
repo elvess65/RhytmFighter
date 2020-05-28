@@ -11,10 +11,13 @@ namespace RhytmFighter.Objects.Model
 {
     public class StandardEnemyNPCModel : AbstractBattleNPCModel
     {
-        public StandardEnemyNPCModel(int id, GridCellData correspondingCell, float moveSpeed, iBattleActionBehaviour actionBehaviour, iHealthBehaviour healthBehaviour, AITypes aiType) : 
+        private int m_ViewID;
+
+        public StandardEnemyNPCModel(int id, int viewID, GridCellData correspondingCell, float moveSpeed, iBattleActionBehaviour actionBehaviour, iHealthBehaviour healthBehaviour, AITypes aiType) : 
             base(id, correspondingCell, moveSpeed, actionBehaviour, healthBehaviour, true)
         {
             AI = GetAI(aiType);
+            m_ViewID = viewID;
         }
 
         protected override AbstractGridObjectView CreateView(CellView cellView) 

@@ -6,10 +6,21 @@ using RhytmFighter.Objects.View;
 namespace RhytmFighter.Objects.Model
 {
     public class StandardItemModel : AbstractItemModel
-    {        
-        public StandardItemModel(int id, GridCellData correspondingCell) : base(id, correspondingCell)
+    {
+        private int m_ContentID;
+
+
+        public StandardItemModel(int id, int contentID, GridCellData correspondingCell) : base(id, correspondingCell)
         {
+            m_ContentID = contentID;
         }
+
+        public override void Interact()
+        {
+            UnityEngine.Debug.Log($"Interact with standart item. ID: {ID} ContentID {m_ContentID}");
+            base.Interact();
+        }
+
 
         protected override AbstractGridObjectView CreateView(CellView cellView)
         {

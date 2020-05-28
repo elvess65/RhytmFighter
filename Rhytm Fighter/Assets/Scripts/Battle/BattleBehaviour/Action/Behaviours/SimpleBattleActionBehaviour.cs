@@ -16,10 +16,10 @@ namespace RhytmFighter.Battle.Action.Behaviours
         protected int m_Damage;
 
         
-        public SimpleBattleActionBehaviour(int applyDelay, int useDelay, int damage)
+        public SimpleBattleActionBehaviour(int damage)
         {
-            m_ApplyDelay = applyDelay;
-            m_UseDelay = useDelay;
+            m_ApplyDelay = 1;
+            m_UseDelay = 1;
             m_Damage = damage;
         }
 
