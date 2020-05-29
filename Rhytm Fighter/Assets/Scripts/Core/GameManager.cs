@@ -20,9 +20,8 @@ namespace RhytmFighter.Core
         private static GameManager m_Instance;
         public static GameManager Instance => m_Instance;
 
-        [Header("Links")]
-        public ManagersHolder ManagersHolder;
-        public CamerasHolder CamerasHolder;
+        public ManagersHolder ManagersHolder { get; private set; }
+        public CamerasHolder CamerasHolder { get; private set; }
   
         [Header("Temp")]
         public AudioSource Music;
@@ -50,7 +49,17 @@ namespace RhytmFighter.Core
 
 
         public PlayerData PlayerDataModel => m_DataHolder.PlayerDataModel;
-        public PlayerModel PlayerModel => m_ControllersHolder.PlayerCharacterController.PlayerModel;
+        public PlayerModel PlayerModel
+        {
+            get
+            {
+                //Debug.Log(m_ControllersHolder == null);
+                //Debug.Log(m_ControllersHolder.PlayerCharacterController == null);
+                //Debug.Log(m_ControllersHolder.PlayerCharacterController.PlayerModel == null);
+                
+                return m_ControllersHolder?.PlayerCharacterController?.PlayerModel;
+            }
+        }
         public float NPCMoveSpeed => (float)m_ControllersHolder.RhytmController.TickDurationSeconds * 
                                      ManagersHolder.SettingsManager.GeneralSettings.MoveSpeedTickDurationMultiplayer;
 
@@ -65,34 +74,98 @@ namespace RhytmFighter.Core
 
         private void Start()
         {
-            if (ManagersHolder.SettingsManager.GeneralSettings.MuteAudio)
-                AudioListener.volume = 0;
+            DontDestroyOnLoad(gameObject);
 
-            Initialize();
-
-            //DontDestroyOnLoad(gameObject);
-            //LoadLevel("PolygonDemo01");
+            InitializeCore();
+            InitializeConnection();
         }
         
         private void Update()
         {
-            for (int i = 0; i < m_Updateables.Count; i++)
-                m_Updateables[i].PerformUpdate(Time.deltaTime);
+            if (m_Updateables != null)
+            {
+                for (int i = 0; i < m_Updateables.Count; i++)
+                    m_Updateables[i].PerformUpdate(Time.deltaTime);
+            }
         }
-        
+
         //TODO:
         //Override seed for level build
         //Content in params
         //Pathfinding for player and enemy
 
         #region Initialization
-        private void Initialize()
+        private void InitializeCore()
         {
-            InitializeCore();
-            InitializeStateMachine();
-            InitializeUpdatables();
-            SubscribeForEvents();
-            InitializeConnection();
+            m_DataHolder = new DataHolder();
+            m_GameStateMachine = new GameStateMachine();
+            m_ControllersHolder = new ControllersHolder();
+        }
+
+        private void InitializeConnection()
+        {
+            m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
+            m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
+            m_DataHolder.DBProxy.Initialize();
+        }
+
+        private void InitializeLinks()
+        {
+            ManagersHolder = FindObjectOfType<ManagersHolder>();
+            ManagersHolder.Initialize();
+
+            CamerasHolder = FindObjectOfType<CamerasHolder>();
+        }
+
+        private void InitializeStateMachine()
+        {
+            //Create states
+            m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
+            m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
+            m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.LevelController, m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
+
+            //Subscribe for events
+            m_GameStateAdventure.OnPlayerInteractWithItem += PlayerInteractWithItemHandler;
+            m_GameStateAdventure.OnPlayerInteractWithNPC += PlayerInteractWithNPCHandler;
+
+            //Initialize state machine with default state
+            m_GameStateMachine.Initialize(m_GameStateIdle);
+        }
+
+        private void InitializeDataDependents()
+        {
+            LevelsData.LevelParams levelParams = m_DataHolder.InfoData.LevelsData.GetLevelParams(m_DataHolder.PlayerDataModel.CurrentLevelID);
+
+            //Set object params
+            m_ControllersHolder.RhytmController.SetBPM(levelParams.BPM);
+            m_ControllersHolder.RhytmInputProxy.SetInputPrecious(ManagersHolder.SettingsManager.GeneralSettings.InputPrecious);
+
+            //Initialize managers (May require data)
+            ManagersHolder.Initialize();
+
+            //Build level
+            BuildLevel(levelParams);
+
+            //Create player
+            CreatePlayer();
+
+            //Metronome
+            Metronome.bpm = levelParams.BPM * 4;
+        }
+
+        private void InitializeUpdatables()
+        {
+            //Initialize updatables
+            m_Updateables = new List<iUpdatable>
+            {
+                m_ControllersHolder.InputController,
+                m_ControllersHolder.RhytmController,
+                m_ControllersHolder.CommandsController,
+                m_ControllersHolder.BattleController,
+                m_ControllersHolder.CameraController,
+                m_GameStateMachine,
+                ManagersHolder.UIManager
+            };
         }
 
         private void SubscribeForEvents()
@@ -119,69 +192,10 @@ namespace RhytmFighter.Core
             ManagersHolder.UIManager.OnButtonPotionPressed += ButtonPoition_PressHandler;
         }
 
-        private void InitializeStateMachine()
+        private void ApplySettings()
         {
-            //Create states
-            m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
-            m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
-            m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.LevelController, m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
-
-            //Subscribe for events
-            m_GameStateAdventure.OnPlayerInteractWithItem += PlayerInteractWithItemHandler;
-            m_GameStateAdventure.OnPlayerInteractWithNPC += PlayerInteractWithNPCHandler;
-
-            //Initialize state machine with default state
-            m_GameStateMachine.Initialize(m_GameStateIdle);
-        }
-
-        private void InitializeCore()
-        {
-            m_DataHolder = new DataHolder();
-            m_GameStateMachine = new GameStateMachine();
-            m_ControllersHolder = new ControllersHolder();
-        }
-
-        private void InitializeUpdatables()
-        {
-            //Initialize updatables
-            m_Updateables = new List<iUpdatable>
-            {
-                m_ControllersHolder.InputController,
-                m_ControllersHolder.RhytmController,
-                m_ControllersHolder.CommandsController,
-                m_ControllersHolder.BattleController,
-                m_ControllersHolder.CameraController,
-                m_GameStateMachine,
-                ManagersHolder.UIManager
-            };
-        }
-
-        private void InitializeConnection()
-        {
-            m_DataHolder.DBProxy.OnConnectionSuccess += ConnectionResultSuccess;
-            m_DataHolder.DBProxy.OnConnectionError += ConnectionResultError;
-            m_DataHolder.DBProxy.Initialize();
-        }
-
-        private void InitializeDataDependents()
-        {
-            LevelsData.LevelParams levelParams = m_DataHolder.InfoData.LevelsData.GetLevelParams(m_DataHolder.PlayerDataModel.CurrentLevelID);
-
-            //Set object params
-            m_ControllersHolder.RhytmController.SetBPM(levelParams.BPM);
-            m_ControllersHolder.RhytmInputProxy.SetInputPrecious(ManagersHolder.SettingsManager.GeneralSettings.InputPrecious);
-
-            //Initialize managers (May require data)
-            ManagersHolder.Initialize();
-
-            //Build level
-            BuildLevel(levelParams);
-
-            //Create player
-            CreatePlayer();
-
-            //Metronome
-            Metronome.bpm = levelParams.BPM * 4;
+            if (ManagersHolder.SettingsManager.GeneralSettings.MuteAudio)
+                AudioListener.volume = 0;
         }
 
         private void InitializationFinished()
@@ -194,20 +208,32 @@ namespace RhytmFighter.Core
             ManagersHolder.UIManager.ToAdventureUIState();
         }
 
+
         private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)
         {
             //Set data
             m_DataHolder.PlayerDataModel = PlayerData.DeserializeData(serializedPlayerData);
             m_DataHolder.InfoData = new InfoData(serializedLevelsData);
 
-            //Initialize data dependend objects
-            InitializeDataDependents();
-
-            //Finish initialization
-            InitializationFinished();
+            m_OnSceneLoadingComplete += SceneLoadingComplete;
+            LoadLevel("MainScene");
         }
 
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");
+
+        private void SceneLoadingComplete()
+        {
+            m_OnSceneLoadingComplete -= SceneLoadingComplete;
+
+            InitializeLinks();
+            InitializeStateMachine();
+            InitializeDataDependents();
+            InitializeUpdatables();
+            SubscribeForEvents();
+            ApplySettings();
+
+            InitializationFinished();
+        }
 
 
         private void BuildLevel(LevelsData.LevelParams levelParams)
@@ -232,14 +258,14 @@ namespace RhytmFighter.Core
                                                             m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
                                                             m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.WidthInCells / 2, 0);
 
-
             //Create player model
-            PlayerModel playerModel = new PlayerModel(0, startCellView.CorrespondingCellData, NPCMoveSpeed, battleBehaviour, healthBehaviour);
+            PlayerModel playerModel = new PlayerModel(0, startCellView.CorrespondingCellData,
+                NPCMoveSpeed, battleBehaviour, healthBehaviour);
             playerModel.OnDestroyed += PlayerDestroyedHandler;
 
             //Create player view
             m_ControllersHolder.PlayerCharacterController.CreateCharacter(playerModel, startCellView, m_ControllersHolder.LevelController);
-            
+
             //Attach player to battle controller
             m_ControllersHolder.BattleController.Player = m_ControllersHolder.PlayerCharacterController.PlayerModel;
 
@@ -463,6 +489,8 @@ namespace RhytmFighter.Core
         private string m_CurrentLevelName = string.Empty;
         private List<AsyncOperation> m_LoadOperations = new List<AsyncOperation>();
 
+        private System.Action m_OnSceneLoadingComplete;
+
         #region SceneLoading
         public void LoadLevel(string levelName)
         {
@@ -495,6 +523,7 @@ namespace RhytmFighter.Core
                 m_LoadOperations.Remove(asyncOperation);
 
             Debug.Log("Load complete");
+            m_OnSceneLoadingComplete?.Invoke();
         }
 
         private void UnloadOperationComplete(AsyncOperation asyncOperation)
