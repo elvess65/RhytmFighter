@@ -80,12 +80,15 @@ namespace RhytmFighter.Core
                 m_Updateables[i].PerformUpdate(Time.deltaTime);
         }
         
+        //TODO:
+        //Override seed for level build
+        //Content in params
+        //Pathfinding for player and enemy
 
         #region Initialization
         private void Initialize()
         {
             InitializeCore();
-            ManagersHolder.Initialize();
             InitializeStateMachine();
             InitializeUpdatables();
             SubscribeForEvents();
@@ -160,11 +163,16 @@ namespace RhytmFighter.Core
             m_DataHolder.DBProxy.Initialize();
         }
 
-        private void InitializeDataDependents(LevelsData.LevelParams levelParams)
+        private void InitializeDataDependents()
         {
+            LevelsData.LevelParams levelParams = m_DataHolder.InfoData.LevelsData.GetLevelParams(m_DataHolder.PlayerDataModel.CurrentLevelID);
+
             //Set object params
             m_ControllersHolder.RhytmController.SetBPM(levelParams.BPM);
             m_ControllersHolder.RhytmInputProxy.SetInputPrecious(ManagersHolder.SettingsManager.GeneralSettings.InputPrecious);
+
+            //Initialize managers (May require data)
+            ManagersHolder.Initialize();
 
             //Build level
             BuildLevel(levelParams);
@@ -193,7 +201,7 @@ namespace RhytmFighter.Core
             m_DataHolder.InfoData = new InfoData(serializedLevelsData);
 
             //Initialize data dependend objects
-            InitializeDataDependents(m_DataHolder.InfoData.LevelsData.GetLevelParams(m_DataHolder.PlayerDataModel.CurrentLevelID));
+            InitializeDataDependents();
 
             //Finish initialization
             InitializationFinished();
@@ -210,11 +218,20 @@ namespace RhytmFighter.Core
 
         private void CreatePlayer()
         {
-            //Temp
-            SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(10, 20);
-            SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(2);
-            CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
-                m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.WidthInCells / 2, 0);
+            //Health
+            SimpleHealthBehaviour healthBehaviour = m_DataHolder.PlayerDataModel.IsFirstLevel ? 
+                                                        new SimpleHealthBehaviour(m_DataHolder.PlayerDataModel.Character.FirstLevelCurrentHP, 
+                                                                                  m_DataHolder.PlayerDataModel.Character.HP) :
+                                                        new SimpleHealthBehaviour(m_DataHolder.PlayerDataModel.Character.HP);
+
+            //Battle
+            SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(m_DataHolder.PlayerDataModel.Character.Damage);
+
+            //Start cell view
+            CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(
+                                                            m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
+                                                            m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.WidthInCells / 2, 0);
+
 
             //Create player model
             PlayerModel playerModel = new PlayerModel(0, startCellView.CorrespondingCellData, NPCMoveSpeed, battleBehaviour, healthBehaviour);
@@ -269,7 +286,7 @@ namespace RhytmFighter.Core
         {
             yield return new WaitForSeconds(animationDelay);
 
-            PlayerDataModel.PotionsAmount++;
+            PlayerDataModel.Inventory.PotionsAmount++;
             UpdatePoitionAmount();
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
@@ -418,9 +435,9 @@ namespace RhytmFighter.Core
 
         private void ButtonPoition_PressHandler()
         {
-            if (m_ControllersHolder.RhytmInputProxy.IsInputTickValid() && m_ControllersHolder.RhytmInputProxy.IsInputAllowed())
+            //if (m_ControllersHolder.RhytmInputProxy.IsInputTickValid() && m_ControllersHolder.RhytmInputProxy.IsInputAllowed())
             {
-                PlayerDataModel.PotionsAmount--;
+                PlayerDataModel.Inventory.PotionsAmount--;
                 UpdatePoitionAmount();
                 SipSound.Play();
                 AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().HealEffectPrefab,
@@ -433,30 +450,15 @@ namespace RhytmFighter.Core
 
         private void UpdatePoitionAmount()
         {
-            ManagersHolder.UIManager.Text_PotionAmount.text = $"x{PlayerDataModel.PotionsAmount}";
+            ManagersHolder.UIManager.Text_PotionAmount.text = $"x{PlayerDataModel.Inventory.PotionsAmount}";
 
-            ManagersHolder.UIManager.Text_PotionAmount.GetComponent<CanvasGroup>().alpha = PlayerDataModel.PotionsAmount > 0 ? 1 : 0.5f;
+            ManagersHolder.UIManager.Text_PotionAmount.GetComponent<CanvasGroup>().alpha = PlayerDataModel.Inventory.PotionsAmount > 0 ? 1 : 0.5f;
 
             Color color = ManagersHolder.UIManager.Button_Potion.image.color;
-            color.a = PlayerDataModel.PotionsAmount > 0 ? 1 : 0.5f;
+            color.a = PlayerDataModel.Inventory.PotionsAmount > 0 ? 1 : 0.5f;
             ManagersHolder.UIManager.Button_Potion.image.color = color;
         }
         #endregion
-
-        #region Temp
-        private void OnGUI()
-        {
-            GUI.Label(new Rect(10, 10, 150, 100), m_ControllersHolder.RhytmController.DeltaInput.ToString());
-        }
-        
-        System.Collections.IEnumerator debug_start_tick_coroutine()
-        {
-            Music.PlayDelayed(1);
-            yield return new WaitForSeconds(1);
-            m_ControllersHolder.RhytmController.StartTicking();
-        }
-        #endregion
-
 
         private string m_CurrentLevelName = string.Empty;
         private List<AsyncOperation> m_LoadOperations = new List<AsyncOperation>();

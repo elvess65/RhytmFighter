@@ -107,7 +107,8 @@ namespace RhytmFighter.UI
 
         public void ButtonPotion_PressHandler()
         {
-            if (!UIComponent_PotionCooldown.IsInCooldown && GameManager.Instance.PlayerDataModel.PotionsAmount > 0 && GameManager.Instance.PlayerModel.HealthBehaviour.HP < GameManager.Instance.PlayerModel.HealthBehaviour.MaxHP)
+            if (!UIComponent_PotionCooldown.IsInCooldown && GameManager.Instance.PlayerDataModel.Inventory.PotionsAmount > 0 && 
+                GameManager.Instance.PlayerModel.HealthBehaviour.HP < GameManager.Instance.PlayerModel.HealthBehaviour.MaxHP)
             {
                 OnButtonPotionPressed?.Invoke();
                 UIComponent_PotionCooldown.Cooldown();

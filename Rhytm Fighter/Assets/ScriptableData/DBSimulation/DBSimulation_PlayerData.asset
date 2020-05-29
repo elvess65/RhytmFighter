@@ -13,4 +13,11 @@ MonoBehaviour:
   m_Name: DBSimulation_PlayerData
   m_EditorClassIdentifier: 
   CurrentLevelID: 1
-  Experiance: 25
+  Character:
+    CharacterID: 1
+    CharacterExp: 0
+    HP: 10
+    Damage: 3
+    FirstLevelCurrentHP: 7
+  Inventory:
+    PotionsAmount: 0

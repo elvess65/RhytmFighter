@@ -14,15 +14,16 @@ namespace RhytmFighter.Level.Data
         private int m_ENEMY_ID = 2;
         private int m_ITEM_ID = 1;
 
-        public LevelRoomData Build(LevelNodeData node, int minWidth, int maxWidth, int minHeight, int maxheight, float cellSize, int obstacleFillPercent)
+        public LevelRoomData Build(LevelNodeData node, RhytmFighter.Data.LevelsData.BuildData buildData)
         {
+            Debug.Log(node.NodeSeed);
             Random.InitState(node.NodeSeed);
 
-            int width = Random.Range(minWidth, maxWidth);
-            int height = Random.Range(minHeight, maxheight);
+            int width = Random.Range(buildData.MinWidth, buildData.MaxWidth);
+            int height = Random.Range(buildData.MinHeight, buildData.MaxHeight);
 
-            SquareGrid roomGrid = new SquareGrid(width, height, cellSize, Vector2.zero);
-            ApplyDataToGrid(roomGrid, node, obstacleFillPercent);
+            SquareGrid roomGrid = new SquareGrid(width, height, buildData.CellSize, Vector2.zero);
+            ApplyDataToGrid(roomGrid, node, buildData.ObstacleFillPercent);
 
             return new LevelRoomData(roomGrid, node);
         }
@@ -50,7 +51,7 @@ namespace RhytmFighter.Level.Data
                 {
                     bool cellCanBeUsedAsEmpty = true;
                     GridCellData cell = grid.GetCellByCoord(i, j);
-                    CellTypes cellType = Random.Range(0, 100) < obstacleFillPercent ? CellTypes.Normal : CellTypes.Obstacle;
+                    CellTypes cellType = Random.Range(0, 100) < 100 - obstacleFillPercent ? CellTypes.Normal : CellTypes.Obstacle;
 
                     //TODO: Add player spawn cell
 

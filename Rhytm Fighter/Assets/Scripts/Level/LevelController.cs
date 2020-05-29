@@ -69,7 +69,7 @@ namespace RhytmFighter.Level
 
         public void BuildLevelData(bool generateOnlyMainPath)
         {
-            LevelNodeData nodeData = m_LevelDataBuilder.Build(m_LevelParamsData.LevelDepth, m_LevelParamsData.LevelSeed, generateOnlyMainPath);
+            LevelNodeData nodeData = m_LevelDataBuilder.Build(m_LevelParamsData.BuildParams.LevelDepth, m_LevelParamsData.BuildParams.Seed, generateOnlyMainPath);
             Model.StartNodeData = nodeData;
         }
 
@@ -150,9 +150,7 @@ namespace RhytmFighter.Level
 
         LevelRoomData CreateRoomData(LevelNodeData node)
         {
-            return m_RoomDataBuilder.Build(node, m_LevelParamsData.MinWidth, m_LevelParamsData.MaxWidth,
-                                                 m_LevelParamsData.MinHeight, m_LevelParamsData.MaxWidth,
-                                                 m_LevelParamsData.CellSize, m_LevelParamsData.FillPercent);
+            return m_RoomDataBuilder.Build(node, m_LevelParamsData.BuildParams);
         }
     }
 }

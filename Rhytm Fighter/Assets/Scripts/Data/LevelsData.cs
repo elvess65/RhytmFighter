@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RhytmFighter.Data
@@ -43,17 +44,53 @@ namespace RhytmFighter.Data
         public class LevelParams
         {
             public int ID = 1;
-            public int LevelDepth = 4;
+            public int BPM = 130;
+
+            public BuildData BuildParams;
+            public EnviromentData EnviromentParams;
+            public ContentData ContentParams;
+        }
+
+        [System.Serializable]
+        public class BuildData
+        {
+            public bool OverrideSeed = true;
+            public int Seed => OverrideSeed ? LevelSeed : (int)ConvertToUnixTimestamp(DateTime.Now);
+
             public int LevelSeed = 10;
+
+            public int LevelDepth = 4;
             public int MinWidth = 3;
             public int MaxWidth = 5;
             public int MinHeight = 4;
-            public int Maxheight = 7;
+            public int MaxHeight = 7;
             public float CellSize = 1;
-            public int FillPercent = 90;
-            public int EnviromentFillPercent = 90;
-            public int BPM = 130;
-            public AnimationCurve curve;
+            public int ObstacleFillPercent = 90;
+        }
+
+        [System.Serializable]
+        public class EnviromentData
+        {
+            public int EnviromentFillPercent = 20;
+        }
+
+        [System.Serializable]
+        public class ContentData
+        {
+            public AnimationCurve ProgressionCurve;
+        }
+
+        public static DateTime ConvertFromUnixTimestamp(double timestamp)
+        {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            return origin.AddSeconds(timestamp);
+        }
+
+        public static double ConvertToUnixTimestamp(DateTime date)
+        {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            TimeSpan diff = date.ToUniversalTime() - origin;
+            return Math.Floor(diff.TotalSeconds);
         }
     }
 }

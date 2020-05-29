@@ -5,12 +5,31 @@
     /// </summary>
     public class PlayerData : AbstractData<PlayerData>
     {
-        //Account
-        //Inventory
-        //Skills
+        public bool IsFirstLevel => CurrentLevelID == 1;
 
         public int CurrentLevelID;
-        public int Experiance;
-        public int PotionsAmount = 0;
+
+        public CharacterData Character;
+        public InventoryData Inventory;
+
+
+        [System.Serializable]
+        public class CharacterData
+        {
+            public int CharacterID;
+            public int CharacterExp;
+            public int HP;
+            public int Damage;
+
+            public int FirstLevelCurrentHP;
+        }
+
+        [System.Serializable]
+        public class InventoryData
+        {
+            public int PotionsAmount;
+        }
+
+        //Skills
     }
 }
