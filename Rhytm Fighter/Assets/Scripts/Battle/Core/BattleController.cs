@@ -1,13 +1,14 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
+using RhytmFighter.Battle.Core.Abstract;
 using RhytmFighter.Characters;
 using RhytmFighter.Characters.Movement;
-using RhytmFighter.Core;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Abstract;
+using RhytmFighter.Persistant.Enums;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RhytmFighter.Battle
+namespace RhytmFighter.Battle.Core
 {
     public class BattleController : iUpdatable
     {
@@ -24,7 +25,7 @@ namespace RhytmFighter.Battle
         private PlayerCharacterController m_PlayerCharacterController;
 
         private Dictionary<int, iBattleObject> m_PendingEnemies;
-        
+
         public iBattleObject Player { get; set; }
 
         private const int m_DISTANCE_ADJUSTEMENT_RANGE = 4;                                 //Max range (in cells) to find adjust disatnce cell
@@ -87,7 +88,7 @@ namespace RhytmFighter.Battle
                 result = relativeToBattleObject.Target;
             }
 
-            foreach(iBattleObject enemy in m_PendingEnemies.Values)
+            foreach (iBattleObject enemy in m_PendingEnemies.Values)
             {
                 float sqrDistToEnemy = (relativeToBattleObject.ViewPosition - enemy.ViewPosition).sqrMagnitude;
                 if (sqrDistToEnemy < closestSqrDistToEnemy)
@@ -100,7 +101,7 @@ namespace RhytmFighter.Battle
             return result;
         }
 
-        
+
         private void EnemyDestroyedHandler(iBattleObject enemy)
         {
             //Clear players target
@@ -154,7 +155,7 @@ namespace RhytmFighter.Battle
                 Rhytm.RhytmController.GetInstance().OnTick += FinishBattleOnTick;
             }
         }
-        
+
         private void ActivateEnemy(iBattleObject enemy)
         {
             //Start focusing player
@@ -258,7 +259,7 @@ namespace RhytmFighter.Battle
                 m_EnemyMovementController.RotateCharacter(Quaternion.LookRotation(dirToPlayer));
                 m_EnemyMovementController.OnRotationFinished += RotationToPlayerFinished;
             }
-            else 
+            else
                 StartBattle();
         }
 
@@ -282,13 +283,13 @@ namespace RhytmFighter.Battle
             m_CameraController.PushMemberToTargetGroup(target, 1.25f);
 
             Quaternion targetCameraRotation = Quaternion.LookRotation(target.position - Player.ViewPosition);
-            Vector3 cameraEuler = GameManager.Instance.CamerasHolder.VCamBattle.transform.localEulerAngles;
+            Vector3 cameraEuler = BattleManager.Instance.CamerasHolder.VCamBattle.transform.localEulerAngles;
             cameraEuler.y = targetCameraRotation.eulerAngles.y + m_CameraController.GetNoiseForBattleCamera();
             targetCameraRotation.eulerAngles = cameraEuler;
 
             //Immediate rotation if focusing first time
             if (!m_CameraWasFocusedDuringBattle)
-                GameManager.Instance.CamerasHolder.VCamBattle.transform.localEulerAngles = targetCameraRotation.eulerAngles;
+                BattleManager.Instance.CamerasHolder.VCamBattle.transform.localEulerAngles = targetCameraRotation.eulerAngles;
             else
                 m_CameraController.StartSmoothRotation(CameraTypes.Battle, targetCameraRotation);
 

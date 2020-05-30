@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Core;
+﻿using RhytmFighter.Battle.Core;
 using UnityEngine;
 
 namespace RhytmFighter.UI.Tools
@@ -9,7 +9,7 @@ namespace RhytmFighter.UI.Tools
 
         void Start()
         {
-            m_Camera = GameManager.Instance.CamerasHolder.WorldCamera;
+            m_Camera = BattleManager.Instance.CamerasHolder.WorldCamera;
         }
 
         void Update()

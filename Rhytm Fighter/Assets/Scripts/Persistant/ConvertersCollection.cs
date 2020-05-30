@@ -1,6 +1,6 @@
-﻿using RhytmFighter.Core.Enums;
+﻿using RhytmFighter.Persistant.Enums;
 
-namespace RhytmFighter.Core.Converters
+namespace RhytmFighter.Persistant.Converters
 {
     public static class ConvertersCollection
     {

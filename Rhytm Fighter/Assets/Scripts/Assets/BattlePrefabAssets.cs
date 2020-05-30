@@ -2,6 +2,7 @@
 using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
 using Frameworks.Grid.View.Cell;
+using RhytmFighter.Assets.Abstract;
 using RhytmFighter.Battle.Command.View;
 using RhytmFighter.Enviroment.Effects;
 using RhytmFighter.Objects.View;
@@ -11,7 +12,7 @@ using UnityEngine;
 namespace RhytmFighter.Assets
 {
     [CreateAssetMenu(fileName = "New PrefabAssets", menuName = "Assets/PrefabLibrary", order = 101)]
-    public class PrefabAssets : ScriptableObject
+    public class BattlePrefabAssets : PrefabAssets
     {
         [Header("Cells")]
         public CellView CellView_Prefab;
@@ -48,43 +49,12 @@ namespace RhytmFighter.Assets
         private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
 
 
-        public void Initialize()
+        public override void Initialize()
         {
+            base.Initialize();
+
             InitializeCellContentPrefabs();
         }
-
-
-        public T InstantiatePrefab<T>(T source) where T : MonoBehaviour
-        {
-            return InstantiatePrefab(source, new Vector3(1000, 1000, 1000), Quaternion.identity);
-        }
-
-        public T InstantiatePrefab<T>(T source, Vector3 pos) where T : MonoBehaviour
-        {
-            return InstantiatePrefab(source, pos, Quaternion.identity);
-        }
-
-        public T InstantiatePrefab<T>(T source, Vector3 pos, Quaternion rotation) where T : MonoBehaviour
-        {
-            return Instantiate(source, pos, rotation) as T;
-        }
-
-
-        public GameObject InstantiateGameObject(GameObject source)
-        {
-            return Instantiate(source, new Vector3(1000, 1000, 1000), Quaternion.identity);
-        }
-
-        public GameObject InstantiateGameObject(GameObject source, Vector3 pos)
-        {
-            return Instantiate(source, pos, Quaternion.identity);
-        }
-
-        public GameObject InstantiateGameObject(GameObject source, Vector3 pos, Quaternion rotation)
-        {
-            return Instantiate(source, pos, rotation);
-        }
-
 
         //Cells
         void InitializeCellContentPrefabs()

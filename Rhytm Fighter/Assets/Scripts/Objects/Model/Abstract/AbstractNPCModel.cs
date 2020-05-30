@@ -1,5 +1,5 @@
 ﻿using Frameworks.Grid.Data;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Enums;
 
 namespace RhytmFighter.Objects.Model
 {

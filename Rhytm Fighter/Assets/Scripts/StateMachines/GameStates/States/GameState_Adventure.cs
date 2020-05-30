@@ -1,7 +1,7 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
 using RhytmFighter.Characters;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Enviroment.Effects;
 using RhytmFighter.Input;
 using RhytmFighter.Level;

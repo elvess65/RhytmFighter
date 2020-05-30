@@ -1,8 +1,8 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
-using RhytmFighter.Core;
 using RhytmFighter.Level;
 using RhytmFighter.Objects.Model;
+using RhytmFighter.Persistant.Abstract;
 using System.Collections.Generic;
 using UnityEngine;
 

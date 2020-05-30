@@ -1,12 +1,11 @@
-﻿using RhytmFighter.Battle;
-using RhytmFighter.Battle.Command;
+﻿using RhytmFighter.Battle.Command;
 using RhytmFighter.CameraSystem;
 using RhytmFighter.Characters;
 using RhytmFighter.Input;
 using RhytmFighter.Level;
 using RhytmFighter.Rhytm;
 
-namespace RhytmFighter.Core
+namespace RhytmFighter.Battle.Core
 {
     /// <summary>
     /// Holder for all controllers

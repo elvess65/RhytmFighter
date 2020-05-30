@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Core.Enums;
+﻿using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Objects.Model;
 using UnityEngine;
 

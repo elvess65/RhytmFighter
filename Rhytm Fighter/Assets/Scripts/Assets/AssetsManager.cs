@@ -7,10 +7,10 @@ namespace RhytmFighter.Assets
         private static AssetsManager m_Instance;
 
 
-        public PrefabAssets PrefabAssets;
+        public BattlePrefabAssets PrefabAssets;
 
 
-        public static PrefabAssets GetPrefabAssets() => m_Instance.PrefabAssets;
+        public static BattlePrefabAssets GetPrefabAssets() => m_Instance.PrefabAssets;
 
         public void Initialize()
         {

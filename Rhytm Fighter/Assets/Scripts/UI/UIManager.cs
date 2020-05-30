@@ -1,4 +1,5 @@
-﻿using RhytmFighter.Core;
+﻿using RhytmFighter.Battle.Core;
+using RhytmFighter.Persistant.Abstract;
 using RhytmFighter.StateMachines.UIState;
 using RhytmFighter.UI.Components;
 using UnityEngine;
@@ -48,14 +49,14 @@ namespace RhytmFighter.UI
             //UI States
             m_StateMachine = new UIStateMachine();
 
-            m_UIStateNoUI =                 new UIState_NoUI                (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
-            m_UIStateAdventure =            new UIState_Adventure           (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
-            m_UIState_PrepareForBattle =    new UIState_PrepareForBattle    (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
-            m_UIState_BattleStart =         new UIState_BattleStart         (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
-            m_UIState_WaitNextEnemy =       new UIState_WaitNextEnemy       (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
-            m_UIState_BattleFinished =      new UIState_BattleFinished      (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
-            m_UIState_GameOver =            new UIState_GameOverState       (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
-            m_UIState_LevelComplete =       new UIState_LevelComplete       (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
+            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
+            m_UIStateAdventure = new UIState_Adventure(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
+            m_UIState_PrepareForBattle = new UIState_PrepareForBattle(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
+            m_UIState_BattleStart = new UIState_BattleStart(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
+            m_UIState_WaitNextEnemy = new UIState_WaitNextEnemy(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
+            m_UIState_BattleFinished = new UIState_BattleFinished(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
+            m_UIState_GameOver = new UIState_GameOverState(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
+            m_UIState_LevelComplete = new UIState_LevelComplete(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
 
             m_StateMachine.Initialize(m_UIStateNoUI);
 
@@ -107,8 +108,8 @@ namespace RhytmFighter.UI
 
         public void ButtonPotion_PressHandler()
         {
-            if (!UIComponent_PotionCooldown.IsInCooldown && GameManager.Instance.PlayerDataModel.Inventory.PotionsAmount > 0 && 
-                GameManager.Instance.PlayerModel.HealthBehaviour.HP < GameManager.Instance.PlayerModel.HealthBehaviour.MaxHP)
+            if (!UIComponent_PotionCooldown.IsInCooldown && BattleManager.Instance.PlayerDataModel.Inventory.PotionsAmount > 0 &&
+                BattleManager.Instance.PlayerModel.HealthBehaviour.HP < BattleManager.Instance.PlayerModel.HealthBehaviour.MaxHP)
             {
                 OnButtonPotionPressed?.Invoke();
                 UIComponent_PotionCooldown.Cooldown();

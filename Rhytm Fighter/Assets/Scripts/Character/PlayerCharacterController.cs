@@ -1,11 +1,12 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
 using RhytmFighter.Characters.Movement;
-using RhytmFighter.Core;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Level;
 using RhytmFighter.Objects.Model;
 using UnityEngine;
+using RhytmFighter.Persistant.Abstract;
+using RhytmFighter.Battle.Core.Abstract;
 
 namespace RhytmFighter.Characters
 {

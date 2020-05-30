@@ -1,7 +1,7 @@
 ﻿using RhytmFighter.Animation;
 using RhytmFighter.Characters.Movement;
-using RhytmFighter.Core.Converters;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Converters;
+using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Objects.Model;
 using UnityEngine;
 

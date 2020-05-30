@@ -1,5 +1,5 @@
-﻿using RhytmFighter.Core.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using RhytmFighter.Persistant.Enums;
 using UnityEngine;
 
 namespace RhytmFighter.Animation

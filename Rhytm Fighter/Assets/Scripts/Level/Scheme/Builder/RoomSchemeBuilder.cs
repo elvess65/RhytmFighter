@@ -1,5 +1,5 @@
 ﻿using Frameworks.Grid.Data;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Level.Data;
 using RhytmFighter.Level.Scheme.View;
 using UnityEngine;

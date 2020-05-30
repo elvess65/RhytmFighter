@@ -1,11 +1,11 @@
 ﻿using Frameworks.Grid.Data;
 using RhytmFighter.Battle.Action.Behaviours;
 using RhytmFighter.Battle.Health.Behaviours;
-using RhytmFighter.Core;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
+using RhytmFighter.Battle.Core;
 
 namespace RhytmFighter.Level.Data
 {
@@ -161,7 +161,7 @@ namespace RhytmFighter.Level.Data
                     int rndViewID = availableViews[Random.Range(0, availableViews.Length)];
 
                     GridCellData rndCell = GetRandomCell(ref emptyCells);
-                    StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, GameManager.Instance.NPCMoveSpeed, 
+                    StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, BattleManager.Instance.NPCMoveSpeed, 
                                                                                new SimpleBattleActionBehaviour(enemyDmg),
                                                                                new SimpleHealthBehaviour(enemyHP),
                                                                                AITypes.Simple);
@@ -174,7 +174,7 @@ namespace RhytmFighter.Level.Data
                 int rndViewID = availableViews[Random.Range(0, availableViews.Length)];
 
                 GridCellData rndCell = GetRandomCell(ref emptyCells);
-                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, GameManager.Instance.NPCMoveSpeed, 
+                StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, BattleManager.Instance.NPCMoveSpeed, 
                                                                            new SimpleBattleActionBehaviour(bossDmg),
                                                                            new SimpleHealthBehaviour(bossHP),
                                                                            AITypes.Simple);

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RhytmFighter.Battle.Core;
+using UnityEngine;
 
 namespace RhytmFighter.Enviroment
 {
@@ -14,8 +15,8 @@ namespace RhytmFighter.Enviroment
 
         void Update()
         {
-            if (m_Target == null && Core.GameManager.Instance.PlayerModel != null)
-                m_Target = Core.GameManager.Instance.PlayerModel.ViewTransform;
+            if (m_Target == null && BattleManager.Instance.PlayerModel != null)
+                m_Target = BattleManager.Instance.PlayerModel.ViewTransform;
 
             if (m_Target != null)
             {

@@ -1,16 +1,16 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View.Cell;
 using RhytmFighter.Assets;
-using RhytmFighter.Core;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Level.Data;
 using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
+using RhytmFighter.Battle.Core;
 
 namespace Frameworks.Grid.View
 {
-    public class GridViewBuilder 
+    public class GridViewBuilder
     {
         public System.Action<AbstractGridObjectModel> OnCellWithObjectDetected;
 
@@ -126,7 +126,7 @@ namespace Frameworks.Grid.View
         /// </summary>
         public void ExtendView(LevelRoomData roomData, GridCellData anchorCellData)
         {
-            GameManager.Instance.StartCoroutine(ShowCellsWithDelay(roomData.ID, roomData.GridData.GetFOVCells(anchorCellData)));
+            BattleManager.Instance.StartCoroutine(ShowCellsWithDelay(roomData.ID, roomData.GridData.GetFOVCells(anchorCellData)));
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace Frameworks.Grid.View
         public void ShowAllDiscoveredCells(LevelRoomData roomData)
         {
             if (m_GridViews.ContainsKey(roomData.ID))
-                GameManager.Instance.StartCoroutine(ShowAllDiscoveredCellsWithDelay(roomData));
+                BattleManager.Instance.StartCoroutine(ShowAllDiscoveredCellsWithDelay(roomData));
         }
 
 

@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Core.Enums;
+﻿using RhytmFighter.Persistant.Enums;
 
 namespace RhytmFighter.Battle.Command.Model.Modificator
 {

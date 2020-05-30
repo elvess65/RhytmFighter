@@ -1,7 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
 using RhytmFighter.Assets;
-using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.AI;
 using RhytmFighter.Battle.Command;
@@ -9,13 +8,14 @@ using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Command.Model.Modificator;
 using RhytmFighter.Battle.Health;
 using RhytmFighter.Characters.Movement;
-using RhytmFighter.Core;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Enviroment.Effects;
 using RhytmFighter.Objects.View;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using RhytmFighter.Battle.Core.Abstract;
+using RhytmFighter.Battle.Core;
 
 namespace RhytmFighter.Objects.Model
 {
@@ -25,7 +25,7 @@ namespace RhytmFighter.Objects.Model
         public event Action<int> OnCellVisited;
         public event Action OnRotationFinished;
         public event Action<iBattleObject> OnDestroyed;
-        
+
         public bool IsMoving => m_BattleView.IsMoving;
         public bool IsDestroyed { get; private set; }
         public Transform ViewTransform => View.transform;
@@ -54,8 +54,8 @@ namespace RhytmFighter.Objects.Model
 
 
         public AbstractBattleNPCModel(int id, GridCellData correspondingCell, float moveSpeed,
-                                      iBattleActionBehaviour actionBehaviour, 
-                                      iHealthBehaviour healthBehaviour, bool isEnemy) 
+                                      iBattleActionBehaviour actionBehaviour,
+                                      iHealthBehaviour healthBehaviour, bool isEnemy)
                                       : base(id, correspondingCell)
         {
             IsEnemy = isEnemy;
@@ -117,7 +117,7 @@ namespace RhytmFighter.Objects.Model
                                                                                                 m_BattleView.DefenceImpactParent.position).ScheduleHideView();
 
                         //Play sound
-                        GameManager.Instance.DefenceSound.Play();
+                        BattleManager.Instance.DefenceSound.Play();
                     }
 
                     break;
@@ -163,13 +163,13 @@ namespace RhytmFighter.Objects.Model
 
         private void ActionExecutedHandler(AbstractCommandModel command)
         {
-            switch(command)
+            switch (command)
             {
                 case AttackCommandModel attackCommand:
-                    GameManager.Instance.AttackSound.Play();
+                    BattleManager.Instance.AttackSound.Play();
                     break;
                 case DefenceCommandModel defenceCommand:
-                    GameManager.Instance.DefenceExecuteSound.Play();
+                    BattleManager.Instance.DefenceExecuteSound.Play();
                     break;
             }
 
@@ -210,7 +210,7 @@ namespace RhytmFighter.Objects.Model
         #region HealthBehaviour
         private void HealthBehaviour_OnHPReduced(int dmg)
         {
-            GameManager.Instance.HitSound.Play();
+            BattleManager.Instance.HitSound.Play();
 
             //Notify view
             m_BattleView.NotifyView_TakeDamage(dmg);
@@ -224,7 +224,7 @@ namespace RhytmFighter.Objects.Model
 
         private void HealthBehaviour_OnDestroyed()
         {
-            GameManager.Instance.DestroySound.Play();
+            BattleManager.Instance.DestroySound.Play();
 
             IsDestroyed = true;
 

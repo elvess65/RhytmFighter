@@ -3,7 +3,7 @@ using RhytmFighter.Settings;
 using RhytmFighter.UI;
 using UnityEngine;
 
-namespace RhytmFighter.Core
+namespace RhytmFighter.Battle.Core
 {
     /// <summary>
     /// Holder for managers

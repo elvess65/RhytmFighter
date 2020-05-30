@@ -1,5 +1,5 @@
 ﻿using FrameworkPackage.Utils;
-using RhytmFighter.Core;
+using RhytmFighter.Persistant.Abstract;
 using UnityEngine;
 
 namespace RhytmFighter.UI.Components

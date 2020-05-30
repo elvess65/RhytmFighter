@@ -1,5 +1,5 @@
-﻿using RhytmFighter.Core;
-using RhytmFighter.Data.DataBase.Simulation;
+﻿using RhytmFighter.Data.DataBase.Simulation;
+using RhytmFighter.Persistant;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -45,7 +45,7 @@ namespace RhytmFighter.Data.DataBase
 
             if (m_SimulateSuccessConnection)
                 GameManager.Instance.StartCoroutine(SimulateSuccessConnectionDelay());
-            else 
+            else
                 GameManager.Instance.StartCoroutine(SimulateErrorConnectionDelay(100));
         }
 

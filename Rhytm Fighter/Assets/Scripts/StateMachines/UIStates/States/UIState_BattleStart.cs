@@ -1,4 +1,5 @@
-﻿using RhytmFighter.UI.Components;
+﻿using RhytmFighter.Battle.Core;
+using RhytmFighter.UI.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ namespace RhytmFighter.StateMachines.UIState
             //Text
             m_TextBattleStatus.text = "Fight";
             m_TextBattleStatus.color = Color.red;
-            Core.GameManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
+            BattleManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
 
             //Tick indicator
             m_TickIndicator.ToBattleState();

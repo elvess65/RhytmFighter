@@ -1,12 +1,12 @@
 ﻿using Frameworks.Grid.Data;
-using RhytmFighter.Battle;
 using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.AI;
+using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Enums;
 
-namespace RhytmFighter.Core
+namespace RhytmFighter.Battle.Core.Abstract
 {
     public interface iBattleObject 
     {

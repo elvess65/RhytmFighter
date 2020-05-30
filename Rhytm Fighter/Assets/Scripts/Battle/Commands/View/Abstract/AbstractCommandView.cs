@@ -1,6 +1,6 @@
 ﻿using FrameworkPackage.Utils;
-using RhytmFighter.Core;
 using RhytmFighter.Enviroment;
+using RhytmFighter.Persistant.Abstract;
 using UnityEngine;
 
 namespace RhytmFighter.Battle.Command.View

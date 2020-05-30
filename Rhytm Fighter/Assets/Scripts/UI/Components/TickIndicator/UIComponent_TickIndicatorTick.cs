@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RhytmFighter.Battle.Core;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace RhytmFighter.UI.Components
@@ -32,7 +33,7 @@ namespace RhytmFighter.UI.Components
 
         public void PlayTickAnimation()
         {
-            Core.GameManager.Instance.StartCoroutine(TickAnimationCoroutine());
+            BattleManager.Instance.StartCoroutine(TickAnimationCoroutine());
         }
 
 

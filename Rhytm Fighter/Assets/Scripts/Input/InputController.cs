@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using RhytmFighter.Core;
 using UnityEngine.EventSystems;
+using RhytmFighter.Persistant.Abstract;
 
 namespace RhytmFighter.Input
 {

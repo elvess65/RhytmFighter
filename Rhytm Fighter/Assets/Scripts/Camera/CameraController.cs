@@ -1,7 +1,8 @@
 ﻿using Cinemachine;
 using FrameworkPackage.Utils;
-using RhytmFighter.Core;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Battle.Core;
+using RhytmFighter.Persistant.Abstract;
+using RhytmFighter.Persistant.Enums;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,13 +24,13 @@ namespace RhytmFighter.CameraSystem
         public void InitializeCamera(Transform target)
         {
             m_Cameras = new Dictionary<CameraTypes, CinemachineVirtualCameraBase>();
-            m_LerpData = new InterpolationData<Quaternion>(GameManager.Instance.CamerasHolder.CMBrain.m_DefaultBlend.m_Time);
-            m_WaitBlendingFinishedEvent = new WaitForSeconds(GameManager.Instance.CamerasHolder.CMBrain.m_DefaultBlend.m_Time);
+            m_LerpData = new InterpolationData<Quaternion>(BattleManager.Instance.CamerasHolder.CMBrain.m_DefaultBlend.m_Time);
+            m_WaitBlendingFinishedEvent = new WaitForSeconds(BattleManager.Instance.CamerasHolder.CMBrain.m_DefaultBlend.m_Time);
 
             //Initialize vcam list
-            m_Cameras[CameraTypes.Default] = GameManager.Instance.CamerasHolder.VCDefault;
-            m_Cameras[CameraTypes.Main] = GameManager.Instance.CamerasHolder.VCamMain;
-            m_Cameras[CameraTypes.Battle] = GameManager.Instance.CamerasHolder.VCamBattle;
+            m_Cameras[CameraTypes.Default] = BattleManager.Instance.CamerasHolder.VCDefault;
+            m_Cameras[CameraTypes.Main] = BattleManager.Instance.CamerasHolder.VCamMain;
+            m_Cameras[CameraTypes.Battle] = BattleManager.Instance.CamerasHolder.VCamBattle;
 
             //Initialize vcams
             m_CurrentCamera = m_Cameras[CameraTypes.Default];
@@ -64,16 +65,16 @@ namespace RhytmFighter.CameraSystem
 
         public void PushMemberToTargetGroup(Transform target, float weight = 1, float radius = 1)
         {
-            GameManager.Instance.CamerasHolder.BattleTargetGroup.AddMember(target, weight, radius);
+            BattleManager.Instance.CamerasHolder.BattleTargetGroup.AddMember(target, weight, radius);
         }
 
         public void PeekMemberFromTargetGroup()
         {
-            if (GameManager.Instance.CamerasHolder.BattleTargetGroup.m_Targets.Length == 1)
+            if (BattleManager.Instance.CamerasHolder.BattleTargetGroup.m_Targets.Length == 1)
                 return;
 
-            CinemachineTargetGroup.Target target = GameManager.Instance.CamerasHolder.BattleTargetGroup.m_Targets[GameManager.Instance.CamerasHolder.BattleTargetGroup.m_Targets.Length - 1];
-            GameManager.Instance.CamerasHolder.BattleTargetGroup.RemoveMember(target.target);
+            CinemachineTargetGroup.Target target = BattleManager.Instance.CamerasHolder.BattleTargetGroup.m_Targets[BattleManager.Instance.CamerasHolder.BattleTargetGroup.m_Targets.Length - 1];
+            BattleManager.Instance.CamerasHolder.BattleTargetGroup.RemoveMember(target.target);
         }
 
 
@@ -84,7 +85,7 @@ namespace RhytmFighter.CameraSystem
 
         public void SubscribeForBlendingFinishedEvent(System.Action onBlendingFinished)
         {
-            GameManager.Instance.StartCoroutine(BlendingFinishedEventCoroutine(onBlendingFinished));
+            BattleManager.Instance.StartCoroutine(BlendingFinishedEventCoroutine(onBlendingFinished));
         }
 
         public void StartSmoothRotation(CameraTypes cameraType, Quaternion targetRotation)

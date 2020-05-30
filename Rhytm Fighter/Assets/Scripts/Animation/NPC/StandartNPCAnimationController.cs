@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Core.Enums;
+﻿using RhytmFighter.Persistant.Enums;
 using UnityEngine;
 
 namespace RhytmFighter.Animation.NPC

@@ -1,4 +1,4 @@
-﻿namespace RhytmFighter.Core.Enums
+﻿namespace RhytmFighter.Persistant.Enums
 {
     //Commands
     public enum CommandTypes { None, Attack, Defence }

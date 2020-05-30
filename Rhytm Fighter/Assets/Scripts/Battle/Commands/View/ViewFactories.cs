@@ -24,7 +24,7 @@ namespace RhytmFighter.Battle.Command.View
         {
             double existTime = 0;
 
-            if (command.Sender.IsEnemy || Rhytm.RhytmController.GetInstance().InputTickResult == Core.Enums.InputTickResult.PostTick)
+            if (command.Sender.IsEnemy || Rhytm.RhytmController.GetInstance().InputTickResult == Persistant.Enums.InputTickResult.PostTick)
                 existTime = command.ApplyDelay * Rhytm.RhytmController.GetInstance().TimeToNextTick +
                             Rhytm.RhytmController.GetInstance().ProcessTickDelta;
             else

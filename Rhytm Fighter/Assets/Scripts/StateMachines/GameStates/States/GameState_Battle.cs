@@ -1,5 +1,5 @@
 ﻿using RhytmFighter.Characters;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Rhytm;
 using UnityEngine;
 

@@ -1,5 +1,5 @@
-﻿using RhytmFighter.Core;
-using RhytmFighter.Core.Enums;
+﻿using RhytmFighter.Battle.Core.Abstract;
+using RhytmFighter.Persistant.Enums;
 
 namespace RhytmFighter.Battle.AI
 {
@@ -85,7 +85,7 @@ namespace RhytmFighter.Battle.AI
 
                 if (nextAction != AIActionTypes.Idle)
                 {
-                    m_NextCommandType = Core.Converters.ConvertersCollection.AIAction2Command(nextAction);
+                    m_NextCommandType = Persistant.Converters.ConvertersCollection.AIAction2Command(nextAction);
                     m_NextCommandEventExecutionTime = m_ControlledObject.GetActionEventExecuteTime(m_NextCommandType);
                     m_TimeToNextAction = Rhytm.RhytmController.GetInstance().TimeToNextTick + (Rhytm.RhytmController.GetInstance().TickDurationSeconds * (iterations - 1));
 

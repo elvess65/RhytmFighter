@@ -1,7 +1,7 @@
 ﻿using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Command.View;
-using RhytmFighter.Core;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Abstract;
+using RhytmFighter.Persistant.Enums;
 using System.Collections.Generic;
 
 namespace RhytmFighter.Battle.Command

@@ -1,4 +1,4 @@
-﻿namespace RhytmFighter.Core
+﻿namespace RhytmFighter.Persistant.Abstract
 {
     /// <summary>
     /// Interface for objects, that can be updated

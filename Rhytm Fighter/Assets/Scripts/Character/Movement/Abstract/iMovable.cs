@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Core;
+﻿using RhytmFighter.Persistant.Abstract;
 using UnityEngine;
 
 namespace RhytmFighter.Characters.Movement

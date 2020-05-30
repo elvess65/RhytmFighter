@@ -1504,8 +1504,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1655152185}
-  - component: {fileID: 1655152184}
   - component: {fileID: 1655152186}
+  - component: {fileID: 1655152184}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1522,23 +1522,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1655152183}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7177d9dce3d0c948861c367cb32dfc4, type: 3}
+  m_Script: {fileID: 11500000, guid: b0ab587832df94cf592b2037f95c4706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ManagersHolder: {fileID: 0}
-  CamerasHolder: {fileID: 0}
-  Music: {fileID: 1518130502}
-  Rhytm: {fileID: 739303193}
-  AttackSound: {fileID: 1669360310}
-  DefenceExecuteSound: {fileID: 618708542}
-  HitSound: {fileID: 1921842302}
-  DestroySound: {fileID: 49600170}
-  DefenceSound: {fileID: 1201646835}
-  BeatSound: {fileID: 1269744322}
-  FinishBattleSound: {fileID: 70666071}
-  SipSound: {fileID: 1599924227}
-  DashSound: {fileID: 884838806}
-  Metronome: {fileID: 971653468}
 --- !u!4 &1655152185
 Transform:
   m_ObjectHideFlags: 0

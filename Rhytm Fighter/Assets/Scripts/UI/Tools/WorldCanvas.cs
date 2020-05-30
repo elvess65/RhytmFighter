@@ -1,4 +1,4 @@
-﻿using RhytmFighter.Core;
+﻿using RhytmFighter.Battle.Core;
 using UnityEngine;
 
 namespace RhytmFighter.UI.Tools
@@ -10,7 +10,7 @@ namespace RhytmFighter.UI.Tools
         private void Start()
         {
             m_Canvas = GetComponent<Canvas>();
-            m_Canvas.worldCamera = GameManager.Instance.CamerasHolder.WorldCamera;
+            m_Canvas.worldCamera = BattleManager.Instance.CamerasHolder.WorldCamera;
         }
     }
 }

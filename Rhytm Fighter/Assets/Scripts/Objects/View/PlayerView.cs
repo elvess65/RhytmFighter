@@ -1,9 +1,10 @@
 ﻿using RhytmFighter.Assets;
 using RhytmFighter.Characters.Movement;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Enviroment.Effects;
 using RhytmFighter.UI.Bar;
 using UnityEngine;
+using RhytmFighter.Battle.Core;
 
 namespace RhytmFighter.Objects.View
 {
@@ -66,7 +67,7 @@ namespace RhytmFighter.Objects.View
                                                                                         DefenceSpawnParent.position, 
                                                                                         transform.rotation * Quaternion.Euler(0, 180, 0)).ScheduleHideView();
 
-                Core.GameManager.Instance.DashSound.Play();
+                BattleManager.Instance.DashSound.Play();
             };
 
             //m_OnInternalOtherAnimationEvent += m_InternalTeleportEvent;
@@ -79,7 +80,7 @@ namespace RhytmFighter.Objects.View
         protected override void CreateHealthBar()
         {
             m_HealthBarBehaviour = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().PlayerHealthBarPrefab);
-            m_HealthBarBehaviour.RectTransform.SetParent(Core.GameManager.Instance.ManagersHolder.UIManager.PlayerUIParent);
+            m_HealthBarBehaviour.RectTransform.SetParent(BattleManager.Instance.ManagersHolder.UIManager.PlayerUIParent);
             m_HealthBarBehaviour.RectTransform.anchoredPosition3D = Vector3.zero;
         }
 

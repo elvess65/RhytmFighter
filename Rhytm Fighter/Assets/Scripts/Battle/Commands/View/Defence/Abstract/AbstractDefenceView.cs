@@ -16,7 +16,7 @@ namespace RhytmFighter.Battle.Command.View
 
         protected override void DisposeView()
         {
-            AnimationController.PlayAnimation(Core.Enums.AnimationTypes.Hide);
+            AnimationController.PlayAnimation(Persistant.Enums.AnimationTypes.Hide);
 
             base.DisposeView(m_DISPOSE_DELAY);
         }

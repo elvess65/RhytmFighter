@@ -1,6 +1,6 @@
 ﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
-using RhytmFighter.Core.Enums;
+using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Objects.View;
 
 namespace RhytmFighter.Objects.Model
