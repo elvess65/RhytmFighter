@@ -2,6 +2,7 @@
 using RhytmFighter.Battle.Core;
 using RhytmFighter.Data;
 using RhytmFighter.Persistant.Abstract;
+using RhytmFighter.Persistant.SceneLoading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,14 +17,17 @@ namespace RhytmFighter.Persistant
         private List<AsyncOperation> m_SceneLoadingOperations;
 
         private const string m_BATTLE_SCENE_NAME = "BattleScene";
+        private const string m_TRANSITION_SCENE_NAME = "TransitionScene";
 
 
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
-
+            
             InitializeCore();
-            InitializeConnection();
+
+            m_OnSceneLoadingComplete += SceneLoadCompleteHandler;
+            LoadLevel(m_TRANSITION_SCENE_NAME);
         }
 
         private void InitializeCore()
@@ -46,39 +50,23 @@ namespace RhytmFighter.Persistant
             DataHolder.PlayerDataModel = PlayerData.DeserializeData(serializedPlayerData);
             DataHolder.InfoData = new InfoData(serializedLevelsData);
 
-            m_OnSceneLoadingComplete += SceneLoadingComplete;
             LoadLevel(m_BATTLE_SCENE_NAME);
         }
 
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");
 
-
-        private void SceneLoadingComplete()
-        {
-            m_OnSceneLoadingComplete -= SceneLoadingComplete;
-
-            switch (m_CurrentLevelName)
-            {
-                case m_BATTLE_SCENE_NAME:
-                    BattleManager.Instance.Initialize();
-                    break;
-            }
-        }
-
-
         #region SceneLoading
         public void LoadLevel(string levelName)
         {
-            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
-            if (asyncOperation != null)
-            {
-                m_SceneLoadingOperations.Add(asyncOperation);
-                asyncOperation.completed += LoadOperationComplete;
+            m_CurrentLevelName = levelName;
 
-                m_CurrentLevelName = levelName;
+            if (SceneLoadingManager.Instance != null)
+            {
+                SceneLoadingManager.Instance.OnFadeIn += FadeInFinishedOnLoadHandler;
+                SceneLoadingManager.Instance.FadeIn();
             }
-            else
-                Debug.LogError($"Unable to load level {levelName}");
+            else 
+                Load(levelName);
         }
 
         public void UnloadLevel(string levelName)
@@ -92,18 +80,50 @@ namespace RhytmFighter.Persistant
                 Debug.LogError($"Unable to unload level {levelName}");
         }
 
+
+        private void Load(string levelName)
+        {
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
+            if (asyncOperation != null)
+            {
+                m_SceneLoadingOperations.Add(asyncOperation);
+                asyncOperation.completed += LoadOperationComplete;
+            }
+            else
+                Debug.LogError($"Unable to load level {levelName}");
+        }
+
+        private void FadeInFinishedOnLoadHandler()
+        {
+            SceneLoadingManager.Instance.OnFadeIn -= FadeInFinishedOnLoadHandler;
+            Load(m_CurrentLevelName);
+        }
+
+        private void SceneLoadCompleteHandler()
+        {
+            switch (m_CurrentLevelName)
+            {
+                case m_BATTLE_SCENE_NAME:
+                    SceneLoadingManager.Instance.FadeOut();
+                    BattleManager.Instance.Initialize();
+                    break;
+                case m_TRANSITION_SCENE_NAME:
+                    InitializeConnection();
+                    break;
+            }
+        }
+
+        
         private void LoadOperationComplete(AsyncOperation asyncOperation)
         {
             if (m_SceneLoadingOperations.Contains(asyncOperation))
                 m_SceneLoadingOperations.Remove(asyncOperation);
 
-            Debug.Log("Load complete");
             m_OnSceneLoadingComplete?.Invoke();
         }
 
         private void UnloadOperationComplete(AsyncOperation asyncOperation)
         {
-            Debug.Log("Unload complete");
         }
         #endregion
 
