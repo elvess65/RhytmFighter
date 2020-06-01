@@ -19,10 +19,10 @@ MonoBehaviour:
       OverrideSeed: 1
       LevelSeed: 10
       LevelDepth: 4
-      MinWidth: 3
-      MaxWidth: 5
-      MinHeight: 4
-      MaxHeight: 7
+      MinWidth: 5
+      MaxWidth: 7
+      MinHeight: 5
+      MaxHeight: 9
       CellSize: 1
       ObstacleFillPercent: 15
     EnviromentParams:
@@ -52,3 +52,17 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      MinAmountOfItems: 1
+      MaxAmountOfItems: 3
+      AvailableItemsIDs: 0100000002000000
+      MinAmountOfEnemies: 1
+      MaxAmountOfEnemies: 2
+      AvailableEnemyViewIDs: 0100000002000000
+      MinEnemyHP: 1
+      MaxEnemyHP: 10
+      MinEnemyDmg: 1
+      MaxEnemyDmg: 5
+      MinBossHP: 7
+      MaxBossHP: 15
+      MinBossDmg: 3
+      MaxBossDmg: 7

@@ -6,6 +6,7 @@ using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
 using RhytmFighter.Battle.Core;
+using RhytmFighter.Data;
 
 namespace RhytmFighter.Level.Data
 {
@@ -14,22 +15,21 @@ namespace RhytmFighter.Level.Data
         private int m_ENEMY_ID = 2;
         private int m_ITEM_ID = 1;
 
-        public LevelRoomData Build(LevelNodeData node, RhytmFighter.Data.LevelsData.BuildData buildData)
+        public LevelRoomData Build(LevelNodeData node, LevelsData.BuildData buildData, LevelsData.ContentData contentData)
         {
-            Debug.Log(node.NodeSeed);
             Random.InitState(node.NodeSeed);
 
             int width = Random.Range(buildData.MinWidth, buildData.MaxWidth);
             int height = Random.Range(buildData.MinHeight, buildData.MaxHeight);
 
             SquareGrid roomGrid = new SquareGrid(width, height, buildData.CellSize, Vector2.zero);
-            ApplyDataToGrid(roomGrid, node, buildData.ObstacleFillPercent);
+            ApplyDataToGrid(roomGrid, node, buildData.ObstacleFillPercent, contentData);
 
             return new LevelRoomData(roomGrid, node);
         }
 
 
-        void ApplyDataToGrid(SquareGrid grid, LevelNodeData node, int obstacleFillPercent)
+        void ApplyDataToGrid(SquareGrid grid, LevelNodeData node, int obstacleFillPercent, LevelsData.ContentData contentData)
         {
             List<GridCellData> emptyCells = new List<GridCellData>();
 
@@ -102,30 +102,26 @@ namespace RhytmFighter.Level.Data
                 }
             }
 
-            GenerateContent(grid, node, ref emptyCells);
+            GenerateContent(grid, node, ref emptyCells, contentData);
         }
 
 
-        void GenerateContent(SquareGrid grid, LevelNodeData node, ref List<GridCellData> emptyCells)
+        void GenerateContent(SquareGrid grid, LevelNodeData node, ref List<GridCellData> emptyCells, LevelsData.ContentData contentData)
         {
-            GenerateItem(ref emptyCells);
-            GenerateEnemy(grid, node, ref emptyCells);
+            GenerateItem(ref emptyCells, contentData);
+            GenerateEnemy(grid, node, ref emptyCells, contentData);
         }
 
-        void GenerateItem(ref List<GridCellData> emptyCells)
+        void GenerateItem(ref List<GridCellData> emptyCells, LevelsData.ContentData contentData)
         {
             if (emptyCells.Count == 0)
                 return;
 
-            //TODO: Amount of items per room
-            int amountOfItems = Random.Range(1, 3);
-
-            //TODO: Available content per room
-            int[] availableContent = new int[] { 1, 2 };
+            int amountOfItems = Random.Range(contentData.MinAmountOfItems, contentData.MaxAmountOfItems + 1);
 
             for (int i = 0; i < amountOfItems; i++)
             {
-                int rndItemContentID = availableContent[Random.Range(0, availableContent.Length)];
+                int rndItemContentID = contentData.AvailableItemsIDs[Random.Range(0, contentData.AvailableItemsIDs.Length)];
 
                 GridCellData rndCell = GetRandomCell(ref emptyCells);
                 StandardItemModel item = new StandardItemModel(m_ITEM_ID++, rndItemContentID, rndCell);
@@ -133,32 +129,24 @@ namespace RhytmFighter.Level.Data
             }
         }
 
-        void GenerateEnemy(SquareGrid grid, LevelNodeData node, ref List<GridCellData> emptyCells)
+        void GenerateEnemy(SquareGrid grid, LevelNodeData node, ref List<GridCellData> emptyCells, LevelsData.ContentData contentData)
         {
             if (emptyCells.Count == 0)
                 return;
 
-            //TODO: Amount of enemies per room
-            int amountOfEnemies = Random.Range(1, 3);
+            int amountOfEnemies = Random.Range(contentData.MinAmountOfEnemies, contentData.MaxAmountOfEnemies + 1);
 
-            //TODO: Available views per room
-            int[] availableViews = new int[] { 1, 2 };
+            int enemyHP = Random.Range(contentData.MinEnemyHP, contentData.MaxEnemyHP + 1);
+            int enemyDmg = Random.Range(contentData.MinEnemyDmg, contentData.MaxEnemyDmg + 1);
 
-            //TODO: Enemy params:
-            //  - HP per room
-            int enemyHP = Random.Range(1, 10);
-            //  - Damage per room
-            int enemyDmg = Random.Range(1, 5);
-
-            //TODO:Boss params
-            int bossHP = Random.Range(15, 25);
-            int bossDmg = Random.Range(7, 15);
+            int bossHP = Random.Range(contentData.MinBossHP, contentData.MaxBossHP + 1);
+            int bossDmg = Random.Range(contentData.MinBossDmg, contentData.MaxBossDmg + 1);
 
             if (!node.IsStartNode)
             {
                 for (int i = 0; i < amountOfEnemies; i++)
                 {
-                    int rndViewID = availableViews[Random.Range(0, availableViews.Length)];
+                    int rndViewID = contentData.AvailableEnemyViewIDs[Random.Range(0, contentData.AvailableEnemyViewIDs.Length)];
 
                     GridCellData rndCell = GetRandomCell(ref emptyCells);
                     StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, BattleManager.Instance.NPCMoveSpeed, 
@@ -171,7 +159,7 @@ namespace RhytmFighter.Level.Data
             }
             else if (node.IsFinishNode)
             {
-                int rndViewID = availableViews[Random.Range(0, availableViews.Length)];
+                int rndViewID = contentData.AvailableEnemyViewIDs[Random.Range(0, contentData.AvailableEnemyViewIDs.Length)];
 
                 GridCellData rndCell = GetRandomCell(ref emptyCells);
                 StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, BattleManager.Instance.NPCMoveSpeed, 

@@ -150,7 +150,7 @@ namespace RhytmFighter.Level
 
         LevelRoomData CreateRoomData(LevelNodeData node)
         {
-            return m_RoomDataBuilder.Build(node, m_LevelParamsData.BuildParams);
+            return m_RoomDataBuilder.Build(node, m_LevelParamsData.BuildParams, m_LevelParamsData.ContentParams);
         }
     }
 }

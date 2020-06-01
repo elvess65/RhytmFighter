@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RhytmFighter.Persistant.Converters;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,46 +52,49 @@ namespace RhytmFighter.Data
             public ContentData ContentParams;
         }
 
-        [System.Serializable]
+        [Serializable]
         public class BuildData
         {
-            public bool OverrideSeed = true;
-            public int Seed => OverrideSeed ? LevelSeed : (int)ConvertToUnixTimestamp(DateTime.Now);
+            public int Seed => OverrideSeed? LevelSeed : (int)ConvertersCollection.ConvertToUnixTimestamp(DateTime.Now);
 
-            public int LevelSeed = 10;
-
-            public int LevelDepth = 4;
-            public int MinWidth = 3;
-            public int MaxWidth = 5;
-            public int MinHeight = 4;
-            public int MaxHeight = 7;
-            public float CellSize = 1;
-            public int ObstacleFillPercent = 90;
+            public bool OverrideSeed;
+            public int LevelSeed;
+            public int LevelDepth;
+            public int MinWidth;
+            public int MaxWidth;
+            public int MinHeight;
+            public int MaxHeight;
+            public float CellSize;
+            public int ObstacleFillPercent;
         }
 
-        [System.Serializable]
+        [Serializable]
         public class EnviromentData
         {
             public int EnviromentFillPercent = 20;
         }
 
-        [System.Serializable]
+        [Serializable]
         public class ContentData
         {
             public AnimationCurve ProgressionCurve;
-        }
+            public int MinAmountOfItems;
+            public int MaxAmountOfItems;
+            public int[] AvailableItemsIDs;
 
-        public static DateTime ConvertFromUnixTimestamp(double timestamp)
-        {
-            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            return origin.AddSeconds(timestamp);
-        }
+            public int MinAmountOfEnemies;
+            public int MaxAmountOfEnemies;
+            public int[] AvailableEnemyViewIDs;
 
-        public static double ConvertToUnixTimestamp(DateTime date)
-        {
-            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan diff = date.ToUniversalTime() - origin;
-            return Math.Floor(diff.TotalSeconds);
+            public int MinEnemyHP;
+            public int MaxEnemyHP;
+            public int MinEnemyDmg;
+            public int MaxEnemyDmg;
+
+            public int MinBossHP;
+            public int MaxBossHP;
+            public int MinBossDmg;
+            public int MaxBossDmg;
         }
     }
 }

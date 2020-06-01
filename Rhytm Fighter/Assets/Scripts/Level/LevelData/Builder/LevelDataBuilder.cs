@@ -23,8 +23,10 @@ namespace RhytmFighter.Level.Data
             //Создать базовую часть уровня
             while (curDepthLevel != levelDepth)
             {
+                int nodeSeed = nodeIDCounter * levelSeed;
+
                 //Создать нод
-                LevelNodeData node = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                LevelNodeData node = CreateNode(nodeIDCounter++, nodeSeed);
 
                 //Запомнить начальный нод
                 if (startNode == null)
@@ -54,43 +56,43 @@ namespace RhytmFighter.Level.Data
             if (!generateOnlyMainPath)
             {
                 //TEMP Добавить дополнительные ноды
-                LevelNodeData additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                LevelNodeData additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * levelSeed);
                 m_Nodes[1].AddAdditionalNode(additionalNode);
                 m_Nodes.Add(additionalNode.ID, additionalNode);
                 
-                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * levelSeed);
                 m_Nodes[3].AddAdditionalNode(additionalNode);
                 m_Nodes.Add(additionalNode.ID, additionalNode);
                 
-                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * levelSeed);
                 m_Nodes[5].AddAdditionalNode(additionalNode);
                 m_Nodes.Add(additionalNode.ID, additionalNode);
 
-                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * levelSeed);
                 m_Nodes[7].AddAdditionalNode(additionalNode);
                 m_Nodes.Add(additionalNode.ID, additionalNode);
                
-                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * levelSeed);
                 m_Nodes[4].AddAdditionalNode(additionalNode);
                 m_Nodes.Add(additionalNode.ID, additionalNode);
                 
-               additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+               additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * levelSeed);
                m_Nodes[4].AddAdditionalNode(additionalNode);
                m_Nodes.Add(additionalNode.ID, additionalNode);
 
-               additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+               additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * levelSeed);
                m_Nodes[5].AddAdditionalNode(additionalNode);
                m_Nodes.Add(additionalNode.ID, additionalNode);
 
-                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * levelSeed);
                 m_Nodes[10].AddAdditionalNode(additionalNode);
                 m_Nodes.Add(additionalNode.ID, additionalNode);
 
-                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * levelSeed);
                 m_Nodes[9].AddAdditionalNode(additionalNode);
                 m_Nodes.Add(additionalNode.ID, additionalNode);
 
-                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * 120);
+                additionalNode = CreateNode(nodeIDCounter++, nodeIDCounter * levelSeed);
                 m_Nodes[9].AddAdditionalNode(additionalNode);
                 m_Nodes.Add(additionalNode.ID, additionalNode);
             }

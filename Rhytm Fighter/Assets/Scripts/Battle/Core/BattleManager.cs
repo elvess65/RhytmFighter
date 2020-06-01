@@ -62,8 +62,6 @@ namespace RhytmFighter.Battle.Core
         }
 
         //TODO:
-        //Override seed for level build
-        //Content in params
         //Pathfinding for player and enemy
 
         #region Initialization
