@@ -59,7 +59,7 @@ namespace RhytmFighter.Characters
 
         public void MoveCharacter(CellView targetCellView)
         {
-            m_MovementController.MoveCharacter(targetCellView);
+            m_MovementController.MoveCharacter(targetCellView, true);
         }
 
         public void TeleportCharacter(CellView targetCellView)

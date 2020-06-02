@@ -49,14 +49,14 @@ namespace Frameworks.Grid.Data
             }
         }
 
-        public GridCellData[] FindPathCells(GridCellData from, GridCellData to)
+        public GridCellData[] FindPathCells(GridCellData from, GridCellData to, bool ignoreHidedCells)
         {
             //Find path in the same room
             if (from.CorrespondingRoomID == to.CorrespondingRoomID)
             {
                 try
                 {
-                    return m_GridPathFindController.FindPath(from, to).ToArray();
+                    return m_GridPathFindController.FindPath(from, to, ignoreHidedCells).ToArray();
                 }
                 catch
                 {
@@ -68,9 +68,9 @@ namespace Frameworks.Grid.Data
             return new GridCellData[] { from, to };
         }
 
-        public Vector3[] FindPath(GridCellData from, GridCellData to)
+        public Vector3[] FindPath(GridCellData from, GridCellData to, bool ignoreHidedCells)
         {
-            List<GridCellData> gridPath = m_GridPathFindController.FindPath(from, to);
+            List<GridCellData> gridPath = m_GridPathFindController.FindPath(from, to, ignoreHidedCells);
 
             if (gridPath != null)
             {
@@ -204,11 +204,11 @@ namespace Frameworks.Grid.Data
                 {
                     GridCellData currentCell = GetCellByCoord(i, j);
 
-                    if (currentCell != null &&                                      //Cell exists
-                        m_Grid[currentCell.X, currentCell.Y].IsShowed &&            //Cell is showed
-                        !(currentCell.X.Equals(x) && currentCell.Y.Equals(y)) &&    //Cell is not anchor cell
-                        CellIsWalkable(m_Grid[currentCell.X, currentCell.Y]) &&     //Cell is walkable
-                        !IsGate(currentCell))                                       //Cell not a gate
+                    if (currentCell != null &&                                          //Cell exists
+                        m_Grid[currentCell.X, currentCell.Y].IsShowed &&                //Cell is showed
+                        !(currentCell.X.Equals(x) && currentCell.Y.Equals(y)) &&        //Cell is not anchor cell
+                        CellIsWalkable(m_Grid[currentCell.X, currentCell.Y], false) &&  //Cell is walkable
+                        !IsGate(currentCell))                                           //Cell not a gate
                     {
                         cellNeighbours.Add(currentCell);
                     }
@@ -226,7 +226,7 @@ namespace Frameworks.Grid.Data
             List<(int x, int y)> cellNeighbours = new List<(int x, int y)>(GetCellNeighboursCoordInRange(x, y, r));
             for (int i = 0; i < cellNeighbours.Count; i++)
             {
-                if (CellIsNotWalkable(GetCellByCoord(cellNeighbours[i].x, cellNeighbours[i].y)))
+                if (CellIsNotWalkable(GetCellByCoord(cellNeighbours[i].x, cellNeighbours[i].y), true))
                     cellNeighbours.RemoveAt(i--);
             }
 
@@ -236,7 +236,7 @@ namespace Frameworks.Grid.Data
         /// <summary>
         /// Ближайшая доступная для перемещения ячейка
         /// </summary>
-        public GridCellData GetClosestWalkableCell(GridCellData fromCell, GridCellData targetCell, float rangeToFindClosest)
+        public GridCellData GetClosestWalkableCell(GridCellData fromCell, GridCellData targetCell, float rangeToFindClosest, bool ignoreHidedCells)
         {
             //If cells are neighbours - do nothing
             float distBetweenCells = GetDistanceBetweenCells(fromCell, targetCell);
@@ -255,7 +255,7 @@ namespace Frameworks.Grid.Data
                 GridCellData curNeighbourCell = GetCellByCoord(curNeighbourCellCoord.x, curNeighbourCellCoord.y);
 
                 //If neighbour is walkable
-                if (!CellIsNotWalkable(curNeighbourCell))
+                if (!CellIsNotWalkable(curNeighbourCell, ignoreHidedCells))
                 {
                     //If neigbout is the closest 
                     float distToCell = GetDistanceBetweenCells(curNeighbourCell, fromCell);
@@ -296,12 +296,12 @@ namespace Frameworks.Grid.Data
         /// <summary>
         /// Является ли ячейка недоступной для перемещения
         /// </summary>
-        public bool CellIsNotWalkable(GridCellData cell) => cell == null || cell.CellType != CellTypes.Normal || cell.HasObject || !cell.IsShowed;
+        public bool CellIsNotWalkable(GridCellData cell, bool ignoreHidedCells) => cell == null || cell.CellType != CellTypes.Normal || cell.HasObject || (!ignoreHidedCells && !cell.IsShowed);
 
         /// <summary>
         /// Является ли ячейка доступной для перемещения
         /// </summary>
-        public bool CellIsWalkable(GridCellData cell) => !CellIsNotWalkable(cell);
+        public bool CellIsWalkable(GridCellData cell, bool ignoreHidedCells) => !CellIsNotWalkable(cell, ignoreHidedCells);
 
         /// <summary>
         /// Является ли ячейка Гейтом

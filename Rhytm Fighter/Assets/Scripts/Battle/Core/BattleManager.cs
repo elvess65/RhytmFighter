@@ -61,9 +61,6 @@ namespace RhytmFighter.Battle.Core
             }
         }
 
-        //TODO:
-        //Pathfinding for player and enemy
-
         #region Initialization
         public void Initialize()
         {
@@ -193,8 +190,7 @@ namespace RhytmFighter.Battle.Core
         {
             //Health
             SimpleHealthBehaviour healthBehaviour = GameManager.Instance.DataHolder.PlayerDataModel.IsFirstLevel ?
-                                                        new SimpleHealthBehaviour(GameManager.Instance.DataHolder.PlayerDataModel.Character.FirstLevelCurrentHP,
-                                                                                  GameManager.Instance.DataHolder.PlayerDataModel.Character.HP) :
+                                                        new SimpleHealthBehaviour(GameManager.Instance.DataHolder.PlayerDataModel.Character.FirstLevelCurrentHP, GameManager.Instance.DataHolder.PlayerDataModel.Character.HP) :
                                                         new SimpleHealthBehaviour(GameManager.Instance.DataHolder.PlayerDataModel.Character.HP);
 
             //Battle
@@ -206,8 +202,7 @@ namespace RhytmFighter.Battle.Core
                                                             m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.WidthInCells / 2, 0);
 
             //Create player model
-            PlayerModel playerModel = new PlayerModel(0, startCellView.CorrespondingCellData,
-                                                      NPCMoveSpeed, battleBehaviour, healthBehaviour);
+            PlayerModel playerModel = new PlayerModel(0, startCellView.CorrespondingCellData, NPCMoveSpeed, battleBehaviour, healthBehaviour);
             playerModel.OnDestroyed += PlayerDestroyedHandler;
 
             //Create player view

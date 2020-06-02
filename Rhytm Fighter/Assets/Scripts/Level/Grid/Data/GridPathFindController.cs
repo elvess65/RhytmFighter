@@ -24,7 +24,7 @@ namespace Frameworks.Grid.Data
         }
     
 
-        public List<GridCellData> FindPath(GridCellData startNode, GridCellData targetNode)
+        public List<GridCellData> FindPath(GridCellData startNode, GridCellData targetNode, bool ignoreHidedCells)
         {
             if (startNode == null && targetNode == null)
                 return null;
@@ -61,7 +61,7 @@ namespace Frameworks.Grid.Data
                 {
                     GridCellData neighbourNode = m_GridController.GetCellByCoord(neighbours[i].x, neighbours[i].y);
 
-                    bool cellTypeIsIgnorable = m_GridController.CellIsNotWalkable(neighbourNode);
+                    bool cellTypeIsIgnorable = m_GridController.CellIsNotWalkable(neighbourNode, ignoreHidedCells);
 
                     //if neighbour is not walkable or is in closed set - skip
                     if (cellTypeIsIgnorable || closedSet.Contains(neighbourNode))

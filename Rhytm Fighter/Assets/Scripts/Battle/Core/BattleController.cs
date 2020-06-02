@@ -218,7 +218,7 @@ namespace RhytmFighter.Battle.Core
                 }
 
                 //Try to find path to the adjusted cell
-                pathToAdjustedCell = currentGrid.FindPath(battleObject.CorrespondingCell, adjustedCell);
+                pathToAdjustedCell = currentGrid.FindPath(battleObject.CorrespondingCell, adjustedCell, false);
 
                 //Remove adjusted cell from list
                 if (neighbourCells.Contains(adjustedCell))
@@ -233,7 +233,7 @@ namespace RhytmFighter.Battle.Core
                                                                                 adjustedCell.Y);
 
                 m_EnemyMovementController.OnMovementFinished += EnemyAdjustementMovementFinished;
-                m_EnemyMovementController.MoveCharacter(view);
+                m_EnemyMovementController.MoveCharacter(view, false);
 
                 FocusBattleCamera(view.transform);
             }

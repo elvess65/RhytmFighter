@@ -383,7 +383,7 @@ namespace Frameworks.Grid.Data
         private bool CellIsNotWalkable(int x, int y)
         {
             GridCellData cell = m_Grid.GetCellByCoord(x, y);
-            return cell == null || cell.CellType != CellTypes.Normal || cell.HasObject;
+            return cell == null || cell.CellType != CellTypes.Normal;
         }
 
         private bool CellIsWalkable(int x, int y)

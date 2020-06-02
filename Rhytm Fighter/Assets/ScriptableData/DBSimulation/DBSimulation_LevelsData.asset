@@ -53,7 +53,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       MinAmountOfItems: 1
-      MaxAmountOfItems: 3
+      MaxAmountOfItems: 2
       AvailableItemsIDs: 0100000002000000
       MinAmountOfEnemies: 1
       MaxAmountOfEnemies: 2

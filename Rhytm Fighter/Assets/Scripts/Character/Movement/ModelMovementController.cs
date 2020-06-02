@@ -48,7 +48,7 @@ namespace RhytmFighter.Characters.Movement
             Model.OnRotationFinished += RotationFinishedHandler;
         }
 
-        public void MoveCharacter(CellView targetCellView)
+        public void MoveCharacter(CellView targetCellView, bool ignoreHidedCells)
         {
             //Clear internal event if exists
             if (m_OnMovementFinishedInternal != null)
@@ -67,7 +67,10 @@ namespace RhytmFighter.Characters.Movement
                 }
 
                 //Get closest walkable cell to cell with object
-                targetCellData = m_LevelController.Model.GetCurrenRoomData().GridData.GetClosestWalkableCell(Model.CorrespondingCell, targetCellView.CorrespondingCellData, m_CLOSEST_WALKABLE_CELL_RANGE);
+                targetCellData = m_LevelController.Model.GetCurrenRoomData().GridData.GetClosestWalkableCell(Model.CorrespondingCell, 
+                                                                                                             targetCellView.CorrespondingCellData, 
+                                                                                                             m_CLOSEST_WALKABLE_CELL_RANGE,
+                                                                                                             ignoreHidedCells);
 
                 //If cant find closest cell - supposedly cells are neighbours
                 if (targetCellData == null)
@@ -92,7 +95,12 @@ namespace RhytmFighter.Characters.Movement
             }
 
             //Find path of cells
-            m_PathCells = m_LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(Model.CorrespondingCell, targetCellData);
+            m_PathCells = m_LevelController.Model.GetCurrenRoomData().GridData.FindPathCells(Model.CorrespondingCell, targetCellData, ignoreHidedCells);
+            if (m_PathCells == null)
+            {
+                Debug.LogError($"Error: Cant find path to the cell {targetCellView.CorrespondingCellData}");
+                return;
+            }
 
             //Convert gridCellData to positions
             List<Vector3> pathPos = new List<Vector3>();
