@@ -188,7 +188,6 @@ namespace RhytmFighter.Battle.Core
 
         private void AdjustDistanceForObject(iBattleObject battleObject)
         {
-            //float distanceToEnemy = float.MaxValue;
             float distanceToPlayer = float.MinValue;
 
             GridCellData adjustedCell = null;
@@ -197,7 +196,6 @@ namespace RhytmFighter.Battle.Core
             List<GridCellData> neighbourCells = currentGrid.GetWalkableAndVisibleCellsInRange(battleObject.CorrespondingCell.X,
                                                                                               battleObject.CorrespondingCell.Y,
                                                                                               m_DISTANCE_ADJUSTEMENT_RANGE);
-
             //Find adjusted cell
             while (neighbourCells.Count > 0 && pathToAdjustedCell == null)
             {
@@ -209,11 +207,11 @@ namespace RhytmFighter.Battle.Core
                     float distToEnemy = currentGrid.GetDistanceBetweenCells(battleObject.CorrespondingCell, currentCell);
 
                     //Find the most distant cell from player and enemy
-                    if (distToPlayer >= distanceToPlayer)// && distToEnemy < distanceToEnemy)
+                    if (distToPlayer >= distanceToPlayer)
                     {
                         adjustedCell = currentCell;
                         distanceToPlayer = distToPlayer;
-                        //distanceToEnemy = distToEnemy;
+  
                     }
                 }
 
@@ -223,6 +221,17 @@ namespace RhytmFighter.Battle.Core
                 //Remove adjusted cell from list
                 if (neighbourCells.Contains(adjustedCell))
                     neighbourCells.Remove(adjustedCell);
+
+                //If path was not found
+                if (pathToAdjustedCell == null)
+                    distanceToPlayer = float.MinValue;
+
+                //If there is no available neighbours
+                if (neighbourCells.Count == 0)
+                {
+                    adjustedCell = null;
+                    break;
+                }
             }
 
             //If adjusted cell exists
