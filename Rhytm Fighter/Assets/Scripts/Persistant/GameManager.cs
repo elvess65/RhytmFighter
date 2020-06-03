@@ -56,6 +56,12 @@ namespace RhytmFighter.Persistant
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");
 
         #region SceneLoading
+        public void LoadNextLevel()
+        {
+            UnloadLevel(m_BATTLE_SCENE_NAME);
+            LoadLevel(m_BATTLE_SCENE_NAME);
+        }
+
         public void LoadLevel(string levelName)
         {
             m_CurrentLevelName = levelName;

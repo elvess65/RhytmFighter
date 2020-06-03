@@ -6,8 +6,11 @@ namespace RhytmFighter.StateMachines.UIState
 {
     public class UIState_LevelComplete : UIState_NoUI
     {
-        public UIState_LevelComplete(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent, Transform inventoryUIParent) : base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent, inventoryUIParent)
+        private Text m_TextPressToContinue;
+
+        public UIState_LevelComplete(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent, Transform inventoryUIParent, Text textPressToContinue) : base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent, inventoryUIParent)
         {
+            m_TextPressToContinue = textPressToContinue;
         }
 
         public override void EnterState()
@@ -15,6 +18,8 @@ namespace RhytmFighter.StateMachines.UIState
             base.EnterState();
 
             //Text
+            m_TextPressToContinue.gameObject.SetActive(true);
+
             m_TextBattleStatus.gameObject.SetActive(true);
             m_TextBattleStatus.text = "Victory";
             m_TextBattleStatus.color = Color.green;

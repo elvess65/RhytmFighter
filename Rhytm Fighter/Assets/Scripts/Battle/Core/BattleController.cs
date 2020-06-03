@@ -15,6 +15,7 @@ namespace RhytmFighter.Battle.Core
         public System.Action OnPrepareForBattle;
         public System.Action OnBattleStarted;
         public System.Action OnBattleFinished;
+        public System.Action OnLevelFinished;
         public System.Action<bool> OnEnemyDestroyed;
 
         private int m_TargetTick;
@@ -317,7 +318,10 @@ namespace RhytmFighter.Battle.Core
                 m_CameraController.ActivateCamera(CameraTypes.Main);
                 m_CameraController.SubscribeForBlendingFinishedEvent(() => m_CameraController.PeekMemberFromTargetGroup());
 
-                OnBattleFinished?.Invoke();
+                //if (!m_LevelController.Model.GetCurrenRoomData().NodeData.IsFinishNode)
+                //    OnBattleFinished?.Invoke();
+                //else
+                    OnLevelFinished?.Invoke();
             }
         }
     }

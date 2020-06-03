@@ -53,16 +53,16 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       MinAmountOfItems: 1
-      MaxAmountOfItems: 2
+      MaxAmountOfItems: 1
       AvailableItemsIDs: 0100000002000000
       MinAmountOfEnemies: 1
       MaxAmountOfEnemies: 2
       AvailableEnemyViewIDs: 0100000002000000
-      MinEnemyHP: 1
-      MaxEnemyHP: 10
+      MinEnemyHP: 3
+      MaxEnemyHP: 7
       MinEnemyDmg: 1
-      MaxEnemyDmg: 5
-      MinBossHP: 7
+      MaxEnemyDmg: 3
+      MinBossHP: 10
       MaxBossHP: 15
-      MinBossDmg: 3
-      MaxBossDmg: 7
+      MinBossDmg: 5
+      MaxBossDmg: 10

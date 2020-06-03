@@ -142,7 +142,7 @@ namespace RhytmFighter.Level.Data
             int bossHP = Random.Range(contentData.MinBossHP, contentData.MaxBossHP + 1);
             int bossDmg = Random.Range(contentData.MinBossDmg, contentData.MaxBossDmg + 1);
 
-            if (!node.IsStartNode)
+            if (!node.IsStartNode && !node.IsFinishNode)
             {
                 for (int i = 0; i < amountOfEnemies; i++)
                 {

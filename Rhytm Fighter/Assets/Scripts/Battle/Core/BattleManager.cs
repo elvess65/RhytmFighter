@@ -44,6 +44,7 @@ namespace RhytmFighter.Battle.Core
         private GameState_Idle m_GameStateIdle;
         private GameState_Battle m_GameStateBattle;
         private GameState_Adventure m_GameStateAdventure;
+        private GameState_TapToAction m_GameStateTapToAction;
 
 
         public PlayerData PlayerDataModel => GameManager.Instance.DataHolder.PlayerDataModel;
@@ -92,6 +93,7 @@ namespace RhytmFighter.Battle.Core
             m_GameStateIdle = new GameState_Idle(m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
             m_GameStateBattle = new GameState_Battle(m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
             m_GameStateAdventure = new GameState_Adventure(m_ControllersHolder.LevelController, m_ControllersHolder.PlayerCharacterController, m_ControllersHolder.RhytmInputProxy);
+            m_GameStateTapToAction = new GameState_TapToAction();
 
             //Subscribe for events
             m_GameStateAdventure.OnPlayerInteractWithItem += PlayerInteractWithItemHandler;
@@ -151,6 +153,7 @@ namespace RhytmFighter.Battle.Core
             m_ControllersHolder.BattleController.OnBattleStarted += BattleStartedHandler;
             m_ControllersHolder.BattleController.OnEnemyDestroyed += BattleEnemyDestroyedHandler;
             m_ControllersHolder.BattleController.OnBattleFinished += BattleFinishedHandler;
+            m_ControllersHolder.BattleController.OnLevelFinished += LevelCompleteHandler;
 
             //Rhytm
             m_ControllersHolder.RhytmController.OnStarted += TickingStartedHandler;
@@ -180,7 +183,7 @@ namespace RhytmFighter.Battle.Core
 
         private void BuildLevel(LevelsData.LevelParams levelParams)
         {
-            m_ControllersHolder.LevelController.GenerateLevel(levelParams, false, true);
+            m_ControllersHolder.LevelController.GenerateLevel(levelParams, true, true);
             m_ControllersHolder.LevelController.RoomViewBuilder.OnCellWithObjectDetected += CellWithObjectDetectedHandler;
         }
         #endregion
@@ -356,18 +359,25 @@ namespace RhytmFighter.Battle.Core
             Rhytm.volume = 0;   //Debug - Finish battle for sound
         }
 
-        private void LevelComplete()
+        private void LevelCompleteHandler()
         {
             //Unscribe from events
             m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.BattleController.ProcessEnemyActions;
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
-            m_GameStateMachine.ChangeState(m_GameStateIdle);
+            m_GameStateTapToAction.OnTouch += LoadNextLevel;
+            m_GameStateMachine.ChangeState(m_GameStateTapToAction);
             ManagersHolder.UIManager.ToLevelComleteUIState();
 
             Rhytm.Stop();   //Debug - Finish battle for sound
             Music.Stop();
+        }
+
+        private void LoadNextLevel()
+        {
+            //GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID;
+            GameManager.Instance.LoadNextLevel();
         }
         #endregion
 

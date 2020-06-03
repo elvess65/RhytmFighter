@@ -105,7 +105,13 @@ namespace RhytmFighter.Level.Scheme.Builder
                 }
 
                 //Создать схему
-                SchemeNodeView schemeNode = CreateRoomSchemeView(schemePos);
+                PrimitiveType type = PrimitiveType.Sphere;
+                if (nodeData.IsStartNode)
+                    type = PrimitiveType.Cube;
+                else if (nodeData.IsFinishNode)
+                    type = PrimitiveType.Capsule;
+
+                SchemeNodeView schemeNode = CreateRoomSchemeView(schemePos, type);
                 schemeNode.Initialize(nodeData);
 
                 m_RoomSchemes.Add(nodeData.ID, schemeNode);
@@ -131,9 +137,9 @@ namespace RhytmFighter.Level.Scheme.Builder
             }
         }
 
-        SchemeNodeView CreateRoomSchemeView(Vector3 pos)
+        SchemeNodeView CreateRoomSchemeView(Vector3 pos, PrimitiveType type)
         {
-            GameObject ob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            GameObject ob = GameObject.CreatePrimitive(type);
             ob.transform.position = pos;
             ob.transform.localScale *= m_SCHEME_SCALE_MULTIPLAYER;
 

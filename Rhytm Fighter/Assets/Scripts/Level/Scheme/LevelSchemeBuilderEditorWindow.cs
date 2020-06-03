@@ -1,7 +1,10 @@
-﻿using RhytmFighter.Level.Scheme.View;
+﻿using RhytmFighter.Data;
+using RhytmFighter.Level.Scheme.View;
+using RhytmFighter.Data.DataBase.Simulation;
 using UnityEditor;
 using UnityEngine;
 
+#if (UNITY_EDITOR) 
 namespace RhytmFighter.Level.Scheme.Editor
 {
     /// <summary>
@@ -15,14 +18,14 @@ namespace RhytmFighter.Level.Scheme.Editor
         private const float m_MIN_LABEL_WIDTH = 120;
 
         //Default
-        private bool m_UseManualData = true;
-        private int m_LevelDepth = 4;
+        private int m_LevelID = 1;
         private int m_LevelSeed = 10;
         private bool m_OnlyMainPath = false;
 
         private SchemeNodeView m_SelectedNode;
         private SchemeCellView m_SelectedCell;
         private LevelController m_LevelController;
+        private InfoData m_InfoData;
 
         [MenuItem("Level/Scheme")]
         public static void ShowWindow() => GetWindow<LevelSchemeBuilderEditorWindow>(false, "Level Scheme", true).Initialize();
@@ -33,24 +36,15 @@ namespace RhytmFighter.Level.Scheme.Editor
             Dispose();
 
             m_LevelController = new LevelController();
+            m_InfoData = new InfoData(JsonUtility.ToJson(GameObject.FindObjectOfType<DBSimulation>().LevelsData));
         }
 
 
         void HandleDefaultState()
         {
             #region Level Generation Settings
-            m_UseManualData = EditorGUILayout.BeginToggleGroup("Use Manual Settings", m_UseManualData);
-            EditorGUILayout.EndToggleGroup();
-            if (m_UseManualData)
-            {
-                m_LevelDepth = EditorGUILayout.IntField("Level Depth:", m_LevelDepth);
-                m_LevelSeed = EditorGUILayout.IntField("Level Seed", m_LevelSeed);
-                m_OnlyMainPath = EditorGUILayout.Toggle("Generate only main path", m_OnlyMainPath);
-            }
-            else
-            {
-                EditorGUILayout.TextField("Scriptable Object Path");
-            }
+            m_LevelID = EditorGUILayout.IntField("Level ID:", m_LevelID);
+            m_OnlyMainPath = EditorGUILayout.Toggle("Generate only main path", m_OnlyMainPath);
             #endregion
 
             #region Create Level Button
@@ -187,10 +181,9 @@ namespace RhytmFighter.Level.Scheme.Editor
 
         void ButtonCreateLevel()
         {
-            int levelDepth = m_LevelDepth;
-            int levelSeed = m_LevelSeed;
+            LevelsData.LevelParams levelParams = m_InfoData.LevelsData.GetLevelParams(m_LevelID);
 
-            //m_LevelController.GenerateLevel(levelDepth, levelSeed, m_OnlyMainPath, false);
+            m_LevelController.GenerateLevel(levelParams, m_OnlyMainPath, false);
             m_LevelController.LevelSchemeBuilder.Build(m_LevelController.Model.StartNodeData);
 
             if (m_LevelController.LevelSchemeBuilder.HasData)
@@ -353,3 +346,4 @@ namespace RhytmFighter.Level.Scheme.Editor
     }
 }
 
+#endif
