@@ -20,8 +20,8 @@ namespace RhytmFighter.StateMachines.UIState
             //Text
             m_TextPressToContinue.gameObject.SetActive(true);
 
-            m_TextBattleStatus.gameObject.SetActive(true);
-            m_TextBattleStatus.text = "Victory";
+            //m_TextBattleStatus.gameObject.SetActive(true);
+            //m_TextBattleStatus.text = "Victory";
             m_TextBattleStatus.color = Color.green;
         }
     }

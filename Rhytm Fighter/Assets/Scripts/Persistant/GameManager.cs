@@ -12,10 +12,12 @@ namespace RhytmFighter.Persistant
     {
         public DataHolder DataHolder { get; private set; }
 
-        private string m_CurrentLevelName = string.Empty;
+        private string m_CurrentLoadingLevel = string.Empty;
+        private string m_CurrentUnloadingLevel = string.Empty;
         private System.Action m_OnSceneLoadingComplete;
-        private List<AsyncOperation> m_SceneLoadingOperations;
+        private System.Action m_OnSceneUnloadingComplete;
 
+        private const string m_BOOT_SCENE_NAME = "BootScene";
         private const string m_BATTLE_SCENE_NAME = "BattleScene";
         private const string m_TRANSITION_SCENE_NAME = "TransitionScene";
 
@@ -27,13 +29,13 @@ namespace RhytmFighter.Persistant
             InitializeCore();
 
             m_OnSceneLoadingComplete += SceneLoadCompleteHandler;
+            m_OnSceneUnloadingComplete += SceneUnloadCompleteHandler;
             LoadLevel(m_TRANSITION_SCENE_NAME);
         }
 
         private void InitializeCore()
         {
             DataHolder = new DataHolder();
-            m_SceneLoadingOperations = new List<AsyncOperation>();
         }
 
         private void InitializeConnection()
@@ -59,12 +61,12 @@ namespace RhytmFighter.Persistant
         public void LoadNextLevel()
         {
             UnloadLevel(m_BATTLE_SCENE_NAME);
-            LoadLevel(m_BATTLE_SCENE_NAME);
         }
+
 
         public void LoadLevel(string levelName)
         {
-            m_CurrentLevelName = levelName;
+            m_CurrentLoadingLevel = levelName;
 
             if (SceneLoadingManager.Instance != null)
             {
@@ -75,7 +77,51 @@ namespace RhytmFighter.Persistant
                 Load(levelName);
         }
 
+        private void FadeInFinishedOnLoadHandler()
+        {
+            SceneLoadingManager.Instance.OnFadeIn -= FadeInFinishedOnLoadHandler;
+            Load(m_CurrentLoadingLevel);
+        }
+
+        private void Load(string levelName)
+        {
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
+            if (asyncOperation != null)
+                asyncOperation.completed += LoadOperationComplete;
+            else
+                Debug.LogError($"Unable to load level {levelName}");
+        }
+
+        private void LoadOperationComplete(AsyncOperation asyncOperation)
+        {
+            m_OnSceneLoadingComplete?.Invoke();
+        }
+
+        private void SceneLoadCompleteHandler()
+        {
+            switch (m_CurrentLoadingLevel)
+            {
+                case m_BATTLE_SCENE_NAME:
+                    SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_BATTLE_SCENE_NAME));
+                    SceneLoadingManager.Instance.FadeOut();
+                    BattleManager.Instance.Initialize();
+                    break;
+                case m_TRANSITION_SCENE_NAME:
+                    InitializeConnection();
+                    break;
+            }
+        }
+
+
         public void UnloadLevel(string levelName)
+        {
+            m_CurrentUnloadingLevel = levelName;
+
+            SceneLoadingManager.Instance.OnFadeIn += FadeInFinishedOnUnloadHandler;
+            SceneLoadingManager.Instance.FadeIn();
+        }
+
+        private void Unload(string levelName)
         {
             AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(levelName);
             if (asyncOperation != null)
@@ -86,52 +132,28 @@ namespace RhytmFighter.Persistant
                 Debug.LogError($"Unable to unload level {levelName}");
         }
 
-
-        private void Load(string levelName)
-        {
-            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
-            if (asyncOperation != null)
-            {
-                m_SceneLoadingOperations.Add(asyncOperation);
-                asyncOperation.completed += LoadOperationComplete;
-            }
-            else
-                Debug.LogError($"Unable to load level {levelName}");
-        }
-
-        private void FadeInFinishedOnLoadHandler()
-        {
-            SceneLoadingManager.Instance.OnFadeIn -= FadeInFinishedOnLoadHandler;
-            Load(m_CurrentLevelName);
-        }
-
-        private void SceneLoadCompleteHandler()
-        {
-            switch (m_CurrentLevelName)
-            {
-                case m_BATTLE_SCENE_NAME:
-                    SceneLoadingManager.Instance.FadeOut();
-                    BattleManager.Instance.Initialize();
-                    break;
-                case m_TRANSITION_SCENE_NAME:
-                    InitializeConnection();
-                    break;
-            }
-        }
-
-        
-        private void LoadOperationComplete(AsyncOperation asyncOperation)
-        {
-            if (m_SceneLoadingOperations.Contains(asyncOperation))
-                m_SceneLoadingOperations.Remove(asyncOperation);
-
-            m_OnSceneLoadingComplete?.Invoke();
-        }
-
         private void UnloadOperationComplete(AsyncOperation asyncOperation)
         {
+            m_OnSceneUnloadingComplete?.Invoke();
+        }
+
+        private void SceneUnloadCompleteHandler()
+        {
+            switch(m_CurrentUnloadingLevel)
+            {
+                case m_BATTLE_SCENE_NAME:
+                    LoadLevel(m_BATTLE_SCENE_NAME);
+                    break;
+            }
+        }
+
+        private void FadeInFinishedOnUnloadHandler()
+        {
+            SceneLoadingManager.Instance.OnFadeIn -= FadeInFinishedOnUnloadHandler;
+
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_BOOT_SCENE_NAME));
+            Unload(m_BATTLE_SCENE_NAME);
         }
         #endregion
-
     }
 }

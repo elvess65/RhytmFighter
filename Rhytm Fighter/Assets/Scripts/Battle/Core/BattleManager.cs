@@ -362,9 +362,8 @@ namespace RhytmFighter.Battle.Core
         private void LevelCompleteHandler()
         {
             //Unscribe from events
-            m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.BattleController.ProcessEnemyActions;
-            m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
-            m_ControllersHolder.RhytmController.OnEventProcessingTick -= m_ControllersHolder.CommandsController.ProcessPendingCommands;
+            m_ControllersHolder.RhytmController.OnTick = null;
+            m_ControllersHolder.RhytmController.OnEventProcessingTick = null;
 
             m_GameStateTapToAction.OnTouch += LoadNextLevel;
             m_GameStateMachine.ChangeState(m_GameStateTapToAction);
@@ -376,7 +375,7 @@ namespace RhytmFighter.Battle.Core
 
         private void LoadNextLevel()
         {
-            //GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID;
+            GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID++;
             GameManager.Instance.LoadNextLevel();
         }
         #endregion

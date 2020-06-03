@@ -9,6 +9,10 @@ namespace RhytmFighter.Persistant.SceneLoading
         public System.Action OnFadeIn;
         public System.Action OnFadeOut;
 
+        private FadeStates m_CurFadeState = FadeStates.Default;
+
+        private enum FadeStates { Default, FadingIn, FadingOut, FadedIn, FadedOut };
+
         [UnityEngine.SerializeField] private SceneTransitionFadeController m_TransitionController;
 
         private void Start()
@@ -21,23 +25,45 @@ namespace RhytmFighter.Persistant.SceneLoading
 
         public void FadeIn()
         {
-            m_TransitionController.FadeIn();
+            switch(m_CurFadeState)
+            {
+                case FadeStates.FadedOut:
+                case FadeStates.Default:
+                    m_CurFadeState = FadeStates.FadingIn;
+                    m_TransitionController.FadeIn();
+                    break;
+                case FadeStates.FadedIn:
+                    FadeInHandler();
+                    break;
+            }
         }
 
         public void FadeOut()
         {
-            m_TransitionController.FadeOut();
+            switch (m_CurFadeState)
+            {
+                case FadeStates.FadedIn:
+                case FadeStates.Default:
+                    m_CurFadeState = FadeStates.FadingOut;
+                m_TransitionController.FadeOut();
+                    break;
+                case FadeStates.FadedOut:
+                    FadeOutHandler();
+                    break;
+            }
         }
 
 
         private void FadeInHandler()
         {
+            m_CurFadeState = FadeStates.FadedIn;
             CameraObject.SetActive(true);
             OnFadeIn?.Invoke();
         }
 
         private void FadeOutHandler()
         {
+            m_CurFadeState = FadeStates.FadedOut;
             CameraObject.SetActive(false);
             OnFadeOut?.Invoke();
         }
