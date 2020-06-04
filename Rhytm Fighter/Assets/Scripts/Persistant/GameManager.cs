@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using RhytmFighter.Battle.Core;
+﻿using RhytmFighter.Battle.Core;
 using RhytmFighter.Data;
 using RhytmFighter.Persistant.Abstract;
 using RhytmFighter.Persistant.SceneLoading;
@@ -58,7 +57,7 @@ namespace RhytmFighter.Persistant
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");
 
         #region SceneLoading
-        public void LoadNextLevel()
+        public void ReloadBattleLevel()
         {
             UnloadLevel(m_BATTLE_SCENE_NAME);
         }

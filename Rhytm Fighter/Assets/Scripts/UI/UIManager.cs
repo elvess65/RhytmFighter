@@ -40,6 +40,7 @@ namespace RhytmFighter.UI
         private UIState_BattleFinished m_UIState_BattleFinished;
         private UIState_GameOverState m_UIState_GameOver;
         private UIState_LevelComplete m_UIState_LevelComplete;
+        private UIState_TapToActionState m_UIState_TapToActionState;
 
         public void Initialize()
         {
@@ -59,7 +60,8 @@ namespace RhytmFighter.UI
             m_UIState_WaitNextEnemy = new UIState_WaitNextEnemy(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
             m_UIState_BattleFinished = new UIState_BattleFinished(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent);
             m_UIState_GameOver = new UIState_GameOverState(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
-            m_UIState_LevelComplete = new UIState_LevelComplete(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent, Text_PressToContinue);
+            m_UIState_LevelComplete = new UIState_LevelComplete(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, InventoryUIParent);
+            m_UIState_TapToActionState = new UIState_TapToActionState(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerUIParent, Text_PressToContinue);
 
             m_StateMachine.Initialize(m_UIStateNoUI);
 
@@ -100,6 +102,11 @@ namespace RhytmFighter.UI
         public void ToLevelComleteUIState()
         {
             m_StateMachine.ChangeState(m_UIState_LevelComplete);
+        }
+
+        public void ToTapToActionUIState()
+        {
+            m_StateMachine.ChangeState(m_UIState_TapToActionState);
         }
 
 

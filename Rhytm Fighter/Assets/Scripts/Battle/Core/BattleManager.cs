@@ -70,7 +70,7 @@ namespace RhytmFighter.Battle.Core
             InitializeStateMachine();
             InitializeDataDependents();
             InitializeUpdatables();
-            SubscribeForEvents();
+            InitializeEvents();
             ApplySettings();
 
             InitializationFinished();
@@ -139,7 +139,7 @@ namespace RhytmFighter.Battle.Core
             };
         }
 
-        private void SubscribeForEvents()
+        private void InitializeEvents()
         {
             //Input
             m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
@@ -162,6 +162,28 @@ namespace RhytmFighter.Battle.Core
             //UI
             ManagersHolder.UIManager.OnButtonDefencePressed += ButtonDefence_PressHandler;
             ManagersHolder.UIManager.OnButtonPotionPressed += ButtonPoition_PressHandler;
+        }
+
+        private void DisposeEvents()
+        {
+            //Player controller 
+            m_ControllersHolder.PlayerCharacterController.OnTeleportStarted -= TeleportStartedHandler;
+            m_ControllersHolder.PlayerCharacterController.OnTeleportFinished -= TeleportFinishedHandler;
+
+            //Battle
+            m_ControllersHolder.BattleController.OnPrepareForBattle -= PrepareForBattleHandler;
+            m_ControllersHolder.BattleController.OnBattleStarted -= BattleStartedHandler;
+            m_ControllersHolder.BattleController.OnEnemyDestroyed -= BattleEnemyDestroyedHandler;
+            m_ControllersHolder.BattleController.OnBattleFinished -= BattleFinishedHandler;
+            m_ControllersHolder.BattleController.OnLevelFinished -= LevelCompleteHandler;
+
+            //Rhytm
+            m_ControllersHolder.RhytmController.OnStarted = null;
+            m_ControllersHolder.RhytmController.OnTick = null;
+
+            //UI
+            ManagersHolder.UIManager.OnButtonDefencePressed -= ButtonDefence_PressHandler;
+            ManagersHolder.UIManager.OnButtonPotionPressed -= ButtonPoition_PressHandler;
         }
 
         private void ApplySettings()
@@ -223,15 +245,7 @@ namespace RhytmFighter.Battle.Core
 
         private void PlayerDestroyedHandler(iBattleObject sender)
         {
-            //Unscribe from events
-            m_ControllersHolder.RhytmController.OnTick = null;
-            m_ControllersHolder.RhytmController.OnEventProcessingTick = null;
-
-            m_GameStateMachine.ChangeState(m_GameStateIdle);
-            ManagersHolder.UIManager.ToGameOverUIState();
-
-            Rhytm.Stop();   //Debug - Finish battle for sound
-            Music.Stop();  
+            GameOverHandler();
         }
 
         private void PlayerInteractWithObject(AbstractInteractableObjectModel interactableObject)
@@ -265,6 +279,13 @@ namespace RhytmFighter.Battle.Core
             PlayerDataModel.Inventory.PotionsAmount++;
             UpdatePoitionAmount();
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
+        }
+
+        System.Collections.IEnumerator FINISH_LEVEL_COROUTINE(System.Action onDelayed)
+        {
+            yield return new WaitForSeconds(1);
+
+            onDelayed?.Invoke();
         }
         #endregion
 
@@ -358,25 +379,57 @@ namespace RhytmFighter.Battle.Core
 
             Rhytm.volume = 0;   //Debug - Finish battle for sound
         }
+        #endregion
+
+        #region Reloading
+        private void GameOverHandler()
+        {
+            //Finilize level
+            Finilize(ManagersHolder.UIManager.ToGameOverUIState);
+
+            //Ability to reload level 
+            StartCoroutine(FINISH_LEVEL_COROUTINE(() =>
+            {
+                m_GameStateTapToAction.OnTouch += () =>
+                {
+                    GameManager.Instance.ReloadBattleLevel();
+                };
+
+                m_GameStateMachine.ChangeState(m_GameStateTapToAction);
+                ManagersHolder.UIManager.ToTapToActionUIState();
+            }));
+        }
 
         private void LevelCompleteHandler()
         {
-            //Unscribe from events
-            m_ControllersHolder.RhytmController.OnTick = null;
-            m_ControllersHolder.RhytmController.OnEventProcessingTick = null;
+            //Finilize level
+            Finilize(ManagersHolder.UIManager.ToLevelComleteUIState);
 
-            m_GameStateTapToAction.OnTouch += LoadNextLevel;
-            m_GameStateMachine.ChangeState(m_GameStateTapToAction);
-            ManagersHolder.UIManager.ToLevelComleteUIState();
+            //Ability to reload level 
+            StartCoroutine(FINISH_LEVEL_COROUTINE(() =>
+            {
+                m_GameStateTapToAction.OnTouch += () =>
+                {
+                    GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID++;
+                    GameManager.Instance.ReloadBattleLevel();
+                };
+
+                m_GameStateMachine.ChangeState(m_GameStateTapToAction);
+                ManagersHolder.UIManager.ToTapToActionUIState();
+            }));
+        }
+
+        private void Finilize(System.Action toUIStateTransition)
+        {
+            //Unscribe from events
+            DisposeEvents();
 
             Rhytm.Stop();   //Debug - Finish battle for sound
             Music.Stop();
-        }
 
-        private void LoadNextLevel()
-        {
-            GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID++;
-            GameManager.Instance.LoadNextLevel();
+            //Show state
+            m_GameStateMachine.ChangeState(m_GameStateIdle);
+            toUIStateTransition?.Invoke();
         }
         #endregion
 
