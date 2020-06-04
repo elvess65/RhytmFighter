@@ -318,9 +318,9 @@ namespace RhytmFighter.Battle.Core
                 m_CameraController.ActivateCamera(CameraTypes.Main);
                 m_CameraController.SubscribeForBlendingFinishedEvent(() => m_CameraController.PeekMemberFromTargetGroup());
 
-                //if (!m_LevelController.Model.GetCurrenRoomData().NodeData.IsFinishNode)
-                //    OnBattleFinished?.Invoke();
-                //else
+                if (!m_LevelController.Model.GetCurrenRoomData().NodeData.IsFinishNode)
+                    OnBattleFinished?.Invoke();
+                else
                     OnLevelFinished?.Invoke();
             }
         }
