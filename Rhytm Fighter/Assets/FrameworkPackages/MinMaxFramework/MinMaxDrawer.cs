@@ -8,7 +8,6 @@ namespace FrameworkPackage.MinMax
     [CustomPropertyDrawer(typeof(MinMaxSliderAttribute))]
     public class MinMaxDrawer : PropertyDrawer
     {
-
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             if (property.serializedObject.isEditingMultipleObjects) return 0f;

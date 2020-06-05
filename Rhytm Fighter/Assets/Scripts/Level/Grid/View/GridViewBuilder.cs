@@ -7,6 +7,7 @@ using RhytmFighter.Objects.Model;
 using System.Collections.Generic;
 using UnityEngine;
 using RhytmFighter.Battle.Core;
+using RhytmFighter.Data;
 
 namespace Frameworks.Grid.View
 {
@@ -16,6 +17,7 @@ namespace Frameworks.Grid.View
 
         private float m_CellOffset => 1f;
 
+        private LevelsData.EnviromentData m_EnviromentData;
         private WaitForSeconds m_ExtendViewWait;
         private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
 
@@ -32,8 +34,12 @@ namespace Frameworks.Grid.View
         /// <summary>
         /// Create graphics for grid
         /// </summary>
-        public void Build(LevelRoomData roomData, Vector3 startPos)
+        public void Build(LevelRoomData roomData, Vector3 startPos, LevelsData.EnviromentData enviromentData)
         {
+            Random.InitState(roomData.NodeData.NodeSeed);
+
+            m_EnviromentData = enviromentData;
+
             //Create parent
             Transform gridParent = new GameObject().transform;
             gridParent.gameObject.name = "Grid Parent " + roomData.ID;
@@ -232,7 +238,13 @@ namespace Frameworks.Grid.View
                 }
             }
             else
-                cellContent = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().GetRandomCellContent(cellData.CellType));
+            {
+                bool getDecorated = false;
+                if (cellData.CellType == CellTypes.Normal)
+                    getDecorated = Random.Range(0, 100) <= m_EnviromentData.EnviromentFillPercent;
+
+                cellContent = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().GetRandomCellContent(cellData.CellType, getDecorated));
+            }
 
             return cellContent;
         }

@@ -41,7 +41,7 @@ namespace RhytmFighter.Data
         }
 
 
-        [System.Serializable]
+        [Serializable]
         public class LevelParams
         {
             public int ID = 1;

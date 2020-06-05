@@ -64,7 +64,7 @@ namespace RhytmFighter.Level
 
             //Build room view
             if (buildRoomView)
-                RoomViewBuilder.Build(Model.GetCurrenRoomData(), Vector3.zero);
+                RoomViewBuilder.Build(Model.GetCurrenRoomData(), Vector3.zero, levelParamsData.EnviromentParams);
         }
 
         public void BuildLevelData(bool generateOnlyMainPath)
@@ -110,7 +110,8 @@ namespace RhytmFighter.Level
             //Take right or left node cell
             GridCellData gateCellData = isRightNode ? Model.GetCurrenRoomData().GridData.RightNodeGate : Model.GetCurrenRoomData().GridData.LeftNodeGate;
             if (gateCellData != null)
-                RoomViewBuilder.Build(levelRoomData, RoomViewBuilder.GetStartPositionForNextView(gateCellData, levelRoomData.GridData.ParentNodeGate.X));
+                RoomViewBuilder.Build(levelRoomData, RoomViewBuilder.GetStartPositionForNextView(gateCellData, levelRoomData.GridData.ParentNodeGate.X), 
+                                      m_LevelParamsData.EnviromentParams);
         }
 
         public void AddParentRoom(LevelNodeData nodeData, out bool isRightRoom)
@@ -138,7 +139,8 @@ namespace RhytmFighter.Level
 
             //Build room view
             if (gateCellData != null)
-                RoomViewBuilder.Build(levelRoomData, RoomViewBuilder.GetStartPositionForParentView(Model.GetCurrenRoomData().GridData.ParentNodeGate, gateCellData, nodeDirectionOffset));
+                RoomViewBuilder.Build(levelRoomData, RoomViewBuilder.GetStartPositionForParentView(Model.GetCurrenRoomData().GridData.ParentNodeGate, gateCellData, nodeDirectionOffset),
+                                     m_LevelParamsData.EnviromentParams);
         }
 
         public void RemoveRoom(int roomID)

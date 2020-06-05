@@ -22,6 +22,7 @@ namespace RhytmFighter.Assets
 
         public Abstract_CellContentView[] CellContent_Normal_Prefabs;
         public Abstract_CellContentView[] CellContent_Obstacle_Prefabs;
+        public Abstract_CellContentView[] CellContent_Normal_Decorated_Prefabs;
 
         [Header("Objects")]
         public AbstractGridObjectView PlayerViewPrefab;
@@ -46,31 +47,24 @@ namespace RhytmFighter.Assets
         public AbstractVisualEffect DestroyEffectPrefab;
         public AbstractVisualEffect HealEffectPrefab;
 
-        private Dictionary<CellTypes, Abstract_CellContentView[]> m_CellContentPrefabs;
-
 
         public override void Initialize()
         {
             base.Initialize();
-
-            InitializeCellContentPrefabs();
         }
 
-        //Cells
-        void InitializeCellContentPrefabs()
+        public Abstract_CellContentView GetRandomCellContent(CellTypes cellType, bool getDecorated)
         {
-            m_CellContentPrefabs = new Dictionary<CellTypes, Abstract_CellContentView[]>();
-            m_CellContentPrefabs.Add(CellTypes.Normal, CellContent_Normal_Prefabs);           
-            m_CellContentPrefabs.Add(CellTypes.Obstacle, CellContent_Obstacle_Prefabs);
-        }
-
-        public Abstract_CellContentView GetRandomCellContent(CellTypes cellType)
-        {
-            if (m_CellContentPrefabs.ContainsKey(cellType))
+            switch(cellType)
             {
-                Abstract_CellContentView[] cellContents = m_CellContentPrefabs[cellType];
-                int rndIndex = Random.Range(0, cellContents.Length);
-                return cellContents[rndIndex];
+                case CellTypes.Normal:
+                    if (getDecorated)
+                        return CellContent_Normal_Decorated_Prefabs[Random.Range(0, CellContent_Normal_Decorated_Prefabs.Length)];
+
+                    return CellContent_Normal_Prefabs[Random.Range(0, CellContent_Normal_Prefabs.Length)];
+
+                case CellTypes.Obstacle:
+                    return CellContent_Obstacle_Prefabs[Random.Range(0, CellContent_Obstacle_Prefabs.Length)];
             }
 
             return null;

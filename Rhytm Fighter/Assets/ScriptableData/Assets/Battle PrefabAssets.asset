@@ -20,6 +20,21 @@ MonoBehaviour:
     type: 3}
   CellContent_Normal_Prefabs:
   - {fileID: 363589464798170353, guid: 88428108ed4a5e340b3ccd093a8bdd1c, type: 3}
+  CellContent_Obstacle_Prefabs:
+  - {fileID: 8163702032283662594, guid: 3481dad581a29e446a499417339fc510, type: 3}
+  - {fileID: 7591141130224853509, guid: ac376e9d19686964b816cbea7e7bde84, type: 3}
+  - {fileID: 8997557004661192341, guid: f8496841c70e349429f5b67e1d45e073, type: 3}
+  - {fileID: 8337359224348933691, guid: 6c0e8e68b9ccf13489d95a6eb1368136, type: 3}
+  - {fileID: 5229803498922048917, guid: 7a39047afbd21474bab194841c71af0c, type: 3}
+  - {fileID: 7352666841746271971, guid: ef6758c6ab4c0b642965ff905bb089c6, type: 3}
+  - {fileID: 8765761853551840742, guid: a2f8bca9af872f94ba84196363bba8b5, type: 3}
+  - {fileID: 598340298906345596, guid: 76900cba57f85a14f901929b826177d6, type: 3}
+  - {fileID: 722798045780789961, guid: 40695eabf72a54f499e735e21bd82dc4, type: 3}
+  - {fileID: 7054614892785818346, guid: 9592e062c30d8bc469991057a74035c0, type: 3}
+  - {fileID: 7669845342116958613, guid: cb8c1b67c58d21f4ea1558d0a4b8e5be, type: 3}
+  - {fileID: 4959533064585481121, guid: 381530485ee33424c9f3c5b13b3efb17, type: 3}
+  CellContent_Normal_Decorated_Prefabs:
+  - {fileID: 363589464798170353, guid: 88428108ed4a5e340b3ccd093a8bdd1c, type: 3}
   - {fileID: 184594956250497256, guid: 7c4d32f9746a6494c9c467928a8f9d05, type: 3}
   - {fileID: 3986116359372785729, guid: 219dc1dc88a8ac4489c4abb05e8fdfd6, type: 3}
   - {fileID: 406886754787371450, guid: 32c17d0787325f647be8502b7c6feb6e, type: 3}
@@ -95,8 +110,6 @@ MonoBehaviour:
   - {fileID: 1532579692737279127, guid: e89c07cde264de543a6794a7a6695864, type: 3}
   - {fileID: 5033583628070102575, guid: 8a06a4fc5a9f5b141bd3bc96014d748d, type: 3}
   - {fileID: 86494177857754066, guid: 14847a94ee232e843b79ea6bf174b9d6, type: 3}
-  CellContent_Obstacle_Prefabs:
-  - {fileID: 8163702032283662594, guid: 3481dad581a29e446a499417339fc510, type: 3}
   PlayerViewPrefab: {fileID: 5206831727226302146, guid: 49a1dad011aebf743837f1340ceccf92,
     type: 3}
   StandartItemViewPrefab: {fileID: -8202855839088546251, guid: b60b792dfabe591449d10e4c78007d72,
