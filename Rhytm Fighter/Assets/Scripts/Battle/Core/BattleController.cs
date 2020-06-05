@@ -28,6 +28,7 @@ namespace RhytmFighter.Battle.Core
         private Dictionary<int, iBattleObject> m_PendingEnemies;
 
         public iBattleObject Player { get; set; }
+        public bool IsInBattle { get; private set; }
 
         private const int m_DISTANCE_ADJUSTEMENT_RANGE = 4;                                 //Max range (in cells) to find adjust disatnce cell
         private const int m_TICKS_BEFORE_BEFORE_ACTIVATING_FIRST_ENEMY = 1;                 //Delay (in ticks) after first enemy found and start battle
@@ -114,6 +115,8 @@ namespace RhytmFighter.Battle.Core
 
         private void PrepareForBattleEventHandler()
         {
+            IsInBattle = true;
+
             m_TargetTick = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_BEFORE_ACTIVATING_FIRST_ENEMY;
             Rhytm.RhytmController.GetInstance().OnTick += ActivateEnemyOnTick;
         }
@@ -322,6 +325,8 @@ namespace RhytmFighter.Battle.Core
                     OnBattleFinished?.Invoke();
                 else
                     OnLevelFinished?.Invoke();
+
+                IsInBattle = false;
             }
         }
     }

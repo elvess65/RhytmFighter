@@ -67,6 +67,9 @@ namespace RhytmFighter.UI
 
             //Buttons
             Button_Potion.onClick.AddListener(ButtonPotion_PressHandler);
+
+            //Events
+            BattleManager.Instance.OnPotionUsed += PotionUsedHandler;
         }
 
         public void ToAdventureUIState()
@@ -117,18 +120,20 @@ namespace RhytmFighter.UI
 
         public void ButtonPotion_PressHandler()
         {
-            if (!UIComponent_PotionCooldown.IsInCooldown && BattleManager.Instance.PlayerDataModel.Inventory.PotionsAmount > 0 &&
-                BattleManager.Instance.PlayerModel.HealthBehaviour.HP < BattleManager.Instance.PlayerModel.HealthBehaviour.MaxHP)
-            {
+            if (!UIComponent_PotionCooldown.IsInCooldown)
                 OnButtonPotionPressed?.Invoke();
-                UIComponent_PotionCooldown.Cooldown();
-            }
         }
 
         public void PerformUpdate(float deltaTime)
         {
             UIComponent_PotionCooldown.PerformUpdate(deltaTime);
             UIComponent_TickIndicator.PerformUpdate(deltaTime);
+        }
+
+
+        private void PotionUsedHandler()
+        {
+            UIComponent_PotionCooldown.Cooldown();
         }
     }
 }

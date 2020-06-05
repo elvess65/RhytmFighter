@@ -12,8 +12,9 @@ namespace RhytmFighter.Level.Data
 {
     public class RoomDataBuilder
     {
-        private int m_ENEMY_ID = 2;
         private int m_ITEM_ID = 1;
+        private int m_ENEMY_ID = 2;
+
 
         public LevelRoomData Build(LevelNodeData node, LevelsData.BuildData buildData, LevelsData.ContentData contentData)
         {
@@ -108,13 +109,13 @@ namespace RhytmFighter.Level.Data
 
         void GenerateContent(SquareGrid grid, LevelNodeData node, ref List<GridCellData> emptyCells, LevelsData.ContentData contentData)
         {
-            GenerateItem(ref emptyCells, contentData);
+            GenerateItem(node, contentData, ref emptyCells);
             GenerateEnemy(grid, node, ref emptyCells, contentData);
         }
 
-        void GenerateItem(ref List<GridCellData> emptyCells, LevelsData.ContentData contentData)
+        void GenerateItem(LevelNodeData node, LevelsData.ContentData contentData,ref List<GridCellData> emptyCells)
         {
-            if (emptyCells.Count == 0)
+            if (emptyCells.Count == 0 || node.IsFinishNode)
                 return;
 
             int amountOfItems = Random.Range(contentData.MinAmountOfItems, contentData.MaxAmountOfItems + 1);
@@ -134,24 +135,20 @@ namespace RhytmFighter.Level.Data
             if (emptyCells.Count == 0)
                 return;
 
-            int amountOfEnemies = Random.Range(contentData.MinAmountOfEnemies, contentData.MaxAmountOfEnemies + 1);
-
-            int enemyHP = Random.Range(contentData.MinEnemyHP, contentData.MaxEnemyHP + 1);
-            int enemyDmg = Random.Range(contentData.MinEnemyDmg, contentData.MaxEnemyDmg + 1);
-
-            int bossHP = Random.Range(contentData.MinBossHP, contentData.MaxBossHP + 1);
-            int bossDmg = Random.Range(contentData.MinBossDmg, contentData.MaxBossDmg + 1);
-
             if (!node.IsStartNode && !node.IsFinishNode)
             {
-                for (int i = 0; i < amountOfEnemies; i++)
-                {
-                    int rndViewID = contentData.AvailableEnemyViewIDs[Random.Range(0, contentData.AvailableEnemyViewIDs.Length)];
+                int rndAmountOfEnemies = Random.Range(contentData.MinAmountOfEnemies, contentData.MaxAmountOfEnemies + 1);
 
+                for (int i = 0; i < rndAmountOfEnemies; i++)
+                {
                     GridCellData rndCell = GetRandomCell(ref emptyCells);
+                    int rndViewID = contentData.AvailableEnemyViewIDs[Random.Range(0, contentData.AvailableEnemyViewIDs.Length)];
+                    int rndHP = Random.Range(contentData.MinEnemyHP, contentData.MaxEnemyHP + 1);
+                    int rndDmg = Random.Range(contentData.MinEnemyDmg, contentData.MaxEnemyDmg + 1);
+
                     StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, BattleManager.Instance.NPCMoveSpeed, 
-                                                                               new SimpleBattleActionBehaviour(enemyDmg),
-                                                                               new SimpleHealthBehaviour(enemyHP),
+                                                                               new SimpleBattleActionBehaviour(rndDmg),
+                                                                               new SimpleHealthBehaviour(rndHP),
                                                                                AITypes.Simple);
 
                     rndCell.AddObject(enemyNPC);
@@ -159,17 +156,20 @@ namespace RhytmFighter.Level.Data
             }
             else if (node.IsFinishNode)
             {
-                int rndViewID = contentData.AvailableEnemyViewIDs[Random.Range(0, contentData.AvailableEnemyViewIDs.Length)];
-
                 GridCellData rndCell = GetRandomCell(ref emptyCells);
+                int rndViewID = contentData.AvailableEnemyViewIDs[Random.Range(0, contentData.AvailableEnemyViewIDs.Length)];
+                int rndHP = Random.Range(contentData.MinBossHP, contentData.MaxBossHP + 1);
+                int rndDmg = Random.Range(contentData.MinBossDmg, contentData.MaxBossDmg + 1);
+                
                 StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, BattleManager.Instance.NPCMoveSpeed, 
-                                                                           new SimpleBattleActionBehaviour(bossDmg),
-                                                                           new SimpleHealthBehaviour(bossHP),
+                                                                           new SimpleBattleActionBehaviour(rndDmg),
+                                                                           new SimpleHealthBehaviour(rndHP),
                                                                            AITypes.Simple);
 
                 rndCell.AddObject(enemyNPC);
             }
         }
+
 
         GridCellData GetRandomCell(ref List<GridCellData> emptyCells)
         {

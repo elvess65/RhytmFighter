@@ -19,6 +19,8 @@ namespace RhytmFighter.Battle.Core
 {
     public class BattleManager : Singleton<BattleManager>
     {
+        public System.Action OnPotionUsed;
+
         public ManagersHolder ManagersHolder;
         public CamerasHolder CamerasHolder;
   
@@ -410,7 +412,7 @@ namespace RhytmFighter.Battle.Core
             {
                 m_GameStateTapToAction.OnTouch += () =>
                 {
-                    GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID++;
+                    //GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID++;
                     GameManager.Instance.ReloadBattleLevel();
                 };
 
@@ -436,11 +438,8 @@ namespace RhytmFighter.Battle.Core
         #region Rhytm
         private void TickingStartedHandler()
         {
-            //Music.Play();
-            //Rhytm.Play();
             Rhytm.volume = 0;
-
-            Metronome.StartMetronome();
+            //Metronome.StartMetronome();
         }
 
         private void TickHandler(int ticksSinceStart)
@@ -454,7 +453,7 @@ namespace RhytmFighter.Battle.Core
 
         private void EventProcessingTickHandler(int ticksSinceStart)
         {
-            BeatSound.Play();
+            //BeatSound.Play();
         }
         #endregion
 
@@ -470,17 +469,33 @@ namespace RhytmFighter.Battle.Core
 
         private void ButtonPoition_PressHandler()
         {
-            //if (m_ControllersHolder.RhytmInputProxy.IsInputTickValid() && m_ControllersHolder.RhytmInputProxy.IsInputAllowed())
+            if (Instance.PlayerDataModel.Inventory.PotionsAmount > 0 && PlayerModel.HealthBehaviour.HP < PlayerModel.HealthBehaviour.MaxHP)
             {
-                PlayerDataModel.Inventory.PotionsAmount--;
-                UpdatePoitionAmount();
-                SipSound.Play();
-                AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().HealEffectPrefab,
-                                                                                        PlayerModel.ViewPosition,
-                                                                                        Quaternion.Euler(-90, 0, 0)).ScheduleHideView();
-
-                PlayerModel.HealthBehaviour.IncreaseHP(5);
+                if (m_ControllersHolder.BattleController.IsInBattle)
+                {
+                    if (m_ControllersHolder.RhytmInputProxy.IsInputTickValid() && m_ControllersHolder.RhytmInputProxy.IsInputAllowed())
+                    {
+                        UsePotion();
+                        m_ControllersHolder.RhytmInputProxy.RegisterInput();
+                    }
+                }
+                else
+                    UsePotion();
             }
+        }
+
+        private void UsePotion()
+        {
+            PlayerDataModel.Inventory.PotionsAmount--;
+            UpdatePoitionAmount();
+            SipSound.Play();
+            AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().HealEffectPrefab,
+                                                                                    PlayerModel.ViewPosition,
+                                                                                    Quaternion.Euler(-90, 0, 0)).ScheduleHideView();
+
+            PlayerModel.HealthBehaviour.IncreaseHP(5);
+
+            OnPotionUsed?.Invoke();
         }
 
         private void UpdatePoitionAmount()
