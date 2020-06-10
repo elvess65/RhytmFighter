@@ -303,7 +303,10 @@ namespace RhytmFighter.Battle.Core
                 {
                     //Detect enemy
                     if (battleObject.IsEnemy)
-                        m_ControllersHolder.BattleController.AddEnemy(battleObject);
+                    {
+                        gridObject.OnViewShowed += () => m_ControllersHolder.BattleController.AddEnemy(battleObject);
+                        m_ControllersHolder.BattleController.PrepareForBattle();
+                    }
                 }
             }
         }

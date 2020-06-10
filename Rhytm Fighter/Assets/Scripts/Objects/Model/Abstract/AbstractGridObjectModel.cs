@@ -7,6 +7,8 @@ namespace RhytmFighter.Objects.Model
 {
     public abstract class AbstractGridObjectModel
     {
+        public System.Action OnViewShowed;
+
         public int ID { get; protected set; }
         public GridObjectTypes Type { get; protected set; }
         public GridCellData CorrespondingCell { get; protected set; }
@@ -22,7 +24,10 @@ namespace RhytmFighter.Objects.Model
         public virtual void ShowView(CellView cellView)
         {
             if (View == null)
+            {
                 View = CreateView(cellView);
+                View.OnViewShowed += ViewShowedHandler;
+            }
 
             View.ShowView(this);
         }
@@ -36,5 +41,9 @@ namespace RhytmFighter.Objects.Model
 
         protected abstract AbstractGridObjectView CreateView(CellView cellView);
 
+        private void ViewShowedHandler()
+        {
+            OnViewShowed?.Invoke();
+        }
     }
 }

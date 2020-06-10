@@ -47,8 +47,16 @@ namespace RhytmFighter.Battle.Core
             m_PendingEnemies = new Dictionary<int, iBattleObject>();
             m_EnemyMovementController = new ModelMovementController(levelController);
 
-            OnPrepareForBattle += PrepareForBattleEventHandler;
             OnEnemyDestroyed += TryActivateNextEnemyOnEnemyDestroyedHandler;
+        }
+
+        public void PrepareForBattle()
+        {
+            if (!IsInBattle)
+            {
+                IsInBattle = true;
+                OnPrepareForBattle?.Invoke();
+            }
         }
 
         public void AddEnemy(iBattleObject battleObject)
@@ -64,7 +72,7 @@ namespace RhytmFighter.Battle.Core
 
             //Start battle with adding the first enemy
             if (m_PendingEnemies.Count == 1)
-                OnPrepareForBattle?.Invoke();
+                StartProcessingBattle();
         }
 
         public void ProcessEnemyActions(int currentTick)
@@ -113,14 +121,6 @@ namespace RhytmFighter.Battle.Core
             OnEnemyDestroyed?.Invoke(m_PendingEnemies.Count == 0);
         }
 
-        private void PrepareForBattleEventHandler()
-        {
-            IsInBattle = true;
-
-            m_TargetTick = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_BEFORE_ACTIVATING_FIRST_ENEMY;
-            Rhytm.RhytmController.GetInstance().OnTick += ActivateEnemyOnTick;
-        }
-
         private void TryActivateNextEnemyOnEnemyDestroyedHandler(bool lastEnemyDestroyed)
         {
             if (!lastEnemyDestroyed)
@@ -132,6 +132,12 @@ namespace RhytmFighter.Battle.Core
                 TryActivateNextEnemy();
         }
 
+
+        private void StartProcessingBattle()
+        {
+            m_TargetTick = Rhytm.RhytmController.GetInstance().CurrentTick + m_TICKS_BEFORE_BEFORE_ACTIVATING_FIRST_ENEMY;
+            Rhytm.RhytmController.GetInstance().OnTick += ActivateEnemyOnTick;
+        }
 
         private void ActivateEnemyOnTick(int currentTick)
         {

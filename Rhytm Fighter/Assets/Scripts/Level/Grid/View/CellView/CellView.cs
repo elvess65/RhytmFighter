@@ -34,6 +34,7 @@ namespace Frameworks.Grid.View
 
             //Cell appearance
             m_CellAppearanceStrategy = new Animation_CellAppearanceStrategy(AnimationController, ViewCollider, m_CellContent);
+            m_CellAppearanceStrategy.OnShowed += CellContentShowedHandler;
         }
 
         public void ShowCell()
@@ -54,9 +55,6 @@ namespace Frameworks.Grid.View
             //If cell contains object
             if (CorrespondingCellData.HasObject)
             {
-                //Show object graphics
-                CorrespondingCellData.GetObject().ShowView(this);
-
                 //Notify about object detection
                 OnObjectDetected?.Invoke(CorrespondingCellData.GetObject());
             }
@@ -79,6 +77,13 @@ namespace Frameworks.Grid.View
                 //Hide object graphics
                 CorrespondingCellData.GetObject().HideView();
             }
+        }
+
+
+        private void CellContentShowedHandler()
+        {
+            if (CorrespondingCellData.HasObject)
+                CorrespondingCellData.GetObject().ShowView(this);
         }
     }
 }
