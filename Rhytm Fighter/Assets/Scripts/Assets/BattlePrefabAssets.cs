@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Frameworks.Grid.Data;
+﻿using Frameworks.Grid.Data;
 using Frameworks.Grid.View;
 using Frameworks.Grid.View.Cell;
 using RhytmFighter.Assets.Abstract;
@@ -7,6 +6,7 @@ using RhytmFighter.Battle.Command.View;
 using RhytmFighter.Enviroment.Effects;
 using RhytmFighter.Objects.View;
 using RhytmFighter.UI.Bar;
+using RhytmFighter.UI.Components;
 using UnityEngine;
 
 namespace RhytmFighter.Assets
@@ -32,6 +32,7 @@ namespace RhytmFighter.Assets
         [Header("UI")]
         public SingleBarBehaviour EnemyHealthBarPrefab;
         public DoubleBarBehaviour PlayerHealthBarPrefab;
+        public UIComponent_ActionPointsIndicatorItem ActionPointIndicatorItemPrefab;
 
         [Header("Projectile")]
         public AbstractProjectileView ProjectilePrefab;

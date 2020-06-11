@@ -15,7 +15,7 @@ namespace RhytmFighter.Battle.Action.Behaviours
         protected int m_UseDelay;
         protected int m_Damage;
 
-        
+
         public SimpleBattleActionBehaviour(int damage)
         {
             m_ApplyDelay = 1;

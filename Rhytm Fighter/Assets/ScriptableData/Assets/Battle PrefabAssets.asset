@@ -120,6 +120,8 @@ MonoBehaviour:
     type: 3}
   PlayerHealthBarPrefab: {fileID: -3937909374599639112, guid: 4d020cef8800d4f30ad0ea2fc7edeefa,
     type: 3}
+  ActionPointIndicatorItemPrefab: {fileID: 6029022854669105589, guid: d1dc638521fffb746b0a8a298919d03e,
+    type: 3}
   ProjectilePrefab: {fileID: 773455792894638350, guid: 84fcafd665cecf945a630cda053161d4,
     type: 3}
   ProjectileImpactEffectPrefab: {fileID: 2045784551111966260, guid: f43364acb27ff9245a3023a7aa188b6e,

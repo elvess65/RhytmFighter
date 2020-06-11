@@ -80,7 +80,7 @@ namespace RhytmFighter.Objects.View
         protected override void CreateHealthBar()
         {
             m_HealthBarBehaviour = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().PlayerHealthBarPrefab);
-            m_HealthBarBehaviour.RectTransform.SetParent(BattleManager.Instance.ManagersHolder.UIManager.PlayerUIParent);
+            m_HealthBarBehaviour.RectTransform.SetParent(BattleManager.Instance.ManagersHolder.UIManager.PlayerHealthbarParent);
             m_HealthBarBehaviour.RectTransform.anchoredPosition3D = Vector3.zero;
         }
 

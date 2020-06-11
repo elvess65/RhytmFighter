@@ -14,6 +14,7 @@ using RhytmFighter.Persistant;
 using RhytmFighter.Persistant.Abstract;
 using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Battle.Core.Abstract;
+using RhytmFighter.Battle.Command.Model;
 
 namespace RhytmFighter.Battle.Core
 {
@@ -68,7 +69,6 @@ namespace RhytmFighter.Battle.Core
         public void Initialize()
         {
             InitializeCore();
-            InitializeLinks();
             InitializeStateMachine();
             InitializeDataDependents();
             InitializeUpdatables();
@@ -82,11 +82,6 @@ namespace RhytmFighter.Battle.Core
         {
             m_GameStateMachine = new GameStateMachine();
             m_ControllersHolder = new ControllersHolder();
-        }
-
-        private void InitializeLinks()
-        {
-            ManagersHolder.Initialize();
         }
 
         private void InitializeStateMachine()
@@ -222,6 +217,7 @@ namespace RhytmFighter.Battle.Core
 
             //Battle
             SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(GameManager.Instance.DataHolder.PlayerDataModel.Character.Damage);
+            battleBehaviour.OnActionExecuted += BattleBehaviour_OnActionExecuted;
 
             //Start cell view
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(
@@ -231,6 +227,8 @@ namespace RhytmFighter.Battle.Core
             //Create player model
             PlayerModel playerModel = new PlayerModel(0, startCellView.CorrespondingCellData, NPCMoveSpeed, battleBehaviour, healthBehaviour);
             playerModel.OnDestroyed += PlayerDestroyedHandler;
+            playerModel.OnActionPointUsed += ManagersHolder.UIManager.UseActionPoint;
+            battleBehaviour.OnActionExecuted += (AbstractCommandModel command) => UseActionPoint();
 
             //Create player view
             m_ControllersHolder.PlayerCharacterController.CreateCharacter(playerModel, startCellView, m_ControllersHolder.LevelController);
@@ -243,6 +241,11 @@ namespace RhytmFighter.Battle.Core
 
             //TEMP
             UpdatePoitionAmount();
+        }
+
+        private void BattleBehaviour_OnActionExecuted(Command.Model.AbstractCommandModel obj)
+        {
+            Debug.Log(obj.Type);
         }
 
         private void PlayerDestroyedHandler(iBattleObject sender)
@@ -340,6 +343,7 @@ namespace RhytmFighter.Battle.Core
                 m_ControllersHolder.PlayerCharacterController.StopMove();
 
             m_ControllersHolder.RhytmController.OnEventProcessingTick += EventProcessingTickHandler;
+            m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.PlayerCharacterController.PlayerModel.ProcessActionPointRestore;
 
             m_ControllersHolder.PlayerCharacterController.PrepareForBattle();   //Prepare character for battle
             m_GameStateMachine.ChangeState(m_GameStateIdle);                    //Change state
@@ -352,7 +356,7 @@ namespace RhytmFighter.Battle.Core
         private void BattleStartedHandler()
         {
             //Subscribe for events
-            m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;   
+            //m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;   
             m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             m_GameStateMachine.ChangeState(m_GameStateBattle);      //Change state
@@ -377,6 +381,7 @@ namespace RhytmFighter.Battle.Core
         private void BattleFinishedHandler()
         {
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
+            m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.PlayerCharacterController.PlayerModel.ProcessActionPointRestore;
 
             m_ControllersHolder.PlayerCharacterController.FinishBattle();       //Finish battle for player
             m_GameStateMachine.ChangeState(m_GameStateAdventure);               //Change state
@@ -461,6 +466,11 @@ namespace RhytmFighter.Battle.Core
         #endregion
 
         #region UI
+        private void UseActionPoint()
+        {
+            m_ControllersHolder.PlayerCharacterController.PlayerModel.UseActionPoint();
+        }
+
         private void ButtonDefence_PressHandler()
         {
             if (m_ControllersHolder.RhytmInputProxy.IsInputTickValid() && m_ControllersHolder.RhytmInputProxy.IsInputAllowed())
@@ -489,6 +499,7 @@ namespace RhytmFighter.Battle.Core
 
         private void UsePotion()
         {
+            UseActionPoint();
             PlayerDataModel.Inventory.PotionsAmount--;
             UpdatePoitionAmount();
             SipSound.Play();
