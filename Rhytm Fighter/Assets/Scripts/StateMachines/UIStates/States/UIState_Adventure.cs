@@ -1,16 +1,19 @@
 ﻿using RhytmFighter.UI.Components;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace RhytmFighter.StateMachines.UIState
 {
     public class UIState_Adventure : UIState_Abstract
     {
+        private UIComponent_TickIndicator m_TickIndicator;
+        private Transform m_PlayerHealthBarParent;
         private Transform m_InventoryUIParent;
 
-        public UIState_Adventure(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent, Transform inventoryUIParent) :
-            base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent)
+        public UIState_Adventure(UIComponent_TickIndicator tickIndicator, Transform playerUIParent, Transform inventoryUIParent) :
+                base(null)
         {
+            m_TickIndicator = tickIndicator;
+            m_PlayerHealthBarParent = playerUIParent;
             m_InventoryUIParent = inventoryUIParent;
         }
 
@@ -24,7 +27,7 @@ namespace RhytmFighter.StateMachines.UIState
 
             //UI
             m_TickIndicator.gameObject.SetActive(true);
-            m_PlayerUIParent.gameObject.SetActive(true);
+            m_PlayerHealthBarParent.gameObject.SetActive(true);
             m_InventoryUIParent.gameObject.SetActive(true);
 
             //Tick indicator

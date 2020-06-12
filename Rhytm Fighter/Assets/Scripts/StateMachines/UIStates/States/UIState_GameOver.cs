@@ -6,7 +6,12 @@ namespace RhytmFighter.StateMachines.UIState
 {
     public class UIState_GameOverState : UIState_NoUI
     {
-        public UIState_GameOverState(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent, Transform inventoryUIParent) : base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent, inventoryUIParent)
+        public UIState_GameOverState(Button buttonDefence, Text textBattleStatus,
+                                     UIComponent_TickIndicator tickIndicator,
+                                     UIComponent_ActionPointsIndicator apIndicator,
+                                     Transform playerHealthBarParent,
+                                     Transform inventoryUIParent) : 
+            base(buttonDefence, textBattleStatus, tickIndicator, apIndicator, playerHealthBarParent, inventoryUIParent)
         {
         }
 

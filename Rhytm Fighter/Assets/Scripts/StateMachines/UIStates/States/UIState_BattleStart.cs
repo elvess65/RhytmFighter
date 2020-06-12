@@ -7,7 +7,8 @@ namespace RhytmFighter.StateMachines.UIState
 {
     public class UIState_BattleStart : UIState_Battle
     {
-        public UIState_BattleStart(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent) : base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent)
+        public UIState_BattleStart(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, UIComponent_ActionPointsIndicator apIndicator) : 
+            base(buttonDefence, textBattleStatus, tickIndicator, apIndicator)
         {
         }
 
@@ -23,6 +24,7 @@ namespace RhytmFighter.StateMachines.UIState
 
             //Tick indicator
             m_TickIndicator.ToBattleState();
+            m_TickIndicator.PlayArrowsAnimation();
         }
 
 

@@ -15,6 +15,8 @@
         {
             base.FinishInterpolation();
 
+            ProcessInterpolation(1);
+
             UnityEngine.Color color = m_ControlledImage.color;
             color.a = 1f;
             m_ControlledImage.color = color;

@@ -51,22 +51,26 @@ namespace RhytmFighter.UI
             UIComponent_PotionCooldown.Initialize(5);
             UIComponent_ActionPointsIndicator.Initialize(GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints, 
                                                          (float)(Rhytm.RhytmController.GetInstance().TickDurationSeconds * 
-                                                         GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint));
+                                                         GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint + 
+                                                         Rhytm.RhytmController.GetInstance().ProcessTickDelta));
 
             Text_PressToContinue.gameObject.SetActive(false);
 
             //UI States
             m_StateMachine = new UIStateMachine();
 
-            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerHealthbarParent, InventoryUIParent);
-            m_UIStateAdventure = new UIState_Adventure(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerHealthbarParent, InventoryUIParent);
-            m_UIState_PrepareForBattle = new UIState_PrepareForBattle(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerHealthbarParent);
-            m_UIState_BattleStart = new UIState_BattleStart(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerHealthbarParent);
-            m_UIState_WaitNextEnemy = new UIState_WaitNextEnemy(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerHealthbarParent);
-            m_UIState_BattleFinished = new UIState_BattleFinished(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerHealthbarParent);
-            m_UIState_GameOver = new UIState_GameOverState(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerHealthbarParent, InventoryUIParent);
-            m_UIState_LevelComplete = new UIState_LevelComplete(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerHealthbarParent, InventoryUIParent);
-            m_UIState_TapToActionState = new UIState_TapToActionState(Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, PlayerHealthbarParent, Text_PressToContinue);
+            m_UIStateAdventure = new UIState_Adventure                  (UIComponent_TickIndicator, PlayerHealthbarParent, InventoryUIParent);
+            m_UIState_TapToActionState = new UIState_TapToActionState   (Text_BattleStatus, Text_PressToContinue);
+
+            m_UIState_PrepareForBattle = new UIState_PrepareForBattle   (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, UIComponent_ActionPointsIndicator);
+            m_UIState_BattleStart = new UIState_BattleStart             (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, UIComponent_ActionPointsIndicator);
+            m_UIState_WaitNextEnemy = new UIState_WaitNextEnemy         (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, UIComponent_ActionPointsIndicator);
+            m_UIState_BattleFinished = new UIState_BattleFinished       (Text_BattleStatus, UIComponent_TickIndicator);
+
+            m_UIStateNoUI = new UIState_NoUI                            (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, UIComponent_ActionPointsIndicator, PlayerHealthbarParent, InventoryUIParent);
+            m_UIState_GameOver = new UIState_GameOverState              (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, UIComponent_ActionPointsIndicator, PlayerHealthbarParent, InventoryUIParent);
+            m_UIState_LevelComplete = new UIState_LevelComplete         (Button_Defence, Text_BattleStatus, UIComponent_TickIndicator, UIComponent_ActionPointsIndicator, PlayerHealthbarParent, InventoryUIParent);
+            
 
             m_StateMachine.Initialize(m_UIStateNoUI);
 
@@ -122,6 +126,11 @@ namespace RhytmFighter.UI
         public void UseActionPoint(int curActionPoints)
         {
             UIComponent_ActionPointsIndicator.UseActionPoint(curActionPoints);
+        }
+
+        public void RestoreActionPoint(int curActionPoints)
+        {
+            UIComponent_ActionPointsIndicator.RestoreActionPoint(curActionPoints);
         }
 
 

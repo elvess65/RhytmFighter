@@ -1,14 +1,20 @@
 ﻿using RhytmFighter.UI.Components;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace RhytmFighter.StateMachines.UIState
 {
     public class UIState_Battle : UIState_Abstract
-    { 
-        public UIState_Battle(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent) :
-            base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent)
+    {
+        protected Button m_ButtonDefence;
+        protected UIComponent_TickIndicator m_TickIndicator;
+        protected UIComponent_ActionPointsIndicator m_ActionPointIndicator;
+
+        public UIState_Battle(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, UIComponent_ActionPointsIndicator apIndicator) :
+            base(textBattleStatus)
         {
+            m_ButtonDefence = buttonDefence;
+            m_TickIndicator = tickIndicator;
+            m_ActionPointIndicator = apIndicator;
         }
 
 
@@ -22,6 +28,7 @@ namespace RhytmFighter.StateMachines.UIState
 
             //UI
             m_ButtonDefence.gameObject.SetActive(true);
+            m_ActionPointIndicator.gameObject.SetActive(true);
         }
 
         public override void ExitState()
@@ -34,6 +41,7 @@ namespace RhytmFighter.StateMachines.UIState
 
             //UI
             m_ButtonDefence.gameObject.SetActive(false);
+            m_ActionPointIndicator.gameObject.SetActive(false);
         }
 
 

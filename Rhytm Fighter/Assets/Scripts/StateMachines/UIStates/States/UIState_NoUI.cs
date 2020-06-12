@@ -9,15 +9,20 @@ namespace RhytmFighter.StateMachines.UIState
     {
         protected List<Transform> m_UIObjects;
 
-        public UIState_NoUI(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent, Transform inventoryUIParent) :
-            base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent)
+        public UIState_NoUI(Button buttonDefence, Text textBattleStatus, 
+                            UIComponent_TickIndicator tickIndicator, 
+                            UIComponent_ActionPointsIndicator apIndicator, 
+                            Transform playerHealthBarParent, 
+                            Transform inventoryUIParent) :
+            base(textBattleStatus)
         {
             m_UIObjects = new List<Transform>()
             {
                 buttonDefence.transform,
                 textBattleStatus.transform,
                 tickIndicator.transform,
-                playerUIParent,
+                apIndicator.transform,
+                playerHealthBarParent,
                 inventoryUIParent
             };
         }

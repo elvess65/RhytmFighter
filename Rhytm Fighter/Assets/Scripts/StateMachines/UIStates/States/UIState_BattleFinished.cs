@@ -7,8 +7,12 @@ namespace RhytmFighter.StateMachines.UIState
 {
     public class UIState_BattleFinished : UIState_Abstract
     {
-        public UIState_BattleFinished(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent) : base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent)
+        private UIComponent_TickIndicator m_TickIndicator;
+
+        public UIState_BattleFinished(Text textBattleStatus, UIComponent_TickIndicator tickIndicator) : 
+            base(textBattleStatus)
         {
+            m_TickIndicator = tickIndicator;
         }
 
         public override void EnterState()

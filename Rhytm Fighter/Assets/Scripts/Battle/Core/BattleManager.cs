@@ -230,9 +230,10 @@ namespace RhytmFighter.Battle.Core
             PlayerModel playerModel = new PlayerModel(0, startCellView.CorrespondingCellData, NPCMoveSpeed, battleBehaviour, healthBehaviour, actionPoints, ticksToRestoreActionPoint);
             playerModel.OnDestroyed += PlayerDestroyedHandler;
             playerModel.OnActionPointUsed += ManagersHolder.UIManager.UseActionPoint;
+            playerModel.OnActionPointRestored += ManagersHolder.UIManager.RestoreActionPoint;
+            battleBehaviour.OnActionExecuted += (AbstractCommandModel command) => playerModel.UseActionPoint();
 
             m_ControllersHolder.PlayerCharacterController.OnNoActionPoints += () => Debug.Log("No action points");
-            battleBehaviour.OnActionExecuted += (AbstractCommandModel command) => playerModel.UseActionPoint();
 
             //Create player view
             m_ControllersHolder.PlayerCharacterController.CreateCharacter(playerModel, startCellView, m_ControllersHolder.LevelController);
@@ -337,12 +338,13 @@ namespace RhytmFighter.Battle.Core
         #region Battle
         private void PrepareForBattleHandler()
         {
+            Debug.Log("PRepare for battle");
             //No need to stop movement if players destination cell is the cell where enemy was detected
             if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
                 m_ControllersHolder.PlayerCharacterController.StopMove();
 
             m_ControllersHolder.RhytmController.OnEventProcessingTick += EventProcessingTickHandler;
-            m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.PlayerCharacterController.PlayerModel.ProcessActionPointRestore;
+            m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.PlayerCharacterController.PlayerModel.ProcessActionPointRestore;
 
             m_ControllersHolder.PlayerCharacterController.PrepareForBattle();   //Prepare character for battle
             m_GameStateMachine.ChangeState(m_GameStateIdle);                    //Change state
@@ -358,6 +360,7 @@ namespace RhytmFighter.Battle.Core
             //m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;   
             m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
+            Debug.Log("Battle");
             m_GameStateMachine.ChangeState(m_GameStateBattle);      //Change state
             ManagersHolder.UIManager.ToBattleStartUIState();        //Show Battle UI
         }
@@ -380,7 +383,7 @@ namespace RhytmFighter.Battle.Core
         private void BattleFinishedHandler()
         {
             m_ControllersHolder.RhytmController.OnEventProcessingTick -= EventProcessingTickHandler;
-            m_ControllersHolder.RhytmController.OnTick -= m_ControllersHolder.PlayerCharacterController.PlayerModel.ProcessActionPointRestore;
+            m_ControllersHolder.RhytmController.OnEventProcessingTick -= m_ControllersHolder.PlayerCharacterController.PlayerModel.ProcessActionPointRestore;
 
             m_ControllersHolder.PlayerCharacterController.FinishBattle();       //Finish battle for player
             m_GameStateMachine.ChangeState(m_GameStateAdventure);               //Change state

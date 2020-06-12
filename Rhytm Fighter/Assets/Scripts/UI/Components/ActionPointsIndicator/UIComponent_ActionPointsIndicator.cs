@@ -28,11 +28,18 @@ namespace RhytmFighter.UI.Components
             }
         }
 
-        public void UseActionPoint(int curActionPoints)
+        public void UseActionPoint(int curActionPointss)
         {
             UIComponent_ActionPointsIndicatorItem item = FindFreeItem();
             if (item != null)
                 item.StartRestoring();
+        }
+
+        public void RestoreActionPoint(int curActionPoints)
+        {
+            UIComponent_ActionPointsIndicatorItem item = FindAlmostFinishedItem();
+            if (item != null)
+                item.Restore();
         }
 
         public void PerformUpdate(float deltaTime)
@@ -54,6 +61,25 @@ namespace RhytmFighter.UI.Components
             }
 
             return null;
+        }
+
+        UIComponent_ActionPointsIndicatorItem FindAlmostFinishedItem()
+        {
+            float maxProgress = float.MinValue;
+            UIComponent_ActionPointsIndicatorItem item = null;
+            for (int i = 0; i < m_Items.Count; i++)
+            {
+                if (m_Items[i].IsRestoring)
+                {
+                    if (m_Items[i].CurrentRestoreProgress > maxProgress)
+                    {
+                        maxProgress = m_Items[i].CurrentRestoreProgress;
+                        item = m_Items[i];
+                    }
+                }
+            }
+
+            return item;
         }
     }
 }

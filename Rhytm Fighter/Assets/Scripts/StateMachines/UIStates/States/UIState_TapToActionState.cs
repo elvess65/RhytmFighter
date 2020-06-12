@@ -1,6 +1,4 @@
-﻿using RhytmFighter.UI.Components;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 namespace RhytmFighter.StateMachines.UIState
 {
@@ -8,7 +6,7 @@ namespace RhytmFighter.StateMachines.UIState
     {
         private Text m_TextPressToContinue;
 
-        public UIState_TapToActionState(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, Transform playerUIParent, Text textPressToContinue) : base(buttonDefence, textBattleStatus, tickIndicator, playerUIParent)
+        public UIState_TapToActionState(Text textBattleStatus, Text textPressToContinue) : base(textBattleStatus)
         {
             m_TextPressToContinue = textPressToContinue;
         }
@@ -19,10 +17,7 @@ namespace RhytmFighter.StateMachines.UIState
 
             //Text
             m_TextPressToContinue.gameObject.SetActive(true);
-
             m_TextBattleStatus.gameObject.SetActive(true);
-            //m_TextBattleStatus.text = "Victory";
-            //m_TextBattleStatus.color = Color.green;
         }
     }
 }

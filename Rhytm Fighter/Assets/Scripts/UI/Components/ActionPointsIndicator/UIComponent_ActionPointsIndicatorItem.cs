@@ -10,7 +10,8 @@ namespace RhytmFighter.UI.Components
 
         private InterpolationData<float> m_LerpData;
 
-        public bool IsRestoring => m_LerpData.IsStarted;
+        public bool IsRestoring { get; private set; }
+        public float CurrentRestoreProgress => m_LerpData.Progress;
 
 
         public void Initialize(float restoreDuration)
@@ -25,13 +26,19 @@ namespace RhytmFighter.UI.Components
         public void StartRestoring()
         {
             Image_Restore.PrepareForInterpolation();
+            IsRestoring = true;
+
             m_LerpData.Start();
         }
 
         public void Restore()
         {
             m_LerpData.Stop();
+
             Image_Restore.FinishInterpolation();
+
+            if (IsRestoring)
+                IsRestoring = false;
         }
 
         public void PerformUpdate(float deltaTime)
@@ -42,7 +49,7 @@ namespace RhytmFighter.UI.Components
                 Image_Restore.ProcessInterpolation(m_LerpData.Progress);
 
                 if (m_LerpData.Overtime())
-                    Restore();
+                    m_LerpData.Stop();
             }
         }
     }
