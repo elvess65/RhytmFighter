@@ -2,7 +2,6 @@
 using Frameworks.Grid.View;
 using RhytmFighter.Assets;
 using RhytmFighter.Battle.Action;
-using RhytmFighter.Battle.AI;
 using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Command.Model.Modificator;
@@ -16,6 +15,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RhytmFighter.Battle.Core.Abstract;
 using RhytmFighter.Battle.Core;
+using RhytmFighter.Battle.AI.Abstract;
 
 namespace RhytmFighter.Objects.Model
 {

@@ -4,7 +4,7 @@ using RhytmFighter.Persistant.Enums;
 
 namespace RhytmFighter.Battle.AI
 {
-    public class SimpleAI : AbstractAI
+    public class SimpleDefencibleAI : AbstractAI
     {
         private double m_TimeToNextAction;
         private float m_NextCommandEventExecutionTime;
@@ -14,7 +14,7 @@ namespace RhytmFighter.Battle.AI
         private AIActionTypes[] m_ActionPattern;
 
 
-        public SimpleAI(iBattleObject controlledObject) : base(controlledObject)
+        public SimpleDefencibleAI(iBattleObject controlledObject) : base(controlledObject)
         {
             m_ActionPattern = new AIActionTypes[]
             {
@@ -24,9 +24,9 @@ namespace RhytmFighter.Battle.AI
                 AIActionTypes.SimpleAttack,
                 AIActionTypes.Idle,
                 AIActionTypes.Idle,
-                AIActionTypes.SimpleAttack,
+                AIActionTypes.Defence,
                 AIActionTypes.Idle,
-                AIActionTypes.Idle
+                AIActionTypes.Defence,
             };
         }
 

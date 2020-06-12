@@ -1,7 +1,7 @@
 ﻿using RhytmFighter.Battle.Core.Abstract;
 using RhytmFighter.Persistant.Abstract;
 
-namespace RhytmFighter.Battle.AI
+namespace RhytmFighter.Battle.AI.Abstract
 {
     public abstract class AbstractAI : iUpdatable
     {

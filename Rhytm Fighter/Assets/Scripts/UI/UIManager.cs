@@ -133,6 +133,11 @@ namespace RhytmFighter.UI
             UIComponent_ActionPointsIndicator.RestoreActionPoint(curActionPoints);
         }
 
+        public void RestoreAllActionPoints()
+        {
+            UIComponent_ActionPointsIndicator.RestoreAllActionPoints();
+        }
+
 
         public void ButtonDefence_PressHandler()
         {

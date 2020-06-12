@@ -164,7 +164,7 @@ namespace RhytmFighter.Level.Data
                 StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, BattleManager.Instance.NPCMoveSpeed, 
                                                                            new SimpleBattleActionBehaviour(rndDmg),
                                                                            new SimpleHealthBehaviour(rndHP),
-                                                                           AITypes.Simple);
+                                                                           AITypes.SimpleDefencible);
 
                 rndCell.AddObject(enemyNPC);
             }

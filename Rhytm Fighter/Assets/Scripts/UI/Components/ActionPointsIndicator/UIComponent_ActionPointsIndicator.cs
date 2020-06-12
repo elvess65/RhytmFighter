@@ -42,6 +42,12 @@ namespace RhytmFighter.UI.Components
                 item.Restore();
         }
 
+        public void RestoreAllActionPoints()
+        {
+            for (int i = m_Items.Count - 1; i >= 0; i--)
+                m_Items[i].Restore();
+        }
+
         public void PerformUpdate(float deltaTime)
         {
             for (int i = 0; i < m_Items.Count; i++)

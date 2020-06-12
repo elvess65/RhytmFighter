@@ -1,6 +1,7 @@
 ﻿using Frameworks.Grid.Data;
 using RhytmFighter.Battle.Action;
 using RhytmFighter.Battle.AI;
+using RhytmFighter.Battle.AI.Abstract;
 using RhytmFighter.Battle.Command;
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.Battle.Health;

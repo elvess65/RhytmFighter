@@ -6,6 +6,7 @@ using RhytmFighter.Battle.AI;
 using RhytmFighter.Battle.Health;
 using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Objects.View;
+using RhytmFighter.Battle.AI.Abstract;
 
 namespace RhytmFighter.Objects.Model
 {
@@ -34,6 +35,9 @@ namespace RhytmFighter.Objects.Model
             {
                 case AITypes.Simple:
                     result = new SimpleAI(this);
+                    break;
+                case AITypes.SimpleDefencible:
+                    result = new SimpleDefencibleAI(this);
                     break;
             }
 

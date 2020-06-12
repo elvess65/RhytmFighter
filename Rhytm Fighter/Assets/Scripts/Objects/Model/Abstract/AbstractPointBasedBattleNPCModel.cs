@@ -9,6 +9,7 @@ namespace RhytmFighter.Objects.Model
     {
         public System.Action<int> OnActionPointUsed;
         public System.Action<int> OnActionPointRestored;
+        public System.Action OnAllActionPointsResotored;
     
         private readonly int m_ActionPoints;
         private readonly int m_TicksToRestoreActionPoint;
@@ -60,6 +61,7 @@ namespace RhytmFighter.Objects.Model
         public void RestoreAllActionPoints()
         {
             m_CurrentActionPoints = m_ActionPoints;
+            OnAllActionPointsResotored?.Invoke();
         }
     }
 }

@@ -231,6 +231,8 @@ namespace RhytmFighter.Battle.Core
             playerModel.OnDestroyed += PlayerDestroyedHandler;
             playerModel.OnActionPointUsed += ManagersHolder.UIManager.UseActionPoint;
             playerModel.OnActionPointRestored += ManagersHolder.UIManager.RestoreActionPoint;
+            playerModel.OnAllActionPointsResotored += ManagersHolder.UIManager.RestoreAllActionPoints;
+
             battleBehaviour.OnActionExecuted += (AbstractCommandModel command) => playerModel.UseActionPoint();
 
             m_ControllersHolder.PlayerCharacterController.OnNoActionPoints += () => Debug.Log("No action points");
@@ -356,7 +358,7 @@ namespace RhytmFighter.Battle.Core
         private void BattleStartedHandler()
         {
             //Subscribe for events
-            //m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;   
+            m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;   
             m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             m_GameStateMachine.ChangeState(m_GameStateBattle);      //Change state

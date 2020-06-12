@@ -33,7 +33,7 @@
     public enum AnimationStates { None, Showing, Hiding }
 
     //AI
-    public enum AITypes { None, Simple }
+    public enum AITypes { None, Simple, SimpleDefencible }
     public enum AIActionTypes
     {
         SimpleAttack,
