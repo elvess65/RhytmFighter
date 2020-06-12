@@ -217,18 +217,22 @@ namespace RhytmFighter.Battle.Core
 
             //Battle
             SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(GameManager.Instance.DataHolder.PlayerDataModel.Character.Damage);
-            battleBehaviour.OnActionExecuted += BattleBehaviour_OnActionExecuted;
+            int actionPoints = GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints;
+            int ticksToRestoreActionPoint = GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint;
 
             //Start cell view
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(
                                                             m_ControllersHolder.LevelController.Model.GetCurrenRoomData().ID,
                                                             m_ControllersHolder.LevelController.Model.GetCurrenRoomData().GridData.WidthInCells / 2, 0);
 
+
             //Create player model
-            PlayerModel playerModel = new PlayerModel(0, startCellView.CorrespondingCellData, NPCMoveSpeed, battleBehaviour, healthBehaviour);
+            PlayerModel playerModel = new PlayerModel(0, startCellView.CorrespondingCellData, NPCMoveSpeed, battleBehaviour, healthBehaviour, actionPoints, ticksToRestoreActionPoint);
             playerModel.OnDestroyed += PlayerDestroyedHandler;
             playerModel.OnActionPointUsed += ManagersHolder.UIManager.UseActionPoint;
-            battleBehaviour.OnActionExecuted += (AbstractCommandModel command) => UseActionPoint();
+
+            m_ControllersHolder.PlayerCharacterController.OnNoActionPoints += () => Debug.Log("No action points");
+            battleBehaviour.OnActionExecuted += (AbstractCommandModel command) => playerModel.UseActionPoint();
 
             //Create player view
             m_ControllersHolder.PlayerCharacterController.CreateCharacter(playerModel, startCellView, m_ControllersHolder.LevelController);
@@ -241,11 +245,6 @@ namespace RhytmFighter.Battle.Core
 
             //TEMP
             UpdatePoitionAmount();
-        }
-
-        private void BattleBehaviour_OnActionExecuted(Command.Model.AbstractCommandModel obj)
-        {
-            Debug.Log(obj.Type);
         }
 
         private void PlayerDestroyedHandler(iBattleObject sender)
@@ -466,11 +465,6 @@ namespace RhytmFighter.Battle.Core
         #endregion
 
         #region UI
-        private void UseActionPoint()
-        {
-            m_ControllersHolder.PlayerCharacterController.PlayerModel.UseActionPoint();
-        }
-
         private void ButtonDefence_PressHandler()
         {
             if (m_ControllersHolder.RhytmInputProxy.IsInputTickValid() && m_ControllersHolder.RhytmInputProxy.IsInputAllowed())
@@ -490,6 +484,7 @@ namespace RhytmFighter.Battle.Core
                     {
                         UsePotion();
                         m_ControllersHolder.RhytmInputProxy.RegisterInput();
+                        m_ControllersHolder.PlayerCharacterController.PlayerModel.UseActionPoint();
                     }
                 }
                 else
@@ -499,7 +494,6 @@ namespace RhytmFighter.Battle.Core
 
         private void UsePotion()
         {
-            UseActionPoint();
             PlayerDataModel.Inventory.PotionsAmount--;
             UpdatePoitionAmount();
             SipSound.Play();

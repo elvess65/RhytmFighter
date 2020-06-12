@@ -20,6 +20,7 @@ namespace RhytmFighter.Characters
         public event System.Action<AbstractInteractableObjectModel> OnPlayerInteractsWithObject;
         public event System.Action OnTeleportStarted;
         public event System.Action OnTeleportFinished;
+        public event System.Action OnNoActionPoints;
 
         public PlayerModel PlayerModel { get; private set; }
 
@@ -90,8 +91,13 @@ namespace RhytmFighter.Characters
 
         public void ExecuteAction(CommandTypes type)
         {
-            PlayerModel.ActionBehaviour.ExecuteAction(type);
-            PlayerModel.NotifyViewAboutCommand(type);
+            if (PlayerModel.HasActionPoints())
+            {
+                PlayerModel.ActionBehaviour.ExecuteAction(type);
+                PlayerModel.NotifyViewAboutCommand(type);
+            }
+            else
+                OnNoActionPoints?.Invoke();
         }
 
         public void PrepareForBattle()

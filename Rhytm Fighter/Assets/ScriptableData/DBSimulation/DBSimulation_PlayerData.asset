@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: DBSimulation_PlayerData
   m_EditorClassIdentifier: 
   CurrentLevelID: 1
+  ActionPoints: 3
+  TickToRestoreActionPoint: 4
   Character:
     CharacterID: 1
     CharacterExp: 0

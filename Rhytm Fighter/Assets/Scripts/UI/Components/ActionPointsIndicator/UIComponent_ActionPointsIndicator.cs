@@ -1,5 +1,4 @@
-﻿using FrameworkPackage.Utils;
-using RhytmFighter.Assets;
+﻿using RhytmFighter.Assets;
 using RhytmFighter.Persistant.Abstract;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +12,7 @@ namespace RhytmFighter.UI.Components
         private List<UIComponent_ActionPointsIndicatorItem> m_Items;
 
 
-        public void Initialize(int apCount, int restoreDuration)
+        public void Initialize(int apCount, float restoreDurationSeconds)
         {
             m_Items = new List<UIComponent_ActionPointsIndicatorItem>();
             for (int i = 0; i < apCount; i++)
@@ -23,7 +22,7 @@ namespace RhytmFighter.UI.Components
                 item.transform.localScale = Vector3.one;
                 item.transform.localPosition = Vector3.zero;
 
-                item.Initialize(restoreDuration);
+                item.Initialize(restoreDurationSeconds);
 
                 m_Items.Add(item);
             }
@@ -31,12 +30,9 @@ namespace RhytmFighter.UI.Components
 
         public void UseActionPoint(int curActionPoints)
         {
-            m_Items[curActionPoints].StartRestoring();
-        }
-
-        public void RestoreActionPoint(int curActionPoints)
-        {
-            m_Items[curActionPoints].Restore();
+            UIComponent_ActionPointsIndicatorItem item = FindFreeItem();
+            if (item != null)
+                item.StartRestoring();
         }
 
         public void PerformUpdate(float deltaTime)
@@ -46,6 +42,18 @@ namespace RhytmFighter.UI.Components
                 if (m_Items[i].IsRestoring)
                     m_Items[i].PerformUpdate(deltaTime);
             }
+        }
+
+
+        UIComponent_ActionPointsIndicatorItem FindFreeItem()
+        {
+            for (int i = m_Items.Count - 1; i >= 0; i--)
+            {
+                if (!m_Items[i].IsRestoring)
+                    return m_Items[i];
+            }
+
+            return null;
         }
     }
 }

@@ -6,6 +6,8 @@ namespace RhytmFighter.Data.DataBase.Simulation
     public class DBSimulation_PlayerData : ScriptableObject
     {
         public int CurrentLevelID;
+        public int ActionPoints = 3;
+        public int TickToRestoreActionPoint = 4;
 
         [Header("Selected character")]
         public CharacterData Character;

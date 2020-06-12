@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.Battle.Core;
+using RhytmFighter.Persistant;
 using RhytmFighter.Persistant.Abstract;
 using RhytmFighter.StateMachines.UIState;
 using RhytmFighter.UI.Components;
@@ -48,7 +49,9 @@ namespace RhytmFighter.UI
             //Components
             UIComponent_TickIndicator.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
             UIComponent_PotionCooldown.Initialize(5);
-            UIComponent_ActionPointsIndicator.Initialize(3, 1);
+            UIComponent_ActionPointsIndicator.Initialize(GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints, 
+                                                         (float)(Rhytm.RhytmController.GetInstance().TickDurationSeconds * 
+                                                         GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint));
 
             Text_PressToContinue.gameObject.SetActive(false);
 
