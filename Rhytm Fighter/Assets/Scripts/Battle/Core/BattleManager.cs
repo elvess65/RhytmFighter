@@ -338,7 +338,6 @@ namespace RhytmFighter.Battle.Core
         #region Battle
         private void PrepareForBattleHandler()
         {
-            Debug.Log("PRepare for battle");
             //No need to stop movement if players destination cell is the cell where enemy was detected
             if (m_ControllersHolder.PlayerCharacterController.PlayerModel.IsMoving)
                 m_ControllersHolder.PlayerCharacterController.StopMove();
@@ -360,7 +359,6 @@ namespace RhytmFighter.Battle.Core
             //m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;   
             m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
-            Debug.Log("Battle");
             m_GameStateMachine.ChangeState(m_GameStateBattle);      //Change state
             ManagersHolder.UIManager.ToBattleStartUIState();        //Show Battle UI
         }

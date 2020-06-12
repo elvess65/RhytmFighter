@@ -10,9 +10,9 @@ namespace RhytmFighter.Objects.Model
         public System.Action<int> OnActionPointUsed;
         public System.Action<int> OnActionPointRestored;
     
-        private int m_ActionPoints;
+        private readonly int m_ActionPoints;
+        private readonly int m_TicksToRestoreActionPoint;
         private int m_CurrentActionPoints;
-        private int m_TicksToRestoreActionPoint;
         private int m_ActionPointRestoreTick;
         private List<int> m_TicksActionPointIsResored;
 
@@ -55,6 +55,11 @@ namespace RhytmFighter.Objects.Model
         public bool HasActionPoints()
         {
             return m_CurrentActionPoints > 0;
+        }
+
+        public void RestoreAllActionPoints()
+        {
+            m_CurrentActionPoints = m_ActionPoints;
         }
     }
 }

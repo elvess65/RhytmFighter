@@ -107,6 +107,7 @@ namespace RhytmFighter.Characters
 
         public void FinishBattle()
         {
+            PlayerModel.RestoreAllActionPoints();
             PlayerModel.NotifyViewAboutBattleFinish();
         }
 
