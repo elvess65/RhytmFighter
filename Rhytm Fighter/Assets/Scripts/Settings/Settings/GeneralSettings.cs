@@ -6,6 +6,7 @@ namespace RhytmFighter.Settings
     public class GeneralSettings : ScriptableObject
     {
         public bool MuteAudio = false;
+        public bool ClonePresetMaterials = false;
 
         [Range(0.1f, 1)]
         public double InputPrecious = 0.25;

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RhytmFighter.Battle.Core;
 using RhytmFighter.Data;
+using RhytmFighter.Persistant.Helpers;
 
 namespace RhytmFighter.Level.Data
 {
@@ -52,7 +53,7 @@ namespace RhytmFighter.Level.Data
                 {
                     bool cellCanBeUsedAsEmpty = true;
                     GridCellData cell = grid.GetCellByCoord(i, j);
-                    CellTypes cellType = Random.Range(0, 100) < 100 - obstacleFillPercent ? CellTypes.Normal : CellTypes.Obstacle;
+                    CellTypes cellType = HelpersCollection.IsInRandomRange(obstacleFillPercent) ? CellTypes.Obstacle : CellTypes.Normal;
 
                     //TODO: Add player spawn cell
 

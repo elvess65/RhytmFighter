@@ -18,13 +18,16 @@ namespace Frameworks.Grid.View
         private iCellAppearanceStrategy m_CellAppearanceStrategy;
 
         public GridCellData CorrespondingCellData { get; private set; }
-        public bool IsShowed => m_CellAppearanceStrategy.IsShowed;
+        public bool IsShowed => m_CellAppearanceStrategy != null && m_CellAppearanceStrategy.IsShowed;
 
 
         public void Initialize(GridCellData correspondingCellData, Abstract_CellContentView cellContent)
         {
             //Cell data
             CorrespondingCellData = correspondingCellData;
+
+            if (cellContent == null)
+                return;
 
             //Cell content
             m_CellContent = cellContent;
@@ -42,15 +45,18 @@ namespace Frameworks.Grid.View
             if (IsShowed)
                 return;
 
-            //Affect visual
-            m_CellAppearanceStrategy.Show();
-
             //Make data visited
             if (!CorrespondingCellData.IsDiscovered)
                 CorrespondingCellData.IsDiscovered = true;
 
             //Mark data as showed (for correct pathfinding)
             CorrespondingCellData.IsShowed = true;
+
+            if (m_CellContent == null)
+                return;
+
+            //Affect visual
+            m_CellAppearanceStrategy.Show();
 
             //If cell contains object
             if (CorrespondingCellData.HasObject)
@@ -65,11 +71,14 @@ namespace Frameworks.Grid.View
             if (!IsShowed)
                 return;
 
-            //Affect visual
-            m_CellAppearanceStrategy.Hide(hideImmdeiate);
-
             //Mark data as hided (for correct pathfinding)
             CorrespondingCellData.IsShowed = false;
+
+            if (m_CellContent == null)
+                return;
+
+            //Affect visual
+            m_CellAppearanceStrategy.Hide(hideImmdeiate);
 
             //If cell contains object
             if (CorrespondingCellData.HasObject)

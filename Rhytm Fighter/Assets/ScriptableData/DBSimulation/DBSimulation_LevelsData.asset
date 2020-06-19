@@ -19,14 +19,20 @@ MonoBehaviour:
       OverrideSeed: 1
       LevelSeed: 10
       LevelDepth: 4
-      MinWidth: 5
-      MaxWidth: 7
-      MinHeight: 5
-      MaxHeight: 9
+      MinWidth: 7
+      MaxWidth: 10
+      MinHeight: 8
+      MaxHeight: 12
       CellSize: 1
-      ObstacleFillPercent: 15
+      ObstacleFillPercent: 25
     EnviromentParams:
-      EnviromentFillPercent: 40
+      CellOffset: 1
+      ElevationOffset: 0.2
+      ObstaclesHolesPercent: 25
+      EnviromentDecortionPercent: 0
+      EnviromentElevatedPercent: 30
+      EnviromentLightPercent: 10
+      EnviromentDarkPercent: 10
     ContentParams:
       ProgressionCurve:
         serializedVersion: 2

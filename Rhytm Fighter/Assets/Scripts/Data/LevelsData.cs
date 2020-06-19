@@ -71,7 +71,13 @@ namespace RhytmFighter.Data
         [Serializable]
         public class EnviromentData
         {
-            public int EnviromentFillPercent = 20;
+            public float CellOffset = 1;
+            public float ElevationOffset = 0.2f;
+            public int EnviromentDecortionPercent = 20;
+            public int ObstaclesHolesPercent = 20;
+            public int EnviromentElevatedPercent = 20;
+            public int EnviromentLightPercent = 20;
+            public int EnviromentDarkPercent = 20;
         }
 
         [Serializable]

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RhytmFighter.Battle.Core;
 using RhytmFighter.Data;
+using RhytmFighter.Persistant.Helpers;
 
 namespace Frameworks.Grid.View
 {
@@ -15,10 +16,10 @@ namespace Frameworks.Grid.View
     {
         public System.Action<AbstractGridObjectModel> OnCellWithObjectDetected;
 
-        private float m_CellOffset => 1f;
-
-        private LevelsData.EnviromentData m_EnviromentData;
+        private float m_CellOffset;
         private WaitForSeconds m_ExtendViewWait;
+        private LevelsData.EnviromentData m_EnviromentData;
+
         private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
 
         private const int m_ITERATIONS = 3;
@@ -39,6 +40,7 @@ namespace Frameworks.Grid.View
             Random.InitState(roomData.NodeData.NodeSeed);
 
             m_EnviromentData = enviromentData;
+            m_CellOffset = enviromentData.CellOffset;
 
             //Create parent
             Transform gridParent = new GameObject().transform;
@@ -197,8 +199,11 @@ namespace Frameworks.Grid.View
 
         private CellView CreateCellView(GridCellData cellData, Vector3 startPos, Transform gridParent)
         {
+            //Elevation
+            float elevationOffset = HelpersCollection.IsInRandomRange(m_EnviromentData.EnviromentElevatedPercent) ? m_EnviromentData.ElevationOffset : 0;
+
             //Create view
-            Vector3 viewPos = new Vector3(startPos.x + m_CellOffset / 2 + cellData.X * m_CellOffset, 0, startPos.z + m_CellOffset / 2 + cellData.Y * m_CellOffset);
+            Vector3 viewPos = new Vector3(startPos.x + m_CellOffset / 2 + cellData.X * m_CellOffset, elevationOffset, startPos.z + m_CellOffset / 2 + cellData.Y * m_CellOffset);
             CellView cellView = AssetsManager.GetPrefabAssets().InstantiatePrefab<CellView>(AssetsManager.GetPrefabAssets().CellView_Prefab, viewPos);
             cellView.transform.parent = gridParent;
             cellView.gameObject.name = $"Cell_(X - {cellData.X}. Y - {cellData.Y})";
@@ -216,6 +221,7 @@ namespace Frameworks.Grid.View
         private Abstract_CellContentView GetCellContentPrefab(GridCellData cellData)
         {
             Abstract_CellContentView cellContent = null;
+            Material contentMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.EnviromentNormalSource;
 
             if (cellData.HasProperty)
             {
@@ -239,12 +245,36 @@ namespace Frameworks.Grid.View
             }
             else
             {
-                bool getDecorated = false;
-                if (cellData.CellType == CellTypes.Normal)
-                    getDecorated = Random.Range(0, 100) <= m_EnviromentData.EnviromentFillPercent;
+                bool shouldBeDecorated = false;
 
-                cellContent = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().GetRandomCellContent(cellData.CellType, getDecorated));
+                switch (cellData.CellType)
+                {
+                    case CellTypes.Normal:
+                        shouldBeDecorated = HelpersCollection.IsInRandomRange(m_EnviromentData.EnviromentDecortionPercent);
+                        
+                        if (HelpersCollection.IsInRandomRange(m_EnviromentData.EnviromentLightPercent))         //Light
+                        {
+                            contentMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.EnviromentLightSource;
+                        }
+                        else if (HelpersCollection.IsInRandomRange(m_EnviromentData.EnviromentDarkPercent))     //Dark
+                        {
+                            contentMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.EnviromentDarkSource;
+                        }
+
+                        break;
+                    case CellTypes.Obstacle:
+                        if (HelpersCollection.IsInRandomRange(m_EnviromentData.ObstaclesHolesPercent))
+                            return null;
+
+                        contentMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.ObstaclesSource;
+
+                        break;
+                }
+
+                cellContent = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().GetRandomCellContent(cellData.CellType, shouldBeDecorated));
             }
+
+            cellContent.ApplyMaterials(contentMaterial);
 
             return cellContent;
         }

@@ -46,7 +46,18 @@ namespace RhytmFighter.Data.DataBase.Simulation
         [System.Serializable]
         public class EnviromentData
         {
-            [Range(0, 100)] public int EnviromentFillPercent = 20;
+            public float CellOffset = 1;
+            public float ElevationOffset = 0.2f;
+
+            [Header("Obstacles")]
+            [Range(0, 100)] public int ObstaclesHolesPercent = 20;
+
+            [Header("Normal")]
+            [Range(0, 100)] public int EnviromentDecortionPercent = 20;
+            [Range(0, 100)] public int EnviromentElevatedPercent = 20;
+            [Range(0, 100)] public int EnviromentLightPercent = 20;
+            [Range(0, 100)] public int EnviromentDarkPercent = 20;
+
         }
 
         [System.Serializable]

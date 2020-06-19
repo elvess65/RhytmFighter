@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.Persistant.Enums;
+using RhytmFighter.Persistant.Helpers;
 using System.Text;
 using UnityEngine;
 
@@ -37,7 +38,7 @@ namespace RhytmFighter.Level.Data
                 return result;
 
             //Взять правый нод с вероятностью 50%. В противном случае взять левый
-            bool takeRightNode = Random.Range(0, 100) > 50;
+            bool takeRightNode = HelpersCollection.IsInRandomRange(50);
             if (takeRightNode)
             {
                 //Правый нод свободен

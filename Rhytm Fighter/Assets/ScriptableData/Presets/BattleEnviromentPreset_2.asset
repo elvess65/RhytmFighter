@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82414704bf405be418ecdbceb542e1f5, type: 3}
+  m_Name: BattleEnviromentPreset_2
+  m_EditorClassIdentifier: 
+  EnviromentNormalSource: {fileID: 2100000, guid: 52de5ff8c191d774390c55a3ee433c3e,
+    type: 2}
+  EnviromentLightSource: {fileID: 2100000, guid: 4c5a85bd9605dd64aa3f83dd1f2e73b4,
+    type: 2}
+  EnviromentDarkSource: {fileID: 2100000, guid: 3fdd735e682d9ad439fee498b1ebd6e7,
+    type: 2}
+  ObstaclesSource: {fileID: 2100000, guid: 53095b5c721cf4047acd1856f6c07934, type: 2}
+  SkyboxSource: {fileID: 2100000, guid: 50c761ab501a68440a3ef3f5fbd1b46a, type: 2}
