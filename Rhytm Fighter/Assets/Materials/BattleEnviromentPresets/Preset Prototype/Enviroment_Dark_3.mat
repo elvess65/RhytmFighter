@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enviroment_Dark_1
+  m_Name: Enviroment_Dark_3
   m_Shader: {fileID: 4800000, guid: 275eb5e6d1651d843994a5a0fe5d0ece, type: 3}
   m_ShaderKeywords: BACKSOLID FRONTSOLID HEIGHT_FOG LEFTSOLID RIGHTSOLID TOPSOLID
     _AOUV_UV0 _GRADIENTSPACE_WORLD_SPACE _GRADSETTINGS_B_USE_GLOBAL _GRADSETTINGS_D_USE_GLOBAL
@@ -153,19 +153,19 @@ Material:
     - _AmbientColor: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1_B: {r: 0.25098038, g: 0.07450979, b: 0.31372547, a: 1}
+    - _Color1_B: {r: 0.25098035, g: 0.07450978, b: 0.31372544, a: 1}
     - _Color1_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_F: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1_L: {r: 0.45098037, g: 0.32549015, b: 0.45098037, a: 1}
-    - _Color1_R: {r: 0.5153285, g: 0.40236735, b: 0.62264144, a: 1}
-    - _Color1_T: {r: 0.41685966, g: 0.3355286, b: 0.49056596, a: 1}
+    - _Color1_L: {r: 0.45098037, g: 0.32549012, b: 0.45098037, a: 1}
+    - _Color1_R: {r: 0.5153285, g: 0.40236732, b: 0.62264144, a: 1}
+    - _Color1_T: {r: 0.41685963, g: 0.33552855, b: 0.49056596, a: 1}
     - _Color2_B: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_F: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_L: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_R: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_T: {r: 1, g: 1, b: 1, a: 1}
-    - _Color_Fog: {r: 0.09803919, g: 0.15294114, b: 0.24705881, a: 1}
+    - _Color_Fog: {r: 0.09803916, g: 0.15294111, b: 0.24705878, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GizmoPosition_B: {r: 0, g: 0, b: 10, a: 10}
     - _GizmoPosition_D: {r: 0, g: 0, b: 10, a: 10}
@@ -182,7 +182,7 @@ Material:
     - _GradientYStartPos_R: {r: 0, g: 0, b: 0, a: 0}
     - _LMColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShadowColor: {r: 0.09999994, g: 0.09999994, b: 0.09999994, a: 1}
+    - _ShadowColor: {r: 0.09999991, g: 0.09999991, b: 0.09999991, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TintColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &549522738768096638

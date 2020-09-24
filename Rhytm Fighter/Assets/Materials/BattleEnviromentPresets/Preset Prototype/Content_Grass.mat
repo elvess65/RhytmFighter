@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enviroment_Dark_1
+  m_Name: Content_Grass
   m_Shader: {fileID: 4800000, guid: 275eb5e6d1651d843994a5a0fe5d0ece, type: 3}
-  m_ShaderKeywords: BACKSOLID FRONTSOLID HEIGHT_FOG LEFTSOLID RIGHTSOLID TOPSOLID
+  m_ShaderKeywords: BACKSOLID FRONTSOLID LEFTSOLID RIGHTSOLID TEXTUREMODULE_ON TOPSOLID
     _AOUV_UV0 _GRADIENTSPACE_WORLD_SPACE _GRADSETTINGS_B_USE_GLOBAL _GRADSETTINGS_D_USE_GLOBAL
     _GRADSETTINGS_F_USE_GLOBAL _GRADSETTINGS_L_USE_GLOBAL _GRADSETTINGS_R_USE_GLOBAL
     _GRADSETTINGS_T_USE_GLOBAL _LMAPBLENDINGMODE_ADD _SHADING_B_VERTEX_COLOR _SHADING_D_VERTEX_COLOR
@@ -45,7 +45,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 4eeb05c53b3ec4d48a3fbe88a5862d0c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -76,8 +76,8 @@ Material:
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _Fade: 1
-    - _FogHeight: 0
-    - _FogYStartPos: -0.7
+    - _FogHeight: 10
+    - _FogYStartPos: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -95,11 +95,11 @@ Material:
     - _GradientHeight_R: 1
     - _GradientHeight_T: 1
     - _GradientSpace: 0
-    - _HFogEnable: 1
+    - _HFogEnable: 0
     - _LMPower: 0
     - _LmapBlendingMode: 0
     - _LmapEnable: 0
-    - _MainTexturePower: 0
+    - _MainTexturePower: 0.418
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -131,7 +131,7 @@ Material:
     - _ShowBottom: 1
     - _ShowColorCorrection: 0
     - _ShowCustomShading: 1
-    - _ShowFog: 1
+    - _ShowFog: 0
     - _ShowFront: 1
     - _ShowGlobalGradientSettings: 0
     - _ShowLMap: 0
@@ -153,19 +153,19 @@ Material:
     - _AmbientColor: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1_B: {r: 0.25098038, g: 0.07450979, b: 0.31372547, a: 1}
+    - _Color1_B: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_F: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1_L: {r: 0.45098037, g: 0.32549015, b: 0.45098037, a: 1}
-    - _Color1_R: {r: 0.5153285, g: 0.40236735, b: 0.62264144, a: 1}
-    - _Color1_T: {r: 0.41685966, g: 0.3355286, b: 0.49056596, a: 1}
+    - _Color1_L: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
+    - _Color1_R: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+    - _Color1_T: {r: 0.9716981, g: 0.9716981, b: 0.9716981, a: 1}
     - _Color2_B: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_F: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_L: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_R: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_T: {r: 1, g: 1, b: 1, a: 1}
-    - _Color_Fog: {r: 0.09803919, g: 0.15294114, b: 0.24705881, a: 1}
+    - _Color_Fog: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GizmoPosition_B: {r: 0, g: 0, b: 10, a: 10}
     - _GizmoPosition_D: {r: 0, g: 0, b: 10, a: 10}
@@ -182,7 +182,7 @@ Material:
     - _GradientYStartPos_R: {r: 0, g: 0, b: 0, a: 0}
     - _LMColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShadowColor: {r: 0.09999994, g: 0.09999994, b: 0.09999994, a: 1}
+    - _ShadowColor: {r: 0.09999997, g: 0.09999997, b: 0.09999997, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TintColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &549522738768096638
