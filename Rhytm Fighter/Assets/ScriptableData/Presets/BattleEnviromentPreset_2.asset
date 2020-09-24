@@ -19,4 +19,4 @@ MonoBehaviour:
   EnviromentDarkSource: {fileID: 2100000, guid: 3fdd735e682d9ad439fee498b1ebd6e7,
     type: 2}
   ObstaclesSource: {fileID: 2100000, guid: 53095b5c721cf4047acd1856f6c07934, type: 2}
-  SkyboxSource: {fileID: 2100000, guid: 50c761ab501a68440a3ef3f5fbd1b46a, type: 2}
+  SkyboxSource: {fileID: 2100000, guid: d957ae078892992458f4bb1a3decb9ed, type: 2}

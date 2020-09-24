@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 using UnityEngine;
 
 namespace RhytmFighter.EditorTools
@@ -18,3 +19,4 @@ namespace RhytmFighter.EditorTools
         }
     }
 }
+#endif
