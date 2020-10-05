@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using static RhytmFighter.Enviroment.Presets.BattleEnviromentPreset;
 
 namespace Frameworks.Grid.View.Cell
 {
@@ -6,30 +8,47 @@ namespace Frameworks.Grid.View.Cell
     {
         public GameObject Graphics;
         public GameObject Effects;
-
-        public MeshRenderer[] CellRenderers;
-        public MeshRenderer[] ContentRenderers;
+        public CellRendererTypeContainer[] TypeRenderers;
 
 
         public virtual void Initialize()
         {
-
         }
 
-        public void ApplyMaterials(Material cellMaterial = null, Material contentMaterial = null)
+        public void ApplyMaterials(Material cellMaterial, ContentMaterial[] contentMaterials)
         {
-            ApplyMaterial(cellMaterial, CellRenderers);
-            ApplyMaterial(contentMaterial, ContentRenderers);
-        }
-
-        void ApplyMaterial(Material material, MeshRenderer[] renderers)
-        {
-            if (material != null && renderers.Length > 0)
+            foreach (CellRendererTypeContainer typeContainer in TypeRenderers)
             {
-                for (int i = 0; i < renderers.Length; i++)
+                //Apply material to ground
+                if (typeContainer.RendererType == RhytmFighter.Persistant.Enums.ContentRendererTypes.Cell)
                 {
-                    renderers[i].sharedMaterial = material;
+                    typeContainer.ApplyMaterialToRenderers(cellMaterial);
                 }
+                //Apply materials to content
+                else
+                {
+                    foreach (ContentMaterial contentMaterial in contentMaterials)
+                    {
+                        if (contentMaterial.Type == typeContainer.RendererType)
+                        {
+                            typeContainer.ApplyMaterialToRenderers(contentMaterial.MaterialSource);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Вызывается из редактора
+        /// </summary>
+        public void RefreshRenderers()
+        {
+            TypeRenderers = GetComponentsInChildren<CellRendererTypeContainer>();
+
+            foreach (CellRendererTypeContainer renderer in TypeRenderers)
+            {
+                renderer.LoadRenderers();
             }
         }
     }

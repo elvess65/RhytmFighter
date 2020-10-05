@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcb1e150496776e4bb4c3fa2860360c5, type: 3}
-  m_Name: DBSimulation_LevelsData
+  m_Name: LevelsData
   m_EditorClassIdentifier: 
   LevelParamsData:
   - ID: 1
@@ -31,7 +31,7 @@ MonoBehaviour:
       ObstaclesHolesPercent: 25
       EnviromentDecortionPercent: 0
       EnviromentElevatedPercent: 30
-      EnviromentLightPercent: 10
+      EnviromentLightPercent: 20
       EnviromentDarkPercent: 10
     ContentParams:
       ProgressionCurve:
@@ -67,8 +67,8 @@ MonoBehaviour:
       MinEnemyHP: 3
       MaxEnemyHP: 7
       MinEnemyDmg: 1
-      MaxEnemyDmg: 3
+      MaxEnemyDmg: 1
       MinBossHP: 10
       MaxBossHP: 15
-      MinBossDmg: 5
-      MaxBossDmg: 10
+      MinBossDmg: 1
+      MaxBossDmg: 2

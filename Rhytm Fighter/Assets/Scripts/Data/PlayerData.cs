@@ -5,11 +5,9 @@
     /// </summary>
     public class PlayerData : AbstractData<PlayerData>
     {
-        public bool IsFirstLevel => CurrentLevelID == 1;
-
         public int CurrentLevelID;
-        public int ActionPoints = 3;
-        public int TickToRestoreActionPoint = 4;
+        //public int ActionPoints = 3;
+        //public int TickToRestoreActionPoint = 4;
 
         public CharacterData Character;
         public InventoryData Inventory;
@@ -21,9 +19,8 @@
             public int CharacterID;
             public int CharacterExp;
             public int HP;
+            public int MaxHP;
             public int Damage;
-
-            public int FirstLevelCurrentHP;
         }
 
         [System.Serializable]

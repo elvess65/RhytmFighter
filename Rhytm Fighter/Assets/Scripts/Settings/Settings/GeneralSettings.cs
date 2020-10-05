@@ -6,6 +6,7 @@ namespace RhytmFighter.Settings
     public class GeneralSettings : ScriptableObject
     {
         public bool MuteAudio = false;
+        [Tooltip("Делать копию материалов из выбранного пресета (true) или использовать ссылки (для редактирования в игре) (false)")]
         public bool ClonePresetMaterials = false;
 
         [Range(0.1f, 1)]

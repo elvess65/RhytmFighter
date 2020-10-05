@@ -211,14 +211,13 @@ namespace RhytmFighter.Battle.Core
         private void CreatePlayer()
         {
             //Health
-            SimpleHealthBehaviour healthBehaviour = GameManager.Instance.DataHolder.PlayerDataModel.IsFirstLevel ?
-                                                        new SimpleHealthBehaviour(GameManager.Instance.DataHolder.PlayerDataModel.Character.FirstLevelCurrentHP, GameManager.Instance.DataHolder.PlayerDataModel.Character.HP) :
-                                                        new SimpleHealthBehaviour(GameManager.Instance.DataHolder.PlayerDataModel.Character.HP);
+            SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(GameManager.Instance.DataHolder.PlayerDataModel.Character.HP, 
+                                                                              GameManager.Instance.DataHolder.PlayerDataModel.Character.MaxHP);
 
             //Battle
             SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(GameManager.Instance.DataHolder.PlayerDataModel.Character.Damage);
-            int actionPoints = GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints;
-            int ticksToRestoreActionPoint = GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint;
+            int actionPoints = 0;//GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints;
+            int ticksToRestoreActionPoint = 0;//GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint;
 
             //Start cell view
             CellView startCellView = m_ControllersHolder.LevelController.RoomViewBuilder.GetCellVisual(

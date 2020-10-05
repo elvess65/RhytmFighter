@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &3855941780860346167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3405462183565902640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c323f55a864fb74ebf8bbbb919eee39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RendererType: 0
+  ContentRenderers:
+  - {fileID: 3391797491554344208}
+--- !u!114 &4672182855804932352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3405625806095859558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c323f55a864fb74ebf8bbbb919eee39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RendererType: 0
+  ContentRenderers:
+  - {fileID: 3391950890013574548}
 --- !u!1001 &3406651891938515810
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79,6 +109,30 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0c0b220fd95c1cf46a4eb0e733648677, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3420374d1e21a28448111093d3e0b279, type: 3}
+--- !u!1 &3405462183565902640 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1260077219616850, guid: 3420374d1e21a28448111093d3e0b279,
+    type: 3}
+  m_PrefabInstance: {fileID: 3406651891938515810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3391797491554344208 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 23870404657415794, guid: 3420374d1e21a28448111093d3e0b279,
+    type: 3}
+  m_PrefabInstance: {fileID: 3406651891938515810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3405625806095859558 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1668477997245444, guid: 3420374d1e21a28448111093d3e0b279,
+    type: 3}
+  m_PrefabInstance: {fileID: 3406651891938515810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3391950890013574548 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 23778606517591798, guid: 3420374d1e21a28448111093d3e0b279,
+    type: 3}
+  m_PrefabInstance: {fileID: 3406651891938515810}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7620682832551588574
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -93,6 +147,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4355126245208102837, guid: a6362d27df8aea3479a6bd0cbfaa8b4e,
         type: 3}
+      propertyPath: TypeRenderers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4355126245208102837, guid: a6362d27df8aea3479a6bd0cbfaa8b4e,
+        type: 3}
       propertyPath: CellRenderers.Array.data[0]
       value: 
       objectReference: {fileID: 23870405377952628, guid: 88428108ed4a5e340b3ccd093a8bdd1c,
@@ -103,10 +162,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 23778606300697584, guid: 88428108ed4a5e340b3ccd093a8bdd1c,
         type: 3}
+    - target: {fileID: -4355126245208102837, guid: a6362d27df8aea3479a6bd0cbfaa8b4e,
+        type: 3}
+      propertyPath: TypeRenderers.Array.data[0]
+      value: 
+      objectReference: {fileID: 3855941780860346167}
+    - target: {fileID: -4355126245208102837, guid: a6362d27df8aea3479a6bd0cbfaa8b4e,
+        type: 3}
+      propertyPath: TypeRenderers.Array.data[1]
+      value: 
+      objectReference: {fileID: 4672182855804932352}
     - target: {fileID: 153836575011604561, guid: a6362d27df8aea3479a6bd0cbfaa8b4e,
         type: 3}
       propertyPath: m_Name
-      value: Normal_Prototype_Empty
+      value: _Prefab_Normal_Prototype_Empty
       objectReference: {fileID: 0}
     - target: {fileID: 153836575011604561, guid: a6362d27df8aea3479a6bd0cbfaa8b4e,
         type: 3}

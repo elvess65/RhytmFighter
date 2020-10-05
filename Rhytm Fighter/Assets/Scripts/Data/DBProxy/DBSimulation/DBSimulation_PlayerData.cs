@@ -6,8 +6,8 @@ namespace RhytmFighter.Data.DataBase.Simulation
     public class DBSimulation_PlayerData : ScriptableObject
     {
         public int CurrentLevelID;
-        public int ActionPoints = 3;
-        public int TickToRestoreActionPoint = 4;
+        //public int ActionPoints = 3;
+        //public int TickToRestoreActionPoint = 4;
 
         [Header("Selected character")]
         public CharacterData Character;
@@ -25,17 +25,16 @@ namespace RhytmFighter.Data.DataBase.Simulation
             [Space(10)]
 
             [Tooltip("Current character exp")]
-            public int CharacterExp;
+            public int CharacterExp = 0;
 
             [Tooltip("Character HP")]
-            public int HP;
+            public int HP = 2;
+
+            [Tooltip("Character Max HP")]
+            public int MaxHP = 3;
 
             [Tooltip("Character Damage")]
-            public int Damage;
-
-            [Header("First level")]
-            [Tooltip("Current character HP at first level start")]
-            public int FirstLevelCurrentHP;
+            public int Damage = 3;
         }
 
         [System.Serializable]

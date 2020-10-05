@@ -55,6 +55,7 @@ namespace RhytmFighter.Objects.Model
 
         public bool HasActionPoints()
         {
+            return true;
             return m_CurrentActionPoints > 0;
         }
 

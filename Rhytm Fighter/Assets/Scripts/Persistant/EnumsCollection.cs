@@ -46,4 +46,7 @@
 
     //Movement
     public enum MovementStrategyTypes { Bezier, Teleport }
+
+    //Cell Content Renderers
+    public enum ContentRendererTypes { Cell, Stone, Grass, Tree }
 }

@@ -221,7 +221,7 @@ namespace Frameworks.Grid.View
         private Abstract_CellContentView GetCellContentPrefab(GridCellData cellData)
         {
             Abstract_CellContentView cellContent = null;
-            Material contentMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.EnviromentNormalSource;
+            Material cellMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.EnviromentNormalSource;
 
             if (cellData.HasProperty)
             {
@@ -254,11 +254,11 @@ namespace Frameworks.Grid.View
                         
                         if (HelpersCollection.IsInRandomRange(m_EnviromentData.EnviromentLightPercent))         //Light
                         {
-                            contentMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.EnviromentLightSource;
+                            cellMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.EnviromentLightSource;
                         }
                         else if (HelpersCollection.IsInRandomRange(m_EnviromentData.EnviromentDarkPercent))     //Dark
                         {
-                            contentMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.EnviromentDarkSource;
+                            cellMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.EnviromentDarkSource;
                         }
 
                         break;
@@ -266,7 +266,7 @@ namespace Frameworks.Grid.View
                         if (HelpersCollection.IsInRandomRange(m_EnviromentData.ObstaclesHolesPercent))
                             return null;
 
-                        contentMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.ObstaclesSource;
+                        cellMaterial = BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.ObstaclesSource;
 
                         break;
                 }
@@ -274,7 +274,7 @@ namespace Frameworks.Grid.View
                 cellContent = AssetsManager.GetPrefabAssets().InstantiatePrefab(AssetsManager.GetPrefabAssets().GetRandomCellContent(cellData.CellType, shouldBeDecorated));
             }
 
-            cellContent.ApplyMaterials(contentMaterial);
+            cellContent.ApplyMaterials(cellMaterial, BattleManager.Instance.ManagersHolder.PresetsManager.CurrentPreset.ContentSources);
 
             return cellContent;
         }

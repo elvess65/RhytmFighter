@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82414704bf405be418ecdbceb542e1f5, type: 3}
+  m_Name: Battle Enviroment Preset Prototype
+  m_EditorClassIdentifier: 
+  EnviromentNormalSource: {fileID: 2100000, guid: ea880b955f3b2c7469de3fb52aeff4dc,
+    type: 2}
+  EnviromentLightSource: {fileID: 2100000, guid: dbca635990e1d844ab2fbe233282fbca,
+    type: 2}
+  EnviromentDarkSource: {fileID: 2100000, guid: 0c0b220fd95c1cf46a4eb0e733648677,
+    type: 2}
+  ObstaclesSource: {fileID: 2100000, guid: 7d3c73090ab8eca40ba6601ef446748a, type: 2}
+  ContentSources:
+  - Type: 2
+    MaterialSource: {fileID: 2100000, guid: a6e4e766d1c79b046b6a80197324638d, type: 2}
+  - Type: 1
+    MaterialSource: {fileID: 2100000, guid: aa3c602ff5da6964896d1b0d3ea9243e, type: 2}
+  - Type: 3
+    MaterialSource: {fileID: 2100000, guid: 8c9b6323bdc200040bcad04a4050eba9, type: 2}
+  SkyboxSource: {fileID: 2100000, guid: c27fdfdb916c41f42aba35567d2e163c, type: 2}

@@ -44,12 +44,14 @@ namespace RhytmFighter.UI.Components
 
         public void RestoreAllActionPoints()
         {
+            return;
             for (int i = m_Items.Count - 1; i >= 0; i--)
                 m_Items[i].Restore();
         }
 
         public void PerformUpdate(float deltaTime)
         {
+            return;
             for (int i = 0; i < m_Items.Count; i++)
             {
                 if (m_Items[i].IsRestoring)
@@ -60,6 +62,7 @@ namespace RhytmFighter.UI.Components
 
         UIComponent_ActionPointsIndicatorItem FindFreeItem()
         {
+            return null;
             for (int i = m_Items.Count - 1; i >= 0; i--)
             {
                 if (!m_Items[i].IsRestoring)
@@ -71,6 +74,7 @@ namespace RhytmFighter.UI.Components
 
         UIComponent_ActionPointsIndicatorItem FindAlmostFinishedItem()
         {
+            return null;
             float maxProgress = float.MinValue;
             UIComponent_ActionPointsIndicatorItem item = null;
             for (int i = 0; i < m_Items.Count; i++)

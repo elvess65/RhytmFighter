@@ -49,10 +49,10 @@ namespace RhytmFighter.UI
             //Components
             UIComponent_TickIndicator.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
             UIComponent_PotionCooldown.Initialize(5);
-            UIComponent_ActionPointsIndicator.Initialize(GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints, 
+            /*UIComponent_ActionPointsIndicator.Initialize(GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints, 
                                                          (float)(Rhytm.RhytmController.GetInstance().TickDurationSeconds * 
                                                          GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint + 
-                                                         Rhytm.RhytmController.GetInstance().ProcessTickDelta));
+                                                         Rhytm.RhytmController.GetInstance().ProcessTickDelta));*/
 
             Text_PressToContinue.gameObject.SetActive(false);
 

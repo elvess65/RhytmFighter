@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79c1e91c7be9242cebbe361bd2dc71a0, type: 3}
-  m_Name: Battle PrefabAssets Prototype
+  m_Name: Prefabs Battle Prototype
   m_EditorClassIdentifier: 
   CellView_Prefab: {fileID: 1216514164877100161, guid: a079dadca1bc8cd488a60aa151794187,
     type: 3}
-  CellContent_Gate_Next_Prefab: {fileID: 4751451852878031872, guid: 56313807c244f67479f24ff7ddae53aa,
+  CellContent_Gate_Next_Prefab: {fileID: 4751451852878031872, guid: ed61c47db12705946865bf624277b4b1,
     type: 3}
-  CellContent_Gate_Parent_Prefab: {fileID: 4751451852878031872, guid: 56313807c244f67479f24ff7ddae53aa,
+  CellContent_Gate_Parent_Prefab: {fileID: 4751451852878031872, guid: ed61c47db12705946865bf624277b4b1,
     type: 3}
   CellContent_Normal_Prefabs:
   - {fileID: 3048199630128175765, guid: 6a48bede7f445394e81946695b34a711, type: 3}
