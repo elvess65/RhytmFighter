@@ -3,8 +3,10 @@ using RhytmFighter.Persistant;
 using RhytmFighter.Persistant.Abstract;
 using RhytmFighter.StateMachines.UIState;
 using RhytmFighter.UI.Components;
+using RhytmFighter.UI.Widgets;
 using UnityEngine;
 using UnityEngine.UI;
+using static RhytmFighter.Data.PlayerData;
 
 namespace RhytmFighter.UI
 {
@@ -26,7 +28,7 @@ namespace RhytmFighter.UI
         public Transform InventoryUIParent;
         public Text Text_PotionAmount;
         public UIComponent_Cooldown UIComponent_PotionCooldown;
-        public UIComponent_PotionIndicator UIComponent_PotionIndicator;
+        public UIWidget_PotionIndicator UIComponent_PotionIndicator;
 
         [Header("General")]
         public Transform PlayerHealthbarParent;
@@ -50,7 +52,10 @@ namespace RhytmFighter.UI
             //Components
             UIComponent_TickIndicator.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
             UIComponent_PotionCooldown.Initialize(5);
-            UIComponent_PotionIndicator.Initialize(3, 2);
+
+            PotionData potionData = GameManager.Instance.DataHolder.PlayerDataModel.Inventory.GetPotionByType(Persistant.Enums.PotionTypes.Heal);
+            UIComponent_PotionIndicator.Initialize(potionData.PiecesAmount, potionData.PiecesPerPotion);
+
             /*UIComponent_ActionPointsIndicator.Initialize(GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints, 
                                                          (float)(Rhytm.RhytmController.GetInstance().TickDurationSeconds * 
                                                          GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint + 

@@ -1,10 +1,11 @@
 ﻿using RhytmFighter.Persistant.Abstract;
+using RhytmFighter.UI.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RhytmFighter.UI.Components
+namespace RhytmFighter.UI.Widgets
 {
-    public class UIComponent_PotionIndicator : MonoBehaviour, iUpdatable
+    public class UIWidget_PotionIndicator : MonoBehaviour, iUpdatable
     {
         [SerializeField] private Text Text_PotionAmount;
         [SerializeField] private Image Image_Pieces;
@@ -25,6 +26,7 @@ namespace RhytmFighter.UI.Components
         public void IncrementPiece()
         {
             piecesAmount++;
+
             UpdateImagePieces();
             UpdatePotionAmount();
         }
@@ -32,12 +34,12 @@ namespace RhytmFighter.UI.Components
         private void UpdateImagePieces()
         {
             float progress = piecesAmount / (float)piecesPerPotion;
-            Image_Pieces.fillAmount = progress;
+            Image_Pieces.fillAmount = 1 - progress;
         }
 
         private void UpdatePotionAmount()
         {
-            int amount = piecesPerPotion % piecesPerPotion;
+            int amount = piecesAmount / piecesPerPotion;
             Text_PotionAmount.text = $"x{amount}";
         }
 

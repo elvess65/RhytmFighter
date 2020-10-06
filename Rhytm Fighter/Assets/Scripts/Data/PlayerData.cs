@@ -29,6 +29,17 @@ namespace RhytmFighter.Data
         public class InventoryData
         {
             public PotionData[] Potions;
+
+            public PotionData GetPotionByType(PotionTypes type)
+            {
+                foreach(PotionData potionData in Potions)
+                {
+                    if (potionData.Type == type)
+                        return potionData;
+                }
+
+                return Potions[0];
+            }
         }
 
         [System.Serializable]
@@ -38,6 +49,18 @@ namespace RhytmFighter.Data
             public int PiecesAmount;
             public int PiecesPerPotion;
             public int MaxPotionsAmount;
+
+            public bool TryIncrementPieceAmount()
+            {
+                int newPiecesAmount = PiecesAmount + 1;
+
+                if (newPiecesAmount > PiecesPerPotion * MaxPotionsAmount)
+                    return false;
+
+                PiecesAmount = newPiecesAmount;
+
+                return true;
+            }
         }
 
         //Skills

@@ -244,9 +244,6 @@ namespace RhytmFighter.Battle.Core
 
             //Initialize camera
             StartCoroutine(WaitEndOfFrameBeforeInitializeCamera());
-
-            //TEMP
-            UpdatePoitionAmount();
         }
 
         private void PlayerDestroyedHandler(iBattleObject sender)
@@ -282,8 +279,11 @@ namespace RhytmFighter.Battle.Core
         {
             yield return new WaitForSeconds(animationDelay);
 
-            //PlayerDataModel.Inventory.PotionsAmount++;
-            UpdatePoitionAmount();
+            if (PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).TryIncrementPieceAmount())
+            {
+                UpdatePoitionAmount();
+            }
+
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
 
