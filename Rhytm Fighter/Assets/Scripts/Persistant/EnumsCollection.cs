@@ -49,4 +49,7 @@
 
     //Cell Content Renderers
     public enum ContentRendererTypes { Cell, Stone, Grass, Tree }
+
+    //Potions
+    public enum PotionTypes { Heal }
 }

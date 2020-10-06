@@ -26,6 +26,7 @@ namespace RhytmFighter.UI
         public Transform InventoryUIParent;
         public Text Text_PotionAmount;
         public UIComponent_Cooldown UIComponent_PotionCooldown;
+        public UIComponent_PotionIndicator UIComponent_PotionIndicator;
 
         [Header("General")]
         public Transform PlayerHealthbarParent;
@@ -49,6 +50,7 @@ namespace RhytmFighter.UI
             //Components
             UIComponent_TickIndicator.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
             UIComponent_PotionCooldown.Initialize(5);
+            UIComponent_PotionIndicator.Initialize(3, 2);
             /*UIComponent_ActionPointsIndicator.Initialize(GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints, 
                                                          (float)(Rhytm.RhytmController.GetInstance().TickDurationSeconds * 
                                                          GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint + 

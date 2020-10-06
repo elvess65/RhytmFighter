@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RhytmFighter.Persistant.Enums;
+using UnityEngine;
 
 namespace RhytmFighter.Data.DataBase.Simulation
 {
@@ -40,7 +41,23 @@ namespace RhytmFighter.Data.DataBase.Simulation
         [System.Serializable]
         public class InventoryData
         {
-            public int PotionsAmount;
+            public PotionData[] Potions;
+        }
+
+        /// <summary>
+        /// Данные о зельях (Для одного зелья нужно собрать несколько осколков)
+        /// </summary>
+        [System.Serializable]
+        public class PotionData
+        {
+            [Tooltip("Тип зелья")]
+            public PotionTypes Type;
+            [Tooltip("Текущее количество кусков")]
+            public int PiecesAmount;
+            [Tooltip("Количество необходимых кусков для одного зелья")]
+            public int PiecesPerPotion;
+            [Tooltip("Максимальное количество зелей")]
+            public int MaxPotionsAmount;
         }
     }
 }

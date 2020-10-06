@@ -16,8 +16,12 @@ MonoBehaviour:
   Character:
     CharacterID: 1
     CharacterExp: 0
-    HP: 10
+    HP: 2
     MaxHP: 3
     Damage: 3
   Inventory:
-    PotionsAmount: 0
+    Potions:
+    - Type: 0
+      PiecesAmount: 1
+      PiecesPerPotion: 3
+      MaxPotionsAmount: 1

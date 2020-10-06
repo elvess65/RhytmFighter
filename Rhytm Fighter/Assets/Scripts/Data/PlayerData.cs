@@ -1,4 +1,6 @@
-﻿namespace RhytmFighter.Data
+﻿using RhytmFighter.Persistant.Enums;
+
+namespace RhytmFighter.Data
 {
     /// <summary>
     /// Player data
@@ -26,7 +28,16 @@
         [System.Serializable]
         public class InventoryData
         {
-            public int PotionsAmount;
+            public PotionData[] Potions;
+        }
+
+        [System.Serializable]
+        public class PotionData
+        {
+            public PotionTypes Type;
+            public int PiecesAmount;
+            public int PiecesPerPotion;
+            public int MaxPotionsAmount;
         }
 
         //Skills

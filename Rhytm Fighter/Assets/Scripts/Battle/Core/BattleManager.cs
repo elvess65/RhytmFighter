@@ -70,7 +70,7 @@ namespace RhytmFighter.Battle.Core
         {
             InitializeCore();
             InitializeStateMachine();
-            InitializeDataDependents();
+            InitializeDataDependends();
             InitializeUpdatables();
             InitializeEvents();
             ApplySettings();
@@ -100,7 +100,7 @@ namespace RhytmFighter.Battle.Core
             m_GameStateMachine.Initialize(m_GameStateIdle);
         }
 
-        private void InitializeDataDependents()
+        private void InitializeDataDependends()
         {
             LevelsData.LevelParams levelParams = GameManager.Instance.DataHolder.InfoData.LevelsData.GetLevelParams(GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID);
 
@@ -282,7 +282,7 @@ namespace RhytmFighter.Battle.Core
         {
             yield return new WaitForSeconds(animationDelay);
 
-            PlayerDataModel.Inventory.PotionsAmount++;
+            //PlayerDataModel.Inventory.PotionsAmount++;
             UpdatePoitionAmount();
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
@@ -478,7 +478,7 @@ namespace RhytmFighter.Battle.Core
 
         private void ButtonPoition_PressHandler()
         {
-            if (Instance.PlayerDataModel.Inventory.PotionsAmount > 0 && PlayerModel.HealthBehaviour.HP < PlayerModel.HealthBehaviour.MaxHP)
+            /*if (Instance.PlayerDataModel.Inventory.PotionsAmount > 0 && PlayerModel.HealthBehaviour.HP < PlayerModel.HealthBehaviour.MaxHP)
             {
                 if (m_ControllersHolder.BattleController.IsInBattle)
                 {
@@ -491,12 +491,12 @@ namespace RhytmFighter.Battle.Core
                 }
                 else
                     UsePotion();
-            }
+            }*/
         }
 
         private void UsePotion()
         {
-            PlayerDataModel.Inventory.PotionsAmount--;
+            //PlayerDataModel.Inventory.PotionsAmount--;
             UpdatePoitionAmount();
             SipSound.Play();
             AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().HealEffectPrefab,
@@ -510,12 +510,12 @@ namespace RhytmFighter.Battle.Core
 
         private void UpdatePoitionAmount()
         {
-            ManagersHolder.UIManager.Text_PotionAmount.text = $"x{PlayerDataModel.Inventory.PotionsAmount}";
+            //ManagersHolder.UIManager.Text_PotionAmount.text = $"x{PlayerDataModel.Inventory.PotionsAmount}";
 
-            ManagersHolder.UIManager.Text_PotionAmount.GetComponent<CanvasGroup>().alpha = PlayerDataModel.Inventory.PotionsAmount > 0 ? 1 : 0.5f;
+            //ManagersHolder.UIManager.Text_PotionAmount.GetComponent<CanvasGroup>().alpha = PlayerDataModel.Inventory.PotionsAmount > 0 ? 1 : 0.5f;
 
             Color color = ManagersHolder.UIManager.Button_Potion.image.color;
-            color.a = PlayerDataModel.Inventory.PotionsAmount > 0 ? 1 : 0.5f;
+            //color.a = PlayerDataModel.Inventory.PotionsAmount > 0 ? 1 : 0.5f;
             ManagersHolder.UIManager.Button_Potion.image.color = color;
         }
         #endregion
