@@ -2,6 +2,9 @@
 
 namespace RhytmFighter.UI.Components
 {
+    /// <summary>
+    /// Дает возможность интерполировать компоненты объекта
+    /// </summary>
     public abstract class InterpolatableComponent : MonoBehaviour
     {
         public abstract void Initialize();

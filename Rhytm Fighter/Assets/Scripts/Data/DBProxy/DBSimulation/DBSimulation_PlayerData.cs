@@ -56,8 +56,6 @@ namespace RhytmFighter.Data.DataBase.Simulation
             public int PiecesAmount;
             [Tooltip("Количество необходимых кусков для одного зелья")]
             public int PiecesPerPotion;
-            [Tooltip("Максимальное количество зелей")]
-            public int MaxPotionsAmount;
         }
     }
 }

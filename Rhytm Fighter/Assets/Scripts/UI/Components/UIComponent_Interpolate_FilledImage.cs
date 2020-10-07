@@ -3,29 +3,49 @@ using UnityEngine.UI;
 
 namespace RhytmFighter.UI.Components
 {
+    /// <summary>
+    /// Контролирует заполнение компонента Image
+    /// </summary>
     public class UIComponent_Interpolate_FilledImage : InterpolatableComponent
     {
-        [SerializeField] protected Image m_ControlledImage;
-        [SerializeField] protected float m_From;
-        [SerializeField] protected float m_To;
+        public float From;
+        public float To;
+
+        [SerializeField]
+        private Image ControlledImage;
+
+        [Tooltip("Автоматическое включение/отключение Image при начале/окончании интерполирования")]
+        [SerializeField] private bool AutoActivation = false;
+
+        public float CurrentValue => ControlledImage.fillAmount;
 
 
         public override void Initialize()
         {
+            if (ControlledImage == null)
+                ControlledImage = GetComponent<Image>();
+
+            if (AutoActivation)
+                ControlledImage.enabled = false;
         }
 
         public override void PrepareForInterpolation()
         {
-            m_ControlledImage.fillAmount = m_From;
+            ControlledImage.fillAmount = From;
+
+            if (AutoActivation)
+                ControlledImage.enabled = false;
         }
 
         public override void FinishInterpolation()
         {
+            if (AutoActivation)
+                ControlledImage.enabled = false;
         }
 
         public override void ProcessInterpolation(float progress)
         {
-            m_ControlledImage.fillAmount = Mathf.Lerp(m_From, m_To, progress);
+            ControlledImage.fillAmount = Mathf.Lerp(From, To, progress);
         }
     }
 }

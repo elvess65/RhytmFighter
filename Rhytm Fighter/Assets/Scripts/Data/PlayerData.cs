@@ -48,19 +48,8 @@ namespace RhytmFighter.Data
             public PotionTypes Type;
             public int PiecesAmount;
             public int PiecesPerPotion;
-            public int MaxPotionsAmount;
 
-            public bool TryIncrementPieceAmount()
-            {
-                int newPiecesAmount = PiecesAmount + 1;
-
-                if (newPiecesAmount > PiecesPerPotion * MaxPotionsAmount)
-                    return false;
-
-                PiecesAmount = newPiecesAmount;
-
-                return true;
-            }
+            public void IncrementPieceAmount() => PiecesAmount++;
         }
 
         //Skills

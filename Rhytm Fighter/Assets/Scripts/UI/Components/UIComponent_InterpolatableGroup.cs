@@ -4,18 +4,21 @@ using UnityEngine;
 
 namespace RhytmFighter.UI.Components
 {
-    public class UIComponent_Cooldown : MonoBehaviour, iUpdatable
+    /// <summary>
+    /// Контролирует группу интерполируемых элементов 
+    /// </summary>
+    public class UIComponent_InterpolatableGroup : MonoBehaviour, iUpdatable
     {
         [SerializeField] private InterpolatableComponent[] m_ControlledObjects;
 
         private InterpolationData<float> m_LerpData;
 
-        public bool IsInCooldown => m_LerpData.IsStarted;
+        public bool IsInProgress => m_LerpData.IsStarted;
 
 
-        public void Initialize(float cooldownTime)
+        public void Initialize(float duration)
         {
-            m_LerpData = new InterpolationData<float>(cooldownTime);
+            m_LerpData = new InterpolationData<float>(duration);
             m_LerpData.From = 0;
             m_LerpData.To = m_LerpData.TotalTime;
 
@@ -23,7 +26,7 @@ namespace RhytmFighter.UI.Components
                 m_ControlledObjects[i].Initialize();
         }
 
-        public void Cooldown()
+        public void Execute()
         {
             for (int i = 0; i < m_ControlledObjects.Length; i++)
                 m_ControlledObjects[i].PrepareForInterpolation();

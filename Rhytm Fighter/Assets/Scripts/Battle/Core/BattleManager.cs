@@ -63,6 +63,12 @@ namespace RhytmFighter.Battle.Core
                 for (int i = 0; i < m_Updateables.Count; i++)
                     m_Updateables[i].PerformUpdate(Time.deltaTime);
             }
+
+            if (UnityEngine.Input.GetKeyDown(KeyCode.A))
+            {
+                PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).IncrementPieceAmount();
+                ManagersHolder.UIManager.UpdatePotionAmount();
+            }
         }
 
         #region Initialization
@@ -279,10 +285,8 @@ namespace RhytmFighter.Battle.Core
         {
             yield return new WaitForSeconds(animationDelay);
 
-            if (PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).TryIncrementPieceAmount())
-            {
-                UpdatePoitionAmount();
-            }
+            PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).IncrementPieceAmount();
+            ManagersHolder.UIManager.UpdatePotionAmount();
 
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
@@ -497,7 +501,7 @@ namespace RhytmFighter.Battle.Core
         private void UsePotion()
         {
             //PlayerDataModel.Inventory.PotionsAmount--;
-            UpdatePoitionAmount();
+            ManagersHolder.UIManager.UpdatePotionAmount();
             SipSound.Play();
             AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().HealEffectPrefab,
                                                                                     PlayerModel.ViewPosition,
@@ -506,17 +510,6 @@ namespace RhytmFighter.Battle.Core
             PlayerModel.HealthBehaviour.IncreaseHP(5);
 
             OnPotionUsed?.Invoke();
-        }
-
-        private void UpdatePoitionAmount()
-        {
-            //ManagersHolder.UIManager.Text_PotionAmount.text = $"x{PlayerDataModel.Inventory.PotionsAmount}";
-
-            //ManagersHolder.UIManager.Text_PotionAmount.GetComponent<CanvasGroup>().alpha = PlayerDataModel.Inventory.PotionsAmount > 0 ? 1 : 0.5f;
-
-            Color color = ManagersHolder.UIManager.Button_Potion.image.color;
-            //color.a = PlayerDataModel.Inventory.PotionsAmount > 0 ? 1 : 0.5f;
-            ManagersHolder.UIManager.Button_Potion.image.color = color;
         }
         #endregion
     }
