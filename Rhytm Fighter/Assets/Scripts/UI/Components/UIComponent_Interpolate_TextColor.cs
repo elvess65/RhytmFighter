@@ -9,23 +9,25 @@ namespace RhytmFighter.UI.Components
     /// </summary>
     public class UIComponent_Interpolate_TextColor : InterpolatableComponent
     {
-        [SerializeField] private Text controlledText;
-        [SerializeField] private Color fromColor;
+        [SerializeField] public Color FromColor;
 
-        private Color m_InitColor;
+        [SerializeField] private Text controlledText;
+
+        public Color InitColor { get; private set; }
+
 
         public override void Initialize()
         {
             if (controlledText == null)
                 controlledText = GetComponent<Text>();
 
-            m_InitColor = controlledText.color;
+            InitColor = controlledText.color;
             FinishInterpolation();
         }
 
         public override void PrepareForInterpolation()
         {
-            controlledText.color = fromColor;
+            controlledText.color = FromColor;
         }
 
         public override void FinishInterpolation()
@@ -35,7 +37,7 @@ namespace RhytmFighter.UI.Components
 
         public override void ProcessInterpolation(float progress)
         {
-            controlledText.color = Color.Lerp(fromColor, m_InitColor, progress);
+            controlledText.color = Color.Lerp(FromColor, InitColor, progress);
         }
     }
 }

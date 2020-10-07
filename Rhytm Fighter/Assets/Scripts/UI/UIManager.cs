@@ -1,6 +1,7 @@
 ﻿using RhytmFighter.Battle.Core;
 using RhytmFighter.Persistant;
 using RhytmFighter.Persistant.Abstract;
+using RhytmFighter.Persistant.Enums;
 using RhytmFighter.StateMachines.UIState;
 using RhytmFighter.UI.Components;
 using RhytmFighter.UI.Widgets;
@@ -24,10 +25,7 @@ namespace RhytmFighter.UI
         public Text Text_PressToContinue;
 
         [Header("Inventory")]
-        public Button Button_Potion;
         public Transform InventoryUIParent;
-        public Text Text_PotionAmount;
-        public UIComponent_InterpolatableGroup UIComponent_PotionCooldown;
         public UIWidget_PotionIndicator UIWidget_PotionIndicator;
 
         [Header("General")]
@@ -47,14 +45,15 @@ namespace RhytmFighter.UI
         private UIState_LevelComplete m_UIState_LevelComplete;
         private UIState_TapToActionState m_UIState_TapToActionState;
 
+
         public void Initialize()
         {
             //Components
             UIComponent_TickIndicator.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
-            UIComponent_PotionCooldown.Initialize(5);
 
             PotionData potionData = GameManager.Instance.DataHolder.PlayerDataModel.Inventory.GetPotionByType(Persistant.Enums.PotionTypes.Heal);
             UIWidget_PotionIndicator.Initialize(potionData.PiecesAmount, potionData.PiecesPerPotion, 5);
+            UIWidget_PotionIndicator.OnWidgetPress += PotionWidgetPressHandler;
 
             /*UIComponent_ActionPointsIndicator.Initialize(GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints, 
                                                          (float)(Rhytm.RhytmController.GetInstance().TickDurationSeconds * 
@@ -81,13 +80,19 @@ namespace RhytmFighter.UI
 
             m_StateMachine.Initialize(m_UIStateNoUI);
 
-            //Buttons
-            Button_Potion.onClick.AddListener(ButtonPotion_PressHandler);
-
             //Events
             BattleManager.Instance.OnPotionUsed += PotionUsedHandler;
         }
 
+        public void PerformUpdate(float deltaTime)
+        {
+            UIComponent_TickIndicator.PerformUpdate(deltaTime);
+            UIComponent_ActionPointsIndicator.PerformUpdate(deltaTime);
+            UIWidget_PotionIndicator.PerformUpdate(deltaTime);
+        }
+
+
+        #region STATES
 
         public void ToAdventureUIState()
         {
@@ -129,6 +134,9 @@ namespace RhytmFighter.UI
             m_StateMachine.ChangeState(m_UIState_TapToActionState);
         }
 
+        #endregion
+
+        #region ACTION POINTS
 
         public void UseActionPoint(int curActionPoints)
         {
@@ -145,6 +153,11 @@ namespace RhytmFighter.UI
             UIComponent_ActionPointsIndicator.RestoreAllActionPoints();
         }
 
+        #endregion
+
+        #region INVENTORY
+
+        #region POTIONS
 
         public void UpdatePotionAmount()
         {
@@ -152,31 +165,33 @@ namespace RhytmFighter.UI
                 Inventory.GetPotionByType(Persistant.Enums.PotionTypes.Heal).PiecesAmount);
         }
 
+        private void PotionWidgetPressHandler()
+        {
+            //OnButtonPotionPressed?.Invoke();
+
+            //TODO: Move to Potion Used Handler
+            GameManager.Instance.DataHolder.PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).DecrementPieceAmount();
+
+            UIWidget_PotionIndicator.UsePotion(GameManager.Instance.DataHolder.PlayerDataModel.
+                Inventory.GetPotionByType(Persistant.Enums.PotionTypes.Heal).PiecesAmount);
+        }
+
+        private void PotionUsedHandler()
+        {
+            //UIComponent_PotionCooldown.Execute();
+        }
+
+        #endregion
+
+        #endregion
+
+        #region HANDLERS
 
         public void ButtonDefence_PressHandler()
         {
             OnButtonDefencePressed?.Invoke();
         }
 
-        public void ButtonPotion_PressHandler()
-        {
-            if (!UIComponent_PotionCooldown.IsInProgress)
-                OnButtonPotionPressed?.Invoke();
-        }
-
-        public void PerformUpdate(float deltaTime)
-        {
-            UIComponent_PotionCooldown.PerformUpdate(deltaTime);
-            UIComponent_TickIndicator.PerformUpdate(deltaTime);
-            UIComponent_ActionPointsIndicator.PerformUpdate(deltaTime);
-            UIWidget_PotionIndicator.PerformUpdate(deltaTime);
-        }
-        
-
-
-        private void PotionUsedHandler()
-        {
-            UIComponent_PotionCooldown.Execute();
-        }
+        #endregion
     }
 }

@@ -50,6 +50,8 @@ namespace RhytmFighter.Data
             public int PiecesPerPotion;
 
             public void IncrementPieceAmount() => PiecesAmount++;
+
+            public void DecrementPieceAmount() => PiecesAmount -= PiecesPerPotion;
         }
 
         //Skills

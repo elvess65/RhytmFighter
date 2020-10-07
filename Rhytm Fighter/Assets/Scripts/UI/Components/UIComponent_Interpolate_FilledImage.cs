@@ -34,7 +34,7 @@ namespace RhytmFighter.UI.Components
             ControlledImage.fillAmount = From;
 
             if (AutoActivation)
-                ControlledImage.enabled = false;
+                ControlledImage.enabled = true;
         }
 
         public override void FinishInterpolation()

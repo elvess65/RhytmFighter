@@ -8,94 +8,133 @@ namespace RhytmFighter.UI.Widgets
 {
     public class UIWidget_PotionIndicator : MonoBehaviour, iUpdatable
     {
+        public System.Action OnWidgetPress;
+
         [SerializeField] private Button WidgetButton;
+        [SerializeField] private Image WidgetImage;
         [SerializeField] private Text Text_Amount;
         [SerializeField] private UIComponent_InterpolatableGroup UIComponent_CooldownGroup;
         [SerializeField] private UIComponent_Interpolate_FilledImage UIComponent_PiecesAmount;
 
-        private int piecesAmount;
-        private int piecesPerPotion;
-        private InterpolationData<float> piecesAmountLerpData;
+        private int m_PiecesAmount;
+        private int m_PiecesPerPotion;
+        private InterpolationData<float> m_PiecesAmountLerpData;
 
-        private int potionsAmount => piecesAmount / piecesPerPotion;
+        private int PotionsAmount => m_PiecesAmount / m_PiecesPerPotion;
+        private UIComponent_Interpolate_TextColor m_UIComponent_Interpolate_TextColor_Amount;
 
 
         public void Initialize(int piecesAmount, int piecesPerPotion, float cooldownTime)
         {
-            this.piecesAmount = piecesAmount;
-            this.piecesPerPotion = piecesPerPotion;
+            m_PiecesAmount = piecesAmount;
+            m_PiecesPerPotion = piecesPerPotion;
+            m_PiecesAmountLerpData = new InterpolationData<float>(1);
 
             UIComponent_CooldownGroup.Initialize(cooldownTime);
             UIComponent_PiecesAmount.Initialize();
-
-            piecesAmountLerpData = new InterpolationData<float>(1);
+      
             WidgetButton.onClick.AddListener(WidgetPressHandler);
+            m_UIComponent_Interpolate_TextColor_Amount = Text_Amount.GetComponent<UIComponent_Interpolate_TextColor>();
 
-            UpdateImagePieces(true);
-            UpdatePotionAmount();
+            UpdateAll(true);
         }
 
         public void PerformUpdate(float deltaTime)
         {
-            if (piecesAmountLerpData.IsStarted)
+            if (m_PiecesAmountLerpData.IsStarted)
             {
-                piecesAmountLerpData.Increment();
-                UIComponent_PiecesAmount.ProcessInterpolation(piecesAmountLerpData.Progress);
+                m_PiecesAmountLerpData.Increment();
+                UIComponent_PiecesAmount.ProcessInterpolation(m_PiecesAmountLerpData.Progress);
 
-                if (piecesAmountLerpData.Overtime())
+                if (m_PiecesAmountLerpData.Overtime())
                 {
-                    piecesAmountLerpData.Stop();
+                    m_PiecesAmountLerpData.Stop();
                     UIComponent_PiecesAmount.FinishInterpolation();
-                    UpdatePotionAmount();
+
+                    if (PotionsAmount > 0)
+                    {
+                        int remainPieces = m_PiecesAmount % m_PiecesPerPotion;
+                        float progress = remainPieces / (float)m_PiecesPerPotion;
+
+                        UIComponent_PiecesAmount.From = progress;
+                        UIComponent_PiecesAmount.PrepareForInterpolation();
+                        UIComponent_PiecesAmount.FinishInterpolation();
+                    }
+
+                    UpdateAmountAndBackground();
                 }
             }
+
+            UIComponent_CooldownGroup.PerformUpdate(deltaTime);
         }
 
         public void RefreshAmount(int newPiecesAmount)
         {
-            piecesAmount = newPiecesAmount;
-            UpdateImagePieces(false);
+            m_PiecesAmount = newPiecesAmount;
+            UpdateAll(false);
+        }
+
+        public void UsePotion(int newPiecesAmount)
+        {
+            m_PiecesAmount = newPiecesAmount;
+
+            UIComponent_CooldownGroup.Execute();
+            UpdateAll(false);            
         }
 
 
-        private void UpdateImagePieces(bool silent)
+        private void UpdateAll(bool silent)
         {
             //Progress
-            float progress = 1 - (piecesAmount / (float)piecesPerPotion);
+            float progress = m_PiecesAmount / (float)m_PiecesPerPotion;
+            Debug.Log("Raw progress: " + progress);
+            if (progress > 1)
+                progress = progress % PotionsAmount;
+            Debug.Log(progress);
 
-            //If more than one potion exists
-            if (piecesAmount > piecesPerPotion)
+            if (silent)
             {
-                UpdatePotionAmount();
+                UIComponent_PiecesAmount.From = progress;
+                UIComponent_PiecesAmount.PrepareForInterpolation();
+                UIComponent_PiecesAmount.FinishInterpolation();
+
+                UpdateAmountAndBackground();
+
                 return;
             }
 
             //Prepare animation
-            UIComponent_PiecesAmount.From = silent ? progress : UIComponent_PiecesAmount.CurrentValue;
+            UIComponent_PiecesAmount.From = UIComponent_PiecesAmount.CurrentValue;
             UIComponent_PiecesAmount.To = progress;
             UIComponent_PiecesAmount.PrepareForInterpolation();
 
             //Start animation
-            piecesAmountLerpData.Start();
+            m_PiecesAmountLerpData.Start();
         }
 
-        private void UpdatePotionAmount()
+        private void UpdateAmountAndBackground()
         {
-            int amount = potionsAmount;
-            Text_Amount.text = $"x{amount}";
+            int amount = PotionsAmount;
 
-            Color color = Text_Amount.color;
+            Text_Amount.text = $"x{amount}";
+            Text_Amount.color = amount == 0 ? m_UIComponent_Interpolate_TextColor_Amount.FromColor :
+                                              m_UIComponent_Interpolate_TextColor_Amount.InitColor;
+
+            Color color = WidgetImage.color;
             color.a = amount == 0 ? 0.5f : 1;
-            Text_Amount.color = color;
+            WidgetImage.color = color;
         }
+
 
         private void WidgetPressHandler()
         {
-            if (potionsAmount > 0 && !AnyAnimationIsPlaying())
-                Debug.Log("Press the widget");
+            if (PotionsAmount > 0 && !AnyAnimationIsPlaying())
+                OnWidgetPress?.Invoke();
         }
 
-        private bool AnyAnimationIsPlaying() => UIComponent_CooldownGroup.IsInProgress ||
-            piecesAmountLerpData.IsStarted;
+
+        private bool AnyAnimationIsPlaying() =>
+            UIComponent_CooldownGroup.IsInProgress ||
+            m_PiecesAmountLerpData.IsStarted;
     }
 }
