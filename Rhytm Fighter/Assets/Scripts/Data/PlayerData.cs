@@ -49,6 +49,8 @@ namespace RhytmFighter.Data
             public int PiecesAmount;
             public int PiecesPerPotion;
 
+            public int PotionAmount => PiecesAmount / PiecesPerPotion;
+
             public void IncrementPieceAmount() => PiecesAmount++;
 
             public void DecrementPieceAmount() => PiecesAmount -= PiecesPerPotion;

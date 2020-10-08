@@ -4,7 +4,7 @@ using RhytmFighter.UI.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RhytmFighter.UI.Widgets
+namespace RhytmFighter.UI.Widget
 {
     public class UIWidget_PotionIndicator : MonoBehaviour, iUpdatable
     {
@@ -79,7 +79,7 @@ namespace RhytmFighter.UI.Widgets
             m_PiecesAmount = newPiecesAmount;
 
             UIComponent_CooldownGroup.Execute();
-            UpdateAll(false);            
+            UpdateAmountAndBackground();
         }
 
 
@@ -87,10 +87,14 @@ namespace RhytmFighter.UI.Widgets
         {
             //Progress
             float progress = m_PiecesAmount / (float)m_PiecesPerPotion;
-            Debug.Log("Raw progress: " + progress);
+
             if (progress > 1)
-                progress = progress % PotionsAmount;
-            Debug.Log(progress);
+            {
+                if (progress == PotionsAmount)
+                    progress = progress / PotionsAmount;
+                else
+                    progress = progress % PotionsAmount;
+            }
 
             if (silent)
             {

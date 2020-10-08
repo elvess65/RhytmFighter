@@ -67,7 +67,7 @@ namespace RhytmFighter.Battle.Core
             if (UnityEngine.Input.GetKeyDown(KeyCode.A))
             {
                 PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).IncrementPieceAmount();
-                ManagersHolder.UIManager.UpdatePotionAmount();
+                ManagersHolder.UIManager.UIView_InventoryHUD.WidgetPotion_UpdateAmount();
             }
         }
 
@@ -164,7 +164,7 @@ namespace RhytmFighter.Battle.Core
 
             //UI
             ManagersHolder.UIManager.OnButtonDefencePressed += ButtonDefence_PressHandler;
-            ManagersHolder.UIManager.OnButtonPotionPressed += ButtonPoition_PressHandler;
+            ManagersHolder.UIManager.OnTryUsePotion += TryUsePotion;
         }
 
         private void DisposeEvents()
@@ -186,7 +186,7 @@ namespace RhytmFighter.Battle.Core
 
             //UI
             ManagersHolder.UIManager.OnButtonDefencePressed -= ButtonDefence_PressHandler;
-            ManagersHolder.UIManager.OnButtonPotionPressed -= ButtonPoition_PressHandler;
+            ManagersHolder.UIManager.OnTryUsePotion -= TryUsePotion;
         }
 
         private void ApplySettings()
@@ -285,9 +285,11 @@ namespace RhytmFighter.Battle.Core
         {
             yield return new WaitForSeconds(animationDelay);
 
+            //UI
             PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).IncrementPieceAmount();
-            ManagersHolder.UIManager.UpdatePotionAmount();
+            ManagersHolder.UIManager.UIView_InventoryHUD.WidgetPotion_UpdateAmount();
 
+            //State
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
         }
 
@@ -480,37 +482,29 @@ namespace RhytmFighter.Battle.Core
             }
         }
 
-        private void ButtonPoition_PressHandler()
+        #region POTION
+
+        private void TryUsePotion()
         {
-            /*if (Instance.PlayerDataModel.Inventory.PotionsAmount > 0 && PlayerModel.HealthBehaviour.HP < PlayerModel.HealthBehaviour.MaxHP)
+            if (PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).PotionAmount > 0 &&
+                PlayerModel.HealthBehaviour.HP < PlayerModel.HealthBehaviour.MaxHP)
             {
-                if (m_ControllersHolder.BattleController.IsInBattle)
-                {
-                    if (m_ControllersHolder.RhytmInputProxy.IsInputTickValid() && m_ControllersHolder.RhytmInputProxy.IsInputAllowed())
-                    {
-                        UsePotion();
-                        m_ControllersHolder.RhytmInputProxy.RegisterInput();
-                        m_ControllersHolder.PlayerCharacterController.PlayerModel.UseActionPoint();
-                    }
-                }
-                else
-                    UsePotion();
-            }*/
+
+                //PlayerDataModel.Inventory.PotionsAmount--;
+                //ManagersHolder.UIManager.UpdatePotionAmount();
+                SipSound.Play();
+                AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().HealEffectPrefab,
+                                                                                        PlayerModel.ViewPosition,
+                                                                                        Quaternion.Euler(-90, 0, 0)).ScheduleHideView();
+
+                PlayerModel.HealthBehaviour.IncreaseHP(5);
+
+                OnPotionUsed?.Invoke();
+            }
         }
 
-        private void UsePotion()
-        {
-            //PlayerDataModel.Inventory.PotionsAmount--;
-            ManagersHolder.UIManager.UpdatePotionAmount();
-            SipSound.Play();
-            AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().HealEffectPrefab,
-                                                                                    PlayerModel.ViewPosition,
-                                                                                    Quaternion.Euler(-90, 0, 0)).ScheduleHideView();
+        #endregion
 
-            PlayerModel.HealthBehaviour.IncreaseHP(5);
-
-            OnPotionUsed?.Invoke();
-        }
         #endregion
     }
 }
