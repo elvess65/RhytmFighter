@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace RhytmFighter.UI.Widget
 {
-    public class UIWidget_PotionIndicator : MonoBehaviour, iUpdatable
+    public class UIWidget_Potion : MonoBehaviour, iUpdatable
     {
         public System.Action OnWidgetPress;
 

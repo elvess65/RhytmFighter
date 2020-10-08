@@ -15,7 +15,7 @@ namespace RhytmFighter.UI.View
         public System.Action OnWidgetPotionPress;
 
         [Header("Widgets")]
-        public UIWidget_PotionIndicator UIWidget_Potion;
+        public UIWidget_Potion UIWidget_Potion;
 
         private iUpdatable[] m_Updatables;
 
