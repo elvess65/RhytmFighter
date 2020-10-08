@@ -20,8 +20,6 @@ namespace RhytmFighter.Battle.Core
 {
     public class BattleManager : Singleton<BattleManager>
     {
-        public System.Action OnPotionUsed;
-
         public ManagersHolder ManagersHolder;
         public CamerasHolder CamerasHolder;
   
@@ -37,6 +35,7 @@ namespace RhytmFighter.Battle.Core
         public AudioSource FinishBattleSound;
         public AudioSource SipSound;
         public AudioSource DashSound;
+        public AudioSource ErrorSound;
         public Metronome Metronome;
 
         private GameStateMachine m_GameStateMachine;
@@ -473,6 +472,7 @@ namespace RhytmFighter.Battle.Core
         #endregion
 
         #region UI
+
         private void ButtonDefence_PressHandler()
         {
             if (m_ControllersHolder.RhytmInputProxy.IsInputTickValid() && m_ControllersHolder.RhytmInputProxy.IsInputAllowed())
@@ -486,20 +486,31 @@ namespace RhytmFighter.Battle.Core
 
         private void TryUsePotion()
         {
-            if (PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).PotionAmount > 0 &&
+            if (PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).HasPotions &&
                 PlayerModel.HealthBehaviour.HP < PlayerModel.HealthBehaviour.MaxHP)
             {
+                //Decrement potion
+                PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).DecrementPotion();
 
-                //PlayerDataModel.Inventory.PotionsAmount--;
-                //ManagersHolder.UIManager.UpdatePotionAmount();
+                //Increase HP
+                PlayerModel.HealthBehaviour.IncreaseHP(5);
+
+                //Refresh UI
+                ManagersHolder.UIManager.UIView_InventoryHUD.WidgetPotion_UsePotion(true);
+
+                //Effects
                 SipSound.Play();
                 AssetsManager.GetPrefabAssets().InstantiatePrefab<AbstractVisualEffect>(AssetsManager.GetPrefabAssets().HealEffectPrefab,
                                                                                         PlayerModel.ViewPosition,
                                                                                         Quaternion.Euler(-90, 0, 0)).ScheduleHideView();
+            }
+            else
+            {
+                //Refresh UI
+                ManagersHolder.UIManager.UIView_InventoryHUD.WidgetPotion_UsePotion(false);
 
-                PlayerModel.HealthBehaviour.IncreaseHP(5);
-
-                OnPotionUsed?.Invoke();
+                //Effects
+                ErrorSound.Play();
             }
         }
 

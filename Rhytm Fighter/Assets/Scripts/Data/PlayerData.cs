@@ -50,10 +50,11 @@ namespace RhytmFighter.Data
             public int PiecesPerPotion;
 
             public int PotionAmount => PiecesAmount / PiecesPerPotion;
+            public bool HasPotions => PotionAmount > 0;
 
             public void IncrementPieceAmount() => PiecesAmount++;
 
-            public void DecrementPieceAmount() => PiecesAmount -= PiecesPerPotion;
+            public void DecrementPotion() => PiecesAmount = UnityEngine.Mathf.Clamp(PiecesAmount - PiecesPerPotion, 0, PiecesAmount);
         }
 
         //Skills

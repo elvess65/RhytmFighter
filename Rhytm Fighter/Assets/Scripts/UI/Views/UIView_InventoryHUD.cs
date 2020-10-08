@@ -48,16 +48,20 @@ namespace RhytmFighter.UI.View
                 Inventory.GetPotionByType(PotionTypes.Heal).PiecesAmount);
         }
 
+        public void WidgetPotion_UsePotion(bool isSuccess)
+        {
+            if (isSuccess)
+            {
+                UIWidget_Potion.UsePotion(GameManager.Instance.DataHolder.PlayerDataModel.
+                    Inventory.GetPotionByType(PotionTypes.Heal).PiecesAmount);
+            }
+            else
+                Debug.LogError("Can't use potion");
+        }
+
         private void WidgetPotion_PressHandler()
         {
-            OnWidgetPotionPress?.Invoke();
-            //OnButtonPotionPressed?.Invoke();
-
-            //TODO: Move to Potion Used Handler
-            GameManager.Instance.DataHolder.PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).DecrementPieceAmount();
-
-            UIWidget_Potion.UsePotion(GameManager.Instance.DataHolder.PlayerDataModel.
-                Inventory.GetPotionByType(Persistant.Enums.PotionTypes.Heal).PiecesAmount);
+            OnWidgetPotionPress?.Invoke();  
         }
 
         #endregion

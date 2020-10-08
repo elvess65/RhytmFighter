@@ -52,7 +52,7 @@ namespace RhytmFighter.UI
         {
             //Components
             UIView_InventoryHUD.Initialize();
-            UIView_InventoryHUD.OnWidgetPotionPress += UIView_Inventory_WidgetPress_Potion;
+            UIView_InventoryHUD.OnWidgetPotionPress += UIView_Inventory_Potion_WidgetPress;
 
             UIComponent_TickIndicator.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
 
@@ -81,9 +81,6 @@ namespace RhytmFighter.UI
             
 
             m_StateMachine.Initialize(m_UIStateNoUI);
-
-            //Events
-            BattleManager.Instance.OnPotionUsed += UIView_Inventory_WidgetPress_Potion;
 
             //Updatables
             m_Updatables = new iUpdatable[]
@@ -146,7 +143,9 @@ namespace RhytmFighter.UI
 
         #endregion
 
-        #region ACTION POINTS
+        #region VIEWS
+
+        #region - ACTION POINTS
 
         public void UseActionPoint(int curActionPoints)
         {
@@ -165,11 +164,11 @@ namespace RhytmFighter.UI
 
         #endregion
 
-        #region INVENTORY
+        #region - INVENTORY
 
-        #region POTIONS
+        #region - POTIONS
 
-        private void UIView_Inventory_WidgetPress_Potion()
+        private void UIView_Inventory_Potion_WidgetPress()
         {
             OnTryUsePotion?.Invoke();
         }
@@ -178,12 +177,14 @@ namespace RhytmFighter.UI
 
         #endregion
 
-        #region HANDLERS
+        #region - BATTLE
 
         public void ButtonDefence_PressHandler()
         {
             OnButtonDefencePressed?.Invoke();
         }
+
+        #endregion
 
         #endregion
     }
