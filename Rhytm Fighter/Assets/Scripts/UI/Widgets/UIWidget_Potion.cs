@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace RhytmFighter.UI.Widget
 {
+    /// <summary>
+    /// Виджет отображения количества зелей
+    /// </summary>
     public class UIWidget_Potion : MonoBehaviour, iUpdatable
     {
         public System.Action OnWidgetPress;

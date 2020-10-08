@@ -1145,11 +1145,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 510244931}
+  - component: {fileID: 510244934}
   - component: {fileID: 510244933}
   - component: {fileID: 510244932}
-  - component: {fileID: 510244934}
   m_Layer: 5
-  m_Name: Component - TickIndicator
+  m_Name: UIWidget - Tick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3623,6 +3623,7 @@ MonoBehaviour:
   Text_BattleStatus: {fileID: 1142746041}
   Text_PressToContinue: {fileID: 1614645390}
   UIView_InventoryHUD: {fileID: 1007391245}
+  UIView_PlayerHUD: {fileID: 2044250233}
   InventoryUIParent: {fileID: 1007391244}
   PlayerHealthbarParent: {fileID: 358251206}
 --- !u!1 &1614645388
@@ -4295,6 +4296,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2044250231}
   - component: {fileID: 2044250232}
+  - component: {fileID: 2044250233}
   m_Layer: 5
   m_Name: View - PlayerHUD
   m_TagString: Untagged
@@ -4349,6 +4351,20 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &2044250233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044250230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f1e33463a2c77744afa4f95bdc4940c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Root: {fileID: 2044250231}
+  UIWidget_Ticks: {fileID: 510244934}
 --- !u!1 &2063440791
 GameObject:
   m_ObjectHideFlags: 3

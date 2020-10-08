@@ -1,13 +1,17 @@
 ﻿using FrameworkPackage.Utils;
 using RhytmFighter.Persistant.Abstract;
+using RhytmFighter.UI.Components;
 using UnityEngine;
 
-namespace RhytmFighter.UI.Components
+namespace RhytmFighter.UI.Widget
 {
-    public class UIComponent_TickIndicator : MonoBehaviour, iUpdatable
+    /// <summary>
+    /// Виджет отображения состояния тиков
+    /// </summary>
+    public class UIWidget_Tick : MonoBehaviour, iUpdatable
     {
-        [SerializeField] UIComponent_TickIndicatorTick m_Tick;
-        [SerializeField] UIComponent_TickIndicatorArrow[] m_TickArrows;
+        [SerializeField] UIComponent_TickWidget_Tick m_Tick;
+        [SerializeField] UIComponent_TickWidget_Arrow[] m_TickArrows;
    
         private InterpolationData<float> m_LerpData;
         private bool m_IsInBattleState = false;

@@ -4,7 +4,10 @@ using UnityEngine.UI;
 
 namespace RhytmFighter.UI.Components
 {
-    public class UIComponent_TickIndicatorTick : MonoBehaviour
+    /// <summary>
+    /// Компонент наступления тика
+    /// </summary>
+    public class UIComponent_TickWidget_Tick : MonoBehaviour
     {
         [SerializeField] private Image m_ControlledImage;
 

@@ -1,5 +1,6 @@
 ﻿using RhytmFighter.Battle.Core;
 using RhytmFighter.UI.Components;
+using RhytmFighter.UI.Widget;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,9 +8,9 @@ namespace RhytmFighter.StateMachines.UIState
 {
     public class UIState_BattleFinished : UIState_Abstract
     {
-        private UIComponent_TickIndicator m_TickIndicator;
+        private UIWidget_Tick m_TickIndicator;
 
-        public UIState_BattleFinished(Text textBattleStatus, UIComponent_TickIndicator tickIndicator) : 
+        public UIState_BattleFinished(Text textBattleStatus, UIWidget_Tick tickIndicator) : 
             base(textBattleStatus)
         {
             m_TickIndicator = tickIndicator;

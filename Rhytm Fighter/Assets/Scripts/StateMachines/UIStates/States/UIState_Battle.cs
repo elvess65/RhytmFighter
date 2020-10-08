@@ -1,4 +1,5 @@
 ﻿using RhytmFighter.UI.Components;
+using RhytmFighter.UI.Widget;
 using UnityEngine.UI;
 
 namespace RhytmFighter.StateMachines.UIState
@@ -6,10 +7,10 @@ namespace RhytmFighter.StateMachines.UIState
     public class UIState_Battle : UIState_Abstract
     {
         protected Button m_ButtonDefence;
-        protected UIComponent_TickIndicator m_TickIndicator;
+        protected UIWidget_Tick m_TickIndicator;
         protected UIComponent_ActionPointsIndicator m_ActionPointIndicator;
 
-        public UIState_Battle(Button buttonDefence, Text textBattleStatus, UIComponent_TickIndicator tickIndicator, UIComponent_ActionPointsIndicator apIndicator) :
+        public UIState_Battle(Button buttonDefence, Text textBattleStatus, UIWidget_Tick tickIndicator, UIComponent_ActionPointsIndicator apIndicator) :
             base(textBattleStatus)
         {
             m_ButtonDefence = buttonDefence;

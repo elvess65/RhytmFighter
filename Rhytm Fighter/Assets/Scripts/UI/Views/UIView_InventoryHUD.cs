@@ -17,9 +17,7 @@ namespace RhytmFighter.UI.View
         [Header("Widgets")]
         public UIWidget_Potion UIWidget_Potion;
 
-        private iUpdatable[] m_Updatables;
-
-
+  
         public override void Initialize()
         {
             //Widget - Potion
@@ -32,12 +30,6 @@ namespace RhytmFighter.UI.View
             {
                 UIWidget_Potion,
             };
-        }
-
-        public override void PerformUpdate(float deltaTime)
-        {
-            for (int i = 0; i < m_Updatables.Length; i++)
-                m_Updatables[i].PerformUpdate(deltaTime);
         }
 
         #region WIDGET HANDLERS

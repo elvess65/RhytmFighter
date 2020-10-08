@@ -3,7 +3,10 @@ using UnityEngine.UI;
 
 namespace RhytmFighter.UI.Components
 {
-    public class UIComponent_TickIndicatorArrow : InterpolatableComponent
+    /// <summary>
+    /// Компонент стрелки показывающей момент наступления следующего тика
+    /// </summary>
+    public class UIComponent_TickWidget_Arrow : InterpolatableComponent
     {
         [SerializeField] private RectTransform m_ControlledTransform;
         [SerializeField] private Image m_ArrowImage;

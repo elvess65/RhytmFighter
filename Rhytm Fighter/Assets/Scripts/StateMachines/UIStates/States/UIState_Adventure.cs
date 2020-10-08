@@ -1,15 +1,16 @@
 ﻿using RhytmFighter.UI.Components;
+using RhytmFighter.UI.Widget;
 using UnityEngine;
 
 namespace RhytmFighter.StateMachines.UIState
 {
     public class UIState_Adventure : UIState_Abstract
     {
-        private UIComponent_TickIndicator m_TickIndicator;
+        private UIWidget_Tick m_TickIndicator;
         private Transform m_PlayerHealthBarParent;
         private Transform m_InventoryUIParent;
 
-        public UIState_Adventure(UIComponent_TickIndicator tickIndicator, Transform playerUIParent, Transform inventoryUIParent) :
+        public UIState_Adventure(UIWidget_Tick tickIndicator, Transform playerUIParent, Transform inventoryUIParent) :
                 base(null)
         {
             m_TickIndicator = tickIndicator;

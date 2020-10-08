@@ -10,7 +10,17 @@ namespace RhytmFighter.UI.View
     {
         public Transform Root;
 
+        protected iUpdatable[] m_Updatables;
+
         public abstract void Initialize();
-        public abstract void PerformUpdate(float deltaTime);
+        
+        public virtual void PerformUpdate(float deltaTime)
+        {
+            if (m_Updatables != null)
+            {
+                for (int i = 0; i < m_Updatables.Length; i++)
+                    m_Updatables[i].PerformUpdate(deltaTime);
+            }
+        }
     }
 }
