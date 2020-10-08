@@ -15,7 +15,7 @@ namespace RhytmFighter.UI
     public class UIManager : MonoBehaviour, iUpdatable
     {
         public System.Action OnButtonDefencePressed;
-        public System.Action OnPotionPressed;
+        public System.Action OnTryUsePotion;
 
         public UIComponent_TickIndicator UIComponent_TickIndicator;
         public UIComponent_ActionPointsIndicator UIComponent_ActionPointsIndicator;
@@ -171,7 +171,7 @@ namespace RhytmFighter.UI
 
         private void UIView_Inventory_WidgetPress_Potion()
         {
-            OnPotionPressed?.Invoke();
+            OnTryUsePotion?.Invoke();
         }
 
         #endregion
