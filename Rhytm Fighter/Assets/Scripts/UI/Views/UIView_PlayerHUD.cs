@@ -1,8 +1,5 @@
 ﻿using RhytmFighter.Persistant.Abstract;
-using RhytmFighter.UI.Components;
 using RhytmFighter.UI.Widget;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace RhytmFighter.UI.View
@@ -12,20 +9,21 @@ namespace RhytmFighter.UI.View
     /// </summary>
     public class UIView_PlayerHUD : UIView_Abstract
     {
-        public UIWidget_Tick UIWidget_Ticks;
+        [Header("Widgets")]
+        public UIWidget_Tick UIWidget_Tick;
+
+        [Header("Parents")]
+        public Transform PlayerHealthBarParent;
 
         public override void Initialize()
         {
+            UIWidget_Tick.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
+
             //Create updatables list
             m_Updatables = new iUpdatable[]
             {
-                UIWidget_Ticks,
+                UIWidget_Tick,
             };
-        }
-
-        public override void PerformUpdate(float deltaTime)
-        {
-            
         }
     }
 }
