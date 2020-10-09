@@ -47,51 +47,14 @@ namespace RhytmFighter.UI
 
         public void Initialize()
         {
-            //Components
-            UIView_InventoryHUD.Initialize();
-            UIView_InventoryHUD.OnWidgetPotionPress += UIView_Inventory_Potion_WidgetPress;
-
-            UIView_PlayerHUD.Initialize();
-            UIView_BattleHUD.Initialize();
-
-
-            /*UIComponent_ActionPointsIndicator.Initialize(GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints, 
-                                                         (float)(Rhytm.RhytmController.GetInstance().TickDurationSeconds * 
-                                                         GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint + 
-                                                         Rhytm.RhytmController.GetInstance().ProcessTickDelta));*/
-
-            Text_PressToContinue.gameObject.SetActive(false);
-
-            //UI States
-            m_StateMachine = new UIStateMachine();
-
-            m_UIStateAdventure = new UIState_Adventure                  (UIView_PlayerHUD.UIWidget_Tick, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
-            m_UIState_TapToActionState = new UIState_TapToActionState   (Text_BattleStatus, Text_PressToContinue);
-
-            m_UIState_PrepareForBattle = new UIState_PrepareForBattle   (Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator);
-            m_UIState_BattleStart = new UIState_BattleStart             (Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator);
-            m_UIState_WaitNextEnemy = new UIState_WaitNextEnemy         (Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator);
-            m_UIState_BattleFinished = new UIState_BattleFinished       (Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick);
-
-            m_UIStateNoUI = new UIState_NoUI                            (Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
-            m_UIState_GameOver = new UIState_GameOverState              (Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
-            m_UIState_LevelComplete = new UIState_LevelComplete         (Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
-            
-
-            m_StateMachine.Initialize(m_UIStateNoUI);
-
-            //Updatables
-            m_Updatables = new iUpdatable[]
-            {
-                UIView_InventoryHUD,
-                UIView_PlayerHUD,
-                UIView_BattleHUD
-            };
+            InitializeViews();
+            InitializeStateMachine();
+            InitializeUpdatables();
         }
 
         public void PerformUpdate(float deltaTime)
         {
-            UIComponent_ActionPointsIndicator.PerformUpdate(deltaTime);
+            //UIComponent_ActionPointsIndicator.PerformUpdate(deltaTime);
 
             for (int i = 0; i < m_Updatables.Length; i++)
                 m_Updatables[i].PerformUpdate(deltaTime);
@@ -99,12 +62,48 @@ namespace RhytmFighter.UI
 
         private void InitializeViews()
         {
+            UIView_InventoryHUD.Initialize();
+            UIView_InventoryHUD.OnWidgetPotionPress += UIView_Inventory_Potion_WidgetPress;
+
+            UIView_PlayerHUD.Initialize();
+            UIView_BattleHUD.Initialize();
+
+            Text_PressToContinue.gameObject.SetActive(false);
+
+            /*UIComponent_ActionPointsIndicator.Initialize(GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints, 
+                                                         (float)(Rhytm.RhytmController.GetInstance().TickDurationSeconds * 
+                                                         GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint + 
+                                                         Rhytm.RhytmController.GetInstance().ProcessTickDelta));*/
 
         }
 
         private void InitializeStateMachine()
         {
+            m_StateMachine = new UIStateMachine();
 
+            m_UIStateAdventure = new UIState_Adventure(UIView_PlayerHUD.UIWidget_Tick, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
+            m_UIState_TapToActionState = new UIState_TapToActionState(Text_BattleStatus, Text_PressToContinue);
+
+            m_UIState_PrepareForBattle = new UIState_PrepareForBattle(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator);
+            m_UIState_BattleStart = new UIState_BattleStart(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator);
+            m_UIState_WaitNextEnemy = new UIState_WaitNextEnemy(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator);
+            m_UIState_BattleFinished = new UIState_BattleFinished(Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick);
+
+            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
+            m_UIState_GameOver = new UIState_GameOverState(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
+            m_UIState_LevelComplete = new UIState_LevelComplete(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
+
+            m_StateMachine.Initialize(m_UIStateNoUI);
+        }
+
+        private void InitializeUpdatables()
+        {
+            m_Updatables = new iUpdatable[]
+            {
+                UIView_InventoryHUD,
+                UIView_PlayerHUD,
+                UIView_BattleHUD
+            };
         }
 
 
