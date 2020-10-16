@@ -1,23 +1,23 @@
-﻿using UnityEngine.UI;
+﻿using RhytmFighter.UI.View;
 
 namespace RhytmFighter.StateMachines.UIState
 {
+    /// <summary>
+    /// Состояние нажать для дейтсвия
+    /// </summary>
     public class UIState_TapToActionState : UIState_Abstract
     {
-        private Text m_TextPressToContinue;
-
-        public UIState_TapToActionState(Text textBattleStatus, Text textPressToContinue) : base(textBattleStatus)
+        public UIState_TapToActionState(UIView_InventoryHUD uiView_InventoryHUD, UIView_PlayerHUD uiView_PlayerHUD, UIView_BattleHUD uiView_BattleHUD) :
+                base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD)
         {
-            m_TextPressToContinue = textPressToContinue;
         }
 
         public override void EnterState()
         {
             base.EnterState();
 
-            //Text
-            m_TextPressToContinue.gameObject.SetActive(true);
-            m_TextBattleStatus.gameObject.SetActive(true);
+            UIView_BattleHUD.UIWidget_BattleStatus.Text_PressToContinue.gameObject.SetActive(true);
+            UIView_BattleHUD.UIWidget_BattleStatus.Text_BattleStatus.gameObject.SetActive(true);
         }
     }
 }

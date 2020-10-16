@@ -1,41 +1,22 @@
-﻿using RhytmFighter.UI.Components;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using RhytmFighter.UI.View;
 
 namespace RhytmFighter.StateMachines.UIState
 {
     public abstract class UIState_Abstract : AbstractState
     {
-        //protected Button m_ButtonDefence;
-        protected Text m_TextBattleStatus;
-        //protected Transform m_PlayerHealthBarParent;
-        //protected UIComponent_TickIndicator m_TickIndicator;
-        //protected UIComponent_ActionPointsIndicator m_ActionPointIndicator;
+        protected UIView_InventoryHUD UIView_InventoryHUD;
+        protected UIView_PlayerHUD UIView_PlayerHUD;
+        protected UIView_BattleHUD UIView_BattleHUD;
 
-        private WaitForSeconds m_WaitDisableBattleStatusUIDelay;
-
-
-        public UIState_Abstract(Text textBattleStatus)
+        public UIState_Abstract(UIView_InventoryHUD uiView_InventoryHUD, UIView_PlayerHUD uiView_PlayerHUD, UIView_BattleHUD uiView_BattleHUD)
         {
-            //UI Objects
-            m_TextBattleStatus = textBattleStatus;
-
-            //Coroutine
-            m_WaitDisableBattleStatusUIDelay = new WaitForSeconds((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds);
+            UIView_InventoryHUD = uiView_InventoryHUD;
+            UIView_PlayerHUD = uiView_PlayerHUD;
+            UIView_BattleHUD = uiView_BattleHUD;
         }
 
         public override void PerformUpdate(float deltaTime)
         {
-        }
-
-
-        protected System.Collections.IEnumerator DisableBattleStatusTextCoroutine()
-        {
-            m_TextBattleStatus.gameObject.SetActive(true);
-
-            yield return m_WaitDisableBattleStatusUIDelay;
-
-            m_TextBattleStatus.gameObject.SetActive(false);
         }
     }
 }

@@ -340,6 +340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e89e9332dfe9540d8a28189423cfdb50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Root: {fileID: 222273119}
   WidgetButton: {fileID: 222273121}
   WidgetImage: {fileID: 2137837027}
   Text_Amount: {fileID: 666494819}
@@ -1226,6 +1227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0454c8fb88c8a2743ac8c9f3bf567ffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Root: {fileID: 510244931}
   m_Tick: {fileID: 1336708607}
   m_TickArrows:
   - {fileID: 1830181607}
@@ -1706,6 +1708,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Root: {fileID: 782814927}
+  UIWidget_Defence: {fileID: 1093778260}
+  UIWidget_BattleStatus: {fileID: 1248206390}
 --- !u!1 &785937813
 GameObject:
   m_ObjectHideFlags: 0
@@ -2724,6 +2728,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1093778255}
+  - component: {fileID: 1093778260}
   - component: {fileID: 1093778258}
   - component: {fileID: 1093778257}
   - component: {fileID: 1093778256}
@@ -2851,8 +2856,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1483325746}
-          m_MethodName: ButtonDefence_PressHandler
+        - m_Target: {fileID: 1093778260}
+          m_MethodName: WidgetPointerDownHandler
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -2862,6 +2867,20 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1093778260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093778254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c2cb185c21fc4234b8de25a812535b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Root: {fileID: 1093778255}
+  WidgetButton: {fileID: 1093778256}
 --- !u!1 &1107474650
 GameObject:
   m_ObjectHideFlags: 0
@@ -3205,6 +3224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1248206389}
+  - component: {fileID: 1248206390}
   m_Layer: 5
   m_Name: UIWidget - BattleStatus
   m_TagString: Untagged
@@ -3233,6 +3253,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1248206390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248206388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49d05c8dc73154edd962c013c6e85e86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Root: {fileID: 1248206389}
+  Text_BattleStatus: {fileID: 1142746041}
+  Text_PressToContinue: {fileID: 1614645390}
 --- !u!1 &1250212354
 GameObject:
   m_ObjectHideFlags: 0
@@ -3632,7 +3667,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UIComponent_ActionPointsIndicator: {fileID: 1996102098}
-  Button_Defence: {fileID: 1093778256}
   Text_BattleStatus: {fileID: 1142746041}
   Text_PressToContinue: {fileID: 1614645390}
   UIView_InventoryHUD: {fileID: 1007391245}
@@ -4095,7 +4129,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 303.91626, y: -72.11}
+  m_AnchoredPosition: {x: 303.91602, y: -72.11035}
   m_SizeDelta: {x: 607.8325, y: 66.499985}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1996102098
@@ -4376,8 +4410,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Root: {fileID: 2044250231}
-  UIWidget_Tick: {fileID: 510244934}
   PlayerHealthBarParent: {fileID: 358251206}
+  UIWidget_Tick: {fileID: 510244934}
 --- !u!1 &2063440791
 GameObject:
   m_ObjectHideFlags: 3

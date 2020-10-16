@@ -1,23 +1,16 @@
-﻿using RhytmFighter.UI.Components;
-using RhytmFighter.UI.Widget;
-using UnityEngine.UI;
+﻿using RhytmFighter.UI.View;
 
 namespace RhytmFighter.StateMachines.UIState
 {
-    public class UIState_Battle : UIState_Abstract
+    /// <summary>
+    /// Состояние боя
+    /// </summary>
+    public abstract class UIState_Battle : UIState_Abstract
     {
-        protected Button m_ButtonDefence;
-        protected UIWidget_Tick m_TickIndicator;
-        protected UIComponent_ActionPointsIndicator m_ActionPointIndicator;
-
-        public UIState_Battle(Button buttonDefence, Text textBattleStatus, UIWidget_Tick tickIndicator, UIComponent_ActionPointsIndicator apIndicator) :
-            base(textBattleStatus)
+        public UIState_Battle(UIView_InventoryHUD uiView_InventoryHUD, UIView_PlayerHUD uiView_PlayerHUD, UIView_BattleHUD uiView_BattleHUD) :
+                base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD)
         {
-            m_ButtonDefence = buttonDefence;
-            m_TickIndicator = tickIndicator;
-            m_ActionPointIndicator = apIndicator;
         }
-
 
         public override void EnterState()
         {
@@ -28,8 +21,7 @@ namespace RhytmFighter.StateMachines.UIState
             Rhytm.RhytmController.GetInstance().OnEventProcessingTick += ProcessTickHandler;
 
             //UI
-            m_ButtonDefence.gameObject.SetActive(true);
-            m_ActionPointIndicator.gameObject.SetActive(true);
+            UIView_BattleHUD.UIWidget_Defence.WidgetButton.gameObject.SetActive(true);
         }
 
         public override void ExitState()
@@ -41,19 +33,18 @@ namespace RhytmFighter.StateMachines.UIState
             Rhytm.RhytmController.GetInstance().OnEventProcessingTick -= ProcessTickHandler;
 
             //UI
-            m_ButtonDefence.gameObject.SetActive(false);
-            m_ActionPointIndicator.gameObject.SetActive(false);
+            UIView_BattleHUD.UIWidget_Defence.WidgetButton.gameObject.SetActive(false);
         }
 
 
         protected virtual void TickHandler(int ticksSinceStart)
         {
-            m_TickIndicator.PlayTickAnimation();
+            UIView_PlayerHUD.UIWidget_Tick.PlayTickAnimation();
         }
 
         protected virtual void ProcessTickHandler(int ticksSinceStart)
         {
-            m_TickIndicator.PlayTickAnimation();
+            UIView_PlayerHUD.UIWidget_Tick.PlayTickAnimation();
         }
     }
 }

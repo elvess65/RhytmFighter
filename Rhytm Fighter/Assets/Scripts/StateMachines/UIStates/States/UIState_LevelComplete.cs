@@ -1,18 +1,15 @@
-﻿using RhytmFighter.UI.Components;
-using RhytmFighter.UI.Widget;
+﻿using RhytmFighter.UI.View;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace RhytmFighter.StateMachines.UIState
 {
+    /// <summary>
+    /// Состояние окончания уровня
+    /// </summary>
     public class UIState_LevelComplete : UIState_NoUI
     {
-        public UIState_LevelComplete(Button buttonDefence, Text textBattleStatus,
-                                     UIWidget_Tick tickIndicator,
-                                     UIComponent_ActionPointsIndicator apIndicator,
-                                     Transform playerHealthBarParent,
-                                     Transform inventoryUIParent) :
-            base(buttonDefence, textBattleStatus, tickIndicator, apIndicator, playerHealthBarParent, inventoryUIParent)
+        public UIState_LevelComplete(UIView_InventoryHUD uiView_InventoryHUD, UIView_PlayerHUD uiView_PlayerHUD, UIView_BattleHUD uiView_BattleHUD) :
+            base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD)
         {
         }
 
@@ -21,9 +18,7 @@ namespace RhytmFighter.StateMachines.UIState
             base.EnterState();
 
             //Text
-            m_TextBattleStatus.gameObject.SetActive(true);
-            m_TextBattleStatus.text = "Level Complete";
-            m_TextBattleStatus.color = Color.green;
+            UIView_BattleHUD.UIWidget_BattleStatus.ShowBattleStatus("Level Complete", Color.green);
         }
     }
 }

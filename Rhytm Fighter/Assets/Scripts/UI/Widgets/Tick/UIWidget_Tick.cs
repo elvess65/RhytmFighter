@@ -8,8 +8,9 @@ namespace RhytmFighter.UI.Widget
     /// <summary>
     /// Виджет отображения состояния тиков
     /// </summary>
-    public class UIWidget_Tick : MonoBehaviour, iUpdatable
+    public class UIWidget_Tick : UIWidget, iUpdatable
     {
+        [Space(10)]
         [SerializeField] UIComponent_TickWidget_Tick m_Tick;
         [SerializeField] UIComponent_TickWidget_Arrow[] m_TickArrows;
    
@@ -28,6 +29,8 @@ namespace RhytmFighter.UI.Widget
             //Arrows
             for (int i = 0; i < m_TickArrows.Length; i++)
                 m_TickArrows[i].Initialize();
+
+            InternalInitialize();
         }
 
         public void ToNormalState()

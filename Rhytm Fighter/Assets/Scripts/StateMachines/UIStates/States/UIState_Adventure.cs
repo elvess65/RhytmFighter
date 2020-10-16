@@ -1,21 +1,15 @@
-﻿using RhytmFighter.UI.Components;
-using RhytmFighter.UI.Widget;
-using UnityEngine;
+﻿using RhytmFighter.UI.View;
 
 namespace RhytmFighter.StateMachines.UIState
 {
+    /// <summary>
+    /// Состояние перемещения
+    /// </summary>
     public class UIState_Adventure : UIState_Abstract
     {
-        private UIWidget_Tick m_TickIndicator;
-        private Transform m_PlayerHealthBarParent;
-        private Transform m_InventoryUIParent;
-
-        public UIState_Adventure(UIWidget_Tick tickIndicator, Transform playerUIParent, Transform inventoryUIParent) :
-                base(null)
+        public UIState_Adventure(UIView_InventoryHUD uiView_InventoryHUD, UIView_PlayerHUD uiView_PlayerHUD, UIView_BattleHUD uiView_BattleHUD) :
+                base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD)
         {
-            m_TickIndicator = tickIndicator;
-            m_PlayerHealthBarParent = playerUIParent;
-            m_InventoryUIParent = inventoryUIParent;
         }
 
 
@@ -27,12 +21,11 @@ namespace RhytmFighter.StateMachines.UIState
             Rhytm.RhytmController.GetInstance().OnTick += TickHandler;
 
             //UI
-            m_TickIndicator.gameObject.SetActive(true);
-            m_PlayerHealthBarParent.gameObject.SetActive(true);
-            m_InventoryUIParent.gameObject.SetActive(true);
+            UIView_PlayerHUD.DisableView(false);
+            UIView_InventoryHUD.DisableView(false);
 
             //Tick indicator
-            m_TickIndicator.ToNormalState();
+            UIView_PlayerHUD.UIWidget_Tick.ToNormalState();
         }
 
         public override void ExitState()
@@ -46,7 +39,7 @@ namespace RhytmFighter.StateMachines.UIState
 
         private void TickHandler(int ticksSinceStart)
         {
-            m_TickIndicator.PlayTickAnimation();
+            UIView_PlayerHUD.UIWidget_Tick.PlayTickAnimation();
         }
     }
 }

@@ -15,6 +15,7 @@ using RhytmFighter.Persistant.Abstract;
 using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Battle.Core.Abstract;
 using RhytmFighter.Battle.Command.Model;
+using RhytmFighter.StateMachines.UIState;
 
 namespace RhytmFighter.Battle.Core
 {
@@ -162,7 +163,7 @@ namespace RhytmFighter.Battle.Core
             m_ControllersHolder.RhytmController.OnTick += TickHandler;
 
             //UI
-            ManagersHolder.UIManager.OnButtonDefencePressed += ButtonDefence_PressHandler;
+            ManagersHolder.UIManager.OnTryDefence += ButtonDefence_PressHandler;
             ManagersHolder.UIManager.OnTryUsePotion += TryUsePotion;
         }
 
@@ -184,7 +185,7 @@ namespace RhytmFighter.Battle.Core
             m_ControllersHolder.RhytmController.OnTick = null;
 
             //UI
-            ManagersHolder.UIManager.OnButtonDefencePressed -= ButtonDefence_PressHandler;
+            ManagersHolder.UIManager.OnTryDefence -= ButtonDefence_PressHandler;
             ManagersHolder.UIManager.OnTryUsePotion -= TryUsePotion;
         }
 
@@ -201,7 +202,7 @@ namespace RhytmFighter.Battle.Core
 
             //Change state
             m_GameStateMachine.ChangeState(m_GameStateAdventure);
-            ManagersHolder.UIManager.ToAdventureUIState();
+            ManagersHolder.UIManager.ChangeState<UIState_Adventure>();
         }
 
 
@@ -353,7 +354,7 @@ namespace RhytmFighter.Battle.Core
 
             m_ControllersHolder.PlayerCharacterController.PrepareForBattle();   //Prepare character for battle
             m_GameStateMachine.ChangeState(m_GameStateIdle);                    //Change state
-            ManagersHolder.UIManager.ToPrepareForBattleUIState();               //Prepare UI for battle      
+            ManagersHolder.UIManager.ChangeState<UIState_PrepareForBattle>();   //Prepare UI for battle      
 
             //Debug - Prepare sound for battle
             Rhytm.volume = 0.5f;
@@ -366,7 +367,7 @@ namespace RhytmFighter.Battle.Core
             m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
             m_GameStateMachine.ChangeState(m_GameStateBattle);      //Change state
-            ManagersHolder.UIManager.ToBattleStartUIState();        //Show Battle UI
+            ManagersHolder.UIManager.ChangeState<UIState_Battle>(); //Show Battle UI
         }
 
         private void BattleEnemyDestroyedHandler(bool lastEnemyDestroyed)
@@ -377,9 +378,9 @@ namespace RhytmFighter.Battle.Core
 
             //UI
             if (!lastEnemyDestroyed)
-                ManagersHolder.UIManager.ToWaitingForNextEnemyActivationUIState();
+                ManagersHolder.UIManager.ChangeState<UIState_WaitNextEnemy>();
             else
-                ManagersHolder.UIManager.ToBattleFinishedUIState();
+                ManagersHolder.UIManager.ChangeState<UIState_BattleFinished>();
 
             m_GameStateMachine.ChangeState(m_GameStateIdle);            //Change state
         }
@@ -391,7 +392,7 @@ namespace RhytmFighter.Battle.Core
 
             m_ControllersHolder.PlayerCharacterController.FinishBattle();       //Finish battle for player
             m_GameStateMachine.ChangeState(m_GameStateAdventure);               //Change state
-            ManagersHolder.UIManager.ToAdventureUIState();                      //Finish battle for UI    
+            ManagersHolder.UIManager.ChangeState<UIState_Adventure>();           //Finish battle for UI    
 
             Rhytm.volume = 0;   //Debug - Finish battle for sound
         }
@@ -401,7 +402,7 @@ namespace RhytmFighter.Battle.Core
         private void GameOverHandler()
         {
             //Finilize level
-            Finilize(ManagersHolder.UIManager.ToGameOverUIState);
+            Finilize(() => ManagersHolder.UIManager.ChangeState<UIState_GameOverState>());
 
             //Ability to reload level 
             StartCoroutine(FINISH_LEVEL_COROUTINE(() =>
@@ -412,14 +413,14 @@ namespace RhytmFighter.Battle.Core
                 };
 
                 m_GameStateMachine.ChangeState(m_GameStateTapToAction);
-                ManagersHolder.UIManager.ToTapToActionUIState();
+                ManagersHolder.UIManager.ChangeState<UIState_TapToActionState>();
             }));
         }
 
         private void LevelCompleteHandler()
         {
             //Finilize level
-            Finilize(ManagersHolder.UIManager.ToLevelComleteUIState);
+            Finilize(() => ManagersHolder.UIManager.ChangeState<UIState_LevelComplete>());
 
             //Ability to reload level 
             StartCoroutine(FINISH_LEVEL_COROUTINE(() =>
@@ -431,7 +432,7 @@ namespace RhytmFighter.Battle.Core
                 };
 
                 m_GameStateMachine.ChangeState(m_GameStateTapToAction);
-                ManagersHolder.UIManager.ToTapToActionUIState();
+                ManagersHolder.UIManager.ChangeState<UIState_TapToActionState>();
             }));
         }
 

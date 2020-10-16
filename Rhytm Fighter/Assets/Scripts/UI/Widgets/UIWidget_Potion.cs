@@ -9,11 +9,9 @@ namespace RhytmFighter.UI.Widget
     /// <summary>
     /// Виджет отображения количества зелей
     /// </summary>
-    public class UIWidget_Potion : MonoBehaviour, iUpdatable
+    public class UIWidget_Potion : UIWidget_Clickable, iUpdatable
     {
-        public System.Action OnWidgetPress;
-
-        [SerializeField] private Button WidgetButton;
+        [Space(10)]
         [SerializeField] private Image WidgetImage;
         [SerializeField] private Text Text_Amount;
         [SerializeField] private UIComponent_InterpolatableGroup UIComponent_CooldownGroup;
@@ -35,10 +33,10 @@ namespace RhytmFighter.UI.Widget
 
             UIComponent_CooldownGroup.Initialize(cooldownTime);
             UIComponent_PiecesAmount.Initialize();
-      
-            WidgetButton.onClick.AddListener(WidgetPressHandler);
+            
             m_UIComponent_Interpolate_TextColor_Amount = Text_Amount.GetComponent<UIComponent_Interpolate_TextColor>();
 
+            InternalInitialize();
             UpdateAll(true);
         }
 
@@ -133,10 +131,10 @@ namespace RhytmFighter.UI.Widget
         }
 
 
-        private void WidgetPressHandler()
+        protected override void WidgetPressHandler()
         {
             if (PotionsAmount > 0 && !AnyAnimationIsPlaying())
-                OnWidgetPress?.Invoke();
+                base.WidgetPressHandler();
         }
 
 

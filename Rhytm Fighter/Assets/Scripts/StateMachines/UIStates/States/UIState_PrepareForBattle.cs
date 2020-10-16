@@ -1,15 +1,15 @@
-﻿using RhytmFighter.Battle.Core;
-using RhytmFighter.UI.Components;
-using RhytmFighter.UI.Widget;
+﻿using RhytmFighter.UI.View;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace RhytmFighter.StateMachines.UIState
 {
+    /// <summary>
+    /// Состояние подготовки к бою
+    /// </summary>
     public class UIState_PrepareForBattle : UIState_Battle
     {
-        public UIState_PrepareForBattle(Button buttonDefence, Text textBattleStatus, UIWidget_Tick tickIndicator, UIComponent_ActionPointsIndicator apIndicator) :
-            base(buttonDefence, textBattleStatus, tickIndicator, apIndicator)
+        public UIState_PrepareForBattle(UIView_InventoryHUD uiView_InventoryHUD, UIView_PlayerHUD uiView_PlayerHUD, UIView_BattleHUD uiView_BattleHUD) :
+                base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD)
         {
         }
 
@@ -18,12 +18,10 @@ namespace RhytmFighter.StateMachines.UIState
             base.EnterState();
 
             //Text
-            m_TextBattleStatus.text = "Prepare for battle";
-            m_TextBattleStatus.color = Color.yellow;
-            BattleManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
+            UIView_BattleHUD.UIWidget_BattleStatus.ShowBattleStatusWithDelay("Prepare for battle", Color.yellow);
 
             //Tick indicator
-            m_TickIndicator.ToPrepareState();
+            UIView_PlayerHUD.UIWidget_Tick.ToPrepareState();
         }
     }
 }

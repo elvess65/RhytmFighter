@@ -1,28 +1,16 @@
-﻿using RhytmFighter.Battle.Core;
-using RhytmFighter.Persistant;
+﻿using System;
+using System.Collections.Generic;
 using RhytmFighter.Persistant.Abstract;
-using RhytmFighter.Persistant.Enums;
 using RhytmFighter.StateMachines.UIState;
-using RhytmFighter.UI.Components;
 using RhytmFighter.UI.View;
-using RhytmFighter.UI.Widget;
 using UnityEngine;
-using UnityEngine.UI;
-using static RhytmFighter.Data.PlayerData;
 
 namespace RhytmFighter.UI
 {
     public class UIManager : MonoBehaviour, iUpdatable
     {
-        public System.Action OnButtonDefencePressed;
-        public System.Action OnTryUsePotion;
-
-        public UIComponent_ActionPointsIndicator UIComponent_ActionPointsIndicator;
-
-        [Header("Battle")]
-        public Button Button_Defence;
-        public Text Text_BattleStatus;
-        public Text Text_PressToContinue;
+        public Action OnTryDefence;
+        public Action OnTryUsePotion;
 
         [Header("Views")]
         public UIView_InventoryHUD UIView_InventoryHUD;
@@ -31,19 +19,9 @@ namespace RhytmFighter.UI
 
         private UIStateMachine m_StateMachine;
 
-        //States
-        private UIState_NoUI m_UIStateNoUI;
-        private UIState_Battle m_UIStateBattle;
-        private UIState_Adventure m_UIStateAdventure;
-        private UIState_PrepareForBattle m_UIState_PrepareForBattle;
-        private UIState_BattleStart m_UIState_BattleStart;
-        private UIState_WaitNextEnemy m_UIState_WaitNextEnemy;
-        private UIState_BattleFinished m_UIState_BattleFinished;
-        private UIState_GameOverState m_UIState_GameOver;
-        private UIState_LevelComplete m_UIState_LevelComplete;
-        private UIState_TapToActionState m_UIState_TapToActionState;
-
         private iUpdatable[] m_Updatables;
+        private Dictionary<Type, UIState_Abstract> m_InitializedStates;
+
 
         public void Initialize()
         {
@@ -54,21 +32,25 @@ namespace RhytmFighter.UI
 
         public void PerformUpdate(float deltaTime)
         {
-            //UIComponent_ActionPointsIndicator.PerformUpdate(deltaTime);
-
             for (int i = 0; i < m_Updatables.Length; i++)
                 m_Updatables[i].PerformUpdate(deltaTime);
         }
+
+        public void ChangeState<T>() where T : UIState_Abstract
+        {
+            m_StateMachine.ChangeState(m_InitializedStates[typeof(T)]);
+        }
+
 
         private void InitializeViews()
         {
             UIView_InventoryHUD.Initialize();
             UIView_InventoryHUD.OnWidgetPotionPress += UIView_Inventory_Potion_WidgetPress;
 
-            UIView_PlayerHUD.Initialize();
             UIView_BattleHUD.Initialize();
+            UIView_BattleHUD.OnWidgetDefencePointerDown += UIView_Battle_Defence_PressHandler;
 
-            Text_PressToContinue.gameObject.SetActive(false);
+            UIView_PlayerHUD.Initialize();
 
             /*UIComponent_ActionPointsIndicator.Initialize(GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints, 
                                                          (float)(Rhytm.RhytmController.GetInstance().TickDurationSeconds * 
@@ -80,20 +62,21 @@ namespace RhytmFighter.UI
         private void InitializeStateMachine()
         {
             m_StateMachine = new UIStateMachine();
+            m_InitializedStates = new Dictionary<Type, UIState_Abstract>();
 
-            m_UIStateAdventure = new UIState_Adventure(UIView_PlayerHUD.UIWidget_Tick, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
-            m_UIState_TapToActionState = new UIState_TapToActionState(Text_BattleStatus, Text_PressToContinue);
+            m_InitializedStates.Add(typeof(UIState_Adventure), new UIState_Adventure(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_TapToActionState), new UIState_TapToActionState(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
 
-            m_UIState_PrepareForBattle = new UIState_PrepareForBattle(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator);
-            m_UIState_BattleStart = new UIState_BattleStart(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator);
-            m_UIState_WaitNextEnemy = new UIState_WaitNextEnemy(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator);
-            m_UIState_BattleFinished = new UIState_BattleFinished(Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick);
+            m_InitializedStates.Add(typeof(UIState_PrepareForBattle), new UIState_PrepareForBattle(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_BattleStart), new UIState_BattleStart(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_WaitNextEnemy), new UIState_WaitNextEnemy(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_BattleFinished), new UIState_BattleFinished(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
 
-            m_UIStateNoUI = new UIState_NoUI(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
-            m_UIState_GameOver = new UIState_GameOverState(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
-            m_UIState_LevelComplete = new UIState_LevelComplete(Button_Defence, Text_BattleStatus, UIView_PlayerHUD.UIWidget_Tick, UIComponent_ActionPointsIndicator, UIView_PlayerHUD.PlayerHealthBarParent, UIView_InventoryHUD.Root);
+            m_InitializedStates.Add(typeof(UIState_NoUI), new UIState_NoUI(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_GameOverState), new UIState_GameOverState(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_LevelComplete), new UIState_LevelComplete(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
 
-            m_StateMachine.Initialize(m_UIStateNoUI);
+            m_StateMachine.Initialize(m_InitializedStates[typeof(UIState_NoUI)]);
         }
 
         private void InitializeUpdatables()
@@ -107,67 +90,23 @@ namespace RhytmFighter.UI
         }
 
 
-        #region STATES
-
-        public void ToAdventureUIState()
-        {
-            m_StateMachine.ChangeState(m_UIStateAdventure);
-        }
-
-        public void ToPrepareForBattleUIState()
-        {
-            m_StateMachine.ChangeState(m_UIState_PrepareForBattle);
-        }
-
-        public void ToBattleStartUIState()
-        {
-            m_StateMachine.ChangeState(m_UIState_BattleStart);
-        }
-
-        public void ToWaitingForNextEnemyActivationUIState()
-        {
-            m_StateMachine.ChangeState(m_UIState_WaitNextEnemy);
-        }
-
-        public void ToBattleFinishedUIState()
-        {
-            m_StateMachine.ChangeState(m_UIState_BattleFinished);
-        }
-
-        public void ToGameOverUIState()
-        {
-            m_StateMachine.ChangeState(m_UIState_GameOver);
-        }
-
-        public void ToLevelComleteUIState()
-        {
-            m_StateMachine.ChangeState(m_UIState_LevelComplete);
-        }
-
-        public void ToTapToActionUIState()
-        {
-            m_StateMachine.ChangeState(m_UIState_TapToActionState);
-        }
-
-        #endregion
-
         #region VIEWS
 
         #region - ACTION POINTS
 
         public void UseActionPoint(int curActionPoints)
         {
-            UIComponent_ActionPointsIndicator.UseActionPoint(curActionPoints);
+            //UIComponent_ActionPointsIndicator.UseActionPoint(curActionPoints);
         }
 
         public void RestoreActionPoint(int curActionPoints)
         {
-            UIComponent_ActionPointsIndicator.RestoreActionPoint(curActionPoints);
+            //UIComponent_ActionPointsIndicator.RestoreActionPoint(curActionPoints);
         }
 
         public void RestoreAllActionPoints()
         {
-            UIComponent_ActionPointsIndicator.RestoreAllActionPoints();
+            //UIComponent_ActionPointsIndicator.RestoreAllActionPoints();
         }
 
         #endregion
@@ -187,9 +126,9 @@ namespace RhytmFighter.UI
 
         #region - BATTLE
 
-        public void ButtonDefence_PressHandler()
+        public void UIView_Battle_Defence_PressHandler()
         {
-            OnButtonDefencePressed?.Invoke();
+            OnTryDefence?.Invoke();
         }
 
         #endregion

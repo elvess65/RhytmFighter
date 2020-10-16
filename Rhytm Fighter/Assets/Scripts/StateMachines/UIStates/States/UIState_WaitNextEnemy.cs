@@ -1,15 +1,16 @@
 ﻿using RhytmFighter.Battle.Core;
-using RhytmFighter.UI.Components;
-using RhytmFighter.UI.Widget;
+using RhytmFighter.UI.View;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace RhytmFighter.StateMachines.UIState
 {
+    /// <summary>
+    /// Состояние ожидания следующего противника
+    /// </summary>
     public class UIState_WaitNextEnemy : UIState_Battle
     {
-        public UIState_WaitNextEnemy(Button buttonDefence, Text textBattleStatus, UIWidget_Tick tickIndicator, UIComponent_ActionPointsIndicator apIndicator) :
-            base(buttonDefence, textBattleStatus, tickIndicator, apIndicator)
+        public UIState_WaitNextEnemy(UIView_InventoryHUD uiView_InventoryHUD, UIView_PlayerHUD uiView_PlayerHUD, UIView_BattleHUD uiView_BattleHUD) :
+            base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD)
         {
         }
 
@@ -18,12 +19,10 @@ namespace RhytmFighter.StateMachines.UIState
             base.EnterState();
 
             //Text
-            m_TextBattleStatus.text = "Its not finished yet";
-            m_TextBattleStatus.color = Color.yellow;
-            BattleManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
+            UIView_BattleHUD.UIWidget_BattleStatus.ShowBattleStatusWithDelay("Its not finished yet", Color.yellow);
 
             //Tick indicator
-            m_TickIndicator.ToPrepareState();
+            UIView_PlayerHUD.UIWidget_Tick.ToPrepareState();
         }
     }
 }

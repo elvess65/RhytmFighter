@@ -1,31 +1,15 @@
-﻿using RhytmFighter.UI.Components;
-using RhytmFighter.UI.Widget;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using RhytmFighter.UI.View;
 
 namespace RhytmFighter.StateMachines.UIState
 {
+    /// <summary>
+    /// Состояние отключенного UI
+    /// </summary>
     public class UIState_NoUI : UIState_Abstract
     {
-        protected List<Transform> m_UIObjects;
-
-        public UIState_NoUI(Button buttonDefence, Text textBattleStatus, 
-                            UIWidget_Tick tickIndicator, 
-                            UIComponent_ActionPointsIndicator apIndicator, 
-                            Transform playerHealthBarParent, 
-                            Transform inventoryUIParent) :
-            base(textBattleStatus)
+        public UIState_NoUI(UIView_InventoryHUD uiView_InventoryHUD, UIView_PlayerHUD uiView_PlayerHUD, UIView_BattleHUD uiView_BattleHUD) :
+            base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD)
         {
-            m_UIObjects = new List<Transform>()
-            {
-                buttonDefence.transform,
-                textBattleStatus.transform,
-                tickIndicator.transform,
-                apIndicator.transform,
-                playerHealthBarParent,
-                inventoryUIParent
-            };
         }
 
         public override void EnterState()
@@ -33,8 +17,9 @@ namespace RhytmFighter.StateMachines.UIState
             base.EnterState();
 
             //UI
-            foreach (Transform uiObject in m_UIObjects)
-                uiObject.gameObject.SetActive(false);
+            UIView_BattleHUD.DisableView(true);
+            UIView_PlayerHUD.DisableView(true);
+            UIView_InventoryHUD.DisableView(true);
         }
     }
 }

@@ -9,11 +9,12 @@ namespace RhytmFighter.UI.View
     /// </summary>
     public class UIView_PlayerHUD : UIView_Abstract
     {
+        [Space(10)]
+        public Transform PlayerHealthBarParent;
+
         [Header("Widgets")]
         public UIWidget_Tick UIWidget_Tick;
 
-        [Header("Parents")]
-        public Transform PlayerHealthBarParent;
 
         public override void Initialize()
         {
