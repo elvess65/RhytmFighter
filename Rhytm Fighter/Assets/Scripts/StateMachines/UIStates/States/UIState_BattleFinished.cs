@@ -1,5 +1,4 @@
-﻿using RhytmFighter.Battle.Core;
-using RhytmFighter.UI.View;
+﻿using RhytmFighter.UI.View;
 using UnityEngine;
 
 namespace RhytmFighter.StateMachines.UIState

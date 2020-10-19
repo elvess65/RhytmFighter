@@ -21,7 +21,8 @@ namespace RhytmFighter.StateMachines.UIState
             Rhytm.RhytmController.GetInstance().OnEventProcessingTick += ProcessTickHandler;
 
             //UI
-            UIView_BattleHUD.UIWidget_Defence.WidgetButton.gameObject.SetActive(true);
+            UIView_BattleHUD.DisableView(false);
+            UIView_InventoryHUD.UIWidget_Potion.Root.gameObject.SetActive(false);
         }
 
         public override void ExitState()
@@ -33,7 +34,7 @@ namespace RhytmFighter.StateMachines.UIState
             Rhytm.RhytmController.GetInstance().OnEventProcessingTick -= ProcessTickHandler;
 
             //UI
-            UIView_BattleHUD.UIWidget_Defence.WidgetButton.gameObject.SetActive(false);
+            UIView_BattleHUD.DisableView(true);
         }
 
 

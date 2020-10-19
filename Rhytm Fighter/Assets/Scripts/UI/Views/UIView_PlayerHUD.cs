@@ -20,11 +20,8 @@ namespace RhytmFighter.UI.View
         {
             UIWidget_Tick.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
 
-            //Create updatables list
-            m_Updatables = new iUpdatable[]
-            {
-                UIWidget_Tick,
-            };
+            RegisterWidget(UIWidget_Tick);
+            RegisterUpdatable(UIWidget_Tick);
         }
     }
 }

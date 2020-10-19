@@ -12,6 +12,7 @@ namespace RhytmFighter.UI.Widget
 
         [SerializeField] public Button WidgetButton;
 
+
         protected override void InternalInitialize()
         {
             WidgetButton.onClick.AddListener(WidgetPressHandler);

@@ -14,6 +14,7 @@ namespace RhytmFighter.UI.Widget
         public Text Text_PressToContinue;
 
         private WaitForSeconds m_WaitDisableBattleStatusUIDelay;
+        private Coroutine m_DisableBattleStatusTextCoroutine;
 
 
         public void Initialize()
@@ -26,7 +27,10 @@ namespace RhytmFighter.UI.Widget
         {
             ShowBattleStatus(statusText, statusColor);
 
-            BattleManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
+            if (m_DisableBattleStatusTextCoroutine != null)
+                BattleManager.Instance.StopCoroutine(m_DisableBattleStatusTextCoroutine);
+
+            m_DisableBattleStatusTextCoroutine = BattleManager.Instance.StartCoroutine(DisableBattleStatusTextCoroutine());
         }
 
         public void ShowBattleStatus(string statusText, Color statusColor)
@@ -43,6 +47,7 @@ namespace RhytmFighter.UI.Widget
             yield return m_WaitDisableBattleStatusUIDelay;
 
             Text_BattleStatus.gameObject.SetActive(false);
+            m_DisableBattleStatusTextCoroutine = null;
         }
     }
 }

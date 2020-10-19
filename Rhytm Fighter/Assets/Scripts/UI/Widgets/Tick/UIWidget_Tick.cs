@@ -33,6 +33,31 @@ namespace RhytmFighter.UI.Widget
             InternalInitialize();
         }
 
+        public void PerformUpdate(float deltaTime)
+        {
+            if (m_LerpData.IsStarted)
+            {
+                //Increment
+                m_LerpData.Increment();
+
+                //Process
+                for (int i = 0; i < m_TickArrows.Length; i++)
+                    m_TickArrows[i].ProcessInterpolation(m_LerpData.Progress);
+
+                //Overtime
+                if (m_LerpData.Overtime())
+                {
+                    m_LerpData.Stop();
+
+                    for (int i = 0; i < m_TickArrows.Length; i++)
+                        m_TickArrows[i].FinishInterpolation();
+                }
+            }
+        }
+
+
+        #region States
+
         public void ToNormalState()
         {
             m_IsInBattleState = false;
@@ -67,6 +92,9 @@ namespace RhytmFighter.UI.Widget
             m_Tick.ToBattleState();
         }
 
+        #endregion
+
+        #region Animations
 
         public void PlayTickAnimation()
         {
@@ -87,27 +115,6 @@ namespace RhytmFighter.UI.Widget
             }
         }
 
-        
-        public void PerformUpdate(float deltaTime)
-        {
-            if (m_LerpData.IsStarted)
-            {
-                //Increment
-                m_LerpData.Increment();
-
-                //Process
-                for (int i = 0; i < m_TickArrows.Length; i++)
-                    m_TickArrows[i].ProcessInterpolation(m_LerpData.Progress);
-
-                //Overtime
-                if (m_LerpData.Overtime())
-                {
-                    m_LerpData.Stop();
-
-                    for (int i = 0; i < m_TickArrows.Length; i++)
-                        m_TickArrows[i].FinishInterpolation();
-                }
-            }
-        }
+        #endregion
     }
 }

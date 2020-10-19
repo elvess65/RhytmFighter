@@ -18,6 +18,8 @@ namespace RhytmFighter.StateMachines.UIState
             base.EnterState();
 
             //Text
+            UIView_BattleHUD.DisableView(false);
+            UIView_BattleHUD.UIWidget_Defence.Root.gameObject.SetActive(false);
             UIView_BattleHUD.UIWidget_BattleStatus.ShowBattleStatus("Level Complete", Color.green);
         }
     }

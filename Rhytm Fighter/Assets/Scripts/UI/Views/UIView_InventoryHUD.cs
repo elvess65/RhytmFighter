@@ -25,11 +25,8 @@ namespace RhytmFighter.UI.View
             UIWidget_Potion.Initialize(potionData.PiecesAmount, potionData.PiecesPerPotion, 5);
             UIWidget_Potion.OnWidgetPress += WidgetPotion_PressHandler;
 
-            //Create updatables list
-            m_Updatables = new iUpdatable[]
-            {
-                UIWidget_Potion,
-            };
+            RegisterWidget(UIWidget_Potion);
+            RegisterUpdatable(UIWidget_Potion);
         }
 
         #region WIDGET HANDLERS

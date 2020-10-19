@@ -9,6 +9,17 @@ namespace RhytmFighter.UI.Widget
     {
         public Transform Root;
 
+        public void DisableWidget(bool isDisabled, bool isAnimated)
+        {
+            if (!isAnimated)
+                Root.gameObject.SetActive(!isDisabled);
+            else
+            {
+                Debug.Log("Disable widget animated");
+                Root.gameObject.SetActive(!isDisabled);
+            }
+        }
+
         protected virtual void InternalInitialize()
         {
         }

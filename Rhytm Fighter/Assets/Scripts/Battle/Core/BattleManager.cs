@@ -366,8 +366,8 @@ namespace RhytmFighter.Battle.Core
             m_ControllersHolder.RhytmController.OnTick += m_ControllersHolder.BattleController.ProcessEnemyActions;   
             m_ControllersHolder.RhytmController.OnEventProcessingTick += m_ControllersHolder.CommandsController.ProcessPendingCommands;
 
-            m_GameStateMachine.ChangeState(m_GameStateBattle);      //Change state
-            ManagersHolder.UIManager.ChangeState<UIState_Battle>(); //Show Battle UI
+            m_GameStateMachine.ChangeState(m_GameStateBattle);              //Change state
+            ManagersHolder.UIManager.ChangeState<UIState_BattleStart>();    //Show Battle UI
         }
 
         private void BattleEnemyDestroyedHandler(bool lastEnemyDestroyed)

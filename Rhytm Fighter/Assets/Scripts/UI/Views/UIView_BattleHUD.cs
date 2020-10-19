@@ -20,6 +20,9 @@ namespace RhytmFighter.UI.View
             UIWidget_Defence.OnWidgetPress += WidgetDefence_PointerDownHandler;
 
             UIWidget_BattleStatus.Initialize();
+
+            RegisterWidget(UIWidget_Defence);
+            RegisterWidget(UIWidget_BattleStatus);
         }
 
         #region WIDGET HANDLERS
