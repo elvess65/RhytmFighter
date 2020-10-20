@@ -1,5 +1,4 @@
-﻿using RhytmFighter.Persistant.Abstract;
-using RhytmFighter.UI.Widget;
+﻿using RhytmFighter.UI.Widget;
 using UnityEngine;
 
 namespace RhytmFighter.UI.View
@@ -9,11 +8,9 @@ namespace RhytmFighter.UI.View
     /// </summary>
     public class UIView_PlayerHUD : UIView_Abstract
     {
-        [Space(10)]
-        public Transform PlayerHealthBarParent;
-
         [Header("Widgets")]
         public UIWidget_Tick UIWidget_Tick;
+        public UIWidget_HealthBar UIWidget_HealthBar;
 
 
         public override void Initialize()
@@ -21,6 +18,7 @@ namespace RhytmFighter.UI.View
             UIWidget_Tick.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
 
             RegisterWidget(UIWidget_Tick);
+            RegisterWidget(UIWidget_HealthBar);
             RegisterUpdatable(UIWidget_Tick);
         }
     }

@@ -1,4 +1,5 @@
-﻿using RhytmFighter.UI.View;
+﻿using System.Diagnostics;
+using RhytmFighter.UI.View;
 using UnityEngine;
 
 namespace RhytmFighter.StateMachines.UIState
@@ -8,8 +9,11 @@ namespace RhytmFighter.StateMachines.UIState
     /// </summary>
     public class UIState_LevelComplete : UIState_NoUI
     {
-        public UIState_LevelComplete(UIView_InventoryHUD uiView_InventoryHUD, UIView_PlayerHUD uiView_PlayerHUD, UIView_BattleHUD uiView_BattleHUD) :
-            base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD)
+        public UIState_LevelComplete(UIView_InventoryHUD uiView_InventoryHUD,
+                                     UIView_PlayerHUD uiView_PlayerHUD,
+                                     UIView_BattleHUD uiView_BattleHUD,
+                                     UIView_FinishLevelHUD uIView_FinishLevelHUD) :
+            base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD, uIView_FinishLevelHUD)
         {
         }
 
@@ -17,10 +21,10 @@ namespace RhytmFighter.StateMachines.UIState
         {
             base.EnterState();
 
-            //Text
-            UIView_BattleHUD.DisableView(false);
-            UIView_BattleHUD.UIWidget_Defence.Root.gameObject.SetActive(false);
-            UIView_BattleHUD.UIWidget_BattleStatus.ShowBattleStatus("Level Complete", Color.green);
+            UIView_FinishLevelHUD.UIWidget_LevelComplete.SetWidgetActive(true, true);
+            UIView_FinishLevelHUD.UIWidget_LevelComplete.ShowResult("Level Complete", Color.green);
         }
+
+        protected override bool IsUIHidedWithAnimation() => true;
     }
 }

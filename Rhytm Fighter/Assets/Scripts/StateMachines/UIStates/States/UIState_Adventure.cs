@@ -21,8 +21,9 @@ namespace RhytmFighter.StateMachines.UIState
             Rhytm.RhytmController.GetInstance().OnTick += TickHandler;
 
             //UI
-            UIView_PlayerHUD.DisableView(false);
-            UIView_InventoryHUD.DisableView(false);
+            UIView_PlayerHUD.SetWidgetsActive(true, true);
+            UIView_InventoryHUD.SetWidgetsActive(true, true);
+            
 
             //Tick indicator
             UIView_PlayerHUD.UIWidget_Tick.ToNormalState();

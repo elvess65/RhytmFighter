@@ -16,6 +16,7 @@ namespace RhytmFighter.UI
         public UIView_InventoryHUD UIView_InventoryHUD;
         public UIView_PlayerHUD UIView_PlayerHUD;
         public UIView_BattleHUD UIView_BattleHUD;
+        public UIView_FinishLevelHUD UIView_FinishLevelHUD;
 
         private UIStateMachine m_StateMachine;
 
@@ -51,6 +52,7 @@ namespace RhytmFighter.UI
             UIView_BattleHUD.OnWidgetDefencePointerDown += UIView_Battle_Defence_PressHandler;
 
             UIView_PlayerHUD.Initialize();
+            UIView_FinishLevelHUD.Initialize();
 
             /*UIComponent_ActionPointsIndicator.Initialize(GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints, 
                                                          (float)(Rhytm.RhytmController.GetInstance().TickDurationSeconds * 
@@ -64,19 +66,20 @@ namespace RhytmFighter.UI
             m_StateMachine = new UIStateMachine();
             m_InitializedStates = new Dictionary<Type, UIState_Abstract>();
 
-            m_InitializedStates.Add(typeof(UIState_Adventure), new UIState_Adventure(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
-            m_InitializedStates.Add(typeof(UIState_TapToActionState), new UIState_TapToActionState(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_Adventure),        new UIState_Adventure        (UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            
+            m_InitializedStates.Add(typeof(UIState_PrepareForBattle), new UIState_PrepareForBattle (UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_BattleStart),      new UIState_BattleStart      (UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_WaitNextEnemy),    new UIState_WaitNextEnemy    (UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_BattleFinished),   new UIState_BattleFinished   (UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
 
-            m_InitializedStates.Add(typeof(UIState_PrepareForBattle), new UIState_PrepareForBattle(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
-            m_InitializedStates.Add(typeof(UIState_BattleStart), new UIState_BattleStart(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
-            m_InitializedStates.Add(typeof(UIState_WaitNextEnemy), new UIState_WaitNextEnemy(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
-            m_InitializedStates.Add(typeof(UIState_BattleFinished), new UIState_BattleFinished(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_LevelStart),       new UIState_LevelStart       (UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD, UIView_FinishLevelHUD));
+            m_InitializedStates.Add(typeof(UIState_GameOverState),    new UIState_GameOverState    (UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD, UIView_FinishLevelHUD));
+            m_InitializedStates.Add(typeof(UIState_LevelComplete),    new UIState_LevelComplete    (UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD, UIView_FinishLevelHUD));
 
-            m_InitializedStates.Add(typeof(UIState_NoUI), new UIState_NoUI(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
-            m_InitializedStates.Add(typeof(UIState_GameOverState), new UIState_GameOverState(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
-            m_InitializedStates.Add(typeof(UIState_LevelComplete), new UIState_LevelComplete(UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD));
+            m_InitializedStates.Add(typeof(UIState_TapToActionState), new UIState_TapToActionState (UIView_InventoryHUD, UIView_PlayerHUD, UIView_BattleHUD, UIView_FinishLevelHUD));
 
-            m_StateMachine.Initialize(m_InitializedStates[typeof(UIState_NoUI)]);
+            m_StateMachine.Initialize(m_InitializedStates[typeof(UIState_LevelStart)]);
         }
 
         private void InitializeUpdatables()

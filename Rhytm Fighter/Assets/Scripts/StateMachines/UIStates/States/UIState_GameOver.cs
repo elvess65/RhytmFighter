@@ -8,8 +8,11 @@ namespace RhytmFighter.StateMachines.UIState
     /// </summary>
     public class UIState_GameOverState : UIState_NoUI
     {
-        public UIState_GameOverState(UIView_InventoryHUD uiView_InventoryHUD, UIView_PlayerHUD uiView_PlayerHUD, UIView_BattleHUD uiView_BattleHUD) :
-            base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD)
+        public UIState_GameOverState(UIView_InventoryHUD uiView_InventoryHUD,
+                                     UIView_PlayerHUD uiView_PlayerHUD,
+                                     UIView_BattleHUD uiView_BattleHUD,
+                                     UIView_FinishLevelHUD uIView_FinishLevelHUD) :
+            base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD, uIView_FinishLevelHUD)
         {
         }
 
@@ -17,10 +20,10 @@ namespace RhytmFighter.StateMachines.UIState
         {
             base.EnterState();
 
-            //Text
-            UIView_BattleHUD.DisableView(false);
-            UIView_BattleHUD.UIWidget_Defence.Root.gameObject.SetActive(false);
-            UIView_BattleHUD.UIWidget_BattleStatus.ShowBattleStatus("Game Over", Color.red);
+            UIView_FinishLevelHUD.UIWidget_GameOver.SetWidgetActive(true, true);
+            UIView_FinishLevelHUD.UIWidget_GameOver.ShowResult("Game Over", Color.red);
         }
+
+        protected override bool IsUIHidedWithAnimation() => true;
     }
 }

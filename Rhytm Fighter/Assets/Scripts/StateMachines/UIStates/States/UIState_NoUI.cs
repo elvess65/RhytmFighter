@@ -5,21 +5,29 @@ namespace RhytmFighter.StateMachines.UIState
     /// <summary>
     /// Состояние отключенного UI
     /// </summary>
-    public class UIState_NoUI : UIState_Abstract
+    public abstract class UIState_NoUI : UIState_Abstract
     {
-        public UIState_NoUI(UIView_InventoryHUD uiView_InventoryHUD, UIView_PlayerHUD uiView_PlayerHUD, UIView_BattleHUD uiView_BattleHUD) :
+        protected UIView_FinishLevelHUD UIView_FinishLevelHUD;
+
+        public UIState_NoUI(UIView_InventoryHUD uiView_InventoryHUD,
+                            UIView_PlayerHUD uiView_PlayerHUD,
+                            UIView_BattleHUD uiView_BattleHUD,
+                            UIView_FinishLevelHUD uIView_FinishLevelHUD) :
             base(uiView_InventoryHUD, uiView_PlayerHUD, uiView_BattleHUD)
         {
+            UIView_FinishLevelHUD = uIView_FinishLevelHUD;
         }
 
         public override void EnterState()
         {
             base.EnterState();
 
-            //UI
-            UIView_BattleHUD.DisableView(true);
-            UIView_PlayerHUD.DisableView(true);
-            UIView_InventoryHUD.DisableView(true);
+            UIView_BattleHUD.SetWidgetsActive(false, IsUIHidedWithAnimation());
+            UIView_PlayerHUD.SetWidgetsActive(false, IsUIHidedWithAnimation());
+            UIView_InventoryHUD.SetWidgetsActive(false, IsUIHidedWithAnimation());
+            UIView_FinishLevelHUD.SetWidgetsActive(false, IsUIHidedWithAnimation());
         }
+
+        protected abstract bool IsUIHidedWithAnimation();
     }
 }

@@ -27,16 +27,10 @@ namespace RhytmFighter.UI.View
             }
         }
 
-
-        public void DisableView(bool isDisabled)
-        {
-            Root.gameObject.SetActive(!isDisabled);
-        }
-
-        public void DiableWidgets(bool isDisabled, bool isAnimated)
+        public void SetWidgetsActive(bool isEnabled, bool isAnimated)
         {
             for (int i = 0; i < m_Widgets.Count; i++)
-                m_Widgets[i].DisableWidget(isDisabled, isAnimated);
+                m_Widgets[i].SetWidgetActive(isEnabled, isAnimated);
         }
 
 

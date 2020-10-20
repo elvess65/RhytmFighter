@@ -11,7 +11,6 @@ namespace RhytmFighter.UI.Widget
     {
         [Space(10)]
         public Text Text_BattleStatus;
-        public Text Text_PressToContinue;
 
         private WaitForSeconds m_WaitDisableBattleStatusUIDelay;
         private Coroutine m_DisableBattleStatusTextCoroutine;
@@ -19,8 +18,7 @@ namespace RhytmFighter.UI.Widget
 
         public void Initialize()
         {
-            Text_PressToContinue.gameObject.SetActive(false);
-            m_WaitDisableBattleStatusUIDelay = new WaitForSeconds((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds);
+            m_WaitDisableBattleStatusUIDelay = new WaitForSeconds((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds * 2);
         }
 
         public void ShowBattleStatusWithDelay(string statusText, Color statusColor)
