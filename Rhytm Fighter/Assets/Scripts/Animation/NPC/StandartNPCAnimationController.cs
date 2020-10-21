@@ -83,6 +83,10 @@ namespace RhytmFighter.Animation.NPC
                 case AnimationTypes.Teleport:
                     SetTrigger(key);
                     break;
+
+                case AnimationTypes.Victory:
+                    SetTrigger(key);
+                    break;
             }
         }
 

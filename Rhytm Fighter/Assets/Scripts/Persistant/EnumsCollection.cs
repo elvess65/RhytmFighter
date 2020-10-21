@@ -28,7 +28,8 @@
         BattleIdle,
         StrafeLeft,
         StrafeRight,
-        Teleport
+        Teleport,
+        Victory
     }
     public enum AnimationStates { None, Showing, Hiding }
 
