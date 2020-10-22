@@ -15,6 +15,7 @@ namespace RhytmFighter.Persistant.SceneLoading
 
         public void FadeIn()
         {
+            Debug.Log("Fade in");
             m_AnimationController.SetTrigger(m_FADE_IN_KEY);
         }
 
@@ -26,6 +27,7 @@ namespace RhytmFighter.Persistant.SceneLoading
         /// Is called from animation
         public void FadeInComplete()
         {
+            Debug.Log("On faded in");
             //m_AnimationController.ResetTrigger(m_FADE_IN_KEY);
             OnFadeIn?.Invoke();
         }

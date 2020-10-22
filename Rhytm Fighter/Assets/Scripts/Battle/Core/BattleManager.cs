@@ -63,12 +63,6 @@ namespace RhytmFighter.Battle.Core
                 for (int i = 0; i < m_Updateables.Count; i++)
                     m_Updateables[i].PerformUpdate(Time.deltaTime);
             }
-
-            if (UnityEngine.Input.GetKeyDown(KeyCode.A))
-            {
-                PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).IncrementPieceAmount();
-                ManagersHolder.UIManager.UIView_InventoryHUD.WidgetPotion_UpdateAmount();
-            }
         }
 
         #region Initialization
@@ -249,7 +243,7 @@ namespace RhytmFighter.Battle.Core
             m_ControllersHolder.BattleController.Player = m_ControllersHolder.PlayerCharacterController.PlayerModel;
 
             //Initialize camera
-            StartCoroutine(WaitEndOfFrameBeforeInitializeCamera());
+            StartCoroutine(WaitDelayBeforeInitializeCamera());
         }
 
         private void PlayerDestroyedHandler(iBattleObject sender)
@@ -272,12 +266,17 @@ namespace RhytmFighter.Battle.Core
             m_ControllersHolder.InputController.OnTouch += m_GameStateMachine.HandleTouch;
         }
 
-        System.Collections.IEnumerator WaitEndOfFrameBeforeInitializeCamera()
+        System.Collections.IEnumerator WaitDelayBeforeInitializeCamera()
         {
             yield return null;
 
             //Initialize camera
             m_ControllersHolder.CameraController.InitializeCamera(m_ControllersHolder.PlayerCharacterController.PlayerModel.View.transform);
+
+            yield return new WaitForSeconds(1);
+
+            //Activate mmain camera
+            m_ControllersHolder.CameraController.ActivateCamera(CameraTypes.Main);
 
         }
 

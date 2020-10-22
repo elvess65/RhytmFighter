@@ -1,5 +1,6 @@
 ﻿using RhytmFighter.Battle.Core;
 using RhytmFighter.Data;
+using RhytmFighter.OtherScenes.MenuScene;
 using RhytmFighter.Persistant.Abstract;
 using RhytmFighter.Persistant.SceneLoading;
 using UnityEngine;
@@ -11,13 +12,17 @@ namespace RhytmFighter.Persistant
     {
         public DataHolder DataHolder { get; private set; }
 
+        public System.Action OnSceneLoadingComplete;
+        public System.Action OnSceneUnloadingComplete;
+
         private string m_CurrentLoadingLevel = string.Empty;
         private string m_CurrentUnloadingLevel = string.Empty;
-        private System.Action m_OnSceneLoadingComplete;
-        private System.Action m_OnSceneUnloadingComplete;
+        
+
+        public const string BATTLE_SCENE_NAME = "BattleScene";
+        public const string MENU_SCENE_NAME = "MenuScene";
 
         private const string m_BOOT_SCENE_NAME = "BootScene";
-        private const string m_BATTLE_SCENE_NAME = "BattleScene";
         private const string m_TRANSITION_SCENE_NAME = "TransitionScene";
 
 
@@ -27,8 +32,9 @@ namespace RhytmFighter.Persistant
             
             InitializeCore();
 
-            m_OnSceneLoadingComplete += SceneLoadCompleteHandler;
-            m_OnSceneUnloadingComplete += SceneUnloadCompleteHandler;
+            OnSceneLoadingComplete += SceneLoadCompleteHandler;
+            OnSceneUnloadingComplete += SceneUnloadCompleteHandler;
+
             LoadLevel(m_TRANSITION_SCENE_NAME);
         }
 
@@ -51,7 +57,7 @@ namespace RhytmFighter.Persistant
             DataHolder.PlayerDataModel = PlayerData.DeserializeData(serializedPlayerData);
             DataHolder.InfoData = new InfoData(serializedLevelsData);
 
-            LoadLevel(m_BATTLE_SCENE_NAME);
+            LoadLevel(MENU_SCENE_NAME);
         }
 
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");
@@ -59,7 +65,7 @@ namespace RhytmFighter.Persistant
         #region SceneLoading
         public void ReloadBattleLevel()
         {
-            UnloadLevel(m_BATTLE_SCENE_NAME);
+            UnloadLevel(BATTLE_SCENE_NAME);
         }
 
 
@@ -93,15 +99,20 @@ namespace RhytmFighter.Persistant
 
         private void LoadOperationComplete(AsyncOperation asyncOperation)
         {
-            m_OnSceneLoadingComplete?.Invoke();
+            OnSceneLoadingComplete?.Invoke();
         }
 
         private void SceneLoadCompleteHandler()
         {
             switch (m_CurrentLoadingLevel)
             {
-                case m_BATTLE_SCENE_NAME:
-                    SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_BATTLE_SCENE_NAME));
+                case MENU_SCENE_NAME:
+                    SceneManager.SetActiveScene(SceneManager.GetSceneByName(MENU_SCENE_NAME));
+                    SceneLoadingManager.Instance.FadeOut();
+                    MenuSceneManager.Instance.Initialize();
+                    break;
+                case BATTLE_SCENE_NAME:
+                    SceneManager.SetActiveScene(SceneManager.GetSceneByName(BATTLE_SCENE_NAME));
                     SceneLoadingManager.Instance.FadeOut();
                     BattleManager.Instance.Initialize();
                     break;
@@ -133,15 +144,15 @@ namespace RhytmFighter.Persistant
 
         private void UnloadOperationComplete(AsyncOperation asyncOperation)
         {
-            m_OnSceneUnloadingComplete?.Invoke();
+            OnSceneUnloadingComplete?.Invoke();
         }
 
         private void SceneUnloadCompleteHandler()
         {
             switch(m_CurrentUnloadingLevel)
             {
-                case m_BATTLE_SCENE_NAME:
-                    LoadLevel(m_BATTLE_SCENE_NAME);
+                case BATTLE_SCENE_NAME:
+                    LoadLevel(BATTLE_SCENE_NAME);
                     break;
             }
         }
@@ -151,7 +162,7 @@ namespace RhytmFighter.Persistant
             SceneLoadingManager.Instance.OnFadeIn -= FadeInFinishedOnUnloadHandler;
 
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_BOOT_SCENE_NAME));
-            Unload(m_BATTLE_SCENE_NAME);
+            Unload(m_CurrentUnloadingLevel);
         }
         #endregion
     }

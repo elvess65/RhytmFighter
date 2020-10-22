@@ -19,7 +19,7 @@ namespace RhytmFighter.CameraSystem
         private const int m_ACTIVE_CAM_PRIORITY = 10;
         private const float m_BATTLE_CAM_NOISE_MIN = -25;
         private const float m_BATTLE_CAM_NOISE_MAX = 25;
-        private readonly Vector3 m_DEFAULT_CAMERA_TARGET_OFFSET = new Vector3(0, 2, 5);
+        private readonly Vector3 m_DEFAULT_CAMERA_TARGET_OFFSET = new Vector3(0, 2.5f, 4);
 
 
         public void InitializeCamera(Transform target)
@@ -41,9 +41,6 @@ namespace RhytmFighter.CameraSystem
 
             //Itinialize group vcam
             PushMemberToTargetGroup(target, 1, 2);
-
-            //Activate mmain camera
-            ActivateCamera(CameraTypes.Main);
         }
 
         public void PerformUpdate(float deltaTime)
