@@ -107,26 +107,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42370dc540b73224db1397dffe7f8f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Controller: {fileID: 7902736592013530254}
+  Controller: {fileID: 7809386707295948379}
   ExposedAnimationKeys:
   - Type: 0
-    Key: Attack01
+    Key: Attack
   - Type: 1
-    Key: Defend
+    Key: Defence
   - Type: 2
-    Key: GetHit
+    Key: Take Damage
   - Type: 3
-    Key: Die
+    Key: Destroy
   - Type: 4
-    Key: RunFWD
+    Key: Run Forward
   - Type: 5
-    Key: RunFWD
+    Key: Run Forward
   - Type: 10
-    Key: IdleBattle
+    Key: BattleIdle
   - Type: 11
-    Key: WalkLeft
+    Key: StrafeLeft
   - Type: 12
-    Key: WalkRight
+    Key: StrafeRight
   - Type: 14
     Key: Victory
 --- !u!114 &1181045626910733427
@@ -472,12 +472,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7852260088944663502}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &7902736592013530254 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 95980759410839360, guid: e9a03d46b76afe246a9ffd58d255bb65,
-    type: 3}
-  m_PrefabInstance: {fileID: 7852260088944663502}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7869100031033682013
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -543,6 +537,12 @@ PrefabInstance:
 --- !u!1 &7868058304373589949 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1228834762862560, guid: ae2b11c016c0767429e281e057eda079,
+    type: 3}
+  m_PrefabInstance: {fileID: 7869100031033682013}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7809386707295948379 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 95748894189643270, guid: ae2b11c016c0767429e281e057eda079,
     type: 3}
   m_PrefabInstance: {fileID: 7869100031033682013}
   m_PrefabAsset: {fileID: 0}
