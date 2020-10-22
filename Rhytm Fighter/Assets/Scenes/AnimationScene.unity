@@ -1243,7 +1243,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 627284466}
-  m_LocalRotation: {x: -0.3615521, y: -0.16594289, z: 0.065561764, w: -0.9151201}
+  m_LocalRotation: {x: -0.3615521, y: -0.1659428, z: 0.06556173, w: -0.9151201}
   m_LocalPosition: {x: -1.5, y: 5, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1859,11 +1859,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StandardEnemyNPCView
-      objectReference: {fileID: 0}
-    - target: {fileID: 3398206206525930894, guid: 8fbf892300f755f4b905492541937271,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8fbf892300f755f4b905492541937271, type: 3}
@@ -3084,7 +3079,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027747559}
-  m_LocalRotation: {x: -0.3615521, y: -0.16594289, z: 0.065561764, w: -0.9151201}
+  m_LocalRotation: {x: -0.3615521, y: -0.1659428, z: 0.06556173, w: -0.9151201}
   m_LocalPosition: {x: -1.5, y: 5, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -3361,7 +3356,7 @@ PrefabInstance:
     - target: {fileID: 5206831727226302157, guid: 49a1dad011aebf743837f1340ceccf92,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49a1dad011aebf743837f1340ceccf92, type: 3}

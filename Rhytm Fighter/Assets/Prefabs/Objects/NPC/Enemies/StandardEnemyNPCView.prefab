@@ -53,11 +53,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2435663030325064759}
-  m_LocalRotation: {x: 0.7064338, y: 0.030843422, z: -0.7064338, w: 0.03084356}
-  m_LocalPosition: {x: -1.0621649, y: -0.0745937, z: 0}
-  m_LocalScale: {x: 3.333333, y: 3.3333328, z: 3.3333328}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.11049485, z: 0.041446287}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7847961540847780366}
+  m_Father: {fileID: 7864511885602148633}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2669984494826461152
@@ -110,23 +110,25 @@ MonoBehaviour:
   Controller: {fileID: 7902736592013530254}
   ExposedAnimationKeys:
   - Type: 0
-    Key: Stab Attack
+    Key: Attack01
   - Type: 1
-    Key: Defence
+    Key: Defend
   - Type: 2
-    Key: Take Damage
+    Key: GetHit
   - Type: 3
     Key: Die
   - Type: 4
-    Key: Run Forward
+    Key: RunFWD
   - Type: 5
-    Key: Run Forward
+    Key: RunFWD
   - Type: 10
-    Key: BattleIdle
+    Key: IdleBattle
   - Type: 11
-    Key: StrafeLeft
+    Key: WalkLeft
   - Type: 12
-    Key: StrafeRight
+    Key: WalkRight
+  - Type: 14
+    Key: Victory
 --- !u!114 &1181045626910733427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,6 +244,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7853686919785686310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d50d0341aed9274ead4383dd4074336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6727365002651758521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7868058304373589949}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d50d0341aed9274ead4383dd4074336, type: 3}
@@ -390,6 +404,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Polygonal Metalon Purple
       objectReference: {fileID: 0}
+    - target: {fileID: 1462720695320296, guid: e9a03d46b76afe246a9ffd58d255bb65, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4673369876368086, guid: e9a03d46b76afe246a9ffd58d255bb65, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -460,9 +478,77 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 7852260088944663502}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7847961540847780366 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4885689727375808, guid: e9a03d46b76afe246a9ffd58d255bb65,
+--- !u!1001 &7869100031033682013
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3832834652219167341}
+    m_Modifications:
+    - target: {fileID: 1228834762862560, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_Name
+      value: TurtleShell
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185619969915650, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185619969915650, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185619969915650, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185619969915650, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185619969915650, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185619969915650, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185619969915650, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185619969915650, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185619969915650, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185619969915650, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185619969915650, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 137632251992839938, guid: ae2b11c016c0767429e281e057eda079,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4e9bd81eb4e0c43dfb71ac70ac96da81, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ae2b11c016c0767429e281e057eda079, type: 3}
+--- !u!1 &7868058304373589949 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1228834762862560, guid: ae2b11c016c0767429e281e057eda079,
     type: 3}
-  m_PrefabInstance: {fileID: 7852260088944663502}
+  m_PrefabInstance: {fileID: 7869100031033682013}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7864511885602148633 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4770976019544388, guid: ae2b11c016c0767429e281e057eda079,
+    type: 3}
+  m_PrefabInstance: {fileID: 7869100031033682013}
   m_PrefabAsset: {fileID: 0}
