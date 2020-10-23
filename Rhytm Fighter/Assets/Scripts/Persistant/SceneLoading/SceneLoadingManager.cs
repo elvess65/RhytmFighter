@@ -21,6 +21,7 @@ namespace RhytmFighter.Persistant.SceneLoading
 
             m_TransitionController.OnFadeIn += FadeInHandler;
             m_TransitionController.OnFadeOut += FadeOutHandler;
+            m_TransitionController.Initialize();
         }
 
         public void FadeIn()
@@ -45,7 +46,7 @@ namespace RhytmFighter.Persistant.SceneLoading
                 case FadeStates.FadedIn:
                 case FadeStates.Default:
                     m_CurFadeState = FadeStates.FadingOut;
-                m_TransitionController.FadeOut();
+                    m_TransitionController.FadeOut();
                     break;
                 case FadeStates.FadedOut:
                     FadeOutHandler();

@@ -1,43 +1,57 @@
-﻿using UnityEngine;
+﻿using FrameworkPackage.Utils;
+using UnityEngine;
 
 namespace RhytmFighter.Persistant.SceneLoading
 {
+    [RequireComponent(typeof(CanvasGroup))]
     public class SceneTransitionFadeController : MonoBehaviour
     {
         public System.Action OnFadeIn;
         public System.Action OnFadeOut;
+       
+        private CanvasGroup m_CanvasGroup;
+        private InterpolationData<float> m_LerpData;
+        private System.Action m_OnTransitionFinished;
 
-        [SerializeField] private Animator m_AnimationController;
 
-        private const string m_FADE_IN_KEY = "FadeIn";
-        private const string m_FADE_OUT_KEY = "FadeOut";
-
+        public void Initialize()
+        {
+            m_CanvasGroup = GetComponent<CanvasGroup>();
+            m_LerpData = new InterpolationData<float>(1);
+        }
 
         public void FadeIn()
         {
-            Debug.Log("Fade in");
-            m_AnimationController.SetTrigger(m_FADE_IN_KEY);
+            m_LerpData.From = 0;
+            m_LerpData.To = 1;
+            m_OnTransitionFinished = () => OnFadeIn?.Invoke();
+
+            m_LerpData.Start();
         }
 
         public void FadeOut()
         {
-            m_AnimationController.SetTrigger(m_FADE_OUT_KEY);
+            m_LerpData.From = 1;
+            m_LerpData.To = 0;
+            m_OnTransitionFinished = () => OnFadeOut?.Invoke();
+
+            m_LerpData.Start();
         }
 
-        /// Is called from animation
-        public void FadeInComplete()
+
+        private void Update()
         {
-            Debug.Log("On faded in");
-            //m_AnimationController.ResetTrigger(m_FADE_IN_KEY);
-            OnFadeIn?.Invoke();
-        }
+            if (m_LerpData.IsStarted)
+            {
+                m_LerpData.Increment();
+                m_CanvasGroup.alpha = Mathf.Lerp(m_LerpData.From, m_LerpData.To, m_LerpData.Progress);
 
-        /// Is called from animation
-        public void FadeOutComplete()
-        {
-            //m_AnimationController.ResetTrigger(m_FADE_OUT_KEY);
-            OnFadeOut?.Invoke();
+                if (m_LerpData.Overtime())
+                {
+                    m_LerpData.Stop();
+                    m_OnTransitionFinished?.Invoke();
+                }
+            }
         }
-
     }
 }
