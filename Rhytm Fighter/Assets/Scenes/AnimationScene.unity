@@ -1860,6 +1860,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StandardEnemyNPCView
       objectReference: {fileID: 0}
+    - target: {fileID: 3398206206525930894, guid: 8fbf892300f755f4b905492541937271,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8fbf892300f755f4b905492541937271, type: 3}
 --- !u!1 &1031929303
@@ -3352,11 +3357,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerView
-      objectReference: {fileID: 0}
-    - target: {fileID: 5206831727226302157, guid: 49a1dad011aebf743837f1340ceccf92,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49a1dad011aebf743837f1340ceccf92, type: 3}

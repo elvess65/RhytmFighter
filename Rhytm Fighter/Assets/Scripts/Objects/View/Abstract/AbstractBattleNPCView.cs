@@ -91,6 +91,12 @@ namespace RhytmFighter.Objects.View
             m_AnimationController.PlayAnimation(AnimationTypes.Idle);
         }
 
+        public void NotifyView_Victory()
+        {
+            m_AnimationController.PlayAnimation(AnimationTypes.Victory);
+            HideUI();
+        }
+
         public float GetActionEventExecuteTime(CommandTypes type)
         {
             return m_AnimationController.GetActionEventExecuteTime(ConvertersCollection.Command2Animation(type));

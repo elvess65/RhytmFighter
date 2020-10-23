@@ -249,6 +249,10 @@ namespace RhytmFighter.Battle.Core
         private void PlayerDestroyedHandler(iBattleObject sender)
         {
             GameOverHandler();
+
+            //Play victory animation for enemy
+            m_ControllersHolder.PlayerCharacterController.PlayerModel.Target.NotifyViewAboutVictory();
+
         }
 
         private void PlayerInteractWithObject(AbstractInteractableObjectModel interactableObject)
@@ -391,7 +395,7 @@ namespace RhytmFighter.Battle.Core
 
             m_ControllersHolder.PlayerCharacterController.FinishBattle();       //Finish battle for player
             m_GameStateMachine.ChangeState(m_GameStateAdventure);               //Change state
-            ManagersHolder.UIManager.ChangeState<UIState_Adventure>();           //Finish battle for UI    
+            ManagersHolder.UIManager.ChangeState<UIState_Adventure>();          //Finish battle for UI    
 
             Rhytm.volume = 0;   //Debug - Finish battle for sound
         }
@@ -408,7 +412,9 @@ namespace RhytmFighter.Battle.Core
             {
                 m_GameStateTapToAction.OnTouch += () =>
                 {
-                    GameManager.Instance.ReloadBattleLevel();
+                    //Reload scene
+                    GameManager.Instance.OnSceneUnloadingComplete += BattleSceneUnloadedHandler;
+                    GameManager.Instance.UnloadLevel(GameManager.BATTLE_SCENE_NAME);
                 };
 
                 m_GameStateMachine.ChangeState(m_GameStateTapToAction);
@@ -421,13 +427,23 @@ namespace RhytmFighter.Battle.Core
             //Finilize level
             Finilize(() => ManagersHolder.UIManager.ChangeState<UIState_LevelComplete>());
 
+            //Align and activate victory camera
+            m_ControllersHolder.CameraController.AlignDefaultCameraToTarget();
+            m_ControllersHolder.CameraController.ActivateCamera(CameraTypes.Default);
+
+            //Play victory animation for player
+            m_ControllersHolder.PlayerCharacterController.PlayerModel.NotifyViewAboutVictory();
+
             //Ability to reload level 
             StartCoroutine(FINISH_LEVEL_COROUTINE(() =>
             {
                 m_GameStateTapToAction.OnTouch += () =>
                 {
                     //GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID++;
-                    GameManager.Instance.ReloadBattleLevel();
+
+                    //Reload scene
+                    GameManager.Instance.OnSceneUnloadingComplete += BattleSceneUnloadedHandler;
+                    GameManager.Instance.UnloadLevel(GameManager.BATTLE_SCENE_NAME);
                 };
 
                 m_GameStateMachine.ChangeState(m_GameStateTapToAction);
@@ -446,6 +462,12 @@ namespace RhytmFighter.Battle.Core
             //Show state
             m_GameStateMachine.ChangeState(m_GameStateIdle);
             toUIStateTransition?.Invoke();
+        }
+
+        private void BattleSceneUnloadedHandler()
+        {
+            GameManager.Instance.OnSceneUnloadingComplete -= BattleSceneUnloadedHandler;
+            GameManager.Instance.LoadLevel(GameManager.BATTLE_SCENE_NAME);
         }
         #endregion
 

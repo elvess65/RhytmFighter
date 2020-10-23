@@ -1,5 +1,4 @@
 ﻿using RhytmFighter.UI.Widget;
-using UnityEngine;
 
 namespace RhytmFighter.UI.View
 {
@@ -22,6 +21,8 @@ namespace RhytmFighter.UI.View
 
         void WidgetPressHandler()
         {
+            UIWidget_Play.LockInput(true);
+
             OnPlayPressHandler?.Invoke();
         }
     }

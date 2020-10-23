@@ -226,6 +226,8 @@ MonoBehaviour:
     Key: Teleport
   - Type: 14
     Key: Victory
+  - Type: 15
+    Key: MenuAction
 --- !u!1 &6495413218780708708
 GameObject:
   m_ObjectHideFlags: 0

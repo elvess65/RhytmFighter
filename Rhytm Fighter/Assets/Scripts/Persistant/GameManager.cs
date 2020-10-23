@@ -33,7 +33,6 @@ namespace RhytmFighter.Persistant
             InitializeCore();
 
             OnSceneLoadingComplete += SceneLoadCompleteHandler;
-            OnSceneUnloadingComplete += SceneUnloadCompleteHandler;
 
             LoadLevel(m_TRANSITION_SCENE_NAME);
         }
@@ -63,11 +62,6 @@ namespace RhytmFighter.Persistant
         private void ConnectionResultError(int errorCode) => Debug.LogError($"Connection error {errorCode}");
 
         #region SceneLoading
-        public void ReloadBattleLevel()
-        {
-            UnloadLevel(BATTLE_SCENE_NAME);
-        }
-
 
         public void LoadLevel(string levelName)
         {
@@ -135,9 +129,7 @@ namespace RhytmFighter.Persistant
         {
             AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(levelName);
             if (asyncOperation != null)
-            {
                 asyncOperation.completed += UnloadOperationComplete;
-            }
             else
                 Debug.LogError($"Unable to unload level {levelName}");
         }
@@ -147,16 +139,6 @@ namespace RhytmFighter.Persistant
             OnSceneUnloadingComplete?.Invoke();
         }
 
-        private void SceneUnloadCompleteHandler()
-        {
-            switch(m_CurrentUnloadingLevel)
-            {
-                case BATTLE_SCENE_NAME:
-                    LoadLevel(BATTLE_SCENE_NAME);
-                    break;
-            }
-        }
-
         private void FadeInFinishedOnUnloadHandler()
         {
             SceneLoadingManager.Instance.OnFadeIn -= FadeInFinishedOnUnloadHandler;
@@ -164,6 +146,7 @@ namespace RhytmFighter.Persistant
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_BOOT_SCENE_NAME));
             Unload(m_CurrentUnloadingLevel);
         }
+
         #endregion
     }
 }

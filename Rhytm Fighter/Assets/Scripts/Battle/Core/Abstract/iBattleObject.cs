@@ -33,6 +33,7 @@ namespace RhytmFighter.Battle.Core.Abstract
         void ApplyCommand(AbstractCommandModel command);
         void ReleaseCommand(AbstractCommandModel command);
         void NotifyViewAboutCommand(CommandTypes commandType);
+        void NotifyViewAboutVictory();
         float GetActionEventExecuteTime(CommandTypes commandType);
     }
 }

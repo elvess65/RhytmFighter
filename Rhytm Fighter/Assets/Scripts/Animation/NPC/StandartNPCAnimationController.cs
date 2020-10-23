@@ -87,6 +87,10 @@ namespace RhytmFighter.Animation.NPC
                 case AnimationTypes.Victory:
                     SetTrigger(key);
                     break;
+
+                case AnimationTypes.MenuAction:
+                    SetTrigger(key);
+                    break;
             }
         }
 

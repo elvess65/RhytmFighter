@@ -29,7 +29,8 @@
         StrafeLeft,
         StrafeRight,
         Teleport,
-        Victory
+        Victory,
+        MenuAction
     }
     public enum AnimationStates { None, Showing, Hiding }
 

@@ -82,8 +82,11 @@ namespace RhytmFighter.Battle.Core
 
         public void PerformUpdate(float deltaTime)
         {
-            m_EnemyMovementController?.PerformUpdate(deltaTime);
-            Player?.Target?.AI?.PerformUpdate(deltaTime);
+            if (!Player.IsDestroyed)
+            {
+                m_EnemyMovementController?.PerformUpdate(deltaTime);
+                Player?.Target?.AI?.PerformUpdate(deltaTime);
+            }
         }
 
         public iBattleObject GetClosestEnemy(iBattleObject relativeToBattleObject)
