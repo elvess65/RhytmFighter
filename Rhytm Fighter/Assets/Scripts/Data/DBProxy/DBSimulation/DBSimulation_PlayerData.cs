@@ -6,7 +6,12 @@ namespace RhytmFighter.Data.DataBase.Simulation
     [CreateAssetMenu(fileName = "New Simulation_PlayerData", menuName = "DBSimulation/PlayerData", order = 101)]
     public class DBSimulation_PlayerData : ScriptableObject
     {
+        [Tooltip("ИД текущего уровня")]
         public int CurrentLevelID;
+
+        [Tooltip("Список ИД завершенных уровней")]
+        public int[] CompletedLevelsIDs;
+
         //public int ActionPoints = 3;
         //public int TickToRestoreActionPoint = 4;
 
@@ -52,8 +57,10 @@ namespace RhytmFighter.Data.DataBase.Simulation
         {
             [Tooltip("Тип зелья")]
             public PotionTypes Type;
+
             [Tooltip("Текущее количество кусков")]
             public int PiecesAmount;
+
             [Tooltip("Количество необходимых кусков для одного зелья")]
             public int PiecesPerPotion;
         }

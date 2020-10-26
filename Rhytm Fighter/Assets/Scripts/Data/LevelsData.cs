@@ -14,6 +14,7 @@ namespace RhytmFighter.Data
 
         private Dictionary<int, LevelParams> m_LevelParams;
 
+        
         /// <summary>
         /// Convert data array from data base to dictionary
         /// </summary>
@@ -38,6 +39,36 @@ namespace RhytmFighter.Data
                 return m_LevelParams[levelID];
 
             return null;
+        }
+
+        /// <summary>
+        /// Получить прогресс прохождения уровней для рассчета прогрессий
+        /// </summary>
+        /// <param name="completedLevelIDs"></param>
+        /// <returns></returns>
+        public float GetCompletionForProgression(int[] completedLevelIDs)
+        {
+            int completedLevels = 0;
+ 
+            foreach(LevelParams levelParam in m_LevelParams.Values)
+            {
+                if (IsLevelComplete(completedLevelIDs, levelParam.ID))
+                    completedLevels++;
+            }
+
+            return (float)completedLevels / Mathf.Clamp(m_LevelParams.Count - 1, 1, m_LevelParams.Count); 
+        }
+
+
+        private bool IsLevelComplete(int[] completedLevelIDs, int levelID)
+        {
+            for (int i = 0; i < completedLevelIDs.Length; i++)
+            {
+                if (completedLevelIDs[i] == levelID)
+                    return true;
+            }
+
+            return false;
         }
 
 
@@ -83,24 +114,17 @@ namespace RhytmFighter.Data
         [Serializable]
         public class ContentData
         {
-            public AnimationCurve ProgressionCurve;
             public int MinAmountOfItems;
             public int MaxAmountOfItems;
             public int[] AvailableItemsIDs;
 
+            public ObjectProgressionConfig EnemyViewProgressionConfig;
             public int MinAmountOfEnemies;
             public int MaxAmountOfEnemies;
             public int[] AvailableEnemyViewIDs;
 
-            public int MinEnemyHP;
-            public int MaxEnemyHP;
-            public int MinEnemyDmg;
-            public int MaxEnemyDmg;
-
-            public int MinBossHP;
-            public int MaxBossHP;
-            public int MinBossDmg;
-            public int MaxBossDmg;
+            public NPCProgressionConfig EnemyProgressionConfig;
+            public NPCProgressionConfig BossProgressionConfig;
         }
     }
 }

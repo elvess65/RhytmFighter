@@ -103,6 +103,9 @@ namespace RhytmFighter.Battle.Core
         private void InitializeDataDependends()
         {
             LevelsData.LevelParams levelParams = GameManager.Instance.DataHolder.InfoData.LevelsData.GetLevelParams(GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID);
+            float completionProgress = GameManager.Instance.DataHolder.InfoData.LevelsData.GetCompletionForProgression(GameManager.Instance.DataHolder.PlayerDataModel.CompletedLevelsIDs);
+
+            Debug.Log(levelParams.ContentParams.EnemyViewProgressionConfig.EvaluateViewID(0.5f));
 
             //Set object params
             m_ControllersHolder.RhytmController.SetBPM(levelParams.BPM);
@@ -112,7 +115,7 @@ namespace RhytmFighter.Battle.Core
             ManagersHolder.Initialize();
 
             //Build level
-            BuildLevel(levelParams);
+            BuildLevel(levelParams, completionProgress);
 
             //Create player
             CreatePlayer();
@@ -200,9 +203,9 @@ namespace RhytmFighter.Battle.Core
         }
 
 
-        private void BuildLevel(LevelsData.LevelParams levelParams)
+        private void BuildLevel(LevelsData.LevelParams levelParams, float completionProgress)
         {
-            m_ControllersHolder.LevelController.GenerateLevel(levelParams, true, true);
+            m_ControllersHolder.LevelController.GenerateLevel(levelParams, true, true, completionProgress);
             m_ControllersHolder.LevelController.RoomViewBuilder.OnCellWithObjectDetected += CellWithObjectDetectedHandler;
         }
         #endregion

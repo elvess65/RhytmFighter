@@ -34,41 +34,143 @@ MonoBehaviour:
       EnviromentLightPercent: 20
       EnviromentDarkPercent: 10
     ContentParams:
-      ProgressionCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 2
-          outSlope: 2
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
       MinAmountOfItems: 1
       MaxAmountOfItems: 1
       AvailableItemsIDs: 0100000002000000
+      EnemyViewProgressionConfig: {fileID: 11400000, guid: 7aab295b495c04f6a8cc3226c0cf079d,
+        type: 2}
       MinAmountOfEnemies: 1
       MaxAmountOfEnemies: 2
       AvailableEnemyViewIDs: 0100000002000000
-      MinEnemyHP: 3
-      MaxEnemyHP: 7
-      MinEnemyDmg: 1
-      MaxEnemyDmg: 1
-      MinBossHP: 10
-      MaxBossHP: 15
-      MinBossDmg: 1
-      MaxBossDmg: 2
+      EnemyProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
+        type: 2}
+      BossProgressionConfig: {fileID: 11400000, guid: 2abd2422caf5f46d6bf79163a7e0fcfe,
+        type: 2}
+  - ID: 2
+    BPM: 65
+    BuildParams:
+      OverrideSeed: 1
+      LevelSeed: 10
+      LevelDepth: 4
+      MinWidth: 7
+      MaxWidth: 10
+      MinHeight: 8
+      MaxHeight: 12
+      CellSize: 1
+      ObstacleFillPercent: 25
+    EnviromentParams:
+      CellOffset: 1
+      ElevationOffset: 0.2
+      ObstaclesHolesPercent: 25
+      EnviromentDecortionPercent: 0
+      EnviromentElevatedPercent: 30
+      EnviromentLightPercent: 20
+      EnviromentDarkPercent: 10
+    ContentParams:
+      MinAmountOfItems: 1
+      MaxAmountOfItems: 1
+      AvailableItemsIDs: 0100000002000000
+      EnemyViewProgressionConfig: {fileID: 0}
+      MinAmountOfEnemies: 1
+      MaxAmountOfEnemies: 2
+      AvailableEnemyViewIDs: 0100000002000000
+      EnemyProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
+        type: 2}
+      BossProgressionConfig: {fileID: 11400000, guid: 2abd2422caf5f46d6bf79163a7e0fcfe,
+        type: 2}
+  - ID: 3
+    BPM: 65
+    BuildParams:
+      OverrideSeed: 1
+      LevelSeed: 10
+      LevelDepth: 4
+      MinWidth: 7
+      MaxWidth: 10
+      MinHeight: 8
+      MaxHeight: 12
+      CellSize: 1
+      ObstacleFillPercent: 25
+    EnviromentParams:
+      CellOffset: 1
+      ElevationOffset: 0.2
+      ObstaclesHolesPercent: 25
+      EnviromentDecortionPercent: 0
+      EnviromentElevatedPercent: 30
+      EnviromentLightPercent: 20
+      EnviromentDarkPercent: 10
+    ContentParams:
+      MinAmountOfItems: 1
+      MaxAmountOfItems: 1
+      AvailableItemsIDs: 0100000002000000
+      EnemyViewProgressionConfig: {fileID: 0}
+      MinAmountOfEnemies: 1
+      MaxAmountOfEnemies: 2
+      AvailableEnemyViewIDs: 0100000002000000
+      EnemyProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
+        type: 2}
+      BossProgressionConfig: {fileID: 11400000, guid: 2abd2422caf5f46d6bf79163a7e0fcfe,
+        type: 2}
+  - ID: 4
+    BPM: 65
+    BuildParams:
+      OverrideSeed: 1
+      LevelSeed: 10
+      LevelDepth: 4
+      MinWidth: 7
+      MaxWidth: 10
+      MinHeight: 8
+      MaxHeight: 12
+      CellSize: 1
+      ObstacleFillPercent: 25
+    EnviromentParams:
+      CellOffset: 1
+      ElevationOffset: 0.2
+      ObstaclesHolesPercent: 25
+      EnviromentDecortionPercent: 0
+      EnviromentElevatedPercent: 30
+      EnviromentLightPercent: 20
+      EnviromentDarkPercent: 10
+    ContentParams:
+      MinAmountOfItems: 1
+      MaxAmountOfItems: 1
+      AvailableItemsIDs: 0100000002000000
+      EnemyViewProgressionConfig: {fileID: 0}
+      MinAmountOfEnemies: 1
+      MaxAmountOfEnemies: 2
+      AvailableEnemyViewIDs: 0100000002000000
+      EnemyProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
+        type: 2}
+      BossProgressionConfig: {fileID: 11400000, guid: 2abd2422caf5f46d6bf79163a7e0fcfe,
+        type: 2}
+  - ID: 5
+    BPM: 65
+    BuildParams:
+      OverrideSeed: 1
+      LevelSeed: 10
+      LevelDepth: 4
+      MinWidth: 7
+      MaxWidth: 10
+      MinHeight: 8
+      MaxHeight: 12
+      CellSize: 1
+      ObstacleFillPercent: 25
+    EnviromentParams:
+      CellOffset: 1
+      ElevationOffset: 0.2
+      ObstaclesHolesPercent: 25
+      EnviromentDecortionPercent: 0
+      EnviromentElevatedPercent: 30
+      EnviromentLightPercent: 20
+      EnviromentDarkPercent: 10
+    ContentParams:
+      MinAmountOfItems: 1
+      MaxAmountOfItems: 1
+      AvailableItemsIDs: 0100000002000000
+      EnemyViewProgressionConfig: {fileID: 0}
+      MinAmountOfEnemies: 1
+      MaxAmountOfEnemies: 2
+      AvailableEnemyViewIDs: 0100000002000000
+      EnemyProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
+        type: 2}
+      BossProgressionConfig: {fileID: 11400000, guid: 2abd2422caf5f46d6bf79163a7e0fcfe,
+        type: 2}

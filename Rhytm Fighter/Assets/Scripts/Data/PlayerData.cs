@@ -8,6 +8,7 @@ namespace RhytmFighter.Data
     public class PlayerData : AbstractData<PlayerData>
     {
         public int CurrentLevelID;
+        public int[] CompletedLevelsIDs;
         //public int ActionPoints = 3;
         //public int TickToRestoreActionPoint = 4;
 

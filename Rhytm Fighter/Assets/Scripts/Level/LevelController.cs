@@ -38,6 +38,7 @@ namespace RhytmFighter.Level
         public GridViewBuilder RoomViewBuilder { get; private set; }
 
         private LevelsData.LevelParams m_LevelParamsData;
+        private float m_CompletionProgress;
 
 
         public LevelController()
@@ -49,12 +50,13 @@ namespace RhytmFighter.Level
             Model = new LevelDataModel();
         }
 
-        public void GenerateLevel(LevelsData.LevelParams levelParamsData, bool generateOnlyMainPath, bool buildRoomView)
+        public void GenerateLevel(LevelsData.LevelParams levelParamsData, bool generateOnlyMainPath, bool buildRoomView, float completionProgress)
         {
-            Debug.Log($"LevelController: Generate level {levelParamsData.ID}");
+            Debug.Log($"LevelController: Generate level {levelParamsData.ID}. Completion progress {completionProgress}");
 
             //Cache level params
             m_LevelParamsData = levelParamsData;
+            m_CompletionProgress = completionProgress;
 
             //Build level data and store start node to model
             BuildLevelData(generateOnlyMainPath);
@@ -152,7 +154,7 @@ namespace RhytmFighter.Level
 
         LevelRoomData CreateRoomData(LevelNodeData node)
         {
-            return m_RoomDataBuilder.Build(node, m_LevelParamsData.BuildParams, m_LevelParamsData.ContentParams);
+            return m_RoomDataBuilder.Build(node, m_LevelParamsData.BuildParams, m_LevelParamsData.ContentParams, m_CompletionProgress);
         }
     }
 }

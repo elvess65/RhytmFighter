@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   CurrentLevelID: 1
+  CompletedLevelsIDs: 
   Character:
     CharacterID: 1
     CharacterExp: 0
@@ -24,4 +25,3 @@ MonoBehaviour:
     - Type: 0
       PiecesAmount: 1
       PiecesPerPotion: 3
-      MaxPotionsAmount: 1

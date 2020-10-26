@@ -63,30 +63,20 @@ namespace RhytmFighter.Data.DataBase.Simulation
         [System.Serializable]
         public class ContentData
         {
-            public AnimationCurve ProgressionCurve;
-
             [Header("Items")]
             public int MinAmountOfItems = 1;
             public int MaxAmountOfItems = 4;
             public int[] AvailableItemsIDs = new int[] { 1, 2 };
 
             [Header("Enemies")]
+            public ObjectProgressionConfig EnemyViewProgressionConfig;
             public int MinAmountOfEnemies = 1;
             public int MaxAmountOfEnemies = 2;
             public int[] AvailableEnemyViewIDs = new int[] { 1, 2 };
 
-            [Header(" - Enemy params")]
-            [Header("   - Ordinary enemy")]
-            public int MinEnemyHP = 1;
-            public int MaxEnemyHP = 10;
-            public int MinEnemyDmg = 1;
-            public int MaxEnemyDmg = 5;
-
-            [Header("   - Boss enemy")]
-            public int MinBossHP = 15;
-            public int MaxBossHP = 25;
-            public int MinBossDmg = 7;
-            public int MaxBossDmg = 15;
+            [Header(" - Enemy progression")]
+            public NPCProgressionConfig EnemyProgressionConfig;
+            public NPCProgressionConfig BossProgressionConfig;
         }
     }
 }

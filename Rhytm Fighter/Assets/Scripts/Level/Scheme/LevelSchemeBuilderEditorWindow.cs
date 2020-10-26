@@ -183,7 +183,7 @@ namespace RhytmFighter.Level.Scheme.Editor
         {
             LevelsData.LevelParams levelParams = m_InfoData.LevelsData.GetLevelParams(m_LevelID);
 
-            m_LevelController.GenerateLevel(levelParams, m_OnlyMainPath, false);
+            m_LevelController.GenerateLevel(levelParams, m_OnlyMainPath, false, 0);
             m_LevelController.LevelSchemeBuilder.Build(m_LevelController.Model.StartNodeData);
 
             if (m_LevelController.LevelSchemeBuilder.HasData)
