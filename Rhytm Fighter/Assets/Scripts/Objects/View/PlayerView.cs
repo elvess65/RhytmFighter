@@ -24,6 +24,11 @@ namespace RhytmFighter.Objects.View
             m_TeleportStrategy.OnMovementFinished += MovementFinishedHandler;
         }
 
+        public override void HideView()
+        {
+            //Dont hide view for player
+        }
+
         #region Movement
         public override void StartMove(Vector3[] path)
         {

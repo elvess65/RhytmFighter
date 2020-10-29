@@ -64,19 +64,14 @@ namespace RhytmFighter.Data.DataBase.Simulation
         public class ContentData
         {
             [Header("Items")]
-            public int MinAmountOfItems = 1;
-            public int MaxAmountOfItems = 4;
-            public int[] AvailableItemsIDs = new int[] { 1, 2 };
+            public ObjectProgressionConfig ItemProgressionConfig;
 
-            [Header("Enemies")]
+            [Header("Enemy View")]
             public ObjectProgressionConfig EnemyViewProgressionConfig;
-            public int MinAmountOfEnemies = 1;
-            public int MaxAmountOfEnemies = 2;
-            public int[] AvailableEnemyViewIDs = new int[] { 1, 2 };
 
-            [Header(" - Enemy progression")]
-            public NPCProgressionConfig EnemyProgressionConfig;
-            public NPCProgressionConfig BossProgressionConfig;
+            [Header("Enemy Data")]
+            public NPCProgressionConfig EnemyDataProgressionConfig;
+            public NPCProgressionConfig BossDataProgressionConfig;
         }
     }
 }

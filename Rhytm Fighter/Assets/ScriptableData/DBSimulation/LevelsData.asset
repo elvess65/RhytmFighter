@@ -34,17 +34,16 @@ MonoBehaviour:
       EnviromentLightPercent: 20
       EnviromentDarkPercent: 10
     ContentParams:
+      ItemProgressionConfig: {fileID: 11400000, guid: 154454362928b40f99adb9b5e00ecd70,
+        type: 2}
       MinAmountOfItems: 1
       MaxAmountOfItems: 1
       AvailableItemsIDs: 0100000002000000
       EnemyViewProgressionConfig: {fileID: 11400000, guid: 7aab295b495c04f6a8cc3226c0cf079d,
         type: 2}
-      MinAmountOfEnemies: 1
-      MaxAmountOfEnemies: 2
-      AvailableEnemyViewIDs: 0100000002000000
-      EnemyProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
+      EnemyDataProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
         type: 2}
-      BossProgressionConfig: {fileID: 11400000, guid: 2abd2422caf5f46d6bf79163a7e0fcfe,
+      BossDataProgressionConfig: {fileID: 11400000, guid: 2abd2422caf5f46d6bf79163a7e0fcfe,
         type: 2}
   - ID: 2
     BPM: 65
@@ -67,17 +66,13 @@ MonoBehaviour:
       EnviromentLightPercent: 20
       EnviromentDarkPercent: 10
     ContentParams:
+      ItemProgressionConfig: {fileID: 0}
       MinAmountOfItems: 1
       MaxAmountOfItems: 1
       AvailableItemsIDs: 0100000002000000
       EnemyViewProgressionConfig: {fileID: 0}
-      MinAmountOfEnemies: 1
-      MaxAmountOfEnemies: 2
-      AvailableEnemyViewIDs: 0100000002000000
-      EnemyProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
-        type: 2}
-      BossProgressionConfig: {fileID: 11400000, guid: 2abd2422caf5f46d6bf79163a7e0fcfe,
-        type: 2}
+      EnemyDataProgressionConfig: {fileID: 0}
+      BossDataProgressionConfig: {fileID: 0}
   - ID: 3
     BPM: 65
     BuildParams:
@@ -99,17 +94,13 @@ MonoBehaviour:
       EnviromentLightPercent: 20
       EnviromentDarkPercent: 10
     ContentParams:
+      ItemProgressionConfig: {fileID: 0}
       MinAmountOfItems: 1
       MaxAmountOfItems: 1
       AvailableItemsIDs: 0100000002000000
       EnemyViewProgressionConfig: {fileID: 0}
-      MinAmountOfEnemies: 1
-      MaxAmountOfEnemies: 2
-      AvailableEnemyViewIDs: 0100000002000000
-      EnemyProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
-        type: 2}
-      BossProgressionConfig: {fileID: 11400000, guid: 2abd2422caf5f46d6bf79163a7e0fcfe,
-        type: 2}
+      EnemyDataProgressionConfig: {fileID: 0}
+      BossDataProgressionConfig: {fileID: 0}
   - ID: 4
     BPM: 65
     BuildParams:
@@ -131,17 +122,13 @@ MonoBehaviour:
       EnviromentLightPercent: 20
       EnviromentDarkPercent: 10
     ContentParams:
+      ItemProgressionConfig: {fileID: 0}
       MinAmountOfItems: 1
       MaxAmountOfItems: 1
       AvailableItemsIDs: 0100000002000000
       EnemyViewProgressionConfig: {fileID: 0}
-      MinAmountOfEnemies: 1
-      MaxAmountOfEnemies: 2
-      AvailableEnemyViewIDs: 0100000002000000
-      EnemyProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
-        type: 2}
-      BossProgressionConfig: {fileID: 11400000, guid: 2abd2422caf5f46d6bf79163a7e0fcfe,
-        type: 2}
+      EnemyDataProgressionConfig: {fileID: 0}
+      BossDataProgressionConfig: {fileID: 0}
   - ID: 5
     BPM: 65
     BuildParams:
@@ -163,14 +150,10 @@ MonoBehaviour:
       EnviromentLightPercent: 20
       EnviromentDarkPercent: 10
     ContentParams:
+      ItemProgressionConfig: {fileID: 0}
       MinAmountOfItems: 1
       MaxAmountOfItems: 1
       AvailableItemsIDs: 0100000002000000
       EnemyViewProgressionConfig: {fileID: 0}
-      MinAmountOfEnemies: 1
-      MaxAmountOfEnemies: 2
-      AvailableEnemyViewIDs: 0100000002000000
-      EnemyProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
-        type: 2}
-      BossProgressionConfig: {fileID: 11400000, guid: 2abd2422caf5f46d6bf79163a7e0fcfe,
-        type: 2}
+      EnemyDataProgressionConfig: {fileID: 0}
+      BossDataProgressionConfig: {fileID: 0}

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace RhytmFighter.Data
 {
@@ -11,9 +12,15 @@ namespace RhytmFighter.Data
         public int[] DataArray;
         public AnimationCurve Curve;
 
-        public int Evaluate(float t)
+        public int[] Evaluate(float t)
         {
-            return DataArray[2];
+            float index = Mathf.Lerp(0, DataArray.Length - 1, t);
+
+            List<int> result = new List<int>();
+            for (int i = 0; i <= index; i++)
+                result.Add(DataArray[i]);
+
+            return result.ToArray();
         }
     }
 }

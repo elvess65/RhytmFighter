@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9720b1d100d5a4a2dbde3a431615d411, type: 3}
-  m_Name: EnemyViewProgressionConfig
+  m_Name: ItemProgressionConfig
   m_EditorClassIdentifier: 
   AmountProgression:
     MinProgression:
@@ -66,7 +66,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
   ViewIDProgression:
-    DataArray: 0100000002000000
+    DataArray: 0100000002000000030000000400000005000000
     Curve:
       serializedVersion: 2
       m_Curve:

@@ -105,7 +105,10 @@ namespace RhytmFighter.Battle.Core
             LevelsData.LevelParams levelParams = GameManager.Instance.DataHolder.InfoData.LevelsData.GetLevelParams(GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID);
             float completionProgress = GameManager.Instance.DataHolder.InfoData.LevelsData.GetCompletionForProgression(GameManager.Instance.DataHolder.PlayerDataModel.CompletedLevelsIDs);
 
-            Debug.Log(levelParams.ContentParams.EnemyViewProgressionConfig.EvaluateViewID(0.5f));
+            for (float i = 0; i <= 1.2f; i += 0.1f)
+            {
+                //Debug.Log("IDs: " + levelParams.ContentParams.ItemProgressionConfig.EvaluateViewIDs(i).Length);
+            }
 
             //Set object params
             m_ControllersHolder.RhytmController.SetBPM(levelParams.BPM);

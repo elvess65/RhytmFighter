@@ -114,20 +114,20 @@ namespace RhytmFighter.Level.Data
 
         void GenerateContent(SquareGrid grid, LevelNodeData node, ref List<GridCellData> emptyCells, LevelsData.ContentData contentData, float completionProgress)
         {
-            GenerateItem(node, contentData, ref emptyCells);
+            GenerateItem(node, contentData, ref emptyCells, completionProgress);
             GenerateEnemy(node, ref emptyCells, contentData, completionProgress);
         }
 
-        void GenerateItem(LevelNodeData node, LevelsData.ContentData contentData,ref List<GridCellData> emptyCells)
+        void GenerateItem(LevelNodeData node, LevelsData.ContentData contentData,ref List<GridCellData> emptyCells, float completionProgress)
         {
             if (emptyCells.Count == 0 || node.IsFinishNode)
                 return;
 
-            int amountOfItems = Random.Range(contentData.MinAmountOfItems, contentData.MaxAmountOfItems + 1);
+            int amountOfItems = GetRandomAmountFromProgression(contentData.ItemProgressionConfig, completionProgress);
 
             for (int i = 0; i < amountOfItems; i++)
             {
-                int rndItemContentID = contentData.AvailableItemsIDs[Random.Range(0, contentData.AvailableItemsIDs.Length)];
+                int rndItemContentID = GetRandomIDFromProgression(contentData.ItemProgressionConfig, completionProgress);
 
                 GridCellData rndCell = GetRandomCell(ref emptyCells);
                 StandardItemModel item = new StandardItemModel(m_ITEM_ID++, rndItemContentID, rndCell);
@@ -142,17 +142,15 @@ namespace RhytmFighter.Level.Data
 
             if (!node.IsStartNode && !node.IsFinishNode)
             {
-                int rndAmountOfEnemies = Random.Range(contentData.MinAmountOfEnemies, contentData.MaxAmountOfEnemies + 1);
+                int rndAmountOfEnemies = GetRandomAmountFromProgression(contentData.EnemyViewProgressionConfig, completionProgress);
 
                 for (int i = 0; i < rndAmountOfEnemies; i++)
                 {
                     GridCellData rndCell = GetRandomCell(ref emptyCells);
 
-                    int rndViewID = contentData.AvailableEnemyViewIDs[Random.Range(0, contentData.AvailableEnemyViewIDs.Length)];
-                    int rndHP = GetRandomHPFromProgression(contentData.EnemyProgressionConfig, completionProgress);
-                    int rndDmg = GetRandomDamageFromProgression(contentData.EnemyProgressionConfig, completionProgress);
-
-                    Debug.Log($"Create enemy with HP {rndHP}, Damage {rndDmg} and CompletionProgress {completionProgress}");
+                    int rndViewID = GetRandomIDFromProgression(contentData.EnemyViewProgressionConfig, completionProgress);
+                    int rndHP = GetRandomHPFromProgression(contentData.EnemyDataProgressionConfig, completionProgress);
+                    int rndDmg = GetRandomDamageFromProgression(contentData.EnemyDataProgressionConfig, completionProgress);
 
                     StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, BattleManager.Instance.NPCMoveSpeed, 
                                                                                new SimpleBattleActionBehaviour(rndDmg),
@@ -166,11 +164,11 @@ namespace RhytmFighter.Level.Data
             {
                 GridCellData rndCell = GetRandomCell(ref emptyCells);
 
-                int rndViewID = contentData.AvailableEnemyViewIDs[Random.Range(0, contentData.AvailableEnemyViewIDs.Length)];
-                int rndHP = GetRandomHPFromProgression(contentData.BossProgressionConfig, completionProgress);
-                int rndDmg = GetRandomDamageFromProgression(contentData.BossProgressionConfig, completionProgress);
+                int rndViewID = GetRandomIDFromProgression(contentData.EnemyViewProgressionConfig, completionProgress);
+                int rndHP = GetRandomHPFromProgression(contentData.BossDataProgressionConfig, completionProgress);
+                int rndDmg = GetRandomDamageFromProgression(contentData.BossDataProgressionConfig, completionProgress);
 
-                Debug.Log($"Create boss with HP {rndHP} and Damage {rndDmg}");
+                Debug.Log($"Create enemy. ViewID {rndViewID}. HP {rndHP} and Damage {rndDmg}. CompletionProgress {completionProgress}");
 
                 StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, BattleManager.Instance.NPCMoveSpeed, 
                                                                            new SimpleBattleActionBehaviour(rndDmg),
@@ -181,6 +179,18 @@ namespace RhytmFighter.Level.Data
             }
         }
 
+
+        private int GetRandomAmountFromProgression(ObjectProgressionConfig progressionConfig, float t)
+        {
+            (int min, int max) result = progressionConfig.EvaluateAmountInt(t);
+            return Random.Range(result.min, result.max + 1);
+        }
+
+        private int GetRandomIDFromProgression(ObjectProgressionConfig progressionConfig, float t)
+        {
+            int[] ids = progressionConfig.EvaluateViewIDs(t);
+            return ids[Random.Range(0, ids.Length)];
+        }
 
         private int GetRandomHPFromProgression(NPCProgressionConfig progressionConfig, float t)
         {
@@ -201,7 +211,7 @@ namespace RhytmFighter.Level.Data
             return (int)Random.Range(baseHP - spreadMin, baseHP + spreadMax);
         }
 
-        GridCellData GetRandomCell(ref List<GridCellData> emptyCells)
+        private GridCellData GetRandomCell(ref List<GridCellData> emptyCells)
         {
             int rndIndex = Random.Range(0, emptyCells.Count);
             GridCellData rndCell = emptyCells[rndIndex];

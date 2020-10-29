@@ -114,17 +114,10 @@ namespace RhytmFighter.Data
         [Serializable]
         public class ContentData
         {
-            public int MinAmountOfItems;
-            public int MaxAmountOfItems;
-            public int[] AvailableItemsIDs;
-
+            public ObjectProgressionConfig ItemProgressionConfig;
             public ObjectProgressionConfig EnemyViewProgressionConfig;
-            public int MinAmountOfEnemies;
-            public int MaxAmountOfEnemies;
-            public int[] AvailableEnemyViewIDs;
-
-            public NPCProgressionConfig EnemyProgressionConfig;
-            public NPCProgressionConfig BossProgressionConfig;
+            public NPCProgressionConfig EnemyDataProgressionConfig;
+            public NPCProgressionConfig BossDataProgressionConfig;
         }
     }
 }
