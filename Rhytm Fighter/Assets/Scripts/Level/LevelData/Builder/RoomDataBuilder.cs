@@ -21,8 +21,8 @@ namespace RhytmFighter.Level.Data
         {
             Random.InitState(node.NodeSeed);
 
-            int width = Random.Range(buildData.MinWidth, buildData.MaxWidth);
-            int height = Random.Range(buildData.MinHeight, buildData.MaxHeight);
+            int width = GetRandomWidthFromProgression(buildData.LevelProgressionConfig, completionProgress);
+            int height = GetRandomHeightFromProgression(buildData.LevelProgressionConfig, completionProgress);
 
             SquareGrid roomGrid = new SquareGrid(width, height, buildData.CellSize, Vector2.zero);
             ApplyDataToGrid(roomGrid, node, buildData.ObstacleFillPercent, completionProgress, contentData);
@@ -180,9 +180,21 @@ namespace RhytmFighter.Level.Data
         }
 
 
+        private int GetRandomWidthFromProgression(LevelProgressionConfig progressionConfig, float t)
+        {
+            (int min, int max) result = progressionConfig.EvaluateWidth(t);
+            return Random.Range(result.min, result.max + 1);
+        }
+
+        private int GetRandomHeightFromProgression(LevelProgressionConfig progressionConfig, float t)
+        {
+            (int min, int max) result = progressionConfig.EvaluateHeight(t);
+            return Random.Range(result.min, result.max + 1);
+        }
+
         private int GetRandomAmountFromProgression(ObjectProgressionConfig progressionConfig, float t)
         {
-            (int min, int max) result = progressionConfig.EvaluateAmountInt(t);
+            (int min, int max) result = progressionConfig.EvaluateAmount(t);
             return Random.Range(result.min, result.max + 1);
         }
 
@@ -206,9 +218,9 @@ namespace RhytmFighter.Level.Data
                                                  progressionConfig.EvaluateHPSpreadMax(t));
         }
 
-        private int GetRandomValueFromProgression(float baseHP, float spreadMin, float spreadMax)
+        private int GetRandomValueFromProgression(float baseValue, float spreadMin, float spreadMax)
         {
-            return (int)Random.Range(baseHP - spreadMin, baseHP + spreadMax);
+            return (int)Random.Range(baseValue - spreadMin, baseValue + spreadMax);
         }
 
         private GridCellData GetRandomCell(ref List<GridCellData> emptyCells)

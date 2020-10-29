@@ -71,7 +71,8 @@ namespace RhytmFighter.Level
 
         public void BuildLevelData(bool generateOnlyMainPath)
         {
-            LevelNodeData nodeData = m_LevelDataBuilder.Build(m_LevelParamsData.BuildParams.LevelDepth, m_LevelParamsData.BuildParams.Seed, generateOnlyMainPath);
+            int depth = GetRandomDepthFromProgression(m_LevelParamsData.BuildParams.LevelProgressionConfig, m_CompletionProgress);
+            LevelNodeData nodeData = m_LevelDataBuilder.Build(depth, m_LevelParamsData.BuildParams.Seed, generateOnlyMainPath);
             Model.StartNodeData = nodeData;
         }
 
@@ -152,9 +153,15 @@ namespace RhytmFighter.Level
         }
 
 
-        LevelRoomData CreateRoomData(LevelNodeData node)
+        private LevelRoomData CreateRoomData(LevelNodeData node)
         {
             return m_RoomDataBuilder.Build(node, m_LevelParamsData.BuildParams, m_LevelParamsData.ContentParams, m_CompletionProgress);
+        }
+
+        private int GetRandomDepthFromProgression(LevelProgressionConfig progressionConfig, float t)
+        {
+            (int min, int max) result = progressionConfig.EvaluateDepth(t);
+            return Random.Range(result.min, result.max + 1);
         }
     }
 }

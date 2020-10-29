@@ -90,13 +90,9 @@ namespace RhytmFighter.Data
 
             public bool OverrideSeed;
             public int LevelSeed;
-            public int LevelDepth;
-            public int MinWidth;
-            public int MaxWidth;
-            public int MinHeight;
-            public int MaxHeight;
-            public float CellSize;
             public int ObstacleFillPercent;
+            public float CellSize;
+            public LevelProgressionConfig LevelProgressionConfig;
         }
 
         [Serializable]

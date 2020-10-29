@@ -9,6 +9,9 @@ namespace RhytmFighter.Data
     [System.Serializable]
     public class ArrayProgressionConfig
     {
+        /// Кривая в 0 - доступен только 0 элемент
+        /// Кривая в 1 - доступны все элементы
+
         public int[] DataArray;
         public AnimationCurve Curve;
 

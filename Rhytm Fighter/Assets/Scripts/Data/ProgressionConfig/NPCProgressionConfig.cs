@@ -23,22 +23,19 @@ namespace RhytmFighter.Data
         /// </summary>
 
         [Header("Уровень и урон НПС")]
-        [Space]
 
         [Tooltip("Прогрессия множителя")]
         public ProgressionConfig MultiplayerProgression;
 
+        [Space(10)]
+
         [Tooltip("Прогрессия ХП")]
         public IgnorableProgressionConfig HPProgression;
 
+        [Space(10)]
+
         [Tooltip("Прогрессия урона")]
         public IgnorableProgressionConfig DamageProgression;
-
-
-        public float EvaluateMultiplayer(float t)
-        {
-            return MultiplayerProgression.BaseValue * MultiplayerProgression.Evaluate(t);
-        }
 
 
         public float EvaluateHP(float t)
@@ -62,6 +59,11 @@ namespace RhytmFighter.Data
 
         public float EvaluateDamageSpreadMax(float t) => 0;
 
+
+        private float EvaluateMultiplayer(float t)
+        {
+            return MultiplayerProgression.BaseValue * MultiplayerProgression.Evaluate(t);
+        }
 
 
         /// <summary>

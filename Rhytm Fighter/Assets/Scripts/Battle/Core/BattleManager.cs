@@ -105,9 +105,16 @@ namespace RhytmFighter.Battle.Core
             LevelsData.LevelParams levelParams = GameManager.Instance.DataHolder.InfoData.LevelsData.GetLevelParams(GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID);
             float completionProgress = GameManager.Instance.DataHolder.InfoData.LevelsData.GetCompletionForProgression(GameManager.Instance.DataHolder.PlayerDataModel.CompletedLevelsIDs);
 
-            for (float i = 0; i <= 1.2f; i += 0.1f)
+            for (float i = 0; i <= 1.1f; i += 0.1f)
             {
-                //Debug.Log("IDs: " + levelParams.ContentParams.ItemProgressionConfig.EvaluateViewIDs(i).Length);
+                (int min, int max) width = levelParams.BuildParams.LevelProgressionConfig.EvaluateWidth(i);
+                (int min, int max) height = levelParams.BuildParams.LevelProgressionConfig.EvaluateHeight(i);
+                (int min, int max) depth = levelParams.BuildParams.LevelProgressionConfig.EvaluateDepth(i);
+
+                Debug.Log($"T: {i}. Width {width.min}:{width.max}");
+                Debug.Log($"T: {i}. Width {height.min}:{height.max}");
+                Debug.Log($"T: {i}. Depth {depth.min}:{depth.max}");
+                Debug.Log("-");
             }
 
             //Set object params

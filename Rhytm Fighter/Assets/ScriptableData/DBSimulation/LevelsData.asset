@@ -19,12 +19,10 @@ MonoBehaviour:
       OverrideSeed: 1
       LevelSeed: 10
       LevelDepth: 4
-      MinWidth: 7
-      MaxWidth: 10
-      MinHeight: 8
-      MaxHeight: 12
       CellSize: 1
       ObstacleFillPercent: 25
+      LevelProgressionConfig: {fileID: 11400000, guid: 76c179608f3ef470081cec6d7117edbc,
+        type: 2}
     EnviromentParams:
       CellOffset: 1
       ElevationOffset: 0.2
@@ -36,9 +34,6 @@ MonoBehaviour:
     ContentParams:
       ItemProgressionConfig: {fileID: 11400000, guid: 154454362928b40f99adb9b5e00ecd70,
         type: 2}
-      MinAmountOfItems: 1
-      MaxAmountOfItems: 1
-      AvailableItemsIDs: 0100000002000000
       EnemyViewProgressionConfig: {fileID: 11400000, guid: 7aab295b495c04f6a8cc3226c0cf079d,
         type: 2}
       EnemyDataProgressionConfig: {fileID: 11400000, guid: 282e38483b3104fbdba8a4de9f067a2b,
@@ -51,12 +46,9 @@ MonoBehaviour:
       OverrideSeed: 1
       LevelSeed: 10
       LevelDepth: 4
-      MinWidth: 7
-      MaxWidth: 10
-      MinHeight: 8
-      MaxHeight: 12
       CellSize: 1
       ObstacleFillPercent: 25
+      LevelProgressionConfig: {fileID: 0}
     EnviromentParams:
       CellOffset: 1
       ElevationOffset: 0.2
@@ -67,9 +59,6 @@ MonoBehaviour:
       EnviromentDarkPercent: 10
     ContentParams:
       ItemProgressionConfig: {fileID: 0}
-      MinAmountOfItems: 1
-      MaxAmountOfItems: 1
-      AvailableItemsIDs: 0100000002000000
       EnemyViewProgressionConfig: {fileID: 0}
       EnemyDataProgressionConfig: {fileID: 0}
       BossDataProgressionConfig: {fileID: 0}
@@ -79,12 +68,9 @@ MonoBehaviour:
       OverrideSeed: 1
       LevelSeed: 10
       LevelDepth: 4
-      MinWidth: 7
-      MaxWidth: 10
-      MinHeight: 8
-      MaxHeight: 12
       CellSize: 1
       ObstacleFillPercent: 25
+      LevelProgressionConfig: {fileID: 0}
     EnviromentParams:
       CellOffset: 1
       ElevationOffset: 0.2
@@ -95,9 +81,6 @@ MonoBehaviour:
       EnviromentDarkPercent: 10
     ContentParams:
       ItemProgressionConfig: {fileID: 0}
-      MinAmountOfItems: 1
-      MaxAmountOfItems: 1
-      AvailableItemsIDs: 0100000002000000
       EnemyViewProgressionConfig: {fileID: 0}
       EnemyDataProgressionConfig: {fileID: 0}
       BossDataProgressionConfig: {fileID: 0}
@@ -107,12 +90,9 @@ MonoBehaviour:
       OverrideSeed: 1
       LevelSeed: 10
       LevelDepth: 4
-      MinWidth: 7
-      MaxWidth: 10
-      MinHeight: 8
-      MaxHeight: 12
       CellSize: 1
       ObstacleFillPercent: 25
+      LevelProgressionConfig: {fileID: 0}
     EnviromentParams:
       CellOffset: 1
       ElevationOffset: 0.2
@@ -123,9 +103,6 @@ MonoBehaviour:
       EnviromentDarkPercent: 10
     ContentParams:
       ItemProgressionConfig: {fileID: 0}
-      MinAmountOfItems: 1
-      MaxAmountOfItems: 1
-      AvailableItemsIDs: 0100000002000000
       EnemyViewProgressionConfig: {fileID: 0}
       EnemyDataProgressionConfig: {fileID: 0}
       BossDataProgressionConfig: {fileID: 0}
@@ -135,12 +112,9 @@ MonoBehaviour:
       OverrideSeed: 1
       LevelSeed: 10
       LevelDepth: 4
-      MinWidth: 7
-      MaxWidth: 10
-      MinHeight: 8
-      MaxHeight: 12
       CellSize: 1
       ObstacleFillPercent: 25
+      LevelProgressionConfig: {fileID: 0}
     EnviromentParams:
       CellOffset: 1
       ElevationOffset: 0.2
@@ -151,9 +125,6 @@ MonoBehaviour:
       EnviromentDarkPercent: 10
     ContentParams:
       ItemProgressionConfig: {fileID: 0}
-      MinAmountOfItems: 1
-      MaxAmountOfItems: 1
-      AvailableItemsIDs: 0100000002000000
       EnemyViewProgressionConfig: {fileID: 0}
       EnemyDataProgressionConfig: {fileID: 0}
       BossDataProgressionConfig: {fileID: 0}

@@ -6,6 +6,9 @@
     [System.Serializable]
     public class MinMaxProgressionConfig
     {
+        /// Кривая в 0 - нет изменений относительно базового значения
+        /// Кривая в 1 - базовое значение увеличилось в два раза 
+
         public ProgressionConfig MinProgression;
         public ProgressionConfig MaxProgression;
 

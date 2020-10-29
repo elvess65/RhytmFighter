@@ -10,29 +10,24 @@ namespace RhytmFighter.Data
     public class ObjectProgressionConfig : ScriptableObject
     {
         [Header("Количество и доступные ID")]
-        [Space]
 
         [Tooltip("Прогрессия количества (Минимальное и Максимальное количество)")]
         public MinMaxProgressionConfig AmountProgression;
+
+        [Space(10)]
 
         [Tooltip("Прогрессия ИД")]
         public ArrayProgressionConfig ViewIDProgression;
 
 
-        public (int, int) EvaluateAmountInt(float t)
+        public (int, int) EvaluateAmount(float t)
         {
             return AmountProgression.EvaluateInt(t);
-        }
-
-        public (float, float) EvaluateAmountFloat(float t)
-        {
-            return AmountProgression.EvaluateFloat(t);
         }
 
         public int[] EvaluateViewIDs(float t)
         {
             return ViewIDProgression.Evaluate(t);
         }
-
     }
 }

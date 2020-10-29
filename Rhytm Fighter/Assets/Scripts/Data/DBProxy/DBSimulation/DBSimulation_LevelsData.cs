@@ -34,13 +34,10 @@ namespace RhytmFighter.Data.DataBase.Simulation
             public int LevelSeed = 10;
 
             [Header("Level")]
-            public int LevelDepth = 4;
-            public int MinWidth = 3;
-            public int MaxWidth = 5;
-            public int MinHeight = 4;
-            public int MaxHeight = 7;
             public float CellSize = 1;
             [Range(0, 100)] public int ObstacleFillPercent = 50;
+
+            public LevelProgressionConfig LevelProgressionConfig;
         }
 
         [System.Serializable]
