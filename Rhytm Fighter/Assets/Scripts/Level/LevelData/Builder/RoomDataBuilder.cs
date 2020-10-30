@@ -127,9 +127,12 @@ namespace RhytmFighter.Level.Data
 
             for (int i = 0; i < amountOfItems; i++)
             {
+                GridCellData rndCell = GetRandomCell(ref emptyCells);
+
                 int rndItemContentID = GetRandomIDFromProgression(contentData.ItemProgressionConfig, completionProgress);
 
-                GridCellData rndCell = GetRandomCell(ref emptyCells);
+                Debug.Log($"Create item. ContnentID {rndItemContentID}. CompletionProgress {completionProgress}");
+
                 StandardItemModel item = new StandardItemModel(m_ITEM_ID++, rndItemContentID, rndCell);
                 rndCell.AddObject(item);
             }
@@ -150,10 +153,12 @@ namespace RhytmFighter.Level.Data
 
                     int rndViewID = GetRandomIDFromProgression(contentData.EnemyViewProgressionConfig, completionProgress);
                     int rndHP = GetRandomHPFromProgression(contentData.EnemyDataProgressionConfig, completionProgress);
-                    int rndDmg = GetRandomDamageFromProgression(contentData.EnemyDataProgressionConfig, completionProgress);
+                    int dmg = GetDamageFromProgression(contentData.EnemyDataProgressionConfig, completionProgress);
+
+                    Debug.Log($"Create enemy. ViewID {rndViewID}. HP {rndHP} and Damage {dmg}. CompletionProgress {completionProgress}");
 
                     StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, BattleManager.Instance.NPCMoveSpeed, 
-                                                                               new SimpleBattleActionBehaviour(rndDmg),
+                                                                               new SimpleBattleActionBehaviour(dmg),
                                                                                new SimpleHealthBehaviour(rndHP),
                                                                                AITypes.Simple);
 
@@ -166,12 +171,12 @@ namespace RhytmFighter.Level.Data
 
                 int rndViewID = GetRandomIDFromProgression(contentData.EnemyViewProgressionConfig, completionProgress);
                 int rndHP = GetRandomHPFromProgression(contentData.BossDataProgressionConfig, completionProgress);
-                int rndDmg = GetRandomDamageFromProgression(contentData.BossDataProgressionConfig, completionProgress);
+                int dmg = GetDamageFromProgression(contentData.BossDataProgressionConfig, completionProgress);
 
-                Debug.Log($"Create enemy. ViewID {rndViewID}. HP {rndHP} and Damage {rndDmg}. CompletionProgress {completionProgress}");
+                Debug.Log($"Create enemy. ViewID {rndViewID}. HP {rndHP} and Damage {dmg}. CompletionProgress {completionProgress}");
 
                 StandardEnemyNPCModel enemyNPC = new StandardEnemyNPCModel(m_ENEMY_ID++, rndViewID, rndCell, BattleManager.Instance.NPCMoveSpeed, 
-                                                                           new SimpleBattleActionBehaviour(rndDmg),
+                                                                           new SimpleBattleActionBehaviour(dmg),
                                                                            new SimpleHealthBehaviour(rndHP),
                                                                            AITypes.SimpleDefencible);
 
@@ -206,21 +211,22 @@ namespace RhytmFighter.Level.Data
 
         private int GetRandomHPFromProgression(NPCProgressionConfig progressionConfig, float t)
         {
-            return GetRandomValueFromProgression(progressionConfig.EvaluateHP(t),
-                                                 progressionConfig.EvaluateHPSpreadMin(t),
-                                                 progressionConfig.EvaluateHPSpreadMax(t));
+            int rawHP = progressionConfig.EvaluateHP(t);
+            (int min, int max) spreadPercent = progressionConfig.EvaluateSpread(t);
+
+            int minSpread = Mathf.RoundToInt(rawHP * (spreadPercent.min / 100f));
+            int maxSpread = Mathf.RoundToInt(rawHP * (spreadPercent.max / 100f));
+            int hpMin = rawHP - minSpread;
+            int hpMax = rawHP + maxSpread;
+
+            int hp = Random.Range(hpMin, hpMax);
+
+            return Mathf.Clamp(hp, 1, hp);
         }
 
-        private int GetRandomDamageFromProgression(NPCProgressionConfig progressionConfig, float t)
+        private int GetDamageFromProgression(NPCProgressionConfig progressionConfig, float t)
         {
-            return GetRandomValueFromProgression(progressionConfig.EvaluateDamage(t),
-                                                 progressionConfig.EvaluateDamageSpreadMin(t),
-                                                 progressionConfig.EvaluateHPSpreadMax(t));
-        }
-
-        private int GetRandomValueFromProgression(float baseValue, float spreadMin, float spreadMax)
-        {
-            return (int)Random.Range(baseValue - spreadMin, baseValue + spreadMax);
+            return progressionConfig.EvaluateDamage(t);
         }
 
         private GridCellData GetRandomCell(ref List<GridCellData> emptyCells)

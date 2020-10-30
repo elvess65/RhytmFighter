@@ -34,30 +34,32 @@ namespace RhytmFighter.Data
 
         [Space(10)]
 
+        [Tooltip("Прогрессия % разброса ХП")]
+        public MinMaxProgressionConfig HPSpreadPercentProgression;
+
+        [Space(10)]
+
         [Tooltip("Прогрессия урона")]
         public IgnorableProgressionConfig DamageProgression;
 
 
-        public float EvaluateHP(float t)
+        public int EvaluateHP(float t)
         {
             float multiplayer = HPProgression.IgnoreMultiplayer ? 1 : EvaluateMultiplayer(t);
-            return HPProgression.BaseValue * multiplayer + HPProgression.BaseValue * HPProgression.Evaluate(t);
+            return (int)(HPProgression.BaseValue * multiplayer + HPProgression.BaseValue * HPProgression.Evaluate(t));
         }
 
-        public float EvaluateHPSpreadMin(float t) => 0;
+        public (int, int) EvaluateSpread(float t)
+        {
+            return HPSpreadPercentProgression.EvaluateInt(t);
+        }
 
-        public float EvaluateHPSpreadMax(float t) => 0;
 
-
-        public float EvaluateDamage(float t)
+        public int EvaluateDamage(float t)
         {
             float multiplayer = DamageProgression.IgnoreMultiplayer ? 1 : EvaluateMultiplayer(t);
-            return DamageProgression.BaseValue * multiplayer + DamageProgression.BaseValue * DamageProgression.Evaluate(t);
+            return (int)(DamageProgression.BaseValue * multiplayer + DamageProgression.BaseValue * DamageProgression.Evaluate(t));
         }        
-
-        public float EvaluateDamageSpreadMin(float t) => 0;
-
-        public float EvaluateDamageSpreadMax(float t) => 0;
 
 
         private float EvaluateMultiplayer(float t)
