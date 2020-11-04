@@ -36,7 +36,7 @@ namespace RhytmFighter.Level.Scheme.Editor
             Dispose();
 
             m_LevelController = new LevelController();
-            m_InfoData = new InfoData(JsonUtility.ToJson(GameObject.FindObjectOfType<DBSimulation>().LevelsData));
+            m_InfoData = new InfoData(JsonUtility.ToJson(GameObject.FindObjectOfType<DBSimulation>().LevelsData), string.Empty);
         }
 
 
@@ -181,7 +181,7 @@ namespace RhytmFighter.Level.Scheme.Editor
 
         void ButtonCreateLevel()
         {
-            LevelsData.LevelParams levelParams = m_InfoData.LevelsData.GetLevelParams(m_LevelID);
+            LevelsInfoData.LevelParams levelParams = m_InfoData.LevelsInfoData.GetLevelParams(m_LevelID);
 
             m_LevelController.GenerateLevel(levelParams, m_OnlyMainPath, false, 0);
             m_LevelController.LevelSchemeBuilder.Build(m_LevelController.Model.StartNodeData);

@@ -102,8 +102,15 @@ namespace RhytmFighter.Battle.Core
 
         private void InitializeDataDependends()
         {
-            LevelsData.LevelParams levelParams = GameManager.Instance.DataHolder.InfoData.LevelsData.GetLevelParams(GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID);
-            float completionProgress = GameManager.Instance.DataHolder.InfoData.LevelsData.GetCompletionForProgression(GameManager.Instance.DataHolder.PlayerDataModel.CompletedLevelsIDs);
+            LevelsInfoData.LevelParams levelParams = GameManager.Instance.DataHolder.InfoData.LevelsInfoData.GetLevelParams(GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID);
+            float completionProgress = GameManager.Instance.DataHolder.InfoData.LevelsInfoData.GetCompletionForProgression(GameManager.Instance.DataHolder.PlayerDataModel.CompletedLevelsIDs);
+
+            for (float i = 0; i <= 1.1f; i += 0.1f)
+            {
+            }
+
+            Debug.Log(GameManager.Instance.DataHolder.InfoData.LevelsExpInfoData.GetLevelByExp(3) + " " +
+                      GameManager.Instance.DataHolder.InfoData.LevelsExpInfoData.GetLevelByExp(10));
 
             //Set object params
             m_ControllersHolder.RhytmController.SetBPM(levelParams.BPM);
@@ -150,6 +157,7 @@ namespace RhytmFighter.Battle.Core
             m_ControllersHolder.BattleController.OnPrepareForBattle += PrepareForBattleHandler;
             m_ControllersHolder.BattleController.OnBattleStarted += BattleStartedHandler;
             m_ControllersHolder.BattleController.OnEnemyDestroyed += BattleEnemyDestroyedHandler;
+            m_ControllersHolder.BattleController.OnExperianceGained += ExperianceGainedHandler;
             m_ControllersHolder.BattleController.OnBattleFinished += BattleFinishedHandler;
             m_ControllersHolder.BattleController.OnLevelFinished += LevelCompleteHandler;
 
@@ -172,6 +180,7 @@ namespace RhytmFighter.Battle.Core
             m_ControllersHolder.BattleController.OnPrepareForBattle -= PrepareForBattleHandler;
             m_ControllersHolder.BattleController.OnBattleStarted -= BattleStartedHandler;
             m_ControllersHolder.BattleController.OnEnemyDestroyed -= BattleEnemyDestroyedHandler;
+            m_ControllersHolder.BattleController.OnExperianceGained -= ExperianceGainedHandler;
             m_ControllersHolder.BattleController.OnBattleFinished -= BattleFinishedHandler;
             m_ControllersHolder.BattleController.OnLevelFinished -= LevelCompleteHandler;
 
@@ -201,7 +210,7 @@ namespace RhytmFighter.Battle.Core
         }
 
 
-        private void BuildLevel(LevelsData.LevelParams levelParams, float completionProgress)
+        private void BuildLevel(LevelsInfoData.LevelParams levelParams, float completionProgress)
         {
             m_ControllersHolder.LevelController.GenerateLevel(levelParams, true, true, completionProgress);
             m_ControllersHolder.LevelController.RoomViewBuilder.OnCellWithObjectDetected += CellWithObjectDetectedHandler;
@@ -387,6 +396,15 @@ namespace RhytmFighter.Battle.Core
                 ManagersHolder.UIManager.ChangeState<UIState_BattleFinished>();
 
             m_GameStateMachine.ChangeState(m_GameStateIdle);            //Change state
+        }
+
+        private void ExperianceGainedHandler(int expGained)
+        {
+            GameManager.Instance.DataHolder.PlayerDataModel.Character.CharacterExp += expGained;
+            ManagersHolder.UIManager.UIView_PlayerHUD.UIWidget_ExperianceBar.UpdateBar(expGained);
+
+            Debug.Log("Player gained " + expGained + " Cur exp: " + GameManager.Instance.DataHolder.PlayerDataModel.Character.CharacterExp
+                + " Cur level:");
         }
 
         private void BattleFinishedHandler()

@@ -17,6 +17,7 @@ namespace RhytmFighter.Battle.Core
         public System.Action OnBattleFinished;
         public System.Action OnLevelFinished;
         public System.Action<bool> OnEnemyDestroyed;
+        public System.Action<int> OnExperianceGained;
 
         private int m_TargetTick;
         private bool m_CameraWasFocusedDuringBattle = false;
@@ -122,6 +123,7 @@ namespace RhytmFighter.Battle.Core
                 Player.Target = null;
 
             OnEnemyDestroyed?.Invoke(m_PendingEnemies.Count == 0);
+            OnExperianceGained?.Invoke(enemy.ExperianceForDestroy);
         }
 
         private void TryActivateNextEnemyOnEnemyDestroyedHandler(bool lastEnemyDestroyed)

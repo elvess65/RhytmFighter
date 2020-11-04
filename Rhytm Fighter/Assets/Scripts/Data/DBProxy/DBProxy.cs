@@ -5,7 +5,7 @@
     /// </summary>
     public class DBProxy
     {
-        public System.Action<string, string> OnConnectionSuccess;
+        public System.Action<string, string, string> OnConnectionSuccess;
         public System.Action<int> OnConnectionError;
 
         private iDataProvider m_DataProvider;
@@ -31,7 +31,8 @@
         }
 
 
-        private void ConnectionSuccessHandler(string serializedPlayerData, string serializedLevelsData) => OnConnectionSuccess?.Invoke(serializedPlayerData, serializedLevelsData);
+        private void ConnectionSuccessHandler(string serializedPlayerData, string serializedLevelsData, string serializedLevelsExpData) =>
+            OnConnectionSuccess?.Invoke(serializedPlayerData, serializedLevelsData, serializedLevelsExpData);
 
         private void OnConnectionErrorHandler(int errorCode) => OnConnectionError?.Invoke(errorCode);
     }

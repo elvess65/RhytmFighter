@@ -43,13 +43,24 @@ namespace RhytmFighter.Data
         public IgnorableProgressionConfig DamageProgression;
 
 
+        [Space(10)]
+
+        [Tooltip("Прогрессия опыта, который дается за уничтожение врага")]
+        public IgnorableProgressionConfig ExperianceProgression;
+
+        [Space(10)]
+
+        [Tooltip("Прогрессия % разброса опыта за уничтожение врага")]
+        public MinMaxProgressionConfig ExperianceSpreadProgression;
+
+
         public int EvaluateHP(float t)
         {
             float multiplayer = HPProgression.IgnoreMultiplayer ? 1 : EvaluateMultiplayer(t);
             return (int)(HPProgression.BaseValue * multiplayer + HPProgression.BaseValue * HPProgression.Evaluate(t));
         }
 
-        public (int, int) EvaluateSpread(float t)
+        public (int, int) EvaluateHPSpread(float t)
         {
             return HPSpreadPercentProgression.EvaluateInt(t);
         }
@@ -60,6 +71,18 @@ namespace RhytmFighter.Data
             float multiplayer = DamageProgression.IgnoreMultiplayer ? 1 : EvaluateMultiplayer(t);
             return (int)(DamageProgression.BaseValue * multiplayer + DamageProgression.BaseValue * DamageProgression.Evaluate(t));
         }        
+
+
+        public int EvaluateExp(float t)
+        {
+            float multiplayer = ExperianceProgression.IgnoreMultiplayer ? 1 : EvaluateMultiplayer(t);
+            return (int)(ExperianceProgression.BaseValue * multiplayer + ExperianceProgression.BaseValue * ExperianceProgression.Evaluate(t));
+        }
+
+        public (int, int) EvaluateExpSpread(float t)
+        {
+            return ExperianceSpreadProgression.EvaluateInt(t);
+        }
 
 
         private float EvaluateMultiplayer(float t)

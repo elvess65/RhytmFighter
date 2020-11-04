@@ -3,7 +3,7 @@
 namespace RhytmFighter.Data
 {
     /// <summary>
-    /// Player data
+    /// Данные о параметрах игрока
     /// </summary>
     public class PlayerData : AbstractData<PlayerData>
     {

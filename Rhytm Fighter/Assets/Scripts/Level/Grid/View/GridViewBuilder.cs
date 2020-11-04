@@ -18,7 +18,7 @@ namespace Frameworks.Grid.View
 
         private float m_CellOffset;
         private WaitForSeconds m_ExtendViewWait;
-        private LevelsData.EnviromentData m_EnviromentData;
+        private LevelsInfoData.EnviromentData m_EnviromentData;
 
         private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
 
@@ -35,7 +35,7 @@ namespace Frameworks.Grid.View
         /// <summary>
         /// Create graphics for grid
         /// </summary>
-        public void Build(LevelRoomData roomData, Vector3 startPos, LevelsData.EnviromentData enviromentData)
+        public void Build(LevelRoomData roomData, Vector3 startPos, LevelsInfoData.EnviromentData enviromentData)
         {
             Random.InitState(roomData.NodeData.NodeSeed);
 

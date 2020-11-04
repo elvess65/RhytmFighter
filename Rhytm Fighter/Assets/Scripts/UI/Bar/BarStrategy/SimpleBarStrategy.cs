@@ -1,6 +1,6 @@
 ﻿namespace RhytmFighter.UI.Bar
 {
-    public class SimpleHealthBarStrategy : AbstractBarStrategy
+    public class SimpleBarStrategy : AbstractBarStrategy
     {
         public SimpleHealthBar Bar;
 

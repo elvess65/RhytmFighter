@@ -5,12 +5,15 @@
     /// </summary>
     public class InfoData 
     {
-        public LevelsData LevelsData { get; private set; }
+        public LevelsInfoData LevelsInfoData { get; private set; }
+        public LevelsExpInfoData LevelsExpInfoData { get; private set; }
 
-        public InfoData(string serializedLevelsData)
+        public InfoData(string serializedLevelsData, string serializedLevelsExpData)
         {
-            LevelsData = LevelsData.DeserializeData(serializedLevelsData);
-            LevelsData.ReorginizeData();
+            LevelsInfoData = LevelsInfoData.DeserializeData(serializedLevelsData);
+            LevelsInfoData.ReorginizeData();
+
+            LevelsExpInfoData = LevelsExpInfoData.DeserializeData(serializedLevelsExpData);
         }
     }
 }

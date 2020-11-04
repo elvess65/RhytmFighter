@@ -29,6 +29,7 @@ namespace RhytmFighter.Battle.Core.Abstract
         iHealthBehaviour HealthBehaviour { get; }
         BattleCommandsModificatorProcessor ModificatorsProcessor { get; }
         AbstractAI AI { get; }
+        int ExperianceForDestroy { get; }
 
         void ApplyCommand(AbstractCommandModel command);
         void ReleaseCommand(AbstractCommandModel command);

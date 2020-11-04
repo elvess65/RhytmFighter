@@ -6,9 +6,9 @@ using UnityEngine;
 namespace RhytmFighter.Data
 {
     /// <summary>
-    /// Level data
+    /// Информация об уровнях
     /// </summary>
-    public class LevelsData : AbstractData<LevelsData>
+    public class LevelsInfoData : AbstractData<LevelsInfoData>
     {
         public LevelParams[] LevelParamsData;
 

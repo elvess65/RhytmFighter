@@ -69,13 +69,15 @@ namespace RhytmFighter.Rhytm
         public InputTickResult InputTickResult { get; set; }
 
         /// <summary>
-        /// Amount off seconds on how much command processing tick offsets normal tick
+        /// Amount of seconds on how much command processing tick offsets normal tick
         /// </summary>
         public double ProcessTickDelta { get; private set; }
 
+        private double m_NextProcessTickTime;
 
         private const float m_TICKS_PER_LOOP = 4;
         private const double m_PROCESS_TICK_OFFSET = 0.25;
+
 
         public static RhytmController GetInstance()
         {
@@ -114,7 +116,7 @@ namespace RhytmFighter.Rhytm
             OnStopped?.Invoke();
         }
 
-        private double m_NextProcessTickTime;
+        
         public void PerformUpdate(float deltaTime)
         {
             if (m_IsStarted)

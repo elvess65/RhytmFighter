@@ -46,6 +46,7 @@ namespace RhytmFighter.Objects.Model
             get { return ActionBehaviour.Target; }
             set { ActionBehaviour.Target = value; }
         }
+        public int ExperianceForDestroy { get; protected set; }
 
         private float m_MoveSpeed;
         private AbstractBattleNPCView m_BattleView;

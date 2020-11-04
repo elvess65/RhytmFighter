@@ -50,11 +50,11 @@ namespace RhytmFighter.Persistant
         }
 
 
-        private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData)
+        private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData, string serializedLevelsExpData)
         {
             //Set data
             DataHolder.PlayerDataModel = PlayerData.DeserializeData(serializedPlayerData);
-            DataHolder.InfoData = new InfoData(serializedLevelsData);
+            DataHolder.InfoData = new InfoData(serializedLevelsData, serializedLevelsExpData);
 
             LoadLevel(MENU_SCENE_NAME);
         }
