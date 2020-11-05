@@ -1,15 +1,20 @@
 ﻿namespace RhytmFighter.Data
 {
     /// <summary>
-    /// Информация об опыте и уровнях персонажей
+    /// Информация об опыте и уровнях 
     /// </summary>
     public class LevelsExpInfoData : AbstractData<LevelsExpInfoData>
     {
-        public PlayerLevelExpProgressionConfig LevelExpProgressionConfig;
+        public LevelExpProgressionConfig WeaponLevelExpProgressionConfig;
 
-        public int GetLevelByExp(int expAmount)
+        public int GetWeaponLevelByExp(int expAmount)
         {
-            return LevelExpProgressionConfig.EvaluateLevel(expAmount);
+            return WeaponLevelExpProgressionConfig.EvaluateLevel(expAmount);
+        }
+
+        public int GetWeaponExpForLevel(int level)
+        {
+            return WeaponLevelExpProgressionConfig.EvaluateExpForLevel(level); 
         }
     }
 }

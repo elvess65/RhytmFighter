@@ -105,13 +105,6 @@ namespace RhytmFighter.Battle.Core
             LevelsInfoData.LevelParams levelParams = GameManager.Instance.DataHolder.InfoData.LevelsInfoData.GetLevelParams(GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID);
             float completionProgress = GameManager.Instance.DataHolder.InfoData.LevelsInfoData.GetCompletionForProgression(GameManager.Instance.DataHolder.PlayerDataModel.CompletedLevelsIDs);
 
-            for (float i = 0; i <= 1.1f; i += 0.1f)
-            {
-            }
-
-            Debug.Log(GameManager.Instance.DataHolder.InfoData.LevelsExpInfoData.GetLevelByExp(3) + " " +
-                      GameManager.Instance.DataHolder.InfoData.LevelsExpInfoData.GetLevelByExp(10));
-
             //Set object params
             m_ControllersHolder.RhytmController.SetBPM(levelParams.BPM);
             m_ControllersHolder.RhytmInputProxy.SetInputPrecious(ManagersHolder.SettingsManager.GeneralSettings.InputPrecious);
@@ -398,13 +391,10 @@ namespace RhytmFighter.Battle.Core
             m_GameStateMachine.ChangeState(m_GameStateIdle);            //Change state
         }
 
-        private void ExperianceGainedHandler(int expGained)
+        private void ExperianceGainedHandler(int gainedAmount)
         {
-            GameManager.Instance.DataHolder.PlayerDataModel.Character.CharacterExp += expGained;
-            ManagersHolder.UIManager.UIView_PlayerHUD.UIWidget_ExperianceBar.UpdateBar(expGained);
-
-            Debug.Log("Player gained " + expGained + " Cur exp: " + GameManager.Instance.DataHolder.PlayerDataModel.Character.CharacterExp
-                + " Cur level:");
+            GameManager.Instance.DataHolder.PlayerDataModel.CurrencyAmount += gainedAmount;
+            ManagersHolder.UIManager.UIView_PlayerHUD.UIWidget_Currency.AddCurrency(gainedAmount);
         }
 
         private void BattleFinishedHandler()

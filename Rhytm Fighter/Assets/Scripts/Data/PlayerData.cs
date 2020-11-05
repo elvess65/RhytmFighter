@@ -7,10 +7,9 @@ namespace RhytmFighter.Data
     /// </summary>
     public class PlayerData : AbstractData<PlayerData>
     {
+        public int CurrencyAmount;
         public int CurrentLevelID;
         public int[] CompletedLevelsIDs;
-        //public int ActionPoints = 3;
-        //public int TickToRestoreActionPoint = 4;
 
         public CharacterData Character;
         public InventoryData Inventory;
@@ -20,7 +19,6 @@ namespace RhytmFighter.Data
         public class CharacterData
         {
             public int CharacterID;
-            public int CharacterExp;
             public int HP;
             public int MaxHP;
             public int Damage;
@@ -57,7 +55,5 @@ namespace RhytmFighter.Data
 
             public void DecrementPotion() => PiecesAmount = UnityEngine.Mathf.Clamp(PiecesAmount - PiecesPerPotion, 0, PiecesAmount);
         }
-
-        //Skills
     }
 }

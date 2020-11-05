@@ -6,6 +6,6 @@ namespace RhytmFighter.Data.DataBase.Simulation
     [CreateAssetMenu(fileName = "New Simulation_LevelsExpData", menuName = "DBSimulation/LevelsExpData", order = 101)]
     public class DBSimulation_LevelsExpData : ScriptableObject
     {
-        public PlayerLevelExpProgressionConfig LevelExpProgressionConfig;
+        public LevelExpProgressionConfig WeaponLevelExpProgressionConfig;
     }
 }
