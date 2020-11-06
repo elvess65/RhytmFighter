@@ -8,16 +8,42 @@ namespace RhytmFighter.Data
     /// </summary>
     public static class DataHelper
     {
-        public static int GetCharacterDamage(int characterID)
+        /// <summary>
+        /// Текущий урон персонажа
+        /// </summary>
+        public static (int, int) GetCharacterDamage(int characterID)
         {
+            //Данные о персонаже
             CharacterData characterData = GetCharacterData(characterID);
+
+            //Уровень оружия
             int weaponLevel = GameManager.Instance.DataHolder.DataTableModel.LevelingDataModel.
                               GetWeaponLevelByExp(characterID, characterData.WeaponExperiance);
 
-            //TODO: Get weapon damage by weaponLevel
-            int weaponDamageByLevel = 1;
+            //Урон
+            (int, int) weaponDamage = GameManager.Instance.DataHolder.DataTableModel.LevelingDataModel.
+                                      GetWeaponDamage(characterID, weaponLevel);
 
-            return weaponDamageByLevel;
+            return weaponDamage;
+        }
+
+        /// <summary>
+        /// Текущая стоимость единицы опыта улучшения оружия персонажа
+        /// </summary>
+        public static float GetWeaponExperiancePointPrice(int characterID)
+        {
+            //Данные о персонаже
+            CharacterData characterData = GetCharacterData(characterID);
+
+            //Уровень оружия
+            int weaponLevel = GameManager.Instance.DataHolder.DataTableModel.LevelingDataModel.
+                              GetWeaponLevelByExp(characterID, characterData.WeaponExperiance);
+
+            //Цена единицы опыта
+            float price = GameManager.Instance.DataHolder.DataTableModel.LevelingDataModel.
+                          GetExperiancePointPrice(characterID, weaponLevel);
+
+            return price;
         }
 
         public static int GetCharacterHP(int characterID)

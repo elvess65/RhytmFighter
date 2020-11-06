@@ -21,15 +21,44 @@ namespace RhytmFighter.Data.Models.DataTableModels
         }
 
 
-
+        /// <summary>
+        /// Получить уровень оружия для героя по количеству опыта
+        /// </summary>
         public int GetWeaponLevelByExp(int characterID, int expAmount)
         {
             return GetEquipementLevelingData(characterID).WeaponLevelingProgressionConfig.EvaluateLevel(expAmount);
         }
 
-        public int GetWeaponExpForLevel(int characterID, int level)
+        /// <summary>
+        /// Получить количество опыта, необходимое для получения уровня
+        /// </summary>
+        public int GetWeaponExpForLevel(int characterID, int targetWeaponLevel)
         {
-            return GetEquipementLevelingData(characterID).WeaponLevelingProgressionConfig.EvaluateExpForLevel(level); 
+            return GetEquipementLevelingData(characterID).WeaponLevelingProgressionConfig.EvaluateExpForLevel(targetWeaponLevel); 
+        }
+
+        /// <summary>
+        /// Получить урон оружия указанного уровня для героя 
+        /// </summary>
+        public (int, int) GetWeaponDamage(int characterID, int weaponLevel)
+        {
+            CharacterEquipementLevelingData equipementLevelingData = GetEquipementLevelingData(characterID);
+            int totalWeaponLevels = equipementLevelingData.WeaponLevelingProgressionConfig.TotalLevels;
+            float t = (float)weaponLevel / totalWeaponLevels;
+
+            return equipementLevelingData.WeaponUpgradingProgressionConfig.EvaluateDamage(t);
+        }
+
+        /// <summary>
+        /// Получить цену покупки единицы опыта оружия указанного уровня для героя
+        /// </summary>
+        public float GetExperiancePointPrice(int characterID, int weaponLevel)
+        {
+            CharacterEquipementLevelingData equipementLevelingData = GetEquipementLevelingData(characterID);
+            int totalWeaponLevels = equipementLevelingData.WeaponLevelingProgressionConfig.TotalLevels;
+            float t = (float)weaponLevel / totalWeaponLevels;
+
+            return equipementLevelingData.WeaponUpgradingProgressionConfig.EvaluateExperincePointPrice(t);
         }
 
 
@@ -46,6 +75,7 @@ namespace RhytmFighter.Data.Models.DataTableModels
         {
             public int CharacterID;
             public LevelingProgressionConfig WeaponLevelingProgressionConfig;
+            public WeaponUpgradeProgressionConfig WeaponUpgradingProgressionConfig;
         }
     }
 }

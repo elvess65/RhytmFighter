@@ -19,8 +19,11 @@ namespace RhytmFighter.Data.DataBase.Simulation
             [Header("ID героя")]
             public int CharacterID;
 
-            [Header("Прогрессия оружия")]
+            [Header("Прогрессия уровня оружия")]
             public LevelingProgressionConfig WeaponLevelingProgressionConfig;
+
+            [Header("Прогрессия улучшения оружия")]
+            public WeaponUpgradeProgressionConfig WeaponUpgradingProgressionConfig;
         }
     }
 }

@@ -224,7 +224,7 @@ namespace RhytmFighter.Battle.Core
                                                                               DataHelper.GetCharacterHP(CurrentCharacterData.ID));
 
             //Battle
-            SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(DataHelper.GetCharacterDamage(CurrentCharacterData.ID));
+            SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(DataHelper.GetCharacterDamage(CurrentCharacterData.ID).Item2);
             int actionPoints = 0;//GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints;
             int ticksToRestoreActionPoint = 0;//GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint;
 
