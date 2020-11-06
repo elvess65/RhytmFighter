@@ -31,8 +31,8 @@
         }
 
 
-        private void ConnectionSuccessHandler(string serializedPlayerData, string serializedLevelsData, string serializedWeaponLevelsExpData) =>
-            OnConnectionSuccess?.Invoke(serializedPlayerData, serializedLevelsData, serializedWeaponLevelsExpData);
+        private void ConnectionSuccessHandler(string serializedAccountData, string serializedEnviromentData, string serializedLevelsExpData) =>
+            OnConnectionSuccess?.Invoke(serializedAccountData, serializedEnviromentData, serializedLevelsExpData);
 
         private void OnConnectionErrorHandler(int errorCode) => OnConnectionError?.Invoke(errorCode);
     }

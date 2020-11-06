@@ -9,6 +9,7 @@ using UnityEngine;
 using RhytmFighter.Battle.Core;
 using RhytmFighter.Data;
 using RhytmFighter.Persistant.Helpers;
+using RhytmFighter.Data.Models.DataTableModels;
 
 namespace Frameworks.Grid.View
 {
@@ -18,7 +19,7 @@ namespace Frameworks.Grid.View
 
         private float m_CellOffset;
         private WaitForSeconds m_ExtendViewWait;
-        private LevelsInfoData.EnviromentData m_EnviromentData;
+        private EnvironmentDataModel.EnviromentData m_EnviromentData;
 
         private Dictionary<int, GridViewData> m_GridViews;  //room id : views[,]
 
@@ -35,7 +36,7 @@ namespace Frameworks.Grid.View
         /// <summary>
         /// Create graphics for grid
         /// </summary>
-        public void Build(LevelRoomData roomData, Vector3 startPos, LevelsInfoData.EnviromentData enviromentData)
+        public void Build(LevelRoomData roomData, Vector3 startPos, EnvironmentDataModel.EnviromentData enviromentData)
         {
             Random.InitState(roomData.NodeData.NodeSeed);
 

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7ae38720d8284f83b917a7443879391, type: 3}
-  m_Name: EnemyProgressionConfig
+  m_Name: BossData ProgressionConfig
   m_EditorClassIdentifier: 
   MultiplayerProgression:
     BaseValue: 1
@@ -39,7 +39,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   HPProgression:
-    BaseValue: 1
+    BaseValue: 2
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -67,15 +67,15 @@ MonoBehaviour:
     IgnoreMultiplayer: 0
   HPSpreadPercentProgression:
     MinProgression:
-      BaseValue: 15
+      BaseValue: 10
       Curve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 0
-          outSlope: 0
+          inSlope: 1
+          outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -83,8 +83,8 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: 2
-          outSlope: 2
+          inSlope: 1
+          outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -93,15 +93,15 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
     MaxProgression:
-      BaseValue: 25
+      BaseValue: 30
       Curve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 0
-          outSlope: 0
+          inSlope: 1
+          outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -109,8 +109,8 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: 2
-          outSlope: 2
+          inSlope: 1
+          outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -146,15 +146,15 @@ MonoBehaviour:
       m_RotationOrder: 4
     IgnoreMultiplayer: 1
   ExperianceProgression:
-    BaseValue: 5
+    BaseValue: 15
     Curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 1
-        outSlope: 1
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
@@ -162,8 +162,8 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 1
-        outSlope: 1
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
@@ -171,10 +171,10 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    IgnoreMultiplayer: 1
+    IgnoreMultiplayer: 0
   ExperianceSpreadProgression:
     MinProgression:
-      BaseValue: 10
+      BaseValue: 15
       Curve:
         serializedVersion: 2
         m_Curve:

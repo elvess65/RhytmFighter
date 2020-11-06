@@ -3,8 +3,10 @@ using RhytmFighter.Level.Scheme.View;
 using RhytmFighter.Data.DataBase.Simulation;
 using UnityEditor;
 using UnityEngine;
+using RhytmFighter.Data.Models;
+using RhytmFighter.Data.Models.DataTableModels;
 
-#if (UNITY_EDITOR) 
+#if (UNITY_EDITOR)
 namespace RhytmFighter.Level.Scheme.Editor
 {
     /// <summary>
@@ -25,7 +27,7 @@ namespace RhytmFighter.Level.Scheme.Editor
         private SchemeNodeView m_SelectedNode;
         private SchemeCellView m_SelectedCell;
         private LevelController m_LevelController;
-        private InfoData m_InfoData;
+        private DataTableModel m_InfoData;
 
         [MenuItem("Level/Scheme")]
         public static void ShowWindow() => GetWindow<LevelSchemeBuilderEditorWindow>(false, "Level Scheme", true).Initialize();
@@ -36,7 +38,7 @@ namespace RhytmFighter.Level.Scheme.Editor
             Dispose();
 
             m_LevelController = new LevelController();
-            m_InfoData = new InfoData(JsonUtility.ToJson(GameObject.FindObjectOfType<DBSimulation>().LevelsData), string.Empty);
+            m_InfoData = new DataTableModel(JsonUtility.ToJson(GameObject.FindObjectOfType<DBSimulation>().EnvironmentData), string.Empty);
         }
 
 
@@ -181,7 +183,7 @@ namespace RhytmFighter.Level.Scheme.Editor
 
         void ButtonCreateLevel()
         {
-            LevelsInfoData.LevelParams levelParams = m_InfoData.LevelsInfoData.GetLevelParams(m_LevelID);
+            EnvironmentDataModel.LevelParams levelParams = m_InfoData.EnvironmentDataModel.GetLevelParams(m_LevelID);
 
             m_LevelController.GenerateLevel(levelParams, m_OnlyMainPath, false, 0);
             m_LevelController.LevelSchemeBuilder.Build(m_LevelController.Model.StartNodeData);

@@ -1,27 +1,48 @@
-﻿using RhytmFighter.Persistant.Enums;
+﻿using System.Collections.Generic;
+using RhytmFighter.Persistant.Enums;
 
-namespace RhytmFighter.Data
+namespace RhytmFighter.Data.Models
 {
     /// <summary>
-    /// Данные о параметрах игрока
+    /// Модель содержащая данные об аккаунте
     /// </summary>
-    public class PlayerData : AbstractData<PlayerData>
+    public class AccountModel : DeserializableDataModel<AccountModel>
     {
-        public int CurrencyAmount;
-        public int CurrentLevelID;
-        public int[] CompletedLevelsIDs;
+        public int CurrencyAmount;          
 
-        public CharacterData Character;
+        //Нужно для парсинга данный
+        public CharacterData[] CharactersData;
+
+        //Нужно для парсинга данный
         public InventoryData Inventory;
+
+        private Dictionary<int, CharacterData> m_CharactersData;
+
+
+        public CharacterData GetCharacterDataByID(int id)
+        {
+            if (m_CharactersData.ContainsKey(id))
+                return m_CharactersData[id];
+
+            return null;
+        }
+
+        public override void ReorganizeData()
+        {
+            m_CharactersData = new Dictionary<int, CharacterData>();
+
+            foreach (CharacterData characterData in CharactersData)
+                m_CharactersData[characterData.ID] = characterData;
+        }
 
 
         [System.Serializable]
         public class CharacterData
         {
-            public int CharacterID;
+            public int ID;
+            public int WeaponExperiance;
             public int HP;
             public int MaxHP;
-            public int Damage;
         }
 
         [System.Serializable]

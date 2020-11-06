@@ -4,6 +4,7 @@ using RhytmFighter.Level.Scheme.Builder;
 using Frameworks.Grid.View;
 using Frameworks.Grid.Data;
 using RhytmFighter.Data;
+using RhytmFighter.Data.Models.DataTableModels;
 
 namespace RhytmFighter.Level
 {
@@ -37,7 +38,7 @@ namespace RhytmFighter.Level
         }
         public GridViewBuilder RoomViewBuilder { get; private set; }
 
-        private LevelsInfoData.LevelParams m_LevelParamsData;
+        private EnvironmentDataModel.LevelParams m_LevelParamsData;
         private float m_CompletionProgress;
 
 
@@ -50,7 +51,7 @@ namespace RhytmFighter.Level
             Model = new LevelDataModel();
         }
 
-        public void GenerateLevel(LevelsInfoData.LevelParams levelParamsData, bool generateOnlyMainPath, bool buildRoomView, float completionProgress)
+        public void GenerateLevel(EnvironmentDataModel.LevelParams levelParamsData, bool generateOnlyMainPath, bool buildRoomView, float completionProgress)
         {
             Debug.Log($"LevelController: Generate level {levelParamsData.ID}. Completion progress {completionProgress}");
 
@@ -158,7 +159,7 @@ namespace RhytmFighter.Level
             return m_RoomDataBuilder.Build(node, m_LevelParamsData.BuildParams, m_LevelParamsData.ContentParams, m_CompletionProgress);
         }
 
-        private int GetRandomDepthFromProgression(LevelProgressionConfig progressionConfig, float t)
+        private int GetRandomDepthFromProgression(LevelSizeProgressionConfig progressionConfig, float t)
         {
             (int min, int max) result = progressionConfig.EvaluateDepth(t);
             return Random.Range(result.min, result.max + 1);

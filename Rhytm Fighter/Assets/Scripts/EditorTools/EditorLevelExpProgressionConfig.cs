@@ -8,7 +8,7 @@ namespace RhytmFighter.EditorTools
     /// Расширение для инверсии основной кривой в прогрессии опыт-уровень
     /// </summary>
 
-    [CustomEditor(typeof(LevelExpProgressionConfig))]
+    [CustomEditor(typeof(LevelingProgressionConfig))]
     public class EditorLevelExpProgressionConfig : Editor
     {
         public override void OnInspectorGUI()
@@ -17,7 +17,7 @@ namespace RhytmFighter.EditorTools
 
             EditorGUILayout.Space();
 
-            LevelExpProgressionConfig progressionConfig = (LevelExpProgressionConfig)target;
+            LevelingProgressionConfig progressionConfig = (LevelingProgressionConfig)target;
             if (GUILayout.Button(new GUIContent("Inverse curve", "Собрать все рендер-компоненты и назначить их соответствующим полям")))
             {
                 progressionConfig.CreateInvertedCurve();

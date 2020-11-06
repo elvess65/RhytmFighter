@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fea124b9601e4802b5170735a07ccb3, type: 3}
-  m_Name: LevelProgressionConfig
+  m_Name: LevelSize ProgressionConfig
   m_EditorClassIdentifier: 
   DepthProgression:
     MinProgression:

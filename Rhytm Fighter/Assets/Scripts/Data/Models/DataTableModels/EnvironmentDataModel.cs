@@ -3,22 +3,19 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RhytmFighter.Data
+namespace RhytmFighter.Data.Models.DataTableModels
 {
     /// <summary>
-    /// Информация об уровнях
+    /// Информация о построении уровней
     /// </summary>
-    public class LevelsInfoData : AbstractData<LevelsInfoData>
+    public class EnvironmentDataModel : DeserializableDataModel<EnvironmentDataModel>
     {
         public LevelParams[] LevelParamsData;
 
         private Dictionary<int, LevelParams> m_LevelParams;
 
         
-        /// <summary>
-        /// Convert data array from data base to dictionary
-        /// </summary>
-        public void ReorginizeData()
+        public override void ReorganizeData()
         {
             m_LevelParams = new Dictionary<int, LevelParams>();
             for (int i = 0; i < LevelParamsData.Length; i++)
@@ -92,7 +89,7 @@ namespace RhytmFighter.Data
             public int LevelSeed;
             public int ObstacleFillPercent;
             public float CellSize;
-            public LevelProgressionConfig LevelProgressionConfig;
+            public LevelSizeProgressionConfig LevelProgressionConfig;
         }
 
         [Serializable]

@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3bc185674da583f40a0f4bd0812766e5, type: 3}
-  m_Name: PlayerData
+  m_Name: AccountData
   m_EditorClassIdentifier: 
-  CurrentLevelID: 1
-  CompletedLevelsIDs: 
-  Character:
-    CharacterID: 1
-    CharacterExp: 0
-    HP: 2
+  CurrencyAmount: 15
+  CharactersData:
+  - ID: 1
+    WeaponExperiance: 5
+    HP: 3
     MaxHP: 3
-    Damage: 3
   Inventory:
     Potions:
     - Type: 0

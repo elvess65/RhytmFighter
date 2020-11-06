@@ -8,8 +8,8 @@ namespace RhytmFighter.Data.DataBase.Simulation
     [System.Serializable]
     public class DBSimulation : MonoBehaviour
     {
-        public DBSimulation_PlayerData PlayerData;
-        public DBSimulation_LevelsData LevelsData;
-        public DBSimulation_LevelsExpData LevelsExpData;
+        public DBSimulation_AccountData AccountData;
+        public DBSimulation_EnvironmentData EnvironmentData;
+        public DBSimulation_LevelingData LevelingData;
     }
 }

@@ -1,9 +1,8 @@
 ﻿using RhytmFighter.Persistant;
-using RhytmFighter.Persistant.Abstract;
 using RhytmFighter.Persistant.Enums;
 using RhytmFighter.UI.Widget;
 using UnityEngine;
-using static RhytmFighter.Data.PlayerData;
+using static RhytmFighter.Data.Models.AccountModel;
 
 namespace RhytmFighter.UI.View
 {
@@ -21,7 +20,7 @@ namespace RhytmFighter.UI.View
         public override void Initialize()
         {
             //Widget - Potion
-            PotionData potionData = GameManager.Instance.DataHolder.PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal);
+            PotionData potionData = GameManager.Instance.DataHolder.AccountModel.Inventory.GetPotionByType(PotionTypes.Heal);
             UIWidget_Potion.Initialize(potionData.PiecesAmount, potionData.PiecesPerPotion, 5);
             UIWidget_Potion.OnWidgetPress += WidgetPotion_PressHandler;
 
@@ -33,7 +32,7 @@ namespace RhytmFighter.UI.View
 
         public void WidgetPotion_UpdateAmount()
         {
-            UIWidget_Potion.RefreshAmount(GameManager.Instance.DataHolder.PlayerDataModel.
+            UIWidget_Potion.RefreshAmount(GameManager.Instance.DataHolder.AccountModel.
                 Inventory.GetPotionByType(PotionTypes.Heal).PiecesAmount);
         }
 
@@ -41,7 +40,7 @@ namespace RhytmFighter.UI.View
         {
             if (isSuccess)
             {
-                UIWidget_Potion.UsePotion(GameManager.Instance.DataHolder.PlayerDataModel.
+                UIWidget_Potion.UsePotion(GameManager.Instance.DataHolder.AccountModel.
                     Inventory.GetPotionByType(PotionTypes.Heal).PiecesAmount);
             }
             else

@@ -1,5 +1,6 @@
 ﻿using RhytmFighter.Battle.Core;
 using RhytmFighter.Data;
+using RhytmFighter.Data.Models;
 using RhytmFighter.OtherScenes.MenuScene;
 using RhytmFighter.Persistant.Abstract;
 using RhytmFighter.Persistant.SceneLoading;
@@ -10,7 +11,7 @@ namespace RhytmFighter.Persistant
 {
     public class GameManager : Singleton<GameManager>
     {
-        public DataHolder DataHolder { get; private set; }
+        public ModelsHolder DataHolder { get; private set; }
 
         public System.Action OnSceneLoadingComplete;
         public System.Action OnSceneUnloadingComplete;
@@ -39,7 +40,7 @@ namespace RhytmFighter.Persistant
 
         private void InitializeCore()
         {
-            DataHolder = new DataHolder();
+            DataHolder = new ModelsHolder();
         }
 
         private void InitializeConnection()
@@ -50,11 +51,14 @@ namespace RhytmFighter.Persistant
         }
 
 
-        private void ConnectionResultSuccess(string serializedPlayerData, string serializedLevelsData, string serializedWeaponLevelsExpData)
+        private void ConnectionResultSuccess(string serializedAccountData, string serializedEnviromentData, string serializedLevelingData)
         {
             //Set data
-            DataHolder.PlayerDataModel = PlayerData.DeserializeData(serializedPlayerData);
-            DataHolder.InfoData = new InfoData(serializedLevelsData, serializedWeaponLevelsExpData);
+            DataHolder.AccountModel = AccountModel.DeserializeData(serializedAccountData);
+            DataHolder.AccountModel.ReorganizeData();
+
+            DataHolder.DataTableModel = new DataTableModel(serializedEnviromentData, serializedLevelingData);
+            DataHolder.DataTableModel.ReorganizeData();
 
             LoadLevel(MENU_SCENE_NAME);
         }

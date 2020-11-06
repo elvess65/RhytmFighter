@@ -3,9 +3,11 @@
 namespace RhytmFighter.Data.DataBase.Simulation
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "New Simulation_LevelsData", menuName = "DBSimulation/LevelsData", order = 101)]
-    public class DBSimulation_LevelsData : ScriptableObject
+    [CreateAssetMenu(fileName = "New Simulation EnvironmentData", menuName = "DBSimulation/EnvironmentData", order = 101)]
+    public class DBSimulation_EnvironmentData : ScriptableObject
     {
+        [Header("Данные для построения уровней")]
+
         public LevelParams[] LevelParamsData;
 
         [System.Serializable]
@@ -37,7 +39,7 @@ namespace RhytmFighter.Data.DataBase.Simulation
             public float CellSize = 1;
             [Range(0, 100)] public int ObstacleFillPercent = 50;
 
-            public LevelProgressionConfig LevelProgressionConfig;
+            public LevelSizeProgressionConfig LevelProgressionConfig;
         }
 
         [System.Serializable]

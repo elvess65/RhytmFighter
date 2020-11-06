@@ -33,6 +33,9 @@ namespace RhytmFighter.OtherScenes.MenuScene
 
         private void UIView_MenuScene_Play_PressHandler()
         {
+            GameManager.Instance.DataHolder.BattleSessionModel.CurrentLevelID = 1;
+            GameManager.Instance.DataHolder.BattleSessionModel.SelectedCharactedID = 1;
+
             //Camera is pushed by animation event
 
             //Disable all UI widgets

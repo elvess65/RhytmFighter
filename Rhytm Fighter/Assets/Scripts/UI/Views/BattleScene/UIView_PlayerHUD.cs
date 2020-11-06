@@ -17,7 +17,7 @@ namespace RhytmFighter.UI.View
         public override void Initialize()
         {
             UIWidget_Tick.Initialize((float)Rhytm.RhytmController.GetInstance().TickDurationSeconds / 8);
-            UIWidget_Currency.Initialize(10);
+            UIWidget_Currency.Initialize(Battle.Core.BattleManager.Instance.AccountModel.CurrencyAmount);
 
             RegisterWidget(UIWidget_Tick);
             RegisterWidget(UIWidget_HealthBar);

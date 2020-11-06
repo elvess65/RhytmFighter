@@ -16,6 +16,9 @@ using RhytmFighter.Persistant.Enums;
 using RhytmFighter.Battle.Core.Abstract;
 using RhytmFighter.Battle.Command.Model;
 using RhytmFighter.StateMachines.UIState;
+using RhytmFighter.Data.Models;
+using RhytmFighter.Data.Models.DataTableModels;
+using static RhytmFighter.Data.Models.AccountModel;
 
 namespace RhytmFighter.Battle.Core
 {
@@ -50,11 +53,14 @@ namespace RhytmFighter.Battle.Core
         private GameState_TapToAction m_GameStateTapToAction;
 
 
-        public PlayerData PlayerDataModel => GameManager.Instance.DataHolder.PlayerDataModel;
-        public PlayerModel PlayerModel => m_ControllersHolder?.PlayerCharacterController?.PlayerModel;
-        public float NPCMoveSpeed => (float)m_ControllersHolder.RhytmController.TickDurationSeconds * 
+        public float NPCMoveSpeed => (float)m_ControllersHolder.RhytmController.TickDurationSeconds *
                                      ManagersHolder.SettingsManager.GeneralSettings.MoveSpeedTickDurationMultiplayer;
-
+        //Shortcuts
+        public AccountModel AccountModel => GameManager.Instance.DataHolder.AccountModel;
+        public BattleSessionModel BattleSessionModel = GameManager.Instance.DataHolder.BattleSessionModel;
+        public PlayerModel PlayerModel => m_ControllersHolder?.PlayerCharacterController?.PlayerModel;
+        public CharacterData CurrentCharacterData => DataHelper.GetCharacterData(BattleSessionModel.SelectedCharactedID);
+        
 
         private void Update()
         {
@@ -102,8 +108,8 @@ namespace RhytmFighter.Battle.Core
 
         private void InitializeDataDependends()
         {
-            LevelsInfoData.LevelParams levelParams = GameManager.Instance.DataHolder.InfoData.LevelsInfoData.GetLevelParams(GameManager.Instance.DataHolder.PlayerDataModel.CurrentLevelID);
-            float completionProgress = GameManager.Instance.DataHolder.InfoData.LevelsInfoData.GetCompletionForProgression(GameManager.Instance.DataHolder.PlayerDataModel.CompletedLevelsIDs);
+            EnvironmentDataModel.LevelParams levelParams = GameManager.Instance.DataHolder.DataTableModel.EnvironmentDataModel.GetLevelParams(BattleSessionModel.CurrentLevelID);
+            float completionProgress = GameManager.Instance.DataHolder.DataTableModel.EnvironmentDataModel.GetCompletionForProgression(BattleSessionModel.CompletedLevelsIDs.ToArray());
 
             //Set object params
             m_ControllersHolder.RhytmController.SetBPM(levelParams.BPM);
@@ -203,7 +209,7 @@ namespace RhytmFighter.Battle.Core
         }
 
 
-        private void BuildLevel(LevelsInfoData.LevelParams levelParams, float completionProgress)
+        private void BuildLevel(EnvironmentDataModel.LevelParams levelParams, float completionProgress)
         {
             m_ControllersHolder.LevelController.GenerateLevel(levelParams, true, true, completionProgress);
             m_ControllersHolder.LevelController.RoomViewBuilder.OnCellWithObjectDetected += CellWithObjectDetectedHandler;
@@ -214,11 +220,11 @@ namespace RhytmFighter.Battle.Core
         private void CreatePlayer()
         {
             //Health
-            SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(GameManager.Instance.DataHolder.PlayerDataModel.Character.HP, 
-                                                                              GameManager.Instance.DataHolder.PlayerDataModel.Character.MaxHP);
+            SimpleHealthBehaviour healthBehaviour = new SimpleHealthBehaviour(DataHelper.GetCharacterHP(CurrentCharacterData.ID) - 1,
+                                                                              DataHelper.GetCharacterHP(CurrentCharacterData.ID));
 
             //Battle
-            SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(GameManager.Instance.DataHolder.PlayerDataModel.Character.Damage);
+            SimpleBattleActionBehaviour battleBehaviour = new SimpleBattleActionBehaviour(DataHelper.GetCharacterDamage(CurrentCharacterData.ID));
             int actionPoints = 0;//GameManager.Instance.DataHolder.PlayerDataModel.ActionPoints;
             int ticksToRestoreActionPoint = 0;//GameManager.Instance.DataHolder.PlayerDataModel.TickToRestoreActionPoint;
 
@@ -292,7 +298,7 @@ namespace RhytmFighter.Battle.Core
             yield return new WaitForSeconds(animationDelay);
 
             //UI
-            PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).IncrementPieceAmount();
+            AccountModel.Inventory.GetPotionByType(PotionTypes.Heal).IncrementPieceAmount();
             ManagersHolder.UIManager.UIView_InventoryHUD.WidgetPotion_UpdateAmount();
 
             //State
@@ -393,7 +399,7 @@ namespace RhytmFighter.Battle.Core
 
         private void ExperianceGainedHandler(int gainedAmount)
         {
-            GameManager.Instance.DataHolder.PlayerDataModel.CurrencyAmount += gainedAmount;
+            GameManager.Instance.DataHolder.AccountModel.CurrencyAmount += gainedAmount;
             ManagersHolder.UIManager.UIView_PlayerHUD.UIWidget_Currency.AddCurrency(gainedAmount);
         }
 
@@ -517,11 +523,11 @@ namespace RhytmFighter.Battle.Core
 
         private void TryUsePotion()
         {
-            if (PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).HasPotions &&
+            if (AccountModel.Inventory.GetPotionByType(PotionTypes.Heal).HasPotions &&
                 PlayerModel.HealthBehaviour.HP < PlayerModel.HealthBehaviour.MaxHP)
             {
                 //Decrement potion
-                PlayerDataModel.Inventory.GetPotionByType(PotionTypes.Heal).DecrementPotion();
+                AccountModel.Inventory.GetPotionByType(PotionTypes.Heal).DecrementPotion();
 
                 //Increase HP
                 PlayerModel.HealthBehaviour.IncreaseHP(5);

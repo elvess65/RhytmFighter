@@ -3,20 +3,13 @@ using UnityEngine;
 
 namespace RhytmFighter.Data.DataBase.Simulation
 {
-    [CreateAssetMenu(fileName = "New Simulation_PlayerData", menuName = "DBSimulation/PlayerData", order = 101)]
-    public class DBSimulation_PlayerData : ScriptableObject
+    [CreateAssetMenu(fileName = "New Simulation AccountData", menuName = "DBSimulation/AccountData", order = 101)]
+    public class DBSimulation_AccountData : ScriptableObject
     {
-        [Tooltip("ИД текущего уровня")]
-        public int CurrentLevelID;
+        public int CurrencyAmount;
 
-        [Tooltip("Список ИД завершенных уровней")]
-        public int[] CompletedLevelsIDs;
-
-        //public int ActionPoints = 3;
-        //public int TickToRestoreActionPoint = 4;
-
-        [Header("Selected character")]
-        public CharacterData Character;
+        [Header("Characters")]
+        public CharacterData[] CharactersData;
 
         [Header("Inventory")]
         public InventoryData Inventory;
@@ -26,21 +19,16 @@ namespace RhytmFighter.Data.DataBase.Simulation
         public class CharacterData
         {
             [Tooltip("Character ID")]
-            public int CharacterID;
+            public int ID;
 
-            [Space(10)]
-
-            [Tooltip("Current character exp")]
-            public int CharacterExp = 0;
+            [Tooltip("Опыт оружия")]
+            public int WeaponExperiance;
 
             [Tooltip("Character HP")]
             public int HP = 2;
 
             [Tooltip("Character Max HP")]
             public int MaxHP = 3;
-
-            [Tooltip("Character Damage")]
-            public int Damage = 3;
         }
 
         [System.Serializable]

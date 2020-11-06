@@ -6,8 +6,8 @@ namespace RhytmFighter.Data
     /// Рассчитывает прогрессию размеров уровня и комнат в зависимости от степени прохождения
     /// </summary>
     [System.Serializable]
-    [CreateAssetMenu(fileName = "NewLevel ProgressionConfig", menuName = "DBSimulation/Progressions/Level Progression Config", order = 101)]
-    public class LevelProgressionConfig : ScriptableObject
+    [CreateAssetMenu(fileName = "NewLevelSize ProgressionConfig", menuName = "DBSimulation/Progressions/Level Size Progression Config", order = 101)]
+    public class LevelSizeProgressionConfig : ScriptableObject
     {
         /// Кривая в 0 - нет изменений относительно базового значения
         /// Кривая в 1 - базовое значение увеличилось в два раза 

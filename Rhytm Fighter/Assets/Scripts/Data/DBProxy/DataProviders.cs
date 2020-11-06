@@ -54,9 +54,9 @@ namespace RhytmFighter.Data.DataBase
         {
             yield return m_WaitConnectionDelay;
 
-            OnConnectionSuccess?.Invoke(JsonUtility.ToJson(m_DataObject.PlayerData),
-                                        JsonUtility.ToJson(m_DataObject.LevelsData),
-                                        JsonUtility.ToJson(m_DataObject.LevelsExpData));
+            OnConnectionSuccess?.Invoke(JsonUtility.ToJson(m_DataObject.AccountData),
+                                        JsonUtility.ToJson(m_DataObject.EnvironmentData),
+                                        JsonUtility.ToJson(m_DataObject.LevelingData));
         }
 
         IEnumerator SimulateErrorConnectionDelay(int errorCode)

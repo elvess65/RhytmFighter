@@ -418,9 +418,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df94bffb06323a74eb9eafbfc671434e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerData: {fileID: 11400000, guid: 43f862930635dc84daebbd8bf3a7ce41, type: 2}
-  LevelsData: {fileID: 11400000, guid: 4d66c12bfec60f64dba45c7561e9e614, type: 2}
-  LevelsExpData: {fileID: 11400000, guid: 27419dc033f8c40eeb52355d657af955, type: 2}
+  AccountData: {fileID: 11400000, guid: 43f862930635dc84daebbd8bf3a7ce41, type: 2}
+  EnvironmentData: {fileID: 11400000, guid: 4d66c12bfec60f64dba45c7561e9e614, type: 2}
+  LevelingData: {fileID: 11400000, guid: 27419dc033f8c40eeb52355d657af955, type: 2}
 --- !u!1 &618708540
 GameObject:
   m_ObjectHideFlags: 0

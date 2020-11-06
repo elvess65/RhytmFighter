@@ -8,6 +8,7 @@ using UnityEngine;
 using RhytmFighter.Battle.Core;
 using RhytmFighter.Data;
 using RhytmFighter.Persistant.Helpers;
+using RhytmFighter.Data.Models.DataTableModels;
 
 namespace RhytmFighter.Level.Data
 {
@@ -17,7 +18,7 @@ namespace RhytmFighter.Level.Data
         private int m_ENEMY_ID = 2;
 
 
-        public LevelRoomData Build(LevelNodeData node, LevelsInfoData.BuildData buildData, LevelsInfoData.ContentData contentData, float completionProgress)
+        public LevelRoomData Build(LevelNodeData node, EnvironmentDataModel.BuildData buildData, EnvironmentDataModel.ContentData contentData, float completionProgress)
         {
             Random.InitState(node.NodeSeed);
 
@@ -31,7 +32,7 @@ namespace RhytmFighter.Level.Data
         }
 
 
-        void ApplyDataToGrid(SquareGrid grid, LevelNodeData node, int obstacleFillPercent, float completionProgress, LevelsInfoData.ContentData contentData)
+        void ApplyDataToGrid(SquareGrid grid, LevelNodeData node, int obstacleFillPercent, float completionProgress, EnvironmentDataModel.ContentData contentData)
         {
             GenerateGrid(grid, node, obstacleFillPercent, out List<GridCellData> emptyCells);
             GenerateContent(grid, node, ref emptyCells, contentData, completionProgress);
@@ -112,13 +113,13 @@ namespace RhytmFighter.Level.Data
             }
         }
 
-        void GenerateContent(SquareGrid grid, LevelNodeData node, ref List<GridCellData> emptyCells, LevelsInfoData.ContentData contentData, float completionProgress)
+        void GenerateContent(SquareGrid grid, LevelNodeData node, ref List<GridCellData> emptyCells, EnvironmentDataModel.ContentData contentData, float completionProgress)
         {
             GenerateItem(node, contentData, ref emptyCells, completionProgress);
             GenerateEnemy(node, ref emptyCells, contentData, completionProgress);
         }
 
-        void GenerateItem(LevelNodeData node, LevelsInfoData.ContentData contentData,ref List<GridCellData> emptyCells, float completionProgress)
+        void GenerateItem(LevelNodeData node, EnvironmentDataModel.ContentData contentData,ref List<GridCellData> emptyCells, float completionProgress)
         {
             if (emptyCells.Count == 0 || node.IsFinishNode)
                 return;
@@ -138,7 +139,7 @@ namespace RhytmFighter.Level.Data
             }
         }
 
-        void GenerateEnemy(LevelNodeData node, ref List<GridCellData> emptyCells, LevelsInfoData.ContentData contentData, float completionProgress)
+        void GenerateEnemy(LevelNodeData node, ref List<GridCellData> emptyCells, EnvironmentDataModel.ContentData contentData, float completionProgress)
         {
             if (emptyCells.Count == 0)
                 return;
@@ -201,13 +202,13 @@ namespace RhytmFighter.Level.Data
             return Mathf.Clamp(exp, 1, exp);
         }
 
-        private int GetRandomWidthFromProgression(LevelProgressionConfig progressionConfig, float t)
+        private int GetRandomWidthFromProgression(LevelSizeProgressionConfig progressionConfig, float t)
         {
             (int min, int max) result = progressionConfig.EvaluateWidth(t);
             return Random.Range(result.min, result.max + 1);
         }
 
-        private int GetRandomHeightFromProgression(LevelProgressionConfig progressionConfig, float t)
+        private int GetRandomHeightFromProgression(LevelSizeProgressionConfig progressionConfig, float t)
         {
             (int min, int max) result = progressionConfig.EvaluateHeight(t);
             return Random.Range(result.min, result.max + 1);

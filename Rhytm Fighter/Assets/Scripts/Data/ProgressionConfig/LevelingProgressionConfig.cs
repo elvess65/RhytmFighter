@@ -6,8 +6,8 @@ namespace RhytmFighter.Data
     /// Рассчитывает прогрессию необходимого опыта для получения уровня
     /// </summary>
     [System.Serializable]
-    [CreateAssetMenu(fileName = "NewLevelExp ProgressionConfig", menuName = "DBSimulation/Progressions/Level Exp Progression Config", order = 101)]
-    public class LevelExpProgressionConfig : ScriptableObject
+    [CreateAssetMenu(fileName = "NewLeveling ProgressionConfig", menuName = "DBSimulation/Progressions/Leveling Progression Config", order = 101)]
+    public class LevelingProgressionConfig : ScriptableObject
     {
         [Header("Прогрессия необходимого опыта для получения уровня")]
 
