@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using RhytmFighter.Persistant;
+using RhytmFighter.Persistant.Abstract;
 using RhytmFighter.UI.Bar;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,9 +8,9 @@ using UnityEngine.UI;
 namespace RhytmFighter.UI.Widget
 {
     /// <summary>
-    /// Виджет опыта игрока
+    /// Виджет опыта
     /// </summary>
-    public class UIWidget_ExperianceBar : UIWidget
+    public class UIWidget_ExperianceBar : UIWidget, iUpdatable
     {
         [Space(10)]
         public AbstractBarStrategy Bar;
@@ -16,34 +18,41 @@ namespace RhytmFighter.UI.Widget
         public Text Text_Experiance;
         public Text Text_GainedExperiance;
         
-        private int m_CurExp = 0;
+        private int m_ExpAmount = 0;
+        private int m_CharacterID;
         private WaitForSeconds m_WaitForGainedExpShowTime;
 
 
-        public void Initialize(int curExp)
+        public void Initialize(int characterID, int expAmount)
         {
+            m_CharacterID = characterID;
+
             Text_GainedExperiance.enabled = false;
             m_WaitForGainedExpShowTime = new WaitForSeconds(1);
 
-            UpdateData(curExp);
+            UpdateData(expAmount);
         }
 
         public void UpdateBar(int expGained)
         {
-            UpdateData(m_CurExp + expGained);
+            UpdateData(m_ExpAmount + expGained);
             ShowGainedExp(expGained);
         }
 
-
-        private void UpdateData(int curExp)
+        public void PerformUpdate(float deltaTime)
         {
-            m_CurExp = curExp;
+        }
 
-            int curLevel = GetLevelByExp(m_CurExp);
+
+        private void UpdateData(int expAmount)
+        {
+            m_ExpAmount = expAmount;
+
+            int curLevel = GetLevelByExp(m_ExpAmount);
             int expToNextLvl = GetExpToNextLevel(curLevel);
 
-            Bar.SetProgress(m_CurExp, expToNextLvl);
-            UpdateTexts(curLevel, m_CurExp, expToNextLvl);
+            Bar.SetProgress(m_ExpAmount, expToNextLvl);
+            UpdateTexts(curLevel, m_ExpAmount, expToNextLvl);
         }
 
         private void UpdateTexts(int curLevel, int curExp, int expToNextLvl)
@@ -55,18 +64,20 @@ namespace RhytmFighter.UI.Widget
         private void ShowGainedExp(int gainedExp)
         {
             Text_GainedExperiance.text = $"+{gainedExp}";
+
+            StartCoroutine(WaitGainedExpShowTime());
         }
 
 
 
-        private int GetLevelByExp(int exp)
+        private int GetLevelByExp(int expAmount)
         {
-            return 2;
+            return GameManager.Instance.DataHolder.DataTableModel.LevelingDataModel.GetWeaponLevelByExp(m_CharacterID, expAmount);
         }
 
         private int GetExpToNextLevel(int curLevel)
         {
-            return 12;
+            return GameManager.Instance.DataHolder.DataTableModel.LevelingDataModel.GetWeaponExpForLevel(m_CharacterID, curLevel + 1);
         }
 
         IEnumerator WaitGainedExpShowTime()

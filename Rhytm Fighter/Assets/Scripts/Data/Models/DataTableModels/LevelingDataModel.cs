@@ -7,11 +7,16 @@ namespace RhytmFighter.Data.Models.DataTableModels
     /// </summary>
     public class LevelingDataModel : DeserializableDataModel<LevelingDataModel>
     {
+        /// <summary>
+        /// Используется только для парсинга данных
+        /// </summary>
         public CharacterEquipementLevelingData[] CharactersEquipementLevelingData;
 
         private Dictionary<int, CharacterEquipementLevelingData> m_CharactersEquipement;
 
-
+        /// <summary>
+        /// Используется только для парсинга данных
+        /// </summary>
         public override void ReorganizeData()
         {
             m_CharactersEquipement = new Dictionary<int, CharacterEquipementLevelingData>();

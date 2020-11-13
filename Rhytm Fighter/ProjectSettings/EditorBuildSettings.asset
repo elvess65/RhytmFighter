@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MenuScene.unity
     guid: ba0cfcbfa1c294786a63dc1d4783e027
+  - enabled: 1
+    path: Assets/Scenes/ForgeScene.unity
+    guid: 451ab7f3fedcf4537a2a643087e266dd
   m_configObjects: {}

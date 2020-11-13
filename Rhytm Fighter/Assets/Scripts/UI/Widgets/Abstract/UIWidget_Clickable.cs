@@ -12,10 +12,12 @@ namespace RhytmFighter.UI.Widget
 
         [SerializeField] public Button WidgetButton;
 
+
         public void LockInput(bool isLocked)
         {
             WidgetButton.enabled = !isLocked;
         }
+
 
         protected override void InternalInitialize()
         {

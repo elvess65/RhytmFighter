@@ -9,31 +9,51 @@ namespace RhytmFighter.UI.View
     /// </summary>
     public class UIView_MenuScene : UIView_Abstract
     {
-        public System.Action OnPlayPressHandler;
+        public System.Action OnPlayButtonPressHandler;
+        public System.Action OnForgeButtonPressHandler;
 
         [Space(10)]
 
-        public UIWidget_Play UIWidget_Play;
+        public UIWidget_Button UIWidget_ButtonPlay;
+        public UIWidget_Button UIWidget_ButtonForge;
         public UIWidget_Currency UIWidget_Currency;
 
         public override void Initialize()
         {
-            UIWidget_Play.OnWidgetPress += WidgetPressHandler;
-            UIWidget_Play.Initialize();
+            UIWidget_ButtonPlay.OnWidgetPress += ButtonPlay_Widget_PressHandler;
+            UIWidget_ButtonPlay.Initialize();
+
+            UIWidget_ButtonForge.OnWidgetPress += ButtonForge_Widget_PressHandler;
+            UIWidget_ButtonForge.Initialize();
 
             UIWidget_Currency.Initialize(GameManager.Instance.DataHolder.AccountModel.CurrencyAmount);
 
-            RegisterWidget(UIWidget_Play);
+            RegisterWidget(UIWidget_ButtonPlay);
+            RegisterWidget(UIWidget_ButtonForge);
             RegisterWidget(UIWidget_Currency);
 
             RegisterUpdatable(UIWidget_Currency);
         }
 
-        void WidgetPressHandler()
+        public override void LockInput(bool isLocked)
         {
-            UIWidget_Play.LockInput(true);
+            UIWidget_ButtonPlay.LockInput(isLocked);
+            UIWidget_ButtonForge.LockInput(isLocked);
+        }
 
-            OnPlayPressHandler?.Invoke();
+
+        void ButtonPlay_Widget_PressHandler()
+        {
+             LockInput(true);
+
+             OnPlayButtonPressHandler?.Invoke();
+        }
+
+        void ButtonForge_Widget_PressHandler()
+        {
+            LockInput(true);
+
+            OnForgeButtonPressHandler?.Invoke();
         }
     }
 }

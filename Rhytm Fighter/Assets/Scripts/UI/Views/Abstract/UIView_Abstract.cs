@@ -27,6 +27,9 @@ namespace RhytmFighter.UI.View
             }
         }
 
+        public virtual void LockInput(bool isLocked)
+        { }
+
         public void SetWidgetsActive(bool isEnabled, bool isAnimated)
         {
             for (int i = 0; i < m_Widgets.Count; i++)

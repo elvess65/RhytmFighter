@@ -15,8 +15,8 @@ namespace RhytmFighter.Enviroment
 
         void Update()
         {
-            if (m_Target == null && BattleManager.Instance.PlayerModel != null)
-                m_Target = BattleManager.Instance.PlayerModel.ViewTransform;
+            if (m_Target == null && BattleManager.Instance.PlayerModelShortcut != null)
+                m_Target = BattleManager.Instance.PlayerModelShortcut.ViewTransform;
 
             if (m_Target != null)
             {

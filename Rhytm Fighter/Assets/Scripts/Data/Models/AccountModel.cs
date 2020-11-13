@@ -10,10 +10,14 @@ namespace RhytmFighter.Data.Models
     {
         public int CurrencyAmount;          
 
-        //Нужно для парсинга данный
+        /// <summary>
+        /// Используется только для парсинга данных
+        /// </summary>
         public CharacterData[] CharactersData;
 
-        //Нужно для парсинга данный
+        /// <summary>
+        /// Используется только для парсинга данных
+        /// </summary>
         public InventoryData Inventory;
 
         private Dictionary<int, CharacterData> m_CharactersData;
@@ -27,6 +31,9 @@ namespace RhytmFighter.Data.Models
             return null;
         }
 
+        /// <summary>
+        /// Используется только для парсинга данных
+        /// </summary>
         public override void ReorganizeData()
         {
             m_CharactersData = new Dictionary<int, CharacterData>();
