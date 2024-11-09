@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using Frameworks.Grid.View.Cell;
 
@@ -35,3 +36,4 @@ namespace RhytmFighter.EditorTools
      
     }
 }
+#endif

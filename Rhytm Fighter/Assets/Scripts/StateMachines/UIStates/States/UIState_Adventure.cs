@@ -22,8 +22,7 @@ namespace RhytmFighter.StateMachines.UIState
 
             //UI
             UIView_PlayerHUD.SetWidgetsActive(true, true);
-            UIView_InventoryHUD.SetWidgetsActive(true, true);
-            
+            UIView_InventoryHUD.SetWidgetsActive(true, true);   
 
             //Tick indicator
             UIView_PlayerHUD.UIWidget_Tick.ToNormalState();

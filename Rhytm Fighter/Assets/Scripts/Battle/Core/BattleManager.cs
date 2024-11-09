@@ -58,9 +58,8 @@ namespace RhytmFighter.Battle.Core
                                      ManagersHolder.SettingsManager.GeneralSettings.MoveSpeedTickDurationMultiplayer;
         //Shortcuts
         public AccountModel AccountModelShortcut => GameManager.Instance.DataHolder.AccountModel;
-        public BattleSessionModel BattleSessionModelShortcut = GameManager.Instance.DataHolder.BattleSessionModel;
         public PlayerModel PlayerModelShortcut => m_ControllersHolder?.PlayerCharacterController?.PlayerModel;
-        public CharacterData CurrentCharacterDataShortcut => DataHelper.GetCharacterData(BattleSessionModelShortcut.SelectedCharactedID);
+        public CharacterData CurrentCharacterDataShortcut => DataHelper.GetCharacterData(GameManager.Instance.DataHolder.BattleSessionModel.SelectedCharactedID);
         
 
         private void Update()
@@ -109,8 +108,8 @@ namespace RhytmFighter.Battle.Core
 
         private void InitializeDataDependends()
         {
-            EnvironmentDataModel.LevelParams levelParams = GameManager.Instance.DataHolder.DataTableModel.EnvironmentDataModel.GetLevelParams(BattleSessionModelShortcut.CurrentLevelID);
-            float completionProgress = GameManager.Instance.DataHolder.DataTableModel.EnvironmentDataModel.GetCompletionForProgression(BattleSessionModelShortcut.CompletedLevelsIDs.ToArray());
+            EnvironmentDataModel.LevelParams levelParams = GameManager.Instance.DataHolder.DataTableModel.EnvironmentDataModel.GetLevelParams(GameManager.Instance.DataHolder.BattleSessionModel.CurrentLevelID);
+            float completionProgress = GameManager.Instance.DataHolder.DataTableModel.EnvironmentDataModel.GetCompletionForProgression(GameManager.Instance.DataHolder.BattleSessionModel.CompletedLevelsIDs.ToArray());
 
             //Set object params
             m_ControllersHolder.RhytmController.SetBPM(levelParams.BPM);
